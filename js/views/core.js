@@ -9,6 +9,27 @@ import { sceneSvg, FESTIVE } from '../scenes.js';
 import { t, lang } from '../i18n.js';
 import { openPause } from '../pause.js';
 
+const FRIEND_GREETINGS = {
+  idulfitri: 'Selamat Idulfitri, mohon maaf lahir dan batin',
+  iduladha: 'Selamat Iduladha',
+  'tahun-baru-islam': 'Selamat Tahun Baru Islam',
+  maulid: 'Selamat memperingati Maulid Nabi',
+  natal: 'Selamat Natal',
+  paskah: 'Selamat Paskah',
+  imlek: 'Gong Xi Fa Cai / Selamat Tahun Baru Imlek',
+  'cap-go-meh': 'Selamat Cap Go Meh',
+  waisak: 'Selamat Hari Raya Waisak',
+  nyepi: 'Selamat Hari Raya Nyepi, Tahun Baru Saka',
+  galungan: 'Rahajeng Galungan',
+  kuningan: 'Rahajeng Kuningan',
+};
+
+function friendHolyDays(content, myFaith) {
+  return holyDays(new Date(), 7, content.calendarOverrides)
+    .filter((h) => FRIEND_GREETINGS[h.id] && !matchesFaith(h, myFaith))
+    .slice(0, 2);
+}
+
 function greeting() {
   const hour = new Date().getHours();
   if (hour < 11) {
@@ -85,6 +106,13 @@ export function home(main, params, query, ctx) {
       </ul>
       <a class="small" href="#/kalender">${t('home.calendar')}</a>` : ''}
 
+      ${friendHolyDays(content, faith.id).map((h) => `
+        <div class="card friend-card">
+          <span class="small muted">Teman berbeda iman merayakan · ${relativeDays(h.date)}</span>
+          <strong>${esc(h.name)}</strong>
+          <span>Ucapan: “${esc(FRIEND_GREETINGS[h.id])}”</span>
+          <a class="small" href="#/pustaka/lintas">Etiket berkunjung saat hari raya</a>
+        </div>`).join('')}
       <div class="quick-grid">
         <a class="quick" href="#/pustaka/${faith.pustaka ? faith.id : ''}"><strong>${t('quick.library')}</strong><span>${t('quick.library.desc')}</span></a>
         <a class="quick" href="#/tanya"><strong>${t('quick.ask')}</strong><span>${t('quick.ask.desc')}</span></a>
@@ -238,6 +266,7 @@ export function more(main) {
     ['#/arsip', 'Arsip Tradisi Keluarga', 'Catatan dan rekaman suara, tersimpan di perangkat'],
     ['#/kunjungi', 'Kunjungi & Kenali', 'Ruang iman lain dalam mode amati'],
     ['#/pustaka/lintas', 'Etiket Lintas Iman', 'Cara hormat menghadiri acara iman lain'],
+    ['#/kamus', 'Kamus Istilah', 'Arti istilah dari setiap agama'],
     ['#/dukung', 'Dukung Jeda', 'Bantu biaya server dan pengembangan'],
     ['#/tentang', 'Tentang & Prinsip', 'Privasi, sumber, status tinjauan'],
     ['#/tinjau', 'Tinjau Pustaka (reviewer)', 'Untuk pemuka agama: setujui atau koreksi entri'],

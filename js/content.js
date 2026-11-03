@@ -20,13 +20,14 @@ export async function loadContent() {
   if (cache) {
     return cache;
   }
-  const [meta, places, calendar, ceremonies, scriptures, ciamsi] = await Promise.all([
+  const [meta, places, calendar, ceremonies, scriptures, ciamsi, glossary] = await Promise.all([
     getJson('content/faiths.json'),
     getJson('content/places.json'),
     getJson('content/calendar.json'),
     getJson('content/ceremonies.json'),
     getJson('content/scriptures.json'),
     getJson('content/ciamsi.json'),
+    getJson('content/glossary.json').catch(() => []),
   ]);
 
   const entryFiles = [...meta.faiths.filter((faith) => faith.pustaka).map((faith) => faith.id), 'lintas'];
@@ -46,6 +47,7 @@ export async function loadContent() {
     ceremonies: ceremonies.filter(isVisible),
     scriptures,
     ciamsi,
+    glossary: glossary.filter(isVisible),
   };
   return cache;
 }

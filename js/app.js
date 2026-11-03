@@ -8,7 +8,7 @@ import { openPause } from './pause.js';
 import { loadContent, faithById } from './content.js';
 import * as core from './views/core.js';
 import { space } from './views/space.js';
-import { pustaka, entry, searchView, scripture } from './views/pustaka.js';
+import { pustaka, entry, searchView, scripture, kamus } from './views/pustaka.js';
 import { tanya } from './views/tanya.js';
 import { planner, places, calendarView, archive } from './views/tools.js';
 import { review } from './views/review.js';
@@ -32,6 +32,7 @@ const ROUTES = {
   pengaturan: core.settings,
   lainnya: core.more,
   tinjau: review,
+  kamus,
 };
 
 let content = null;
@@ -66,7 +67,7 @@ function renderChrome(routeName) {
   ];
   const groups = {
     ruang: ['ruang', 'kunjungi'],
-    pustaka: ['pustaka', 'entri', 'cari', 'kitab'],
+    pustaka: ['pustaka', 'entri', 'cari', 'kitab', 'kamus'],
     lainnya: ['lainnya', 'upacara', 'ibadah', 'kalender', 'arsip', 'dukung', 'tentang', 'pengaturan', 'tinjau'],
   };
   const isActive = (id) => id === routeName || (groups[id] || []).includes(routeName);

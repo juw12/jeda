@@ -134,3 +134,15 @@ jeda.id is an active news site; small apps/brands named "Jeda" exist (holiday ca
 - Reviewer workflow in-app (`#/tinjau`): approve/revise with notes → export file → owner merges files and downloads updated entry JSON; drafts viewable by reviewers via `?tinjau=1` even after launch. Merge verified end-to-end.
 - Search synonyms (lebaran, shalat, kuburan, sincia, nikah, meninggal, …) for Pustaka search and Tanya
 - Ceremony guides 13 → 20: pengurusan jenazah (Islam), akad nikah & KUA, menyambut Ramadan, pemberkatan nikah Kristen, otonan, duka Buddhis, Cioko
+
+
+---
+
+# Iteration 8: v0.5 additions
+
+- Kamus Istilah (glossary): 80 terms across all faiths with links to Pustaka entries (`content/glossary.json`, `#/kamus`)
+- Search now shows glossary terms + ceremony guides + Pustaka entries together
+- Calendar export to phone (.ics, all-day events, per faith or all) — free reminders without a server
+- "Teman berbeda iman merayakan" card on home with the right greeting for friends' holy days in the next 7 days
+- Places directory 26 → 36 (still unverified; no donation info)
+- Verified: glossary filter, combined search, .ics content (13 Chindo events), home render

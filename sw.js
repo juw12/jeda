@@ -1,6 +1,6 @@
 // Offline support: app shell cache-first, content network-first (so reviewed updates arrive quickly).
 
-const VERSION = 'jeda-v0.4.0';
+const VERSION = 'jeda-v0.5.0';
 const SHELL = [
   './',
   'index.html',
@@ -38,6 +38,7 @@ const SHELL = [
   'content/entries/lintas.json',
   'content/entries/protestan.json',
   'content/faiths.json',
+  'content/glossary.json',
   'content/places.json',
   'content/scriptures.json',
 ];

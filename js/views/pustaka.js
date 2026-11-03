@@ -131,6 +131,11 @@ function pustakaHome(main, { content, navigate }) {
             <strong>${esc(f.name)}</strong>
             <span class="small muted">${entriesFor(content, f.id).length} entri</span>
           </a>`).join('')}
+        <a class="faith-card" href="#/kamus" style="--accent:#c9a15a">
+          <span class="faith-icon" aria-hidden="true">📖</span>
+          <strong>Kamus Istilah</strong>
+          <span class="small muted">${content.glossary.length} istilah</span>
+        </a>
         <a class="faith-card" href="#/pustaka/lintas" style="--accent:#8aa">
           <span class="faith-icon" aria-hidden="true">🤝</span>
           <strong>Etiket Lintas Iman</strong>
@@ -256,15 +261,63 @@ export function entry(main, [entryId], query, { content, navigate }) {
   return () => stopSpeaking();
 }
 
+const FAITH_LABELS = { kristen: 'Kristen', lintas: 'Lintas iman' };
+
+function glossaryLabel(content, faithId) {
+  return FAITH_LABELS[faithId] || faithById(content, faithId)?.short || faithId;
+}
+
+function glossaryMatches(content, q) {
+  const needle = q.toLowerCase();
+  return content.glossary.filter((g) => g.term.toLowerCase().includes(needle) || g.definition.toLowerCase().includes(needle));
+}
+
+export function kamus(main, params, query, { content }) {
+  const render = (text = '') => {
+    const list = text ? glossaryMatches(content, text) : content.glossary;
+    const groups = new Map();
+    list.forEach((g) => {
+      const letter = g.term[0].toUpperCase();
+      if (!groups.has(letter)) {
+        groups.set(letter, []);
+      }
+      groups.get(letter).push(g);
+    });
+    main.querySelector('.glossary').innerHTML = [...groups.entries()].map(([letter, terms]) => `
+      <h2 class="h3 glossary-letter">${letter}</h2>
+      <dl class="glossary-list">
+        ${terms.map((g) => `<div class="glossary-item">
+            <dt>${esc(g.term)} <span class="badge badge-dim">${esc(glossaryLabel(content, g.faith))}</span></dt>
+            <dd>${esc(g.definition)} ${g.entry ? `<a class="small" href="#/entri/${encodeURIComponent(g.entry)}">Baca</a>` : ''}</dd>
+          </div>`).join('')}
+      </dl>`).join('') || '<p class="muted">Tidak ada istilah yang cocok.</p>';
+  };
+  main.innerHTML = `
+    <section class="stack narrow">
+      <p class="crumbs"><a href="#/pustaka">Pustaka</a> / Kamus Istilah</p>
+      <h1 class="h2">Kamus Istilah</h1>
+      <p class="muted">Arti singkat istilah dari setiap agama, agar mudah memahami iman sendiri dan iman sesama. ${content.glossary.length} istilah.</p>
+      <input type="search" class="filter" placeholder="Cari istilah… (mis. hio, wudu, sidi, odalan)" aria-label="Cari istilah" value="${esc(query.get('q') || '')}">
+      <div class="glossary"></div>
+    </section>`;
+  main.querySelector('.filter').addEventListener('input', (event) => render(event.target.value.trim()));
+  render(query.get('q') || '');
+}
+
 export function searchView(main, params, query, { content, navigate }) {
   const q = query.get('q') || '';
   const results = q ? search(getIndex(content), q, { limit: 30 }) : [];
+  const terms = q ? glossaryMatches(content, q).slice(0, 6) : [];
+  const needle = q.toLowerCase();
+  const guides = q ? content.ceremonies.filter((c) => `${c.title} ${c.summary}`.toLowerCase().includes(needle)).slice(0, 5) : [];
   const bookmarks = load('bookmarks', []).map((id) => entryById(content, id)).filter(Boolean);
   main.innerHTML = `
     <section class="stack">
       <h1 class="h2">Cari di Pustaka</h1>
       ${searchBox(q)}
-      ${q ? `<p class="muted">${results.length} hasil untuk "${esc(q)}"</p>
+      ${terms.length ? `<h2 class="h3">Kamus</h2><dl class="glossary-list">${terms.map((g) => `<div class="glossary-item"><dt>${esc(g.term)}</dt><dd>${esc(g.definition)}</dd></div>`).join('')}</dl>` : ''}
+      ${guides.length ? `<h2 class="h3">Panduan Upacara</h2><div class="list">${guides.map((c) => `<a class="entry-card" href="#/upacara/${c.id}"><strong>${esc(c.title)}</strong><span class="small muted">${esc(c.summary)}</span></a>`).join('')}</div>` : ''}
+      ${q ? `<h2 class="h3">Pustaka</h2><p class="muted">${results.length} hasil untuk "${esc(q)}"</p>
         <div class="list">${results.map((r) => entryCard(content, r.entry, [])).join('')}</div>` : ''}
       ${!q && bookmarks.length ? `<h2 class="h3">Penandamu</h2><div class="list">${bookmarks.map((e) => entryCard(content, e, [])).join('')}</div>` : ''}
     </section>`;

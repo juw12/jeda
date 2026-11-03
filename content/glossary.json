@@ -1,0 +1,562 @@
+[
+  {
+    "term": "Adven",
+    "faith": "kristen",
+    "definition": "Empat minggu persiapan menyambut Natal.",
+    "entry": "pro-hariraya-natal",
+    "status": "draft"
+  },
+  {
+    "term": "Adzan",
+    "faith": "islam",
+    "definition": "Panggilan sholat yang dikumandangkan muazin menjelang waktu sholat.",
+    "entry": "isl-ibadah-sholat",
+    "status": "draft"
+  },
+  {
+    "term": "Akad nikah",
+    "faith": "islam",
+    "definition": "Ijab kabul yang mengesahkan pernikahan, dengan wali dan dua saksi.",
+    "entry": "isl-siklus-nikah",
+    "status": "draft"
+  },
+  {
+    "term": "Angpao",
+    "faith": "khonghucu",
+    "definition": "Amplop merah berisi uang sebagai berkah, terutama saat Imlek dan pernikahan.",
+    "entry": "khc-hariraya-imlek",
+    "status": "draft"
+  },
+  {
+    "term": "Aqiqah",
+    "faith": "islam",
+    "definition": "Syukuran kelahiran dengan menyembelih kambing, umumnya pada hari ketujuh.",
+    "entry": "isl-siklus-aqiqah",
+    "status": "draft"
+  },
+  {
+    "term": "Banten",
+    "faith": "hindu",
+    "definition": "Sarana persembahan dalam upacara Hindu Bali.",
+    "entry": "hin-ibadah-canang",
+    "status": "draft"
+  },
+  {
+    "term": "Baptisan",
+    "faith": "kristen",
+    "definition": "Sakramen penerimaan ke dalam persekutuan Kristen dengan air.",
+    "entry": "pro-pokok-sakramen",
+    "status": "draft"
+  },
+  {
+    "term": "Bhikkhu",
+    "faith": "buddha",
+    "definition": "Biarawan Buddha yang menjalankan vinaya.",
+    "entry": "bud-aturan-etika-vihara",
+    "status": "draft"
+  },
+  {
+    "term": "Canang sari",
+    "faith": "hindu",
+    "definition": "Persembahan harian berupa janur, porosan, dan bunga.",
+    "entry": "hin-ibadah-canang",
+    "status": "draft"
+  },
+  {
+    "term": "Cap Go Meh",
+    "faith": "khonghucu",
+    "definition": "Malam ke-15 bulan pertama Imlek, penutup rangkaian Imlek.",
+    "entry": "khc-hariraya-capgomeh",
+    "status": "draft"
+  },
+  {
+    "term": "Ceng Beng",
+    "faith": "khonghucu",
+    "definition": "Hari ziarah dan membersihkan makam leluhur, sekitar 4–5 April.",
+    "entry": "khc-hariraya-cengbeng",
+    "status": "draft"
+  },
+  {
+    "term": "Ciam si",
+    "faith": "khonghucu",
+    "definition": "Tradisi memohon petunjuk dengan batang bernomor di klenteng.",
+    "entry": "khc-ibadah-ciamsi",
+    "status": "draft"
+  },
+  {
+    "term": "Cioko",
+    "faith": "khonghucu",
+    "definition": "Sembahyang Rebutan untuk arwah terlantar pada bulan 7 Imlek.",
+    "entry": "khc-hariraya-lainnya",
+    "status": "draft"
+  },
+  {
+    "term": "Cuntaka",
+    "faith": "hindu",
+    "definition": "Keadaan tidak suci (mis. berduka) yang membuat seseorang tidak memasuki pura.",
+    "entry": "hin-aturan-panca-yadnya",
+    "status": "draft"
+  },
+  {
+    "term": "Dhamma",
+    "faith": "buddha",
+    "definition": "Ajaran Buddha; juga kebenaran.",
+    "entry": "bud-pokok-tisarana-pancasila",
+    "status": "draft"
+  },
+  {
+    "term": "Ekaristi",
+    "faith": "katolik",
+    "definition": "Perayaan pengenangan wafat dan kebangkitan Kristus dengan roti dan anggur; puncak Misa.",
+    "entry": "kat-ibadah-misa",
+    "status": "draft"
+  },
+  {
+    "term": "Fardu kifayah",
+    "faith": "islam",
+    "definition": "Kewajiban kolektif; gugur bila sudah dikerjakan sebagian umat, mis. mengurus jenazah.",
+    "entry": "isl-siklus-jenazah",
+    "status": "draft"
+  },
+  {
+    "term": "FKUB",
+    "faith": "lintas",
+    "definition": "Forum Kerukunan Umat Beragama di tingkat provinsi dan kabupaten/kota.",
+    "entry": null,
+    "status": "draft"
+  },
+  {
+    "term": "Galungan",
+    "faith": "hindu",
+    "definition": "Hari raya kemenangan dharma atas adharma, setiap 210 hari.",
+    "entry": "hin-hariraya-galungan",
+    "status": "draft"
+  },
+  {
+    "term": "Genufleksi",
+    "faith": "katolik",
+    "definition": "Berlutut dengan satu lutut menghadap tabernakel sebagai tanda hormat.",
+    "entry": "kat-aturan-adab-gereja",
+    "status": "draft"
+  },
+  {
+    "term": "Halal",
+    "faith": "islam",
+    "definition": "Diperbolehkan menurut syariat, terutama untuk makanan dan minuman.",
+    "entry": "isl-aturan-halal",
+    "status": "draft"
+  },
+  {
+    "term": "Hio",
+    "faith": "khonghucu",
+    "definition": "Dupa batang untuk sembahyang.",
+    "entry": "khc-ibadah-hio",
+    "status": "draft"
+  },
+  {
+    "term": "Hiolo",
+    "faith": "khonghucu",
+    "definition": "Wadah abu tempat menancapkan hio.",
+    "entry": "khc-ibadah-hio",
+    "status": "draft"
+  },
+  {
+    "term": "Hisab",
+    "faith": "islam",
+    "definition": "Penentuan awal bulan Hijriah dengan perhitungan astronomi.",
+    "entry": "isl-aliran-nu-muhammadiyah",
+    "status": "draft"
+  },
+  {
+    "term": "Isbat",
+    "faith": "islam",
+    "definition": "Sidang Kementerian Agama untuk menetapkan awal Ramadan, Syawal, dan Zulhijah.",
+    "entry": "isl-hariraya-ramadan-idulfitri",
+    "status": "draft"
+  },
+  {
+    "term": "Karmaphala",
+    "faith": "hindu",
+    "definition": "Hukum sebab-akibat dari perbuatan.",
+    "entry": "hin-pokok-panca-sradha",
+    "status": "draft"
+  },
+  {
+    "term": "Katekisasi",
+    "faith": "kristen",
+    "definition": "Pengajaran iman sebelum baptis dewasa, sidi, atau pernikahan.",
+    "entry": "pro-siklus",
+    "status": "draft"
+  },
+  {
+    "term": "Kathina",
+    "faith": "buddha",
+    "definition": "Masa persembahan jubah kepada Sangha setelah vassa.",
+    "entry": "bud-hariraya-kathina",
+    "status": "draft"
+  },
+  {
+    "term": "Kerukunan",
+    "faith": "lintas",
+    "definition": "Hidup rukun dan saling menghormati antarumat beragama.",
+    "entry": "lin-hari-raya",
+    "status": "draft"
+  },
+  {
+    "term": "Kim cua",
+    "faith": "khonghucu",
+    "definition": "Kertas sembahyang emas; gin cua (perak) umumnya untuk leluhur.",
+    "entry": "khc-ibadah-kertas",
+    "status": "draft"
+  },
+  {
+    "term": "Komuni",
+    "faith": "katolik",
+    "definition": "Menyambut Tubuh Kristus dalam Ekaristi; hanya untuk umat Katolik yang memenuhi syarat.",
+    "entry": "kat-ibadah-misa",
+    "status": "draft"
+  },
+  {
+    "term": "Kongzili",
+    "faith": "khonghucu",
+    "definition": "Penanggalan tahun agama Khonghucu (tahun Masehi + 551).",
+    "entry": "khc-hariraya-imlek",
+    "status": "draft"
+  },
+  {
+    "term": "Krisma",
+    "faith": "katolik",
+    "definition": "Sakramen penguatan iman bagi umat Katolik yang telah dibaptis.",
+    "entry": "kat-pokok-sakramen",
+    "status": "draft"
+  },
+  {
+    "term": "Litang",
+    "faith": "khonghucu",
+    "definition": "Rumah ibadah agama Khonghucu.",
+    "entry": "khc-pokok-tridharma",
+    "status": "draft"
+  },
+  {
+    "term": "Liturgi",
+    "faith": "kristen",
+    "definition": "Tata ibadah resmi gereja.",
+    "entry": "pro-ibadah-minggu",
+    "status": "draft"
+  },
+  {
+    "term": "Mala",
+    "faith": "buddha",
+    "definition": "Untaian butir (umumnya 108) untuk menghitung lafal atau perenungan.",
+    "entry": null,
+    "status": "draft"
+  },
+  {
+    "term": "Mazhab",
+    "faith": "islam",
+    "definition": "Aliran pemahaman fikih; di Indonesia mayoritas bermazhab Syafi'i.",
+    "entry": "isl-aliran-mazhab",
+    "status": "draft"
+  },
+  {
+    "term": "Meja abu",
+    "faith": "khonghucu",
+    "definition": "Altar keluarga untuk menghormati leluhur.",
+    "entry": "khc-ibadah-leluhur",
+    "status": "draft"
+  },
+  {
+    "term": "Metatah",
+    "faith": "hindu",
+    "definition": "Upacara potong gigi sebagai lambang pengendalian sad ripu.",
+    "entry": "hin-siklus-manusa-yadnya",
+    "status": "draft"
+  },
+  {
+    "term": "Moksa",
+    "faith": "hindu",
+    "definition": "Kebebasan abadi, tujuan tertinggi hidup.",
+    "entry": "hin-pokok-panca-sradha",
+    "status": "draft"
+  },
+  {
+    "term": "Namaskara",
+    "faith": "buddha",
+    "definition": "Bersujud penuh hormat kepada Tiga Permata.",
+    "entry": "bud-ibadah-pujabakti",
+    "status": "draft"
+  },
+  {
+    "term": "Ngaben",
+    "faith": "hindu",
+    "definition": "Upacara kremasi dalam Pitra Yadnya.",
+    "entry": "hin-siklus-ngaben",
+    "status": "draft"
+  },
+  {
+    "term": "Odalan",
+    "faith": "hindu",
+    "definition": "Hari peringatan berdirinya sebuah pura.",
+    "entry": "hin-ibadah-odalan",
+    "status": "draft"
+  },
+  {
+    "term": "Otonan",
+    "faith": "hindu",
+    "definition": "Peringatan hari lahir setiap 210 hari menurut Pawukon.",
+    "entry": "hin-siklus-manusa-yadnya",
+    "status": "draft"
+  },
+  {
+    "term": "Pantang",
+    "faith": "katolik",
+    "definition": "Menahan diri dari daging atau kesenangan tertentu pada hari yang ditetapkan.",
+    "entry": "kat-hariraya-liturgi",
+    "status": "draft"
+  },
+  {
+    "term": "Paritta",
+    "faith": "buddha",
+    "definition": "Syair perlindungan dan berkah dalam bahasa Pali.",
+    "entry": "bud-ibadah-pujabakti",
+    "status": "draft"
+  },
+  {
+    "term": "Pattidana",
+    "faith": "buddha",
+    "definition": "Pelimpahan jasa kebajikan kepada leluhur dan semua makhluk.",
+    "entry": "bud-ibadah-pattidana",
+    "status": "draft"
+  },
+  {
+    "term": "Pawukon",
+    "faith": "hindu",
+    "definition": "Siklus kalender Bali 210 hari yang terdiri atas 30 wuku.",
+    "entry": "hin-hariraya-galungan",
+    "status": "draft"
+  },
+  {
+    "term": "Penjor",
+    "faith": "hindu",
+    "definition": "Bambu melengkung berhias yang dipasang saat Galungan.",
+    "entry": "hin-hariraya-galungan",
+    "status": "draft"
+  },
+  {
+    "term": "Perjamuan Kudus",
+    "faith": "protestan",
+    "definition": "Sakramen peringatan pengorbanan Kristus dengan roti dan anggur.",
+    "entry": "pro-ibadah-perjamuan",
+    "status": "draft"
+  },
+  {
+    "term": "Poe",
+    "faith": "khonghucu",
+    "definition": "Sepasang balok bulan sabit untuk memohon jawaban (jiaobei).",
+    "entry": "khc-ibadah-ciamsi",
+    "status": "draft"
+  },
+  {
+    "term": "Prapaskah",
+    "faith": "katolik",
+    "definition": "Masa 40 hari pertobatan menuju Paskah, dimulai Rabu Abu.",
+    "entry": "kat-hariraya-liturgi",
+    "status": "draft"
+  },
+  {
+    "term": "Pura",
+    "faith": "hindu",
+    "definition": "Tempat suci umat Hindu.",
+    "entry": "hin-aturan-panca-yadnya",
+    "status": "draft"
+  },
+  {
+    "term": "Qunut",
+    "faith": "islam",
+    "definition": "Doa yang dibaca dalam sholat, mis. pada sholat Subuh menurut sebagian ulama.",
+    "entry": "isl-ibadah-sholat",
+    "status": "draft"
+  },
+  {
+    "term": "Rosario",
+    "faith": "katolik",
+    "definition": "Doa devosi merenungkan peristiwa hidup Yesus bersama Maria.",
+    "entry": "kat-ibadah-rosario",
+    "status": "draft"
+  },
+  {
+    "term": "Rukyat",
+    "faith": "islam",
+    "definition": "Penentuan awal bulan Hijriah dengan melihat hilal (bulan sabit muda).",
+    "entry": "isl-aliran-nu-muhammadiyah",
+    "status": "draft"
+  },
+  {
+    "term": "Sangha",
+    "faith": "buddha",
+    "definition": "Persaudaraan para bhikkhu dan bhikkhuni.",
+    "entry": "bud-pokok-tisarana-pancasila",
+    "status": "draft"
+  },
+  {
+    "term": "Sangjit",
+    "faith": "khonghucu",
+    "definition": "Seserahan dari keluarga pria kepada keluarga perempuan sebelum menikah.",
+    "entry": "khc-siklus-pernikahan",
+    "status": "draft"
+  },
+  {
+    "term": "Sidi",
+    "faith": "protestan",
+    "definition": "Peneguhan pengakuan iman secara pribadi, umum di gereja Reformed dan Lutheran.",
+    "entry": "pro-siklus",
+    "status": "draft"
+  },
+  {
+    "term": "Sinci",
+    "faith": "khonghucu",
+    "definition": "Papan nama leluhur di meja abu.",
+    "entry": "khc-ibadah-leluhur",
+    "status": "draft"
+  },
+  {
+    "term": "Soja",
+    "faith": "khonghucu",
+    "definition": "Sikap hormat dengan kedua tangan dikatupkan di depan dada.",
+    "entry": "khc-ibadah-hio",
+    "status": "draft"
+  },
+  {
+    "term": "Tabernakel",
+    "faith": "katolik",
+    "definition": "Tempat menyimpan Sakramen Mahakudus di gereja.",
+    "entry": "kat-aturan-adab-gereja",
+    "status": "draft"
+  },
+  {
+    "term": "Tahlilan",
+    "faith": "islam",
+    "definition": "Tradisi doa bersama untuk orang yang wafat, banyak diamalkan warga NU.",
+    "entry": "isl-siklus-jenazah",
+    "status": "draft"
+  },
+  {
+    "term": "Tarawih",
+    "faith": "islam",
+    "definition": "Sholat sunnah malam hari di bulan Ramadan.",
+    "entry": "isl-hariraya-ramadan-idulfitri",
+    "status": "draft"
+  },
+  {
+    "term": "Teapai",
+    "faith": "khonghucu",
+    "definition": "Penghormatan teh oleh pengantin kepada orang tua dan kerabat.",
+    "entry": "khc-siklus-pernikahan",
+    "status": "draft"
+  },
+  {
+    "term": "Thian",
+    "faith": "khonghucu",
+    "definition": "Tuhan Yang Maha Esa dalam ajaran Khonghucu.",
+    "entry": "khc-pokok-delapan-keimanan",
+    "status": "draft"
+  },
+  {
+    "term": "Tipitaka",
+    "faith": "buddha",
+    "definition": "Kanon Pali: Vinaya, Sutta, dan Abhidhamma Pitaka.",
+    "entry": "bud-kitab-tipitaka",
+    "status": "draft"
+  },
+  {
+    "term": "Tirta",
+    "faith": "hindu",
+    "definition": "Air suci yang dipercikkan dalam persembahyangan.",
+    "entry": "hin-ibadah-trisandhya",
+    "status": "draft"
+  },
+  {
+    "term": "Tri Dharma",
+    "faith": "khonghucu",
+    "definition": "Klenteng yang memadukan ajaran Buddha, Tao, dan Khonghucu.",
+    "entry": "khc-pokok-tridharma",
+    "status": "draft"
+  },
+  {
+    "term": "Tri Hari Suci",
+    "faith": "katolik",
+    "definition": "Kamis Putih, Jumat Agung, dan Malam Paskah.",
+    "entry": "kat-hariraya-trihari-suci",
+    "status": "draft"
+  },
+  {
+    "term": "Tri Sandhya",
+    "faith": "hindu",
+    "definition": "Persembahyangan tiga kali sehari.",
+    "entry": "hin-ibadah-trisandhya",
+    "status": "draft"
+  },
+  {
+    "term": "Uposatha",
+    "faith": "buddha",
+    "definition": "Hari latihan sila pada bulan baru dan purnama.",
+    "entry": "bud-aturan-etika-vihara",
+    "status": "draft"
+  },
+  {
+    "term": "Vassa",
+    "faith": "buddha",
+    "definition": "Masa tiga bulan musim hujan ketika bhikkhu menetap di vihara.",
+    "entry": "bud-hariraya-kathina",
+    "status": "draft"
+  },
+  {
+    "term": "Vihara",
+    "faith": "buddha",
+    "definition": "Tempat ibadah dan tinggal Sangha.",
+    "entry": "bud-aturan-etika-vihara",
+    "status": "draft"
+  },
+  {
+    "term": "Wu Chang",
+    "faith": "khonghucu",
+    "definition": "Lima kebajikan: Ren, Yi, Li, Zhi, Xin.",
+    "entry": "khc-pokok-wuchang",
+    "status": "draft"
+  },
+  {
+    "term": "Wudu",
+    "faith": "islam",
+    "definition": "Bersuci dengan air sebelum sholat.",
+    "entry": "isl-ibadah-wudu",
+    "status": "draft"
+  },
+  {
+    "term": "Xiao",
+    "faith": "khonghucu",
+    "definition": "Bakti kepada orang tua dan leluhur, akar kebajikan.",
+    "entry": "khc-pokok-wuchang",
+    "status": "draft"
+  },
+  {
+    "term": "Yadnya",
+    "faith": "hindu",
+    "definition": "Persembahan atau korban suci yang tulus.",
+    "entry": "hin-aturan-panca-yadnya",
+    "status": "draft"
+  },
+  {
+    "term": "Zakat",
+    "faith": "islam",
+    "definition": "Kewajiban mengeluarkan sebagian harta untuk delapan golongan penerima.",
+    "entry": "isl-aturan-zakat",
+    "status": "draft"
+  },
+  {
+    "term": "Zikir",
+    "faith": "islam",
+    "definition": "Mengingat Allah dengan lafal pujian, mis. tasbih, tahmid, takbir.",
+    "entry": "isl-ibadah-dzikir",
+    "status": "draft"
+  }
+]

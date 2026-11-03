@@ -138,6 +138,41 @@ export function places(main, params, query, { content }) {
 }
 
 // ---------- Calendar ----------
+function icsDate(date) {
+  return `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`;
+}
+
+function icsEscape(text) {
+  return String(text).replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
+}
+
+export function buildIcs(list, label) {
+  const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+  const lines = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Jeda//Kalender Hari Suci//ID',
+    'CALSCALE:GREGORIAN',
+    `X-WR-CALNAME:${icsEscape(`Jeda: ${label}`)}`,
+  ];
+  list.forEach((h) => {
+    const next = new Date(h.date.getFullYear(), h.date.getMonth(), h.date.getDate() + 1);
+    lines.push(
+      'BEGIN:VEVENT',
+      `UID:${h.id}-${icsDate(h.date)}@jeda`,
+      `DTSTAMP:${stamp}`,
+      `DTSTART;VALUE=DATE:${icsDate(h.date)}`,
+      `DTEND;VALUE=DATE:${icsDate(next)}`,
+      `SUMMARY:${icsEscape(h.name)}`,
+      `DESCRIPTION:${icsEscape(`${h.estimated ? 'Perkiraan. ' : ''}${h.basis || ''} — dari aplikasi Jeda`)}`,
+      'TRANSP:TRANSPARENT',
+      'END:VEVENT',
+    );
+  });
+  lines.push('END:VCALENDAR');
+  return lines.join('\r\n');
+}
+
 export function calendarView(main, params, query, { content }) {
   const mine = prefs.get().faith;
   const active = query.has('iman') ? query.get('iman') : (mine && mine !== 'alam' ? mine : '');
@@ -170,6 +205,7 @@ export function calendarView(main, params, query, { content }) {
         <a class="chip ${!active ? 'active' : ''}" href="#/kalender?iman=">Semua</a>
         ${content.faiths.filter((f) => f.pustaka).map((f) => `<a class="chip ${active === f.id ? 'active' : ''}" href="#/kalender?iman=${f.id}">${esc(f.short)}</a>`).join('')}
       </div>
+      <div class="row"><button class="btn-ghost" data-act="ics">📅 Simpan ke kalender HP (.ics)</button></div>
       <p class="small muted">Tanda <em>perkiraan</em> = hasil perhitungan; tanggal resmi (SKB 3 Menteri, sidang isbat, majelis agama) dapat berbeda. Waisak dan Nyepi hanya dari tanggal resmi.</p>
       ${[...byMonth.entries()].map(([month, days]) => `
         <h2 class="h3">${esc(month)}</h2>
@@ -180,6 +216,16 @@ export function calendarView(main, params, query, { content }) {
             </li>`).join('')}
         </ul>`).join('')}
     </section>`;
+  main.querySelector('[data-act="ics"]').addEventListener('click', () => {
+    const label = active ? (faithById(content, active)?.short || active) : 'Semua iman';
+    const blob = new Blob([buildIcs(list, label)], { type: 'text/calendar' });
+    const anchor = document.createElement('a');
+    anchor.href = URL.createObjectURL(blob);
+    anchor.download = `jeda-hari-suci-${active || 'semua'}.ics`;
+    anchor.click();
+    URL.revokeObjectURL(anchor.href);
+    toast('Buka berkas .ics untuk menambahkan ke kalender HP.');
+  });
 }
 
 // ---------- Family tradition archive ----------
