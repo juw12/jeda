@@ -587,5 +587,225 @@
     "reviewed_at": null,
     "version": 1,
     "updated": "2026-11-03"
+  },
+  {
+    "id": "pro-kitab-cara-membaca",
+    "faith": "protestan",
+    "streams": [],
+    "section": "kitab-suci",
+    "title": "Cara mulai membaca Alkitab",
+    "summary": "Panduan sederhana bagi yang baru mulai membaca Alkitab.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Mulai dari salah satu Injil, misalnya Markus (pendek) atau Yohanes.",
+        "why": "Mengenal kehidupan dan ajaran Yesus terlebih dahulu."
+      },
+      {
+        "text": "Lanjutkan ke Kisah Para Rasul, lalu surat-surat Paulus.",
+        "why": "Memahami gereja mula-mula."
+      },
+      {
+        "text": "Baca Mazmur dan Amsal untuk doa dan hikmat sehari-hari.",
+        "why": "Bahasa doa dan nasihat praktis."
+      },
+      {
+        "text": "Gunakan rencana baca atau renungan harian dari gereja.",
+        "why": "Membantu membaca secara teratur."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "alkitab",
+      "membaca",
+      "injil",
+      "renungan",
+      "pemula"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "pro-hariraya-natal",
+    "faith": "protestan",
+    "streams": [],
+    "section": "hari-raya",
+    "title": "Natal dan Adven",
+    "summary": "Merayakan kelahiran Yesus Kristus.",
+    "body": [
+      "Adven adalah empat minggu persiapan sebelum Natal, sering ditandai lilin Adven. Malam Natal (24 Desember) dan hari Natal (25 Desember) dirayakan dengan kebaktian.",
+      "Banyak gereja dan komunitas mengadakan perayaan Natal bersama, kunjungan kasih, dan berbagi kepada yang membutuhkan."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "natal",
+      "adven",
+      "malam natal",
+      "lilin adven"
+    ],
+    "sources": [
+      {
+        "title": "Lukas 2:1–20"
+      },
+      {
+        "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "pro-siklus-kematian",
+    "faith": "protestan",
+    "streams": [],
+    "section": "siklus-hidup",
+    "title": "Duka dan ibadah penghiburan",
+    "summary": "Tata ibadah saat anggota jemaat meninggal dunia.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Menghubungi majelis atau pendeta gereja.",
+        "why": "Gereja mendampingi keluarga dalam duka."
+      },
+      {
+        "text": "Ibadah penghiburan di rumah duka, biasanya beberapa malam.",
+        "why": "Menguatkan keluarga dengan firman dan doa."
+      },
+      {
+        "text": "Ibadah pemakaman atau kremasi.",
+        "why": "Menyerahkan almarhum kepada Tuhan."
+      },
+      {
+        "text": "Ibadah penghiburan lanjutan sesuai kebiasaan gereja dan adat.",
+        "why": "Pendampingan berkelanjutan."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Batak (HKBP dan lainnya)",
+        "text": "Rangkaian adat (mis. ulos, acara adat) dapat menyertai ibadah gereja.",
+        "stream": "lutheran"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "kematian",
+      "penghiburan",
+      "pemakaman",
+      "duka",
+      "melayat"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "pro-aliran-gereja-suku",
+    "faith": "protestan",
+    "streams": [],
+    "section": "perbedaan-aliran",
+    "title": "Gereja suku dan bahasa di Indonesia",
+    "summary": "Banyak gereja Protestan tumbuh di komunitas suku dan bahasa tertentu.",
+    "body": [
+      "Contoh: HKBP (Batak Toba), GKJ (Jawa), GKP (Pasundan), GMIM (Minahasa), GKE (Kalimantan Evangelis), GPM (Maluku), GKI (berakar antara lain dari jemaat Tionghoa-Indonesia).",
+      "Ibadah dapat menggunakan bahasa daerah dan unsur budaya setempat, sementara pengakuan iman tetap sama."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "gereja suku",
+      "hkbp",
+      "gkj",
+      "gmim",
+      "gke",
+      "gki",
+      "tionghoa",
+      "bahasa daerah"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "pro-sejarah-tokoh",
+    "faith": "protestan",
+    "streams": [],
+    "section": "sejarah-tokoh",
+    "title": "Tokoh Kristen Protestan dalam sejarah Indonesia",
+    "summary": "Beberapa tokoh Protestan yang berperan dalam perjalanan bangsa.",
+    "body": [
+      "Dr. Johannes Leimena, dokter dan negarawan, beberapa kali menjabat menteri dan ditetapkan sebagai Pahlawan Nasional.",
+      "T.B. Simatupang, mantan Kepala Staf Angkatan Perang, kemudian aktif memimpin Dewan Gereja-gereja di Indonesia (kini PGI) dan gerakan oikumene."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "tokoh",
+      "leimena",
+      "simatupang",
+      "pahlawan nasional",
+      "pgi",
+      "oikumene"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
   }
 ]

@@ -111,3 +111,15 @@ jeda.id is an active news site; small apps/brands named "Jeda" exist (holiday ca
 - English interface toggle (navigation, landing, home, path chooser, settings, dates); Pustaka stays Indonesian
 - Pustaka 79 → 95 entries; ceremony guides 10 → 13 (Nyepi incl. tourists in Bali, Prapaskah, Chinese memorial rites)
 - Interaction tests: pause overlay, incense, ciam si + poe, tasbih, rosary, prayer times, visit-mode demo all pass
+
+
+---
+
+# Iteration 6: v0.3 additions (before launch)
+
+- Sansa-style anonymous guest name (e.g. "Embun Senja") + small sitting figure in every space; re-roll in Settings; device-only
+- Monthly observance cards: Ce It & Cap Go (klenteng), Uposatha (vihara, approx.), Purnama & Tilem (pura, approx.), puasa Senin-Kamis + Ayyamul Bidh (masjid)
+- Sleep timer for ambience (15/30/60 min fade-out)
+- Full offline library: all content JSON precached by the service worker
+- Pustaka 95 → 120 entries; every faith now has ≥ 2 entries in all 8 sections (holy-book reading guides, Tri Hari Suci, Lectio Divina, Dhammapada, Xiao Jing, four madhhabs, ethnic churches, Catholic orders, Hindu outside Bali, Muslim Chinese-Indonesians, Ashin Jinarakkhita, oldest klenteng, Hokkien/Mandarin glossary, mourning customs, etc.)
+- Verified: monthly dates (lunar month 10 starts 9 Nov 2026), sleep timer, guest rename, all spaces load without errors

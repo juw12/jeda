@@ -1,6 +1,6 @@
 // Sacred space view: scene, rituals, upcoming holy days. Home mode or visit (observe) mode.
 
-import { prefs } from '../store.js';
+import { prefs, guestName } from '../store.js';
 import { esc, formatShortDate, relativeDays, timeOfDay } from '../ui.js';
 import { faithById, entryById } from '../content.js';
 import { sceneSvg } from '../scenes.js';
@@ -26,10 +26,16 @@ export function space(main, [faithId], query, { content, navigate }) {
   main.innerHTML = `
     <section class="space-hero" style="--accent:${faith.color}">
       ${sceneSvg(faith.scene, timeOfDay(), faith.spaceName)}
+      <svg class="guest-figure" viewBox="0 0 40 40" aria-hidden="true">
+        <ellipse cx="20" cy="37" rx="14" ry="2.5" fill="#000" opacity="0.35"/>
+        <circle cx="20" cy="12" r="5" fill="#f1ebe3"/>
+        <path d="M9 36 Q10 22 20 19 Q30 22 31 36 Z" fill="#f1ebe3"/>
+      </svg>
       <div class="space-hero-text">
         <p class="small">${mode === 'visit' ? 'Mode Kunjungi & Kenali' : 'Ruangmu'}</p>
         <h1>${esc(faith.spaceName)}</h1>
         <p>${esc(faith.greeting)}</p>
+        <p class="small guest-name">Kamu hadir sebagai <strong>${esc(guestName())}</strong></p>
       </div>
     </section>
     <section class="stack">

@@ -59,3 +59,6 @@ scripts/validate.mjs                  validasi konten
 Tanpa langkah ini, Tanya Jeda tetap berjalan dalam mode gratis (mengutip Pustaka).
 
 Lihat juga `CONTENT_GUIDE.md` dan `LAUNCH_CHECKLIST.md`.
+
+## Catatan offline
+Semua file `content/*.json` di-precache oleh `sw.js`. Jika menambah file konten baru, tambahkan juga ke daftar `SHELL` di `sw.js` dan naikkan `VERSION`.

@@ -48,6 +48,25 @@ export const prefs = {
   },
 };
 
+const NAME_FIRST = ['Embun', 'Bambu', 'Teratai', 'Angin', 'Pelita', 'Awan', 'Ombak', 'Daun', 'Bintang', 'Rintik', 'Kabut', 'Cahaya'];
+const NAME_SECOND = ['Pagi', 'Senja', 'Tenang', 'Teduh', 'Malam', 'Lembut', 'Sunyi', 'Hening', 'Jernih', 'Damai'];
+
+export function newGuestName() {
+  const pick = (list) => list[Math.floor(Math.random() * list.length)];
+  return `${pick(NAME_FIRST)} ${pick(NAME_SECOND)}`;
+}
+
+// Anonymous, device-only guest name (like Sansa's random novice name). Never sent anywhere.
+export function guestName() {
+  const current = prefs.get().guestName;
+  if (current) {
+    return current;
+  }
+  const name = newGuestName();
+  prefs.set({ guestName: name });
+  return name;
+}
+
 export function exportAll() {
   const data = {};
   for (let i = 0; i < localStorage.length; i++) {

@@ -1063,5 +1063,149 @@
     "reviewed_at": null,
     "version": 1,
     "updated": "2026-11-03"
+  },
+  {
+    "id": "isl-kitab-adab-membaca",
+    "faith": "islam",
+    "streams": [],
+    "section": "kitab-suci",
+    "title": "Adab membaca Al-Qur'an",
+    "summary": "Tata krama membaca, tajwid, tadarus, dan khatam.",
+    "body": [
+      "Tadarus adalah membaca Al-Qur'an bersama, terutama di bulan Ramadan. Khatam berarti menamatkan bacaan 30 juz; banyak keluarga mengadakan doa khatam."
+    ],
+    "steps": [
+      {
+        "text": "Dalam keadaan suci (berwudu) dan di tempat yang bersih.",
+        "why": "Memuliakan kalam Allah; mayoritas ulama mensyaratkan wudu untuk menyentuh mushaf."
+      },
+      {
+        "text": "Membaca ta'awudz dan basmalah.",
+        "why": "Memohon perlindungan sebelum membaca."
+      },
+      {
+        "text": "Membaca dengan tajwid dan tartil (perlahan).",
+        "why": "Menjaga makna dan keindahan bacaan."
+      },
+      {
+        "text": "Memahami makna lewat terjemahan dan tafsir dari ulama terpercaya.",
+        "why": "Membaca untuk dipahami dan diamalkan."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Membaca tanpa wudu",
+        "text": "Sebagian ulama membolehkan membaca dari hafalan atau perangkat digital tanpa wudu; tanyakan tuntunan ormas yang kamu ikuti.",
+        "stream": null
+      }
+    ],
+    "links": [],
+    "tags": [
+      "quran",
+      "adab",
+      "tajwid",
+      "tadarus",
+      "khatam",
+      "wudu",
+      "mushaf"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau ustaz/ulama dari ormas terkait (NU, Muhammadiyah, Persis, dll.)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "isl-aliran-mazhab",
+    "faith": "islam",
+    "streams": [],
+    "section": "perbedaan-aliran",
+    "title": "Empat mazhab fikih Sunni",
+    "summary": "Hanafi, Maliki, Syafi'i, dan Hanbali; mayoritas Muslim Indonesia bermazhab Syafi'i.",
+    "body": [
+      "Mazhab adalah aliran pemahaman fikih (hukum praktis). Keempat mazhab Sunni sepakat dalam pokok akidah dan rukun ibadah, berbeda dalam rincian.",
+      "Contoh perbedaan: batalnya wudu karena bersentuhan kulit dengan lawan jenis (mazhab Syafi'i: batal; mazhab lain: umumnya tidak)."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Syafi'i",
+        "text": "Dianut mayoritas Muslim Indonesia dan menjadi rujukan utama NU.",
+        "stream": "nu"
+      },
+      {
+        "label": "Muhammadiyah",
+        "text": "Tidak terikat satu mazhab; merujuk langsung dalil melalui Majelis Tarjih.",
+        "stream": "muhammadiyah"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "mazhab",
+      "hanafi",
+      "maliki",
+      "syafii",
+      "hanbali",
+      "fikih"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau ustaz/ulama dari ormas terkait (NU, Muhammadiyah, Persis, dll.)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "isl-sejarah-muslim-tionghoa",
+    "faith": "islam",
+    "streams": [],
+    "section": "sejarah-tokoh",
+    "title": "Muslim Tionghoa di Indonesia",
+    "summary": "Jejak Muslim Tionghoa dari Laksamana Cheng Ho hingga PITI.",
+    "body": [
+      "Laksamana Cheng Ho (Zheng He), seorang Muslim, memimpin pelayaran Tiongkok ke Nusantara pada awal abad ke-15.",
+      "Persatuan Islam Tionghoa Indonesia (PITI) berdiri pada 1961. Kini ada masjid berarsitektur Tionghoa seperti Masjid Muhammad Cheng Hoo di Surabaya dan di kota-kota lain."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "muslim tionghoa",
+      "cheng ho",
+      "piti",
+      "masjid cheng hoo",
+      "chindo"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau ustaz/ulama dari ormas terkait (NU, Muhammadiyah, Persis, dll.)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
   }
 ]

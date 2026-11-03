@@ -1,7 +1,7 @@
 // Core views: landing, home, choose path, visit list, more menu, settings, about, support.
 
 import { CONFIG } from '../config.js';
-import { prefs, exportAll, importAll, clearAll } from '../store.js';
+import { prefs, exportAll, importAll, clearAll, guestName, newGuestName } from '../store.js';
 import { esc, toast, formatDate, formatShortDate, relativeDays, timeOfDay } from '../ui.js';
 import { faithById } from '../content.js';
 import { holyDays, todaySummary, matchesFaith } from '../calendar.js';
@@ -274,6 +274,11 @@ export function settings(main, params, query, { content, rerender }) {
         <a class="btn-ghost" href="#/pilih">Ubah</a>
       </div>
       <div class="card">
+        <h2 class="h3">Nama tamu</h2>
+        <p>Di setiap ruang kamu hadir sebagai <strong>${esc(guestName())}</strong>. Nama ini acak, anonim, dan hanya ada di perangkat ini.</p>
+        <button class="btn-ghost" data-act="rename">Ganti nama acak</button>
+      </div>
+      <div class="card">
         <h2 class="h3">Tampilan & suara</h2>
         <label class="toggle"><input type="checkbox" data-pref="largeText" ${p.largeText ? 'checked' : ''}> Teks besar</label>
         <label class="toggle"><input type="checkbox" data-pref="lightTheme" ${p.theme === 'light' ? 'checked' : ''}> Tema terang</label>
@@ -290,6 +295,10 @@ export function settings(main, params, query, { content, rerender }) {
         </div>
       </div>
     </section>`;
+  main.querySelector('[data-act="rename"]').addEventListener('click', () => {
+    prefs.set({ guestName: newGuestName() });
+    rerender();
+  });
   main.querySelectorAll('[data-lang-set]').forEach((button) => {
     button.addEventListener('click', () => {
       prefs.set({ lang: button.dataset.langSet });

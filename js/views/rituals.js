@@ -5,6 +5,7 @@ import * as audio from '../audio.js';
 import { esc, toast, uid } from '../ui.js';
 import { load, save, prefs } from '../store.js';
 import { prayerTimes, CITIES, formatClock } from '../prayertimes.js';
+import { chineseDate, hijriDate } from '../calendar.js';
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const todayKey = () => new Date().toISOString().slice(0, 10);
@@ -839,9 +840,40 @@ function prayerTimesWidget(body) {
 function ambienceWidget(body, ritual) {
   const options = ritual.options || ['rain'];
   body.innerHTML = `<div class="row">${options.map((o) => `<button class="chip" data-act="amb" data-type="${o}">${audio.AMBIENCE_LABELS[o] || o}</button>`).join('')}</div>
-    <p class="small muted">Suara disintesis di perangkat; tidak perlu unduh.</p>`;
+    <div class="row small"><span class="muted">Mati otomatis:</span>
+      ${[0, 15, 30, 60].map((m) => `<button class="chip ${m === 0 ? 'active' : ''}" data-act="sleep" data-min="${m}">${m === 0 ? 'Tidak' : `${m} mnt`}</button>`).join('')}
+    </div>
+    <p class="small muted sleep-status">Suara disintesis di perangkat; tidak perlu unduh.</p>`;
   let stop = null;
   let active = null;
+  let sleepTimer = null;
+  let sleepMinutes = 0;
+  const sleepStatus = body.querySelector('.sleep-status');
+  const armSleep = () => {
+    clearTimeout(sleepTimer);
+    if (!sleepMinutes || !stop) {
+      return;
+    }
+    sleepStatus.textContent = `Suara akan berhenti perlahan dalam ${sleepMinutes} menit.`;
+    sleepTimer = setTimeout(() => {
+      if (stop) {
+        stop();
+        stop = null;
+      }
+      active = null;
+      body.querySelectorAll('[data-act="amb"]').forEach((b) => b.classList.remove('active'));
+      sleepStatus.textContent = 'Suara telah berhenti. Selamat beristirahat.';
+    }, sleepMinutes * 60000);
+  };
+  body.addEventListener('click', (event) => {
+    const chip = event.target.closest('[data-act="sleep"]');
+    if (!chip) {
+      return;
+    }
+    sleepMinutes = Number(chip.dataset.min);
+    body.querySelectorAll('[data-act="sleep"]').forEach((c) => c.classList.toggle('active', c === chip));
+    armSleep();
+  });
   body.addEventListener('click', (event) => {
     const button = event.target.closest('[data-act="amb"]');
     if (!button) {
@@ -859,8 +891,16 @@ function ambienceWidget(body, ritual) {
     active = button.dataset.type;
     button.classList.add('active');
     stop = audio.ambience(active);
+    armSleep();
   });
-  return { cleanup: () => stop && stop() };
+  return {
+    cleanup: () => {
+      clearTimeout(sleepTimer);
+      if (stop) {
+        stop();
+      }
+    },
+  };
 }
 
 // ---------- Breathing ----------
@@ -917,6 +957,100 @@ function daily(body, ritual, { content, faith }) {
   return {};
 }
 
+// ---------- Monthly observances ----------
+const DAY_MS = 86400000;
+const shortDate = new Intl.DateTimeFormat('id-ID', { weekday: 'long', day: 'numeric', month: 'long' });
+
+function nextDays(predicate, count = 3, horizon = 70) {
+  const found = [];
+  const today = new Date();
+  for (let i = 0; i < horizon && found.length < count; i++) {
+    const date = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i, 12);
+    const label = predicate(date);
+    if (label) {
+      found.push({ date, label, inDays: i });
+    }
+  }
+  return found;
+}
+
+const MONTHLY_KINDS = {
+  'ce-it-cap-go': {
+    note: 'Sembahyang leluhur dan di klenteng tanggal 1 (Ce It) dan 15 (Cap Go) Imlek. Tanggal dari kalender Imlek perangkat; bisa selisih sehari, cek kalender klenteng.',
+    find: (date) => {
+      const lunar = chineseDate(date);
+      if (lunar.day === 1) {
+        return `Ce It (1 bulan ${lunar.month} Imlek)`;
+      }
+      if (lunar.day === 15) {
+        return `Cap Go (15 bulan ${lunar.month} Imlek)`;
+      }
+      return null;
+    },
+  },
+  uposatha: {
+    note: 'Perkiraan hari Uposatha (bulan baru dan purnama). Ikuti kalender vihara atau majelis; tradisi Theravada juga memakai hari ke-8.',
+    find: (date) => {
+      const lunar = chineseDate(date);
+      if (lunar.day === 1) {
+        return 'Uposatha bulan baru (perkiraan)';
+      }
+      if (lunar.day === 15) {
+        return 'Uposatha purnama (perkiraan)';
+      }
+      return null;
+    },
+  },
+  'purnama-tilem': {
+    note: 'Perkiraan Purnama dan Tilem berdasarkan fase bulan. Kalender Bali (Saka) bisa berbeda sehari; ikuti kalender Bali setempat.',
+    find: (date) => {
+      const lunar = chineseDate(date);
+      if (lunar.day === 15) {
+        return 'Purnama (perkiraan)';
+      }
+      if (lunar.day === 1) {
+        return 'Tilem (perkiraan)';
+      }
+      return null;
+    },
+  },
+  'puasa-sunnah': {
+    note: 'Puasa Senin-Kamis dan Ayyamul Bidh (13–15 Hijriah, perkiraan Umm al-Qura). Tidak berpuasa pada hari raya dan hari tasyrik.',
+    find: (date) => {
+      const hijri = hijriDate(date);
+      const forbidden = (hijri.month === 10 && hijri.day === 1) || (hijri.month === 12 && hijri.day >= 10 && hijri.day <= 13);
+      if (forbidden) {
+        return null;
+      }
+      if (hijri.day >= 13 && hijri.day <= 15) {
+        return `Ayyamul Bidh (${hijri.day} Hijriah)`;
+      }
+      if (date.getDay() === 1) {
+        return 'Puasa Senin';
+      }
+      if (date.getDay() === 4) {
+        return 'Puasa Kamis';
+      }
+      return null;
+    },
+  },
+};
+
+function monthly(body, ritual) {
+  const kind = MONTHLY_KINDS[ritual.kind];
+  if (!kind) {
+    body.innerHTML = '<p class="muted">Belum tersedia.</p>';
+    return {};
+  }
+  const upcoming = nextDays(kind.find, ritual.count || 4);
+  body.innerHTML = `
+    <ul class="holy-list">
+      ${upcoming.map((u) => `<li><span>${esc(u.label)}</span><span class="small muted">${shortDate.format(u.date)} · ${u.inDays === 0 ? 'hari ini' : u.inDays === 1 ? 'besok' : `${u.inDays} hari lagi`}</span></li>`).join('')}
+    </ul>
+    <p class="small muted">${esc(kind.note)}</p>`;
+  return {};
+}
+
 // ---------- External link ----------
 function link(body, ritual) {
   body.innerHTML = `<a class="btn" href="${esc(ritual.url)}" target="_blank" rel="noopener">${esc(ritual.linkLabel || 'Buka')}</a>
@@ -940,11 +1074,12 @@ const BUILDERS = {
   ambience: ambienceWidget,
   breath,
   daily,
+  monthly,
   link,
 };
 
 // Widgets that represent devotional acts of a specific faith (observe-only for visitors).
-const NON_DEVOTIONAL = new Set(['ambience', 'timer', 'breath', 'daily', 'link', 'prayerTimes', 'fixedTimes']);
+const NON_DEVOTIONAL = new Set(['ambience', 'timer', 'breath', 'daily', 'link', 'prayerTimes', 'fixedTimes', 'monthly']);
 
 export function isDevotional(ritual) {
   if (typeof ritual.devotional === 'boolean') {

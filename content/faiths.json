@@ -128,6 +128,14 @@
           "doneText": "Selesai 99 zikir. Lengkapi dengan tahlil dan doa sesuai tuntunan yang kamu ikuti."
         },
         {
+          "type": "monthly",
+          "id": "islam-bulanan",
+          "title": "Puasa sunnah berikutnya",
+          "desc": "Senin-Kamis dan Ayyamul Bidh.",
+          "kind": "puasa-sunnah",
+          "entry": "isl-ibadah-puasa-sunnah"
+        },
+        {
           "type": "link",
           "id": "islam-quran",
           "title": "Al-Qur'an & Murottal",
@@ -407,6 +415,13 @@
           "entry": "hin-ibadah-trisandhya"
         },
         {
+          "type": "monthly",
+          "id": "hindu-bulanan",
+          "title": "Purnama & Tilem berikutnya",
+          "desc": "Hari baik untuk persembahyangan.",
+          "kind": "purnama-tilem"
+        },
+        {
           "type": "timer",
           "id": "hindu-meditasi",
           "title": "Dhyana (Meditasi)",
@@ -534,6 +549,14 @@
           "title": "Pelita",
           "desc": "Nyalakan pelita sebagai lambang cahaya kebijaksanaan.",
           "intention": false
+        },
+        {
+          "type": "monthly",
+          "id": "buddha-bulanan",
+          "title": "Uposatha berikutnya",
+          "desc": "Hari latihan sila dan puja bakti.",
+          "kind": "uposatha",
+          "entry": "bud-aturan-etika-vihara"
         },
         {
           "type": "timer",
@@ -674,6 +697,14 @@
           "id": "khc-meja-abu",
           "title": "Meja Abu Leluhur",
           "desc": "Papan nama leluhur dan persembahan harian.",
+          "entry": "khc-ibadah-leluhur"
+        },
+        {
+          "type": "monthly",
+          "id": "khonghucu-bulanan",
+          "title": "Ce It & Cap Go berikutnya",
+          "desc": "Hari sembahyang bulanan tanggal 1 dan 15 Imlek.",
+          "kind": "ce-it-cap-go",
           "entry": "khc-ibadah-leluhur"
         },
         {

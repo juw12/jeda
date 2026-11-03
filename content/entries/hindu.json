@@ -659,5 +659,156 @@
     "reviewed_at": null,
     "version": 1,
     "updated": "2026-11-03"
+  },
+  {
+    "id": "hin-kitab-bhagavad-gita",
+    "faith": "hindu",
+    "streams": [],
+    "section": "kitab-suci",
+    "title": "Mengenal Bhagavad Gita",
+    "summary": "Dialog Sri Krishna dan Arjuna tentang dharma dan jalan menuju Tuhan.",
+    "body": [
+      "Bhagavad Gita terdiri atas 18 bab dan merupakan bagian dari Mahabharata. Kisahnya berlangsung di medan Kurukshetra ketika Arjuna ragu untuk berperang.",
+      "Ajarannya mencakup karma yoga (bertindak tanpa terikat hasil), bhakti yoga (bakti kepada Tuhan), dan jnana yoga (jalan pengetahuan)."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "bhagavad gita",
+      "krishna",
+      "arjuna",
+      "karma yoga",
+      "bhakti",
+      "jnana"
+    ],
+    "sources": [
+      {
+        "title": "Bhagavad Gita"
+      },
+      {
+        "title": "Perlu ditinjau pinandita/sulinggih atau PHDI"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "hin-aturan-tri-kaya",
+    "faith": "hindu",
+    "streams": [],
+    "section": "aturan-etika",
+    "title": "Tri Kaya Parisudha dan Catur Asrama",
+    "summary": "Tiga perilaku yang disucikan dan empat tahap kehidupan.",
+    "body": [
+      "Tri Kaya Parisudha: manacika (berpikir yang baik dan benar), wacika (berkata yang baik dan benar), dan kayika (berbuat yang baik dan benar).",
+      "Catur Asrama adalah empat tahap kehidupan: brahmacari (masa belajar), grehasta (berumah tangga), wanaprasta (melepaskan keterikatan duniawi), dan bhiksuka/sanyasin (hidup rohani sepenuhnya)."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "tri kaya parisudha",
+      "manacika",
+      "wacika",
+      "kayika",
+      "catur asrama"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau pinandita/sulinggih atau PHDI"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "hin-aliran-pura-luar-bali",
+    "faith": "hindu",
+    "streams": [],
+    "section": "perbedaan-aliran",
+    "title": "Hindu di luar Bali",
+    "summary": "Komunitas Hindu di berbagai daerah dengan tradisi masing-masing.",
+    "body": [
+      "Selain Bali, umat Hindu tersebar di Lombok, Jawa (termasuk Tengger dan komunitas di sekitar Candi Prambanan), Kalimantan (Kaharingan), Sulawesi (antara lain Aluk Todolo yang administratif bernaung di Hindu), Sumatera Utara (komunitas India), serta daerah transmigrasi.",
+      "Pura-pura di kota besar (mis. Jakarta) memadukan umat dari berbagai latar daerah."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "hindu",
+      "lombok",
+      "jawa",
+      "tengger",
+      "kaharingan",
+      "transmigrasi",
+      "pura"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau pinandita/sulinggih atau PHDI"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "hin-sejarah-prambanan",
+    "faith": "hindu",
+    "streams": [],
+    "section": "sejarah-tokoh",
+    "title": "Candi Prambanan dan warisan Hindu di Jawa",
+    "summary": "Kompleks candi Hindu terbesar di Indonesia.",
+    "body": [
+      "Candi Prambanan (Siwagrha) dibangun sekitar abad ke-9 di perbatasan Yogyakarta dan Jawa Tengah, dengan candi utama untuk Siwa, diapit Brahma dan Wisnu.",
+      "Prambanan masih digunakan umat Hindu untuk upacara besar seperti Tawur Agung Kesanga menjelang Nyepi."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "prambanan",
+      "siwagrha",
+      "candi",
+      "jawa",
+      "sejarah",
+      "tawur agung"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau pinandita/sulinggih atau PHDI"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
   }
 ]

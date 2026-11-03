@@ -367,6 +367,11 @@ textarea { resize: vertical; }
 .pause-progress span { display: block; height: 100%; width: 0; background: var(--accent); transition: width 0.25s linear; }
 @keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
 
+/* Guest presence */
+.guest-figure { position: absolute; left: 84%; bottom: 7%; width: 34px; height: 34px; transform: translateX(-50%); opacity: 0.85; animation: breathe-figure 6s ease-in-out infinite; }
+.guest-name { opacity: 0.9; }
+@keyframes breathe-figure { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.04); } }
+
 /* Keyframes */
 @keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(1.8); opacity: 1; } }
 @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }

@@ -1284,5 +1284,229 @@
     "reviewed_at": null,
     "version": 1,
     "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-kitab-xiaojing",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "kitab-suci",
+    "title": "Xiao Jing: Kitab Bakti",
+    "summary": "Kitab pendek tentang bakti, akar segala kebajikan.",
+    "body": [
+      "Xiao Jing (Hau King) berisi percakapan Nabi Kongzi dengan muridnya Zengzi tentang bakti kepada orang tua, keluarga, masyarakat, dan negara.",
+      "Bakti dimulai dari menjaga diri sendiri sebagai pemberian orang tua, dan disempurnakan dengan menjalani hidup yang bajik sehingga mengharumkan nama orang tua."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [
+      {
+        "name": "Chinese Text Project: Xiao Jing",
+        "url": "https://ctext.org/xiao-jing",
+        "note": ""
+      }
+    ],
+    "tags": [
+      "xiao jing",
+      "kitab bakti",
+      "bakti",
+      "hau",
+      "zengzi"
+    ],
+    "sources": [
+      {
+        "title": "Xiao Jing"
+      },
+      {
+        "title": "Perlu rujukan resmi dari reviewer (MATAKIN / pengurus klenteng / tetua adat)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-aturan-berkabung",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "aturan-etika",
+    "title": "Pantangan masa berkabung (adat)",
+    "summary": "Kebiasaan yang umum dijaga keluarga Tionghoa selama masa berkabung.",
+    "body": [
+      "Ini adalah adat, bukan aturan yang seragam. Lama dan bentuk masa berkabung berbeda menurut agama, asal leluhur, dan kesepakatan keluarga."
+    ],
+    "steps": [
+      {
+        "text": "Tidak mengadakan perayaan meriah, termasuk Imlek, selama masa berkabung (umumnya sekitar satu tahun).",
+        "why": "Menghormati suasana duka."
+      },
+      {
+        "text": "Menghindari pakaian berwarna merah atau mencolok.",
+        "why": "Merah adalah warna sukacita."
+      },
+      {
+        "text": "Tidak memasang hiasan Imlek atau tulisan sukacita di rumah selama masa itu.",
+        "why": "Menjaga kesederhanaan."
+      },
+      {
+        "text": "Tetap mengunjungi orang tua dan bersembahyang leluhur dengan sederhana.",
+        "why": "Bakti tetap dijalankan."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Agama Khonghucu (MATAKIN)",
+        "text": "Tata berkabung diatur dalam tata agama; tanyakan rohaniwan.",
+        "stream": "khonghucu-matakin"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "berkabung",
+      "pantangan",
+      "duka",
+      "imlek",
+      "merah"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (MATAKIN / pengurus klenteng / tetua adat)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-sejarah-klenteng-tua",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "sejarah-tokoh",
+    "title": "Klenteng-klenteng tua di Indonesia",
+    "summary": "Jejak panjang komunitas Tionghoa lewat rumah ibadah bersejarah.",
+    "body": [
+      "Vihara Dharma Bhakti (Kim Tek Ie) di Glodok, Jakarta, didirikan sekitar 1650 dan termasuk klenteng tertua di Jakarta.",
+      "Klenteng Boen Tek Bio di Tangerang, pusat komunitas Cina Benteng, diperkirakan berdiri pada akhir abad ke-17.",
+      "Klenteng Sam Poo Kong di Semarang berkaitan dengan kisah persinggahan Laksamana Cheng Ho pada abad ke-15."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "klenteng tua",
+      "kim tek ie",
+      "boen tek bio",
+      "sam poo kong",
+      "sejarah",
+      "cina benteng"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (MATAKIN / pengurus klenteng / tetua adat)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-aliran-istilah",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "perbedaan-aliran",
+    "title": "Istilah klenteng: Hokkien dan Mandarin",
+    "summary": "Daftar istilah yang sering berbeda sebutan antar-dialek, agar tidak bingung.",
+    "body": [
+      "Keluarga Hakka, Teochew, dan Kanton memiliki lafal sendiri; tambahkan melalui Laporkan koreksi agar daftar ini lengkap."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Sembahyang",
+        "text": "Hokkien: pai. Mandarin: bai (拜).",
+        "stream": "hokkien"
+      },
+      {
+        "label": "Tahun Baru",
+        "text": "Hokkien: Sin Cia. Mandarin: Xin Nian / Chun Jie (春节).",
+        "stream": "hokkien"
+      },
+      {
+        "label": "Ceng Beng",
+        "text": "Mandarin: Qingming (清明).",
+        "stream": null
+      },
+      {
+        "label": "Cioko / Sembahyang Rebutan",
+        "text": "Mandarin: Zhongyuan (中元) / Pudu (普渡).",
+        "stream": null
+      },
+      {
+        "label": "Ce It dan Cap Go",
+        "text": "Mandarin: Chu Yi (初一) dan Shi Wu (十五).",
+        "stream": null
+      },
+      {
+        "label": "Hio",
+        "text": "Mandarin: xiang (香).",
+        "stream": null
+      },
+      {
+        "label": "Kim cua",
+        "text": "Mandarin: jinzhi (金纸).",
+        "stream": null
+      },
+      {
+        "label": "Poe",
+        "text": "Mandarin: jiaobei (筊杯).",
+        "stream": null
+      },
+      {
+        "label": "Ciam si",
+        "text": "Mandarin: qiuqian (求签).",
+        "stream": null
+      }
+    ],
+    "links": [],
+    "tags": [
+      "istilah",
+      "hokkien",
+      "mandarin",
+      "dialek",
+      "glosarium",
+      "pai",
+      "sin cia"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (MATAKIN / pengurus klenteng / tetua adat)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
   }
 ]

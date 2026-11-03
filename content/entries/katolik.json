@@ -670,5 +670,220 @@
     "reviewed_at": null,
     "version": 1,
     "updated": "2026-11-03"
+  },
+  {
+    "id": "kat-kitab-lectio-divina",
+    "faith": "katolik",
+    "streams": [],
+    "section": "kitab-suci",
+    "title": "Lectio Divina",
+    "summary": "Cara membaca Kitab Suci secara doa dalam empat langkah.",
+    "body": [
+      "Banyak umat memakai bacaan harian liturgi sebagai bahan Lectio Divina."
+    ],
+    "steps": [
+      {
+        "text": "Lectio: membaca perikop Kitab Suci dengan perlahan.",
+        "why": "Mendengarkan Sabda."
+      },
+      {
+        "text": "Meditatio: merenungkan kata atau kalimat yang menyentuh.",
+        "why": "Membiarkan Sabda berbicara secara pribadi."
+      },
+      {
+        "text": "Oratio: menanggapi dengan doa.",
+        "why": "Berdialog dengan Tuhan."
+      },
+      {
+        "text": "Contemplatio: diam di hadirat Tuhan.",
+        "why": "Beristirahat dalam kasih Allah."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "lectio divina",
+      "kitab suci",
+      "doa",
+      "meditasi",
+      "bacaan harian"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau imam/katekis paroki atau Komisi Kateketik KWI"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "kat-hariraya-trihari-suci",
+    "faith": "katolik",
+    "streams": [],
+    "section": "hari-raya",
+    "title": "Tri Hari Suci Paskah",
+    "summary": "Puncak tahun liturgi: Kamis Putih, Jumat Agung, dan Malam Paskah.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Kamis Putih: Misa Perjamuan Tuhan, pembasuhan kaki, dan tuguran.",
+        "why": "Mengenang Perjamuan Terakhir dan penetapan Ekaristi."
+      },
+      {
+        "text": "Jumat Agung: Ibadat sengsara Tuhan, penghormatan salib; hari puasa dan pantang.",
+        "why": "Mengenang wafat Yesus."
+      },
+      {
+        "text": "Malam Paskah: upacara cahaya, liturgi sabda, pembaptisan, dan Ekaristi.",
+        "why": "Merayakan kebangkitan Kristus."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "tri hari suci",
+      "kamis putih",
+      "jumat agung",
+      "malam paskah",
+      "pekan suci"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau imam/katekis paroki atau Komisi Kateketik KWI"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "kat-aturan-perintah",
+    "faith": "katolik",
+    "streams": [],
+    "section": "aturan-etika",
+    "title": "Sepuluh Perintah Allah dan Lima Perintah Gereja",
+    "summary": "Pedoman moral umat Katolik.",
+    "body": [
+      "Sepuluh Perintah Allah tercatat dalam Keluaran 20 dan Ulangan 5, dirangkum Yesus dalam hukum kasih kepada Allah dan sesama.",
+      "Lima Perintah Gereja antara lain: mengikuti Misa pada hari Minggu dan hari raya wajib, mengaku dosa sekurang-kurangnya sekali setahun, menyambut komuni pada Masa Paskah, berpuasa dan berpantang pada hari yang ditentukan, serta membantu kebutuhan Gereja. Rumusan resminya ditetapkan Konferensi Waligereja."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "sepuluh perintah",
+      "perintah gereja",
+      "moral",
+      "misa minggu"
+    ],
+    "sources": [
+      {
+        "title": "Keluaran 20:1–17"
+      },
+      {
+        "title": "Katekismus Gereja Katolik no. 2041–2043"
+      },
+      {
+        "title": "Perlu ditinjau imam/katekis paroki atau Komisi Kateketik KWI"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "kat-aliran-tarekat",
+    "faith": "katolik",
+    "streams": [],
+    "section": "perbedaan-aliran",
+    "title": "Tarekat dan ordo religius",
+    "summary": "Kongregasi biarawan-biarawati dengan spiritualitas yang beragam dalam satu Gereja.",
+    "body": [
+      "Di Indonesia berkarya banyak tarekat, misalnya Yesuit (SJ), Fransiskan (OFM), Karmelit (OCarm), Serikat Sabda Allah (SVD), serta kongregasi suster seperti Ursulin dan Carolus Borromeus.",
+      "Setiap tarekat memiliki kharisma: pendidikan, kesehatan, misi, atau doa kontemplatif. Ajaran iman tetap satu."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "tarekat",
+      "ordo",
+      "yesuit",
+      "fransiskan",
+      "svd",
+      "suster",
+      "biarawan"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau imam/katekis paroki atau Komisi Kateketik KWI"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "kat-sejarah-tionghoa",
+    "faith": "katolik",
+    "streams": [],
+    "section": "sejarah-tokoh",
+    "title": "Katolik di tengah keragaman Indonesia",
+    "summary": "Gereja Katolik tumbuh di berbagai suku, termasuk Flores, Jawa, Papua, dan komunitas Tionghoa.",
+    "body": [
+      "Flores dan NTT memiliki komunitas Katolik besar sejak masa misi Portugis dan Belanda.",
+      "Di Jawa, karya Romo van Lith SJ di Muntilan (awal abad ke-20) melahirkan generasi Katolik Jawa, termasuk Mgr. Soegijapranata.",
+      "Banyak keluarga Tionghoa-Indonesia juga beragama Katolik, sering memadukan iman dengan penghormatan leluhur dalam batas ajaran Gereja."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "sejarah",
+      "flores",
+      "van lith",
+      "muntilan",
+      "tionghoa",
+      "soegijapranata"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau imam/katekis paroki atau Komisi Kateketik KWI"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
   }
 ]

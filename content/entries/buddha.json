@@ -669,5 +669,179 @@
     "reviewed_at": null,
     "version": 1,
     "updated": "2026-11-03"
+  },
+  {
+    "id": "bud-kitab-dhammapada",
+    "faith": "buddha",
+    "streams": [],
+    "section": "kitab-suci",
+    "title": "Mengenal Dhammapada",
+    "summary": "Kumpulan syair ajaran Buddha yang paling banyak dibaca.",
+    "body": [
+      "Dhammapada berisi 423 syair dalam 26 bab (vagga), bagian dari Khuddaka Nikaya dalam Sutta Pitaka.",
+      "Syair-syairnya membahas pikiran, kewaspadaan, kemarahan, kebahagiaan, dan jalan menuju kebebasan, sehingga cocok sebagai bacaan harian."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [
+      {
+        "name": "SuttaCentral: Dhammapada",
+        "url": "https://suttacentral.net/dhp",
+        "note": ""
+      }
+    ],
+    "tags": [
+      "dhammapada",
+      "syair",
+      "sutta",
+      "khuddaka nikaya"
+    ],
+    "sources": [
+      {
+        "title": "Dhammapada (Khuddaka Nikaya)"
+      },
+      {
+        "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "bud-siklus-pabbajja",
+    "faith": "buddha",
+    "streams": [
+      "theravada",
+      "buddhayana"
+    ],
+    "section": "siklus-hidup",
+    "title": "Pabbajja Samanera sementara",
+    "summary": "Program menjalani kehidupan samanera/samaneri untuk waktu singkat.",
+    "body": [
+      "Dalam tradisi Theravada, umat (terutama remaja dan pemuda) dapat menjalani pabbajja sebagai samanera atau samaneri selama beberapa hari hingga beberapa minggu untuk berlatih sila, meditasi, dan kehidupan sederhana.",
+      "Program ini diselenggarakan oleh Sangha dan vihara, sering pada masa libur sekolah."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "pabbajja",
+      "samanera",
+      "samaneri",
+      "retret",
+      "theravada"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "bud-aliran-praktik",
+    "faith": "buddha",
+    "streams": [],
+    "section": "perbedaan-aliran",
+    "title": "Perbedaan praktik Theravada dan Mahayana",
+    "summary": "Perbedaan yang mudah terlihat di vihara.",
+    "body": [],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Bahasa",
+        "text": "Theravada: paritta berbahasa Pali. Mahayana: sutra berbahasa Mandarin atau Sanskerta.",
+        "stream": "theravada"
+      },
+      {
+        "label": "Makanan",
+        "text": "Bhikkhu Theravada menerima makanan dari umat (termasuk daging dalam batas aturan); banyak tradisi Mahayana menganjurkan vegetarian.",
+        "stream": "mahayana"
+      },
+      {
+        "label": "Jubah",
+        "text": "Theravada umumnya jubah kuning/oranye; Mahayana tradisi Tionghoa sering abu-abu atau cokelat dengan jubah upacara.",
+        "stream": null
+      },
+      {
+        "label": "Cita-cita",
+        "text": "Theravada menekankan jalan arahat; Mahayana menekankan jalan Bodhisattva.",
+        "stream": null
+      }
+    ],
+    "links": [],
+    "tags": [
+      "theravada",
+      "mahayana",
+      "perbedaan",
+      "vegetarian",
+      "jubah",
+      "pali"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "bud-sejarah-jinarakkhita",
+    "faith": "buddha",
+    "streams": [],
+    "section": "sejarah-tokoh",
+    "title": "Bhikkhu Ashin Jinarakkhita",
+    "summary": "Tokoh kebangkitan Buddha di Indonesia pada abad ke-20.",
+    "body": [
+      "Ashin Jinarakkhita lahir dengan nama The Boan An (1923), seorang Tionghoa-Indonesia, dan menjadi bhikkhu pertama Indonesia setelah sekian abad.",
+      "Ia merintis Buddhayana yang merangkul berbagai aliran dan berperan dalam kebangkitan perayaan Waisak di Borobudur."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "ashin jinarakkhita",
+      "the boan an",
+      "buddhayana",
+      "tokoh",
+      "chindo"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
   }
 ]

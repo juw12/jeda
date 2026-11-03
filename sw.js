@@ -1,6 +1,6 @@
 // Offline support: app shell cache-first, content network-first (so reviewed updates arrive quickly).
 
-const VERSION = 'jeda-v0.2.0';
+const VERSION = 'jeda-v0.3.0';
 const SHELL = [
   './',
   'index.html',
@@ -25,6 +25,19 @@ const SHELL = [
   'js/views/pustaka.js',
   'js/views/tanya.js',
   'js/views/tools.js',
+  'content/calendar.json',
+  'content/ceremonies.json',
+  'content/ciamsi.json',
+  'content/entries/buddha.json',
+  'content/entries/hindu.json',
+  'content/entries/islam.json',
+  'content/entries/katolik.json',
+  'content/entries/khonghucu.json',
+  'content/entries/lintas.json',
+  'content/entries/protestan.json',
+  'content/faiths.json',
+  'content/places.json',
+  'content/scriptures.json',
 ];
 
 self.addEventListener('install', (event) => {
