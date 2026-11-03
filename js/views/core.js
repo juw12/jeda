@@ -252,6 +252,7 @@ export function more(main) {
     ['#/upacara', 'Panduan Upacara', 'Daftar persiapan dan urutan acara'],
     ['#/ibadah', 'Rumah Ibadah', 'Tempat ibadah nyata dan donasi langsung'],
     ['#/arsip', 'Arsip Tradisi Keluarga', 'Catatan dan rekaman suara, tersimpan di perangkat'],
+    ['#/peringatan', 'Peringatan Arwah', 'Hari ke-7/49/100, tahlilan, ki-jit, haul — tersimpan di perangkat'],
     ['#/syukur', 'Jurnal Syukur', 'Catatan syukur pribadi, tanpa target'],
     ['#/kartu', 'Kartu Ucapan', 'Buat kartu hari raya untuk teman berbeda iman'],
     ['#/kunjungi', 'Kunjungi & Kenali', 'Ruang iman lain dalam mode amati'],

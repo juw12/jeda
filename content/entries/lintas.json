@@ -370,5 +370,51 @@
     "reviewed_at": null,
     "version": 1,
     "updated": "2026-11-03"
+  },
+  {
+    "id": "lin-ucapan-duka",
+    "faith": "lintas",
+    "streams": [],
+    "section": "aturan-etika",
+    "title": "Ucapan duka cita untuk teman berbeda iman",
+    "summary": "Kalimat belasungkawa yang lazim dalam tiap agama, dan ucapan umum yang aman untuk siapa saja.",
+    "body": [
+      "Ucapan yang selalu tepat untuk siapa pun: \"Turut berduka cita yang sedalam-dalamnya. Semoga keluarga diberi kekuatan.\"",
+      "Bila ingin memakai ungkapan khas agama keluarga yang berduka, berikut yang lazim dipakai. Gunakan hanya bila Anda nyaman; ketulusan lebih penting daripada istilah.",
+      "Lihat juga entri \"Etiket melayat\" di Pustaka Lintas Iman untuk tata cara hadir di rumah duka."
+    ],
+    "steps": [],
+    "items": [
+      "Islam: \"Innalillahi wa inna ilaihi raji'un\" (Sesungguhnya kami milik Allah dan kepada-Nya kami kembali).",
+      "Kristen Protestan: \"Turut berduka; kiranya penghiburan dari Tuhan menyertai keluarga.\"",
+      "Katolik: \"Turut berduka; semoga arwahnya beristirahat dalam damai (requiescat in pace).\"",
+      "Hindu: \"Om Swargantu, Moksantu, Sunyantu, Murcantu\" (semoga mendapat surga, moksa, ketenangan, dan kebahagiaan).",
+      "Buddha: \"Turut berduka; semoga almarhum terlahir di alam yang berbahagia.\"",
+      "Khonghucu / adat Tionghoa: \"Turut berduka cita; semoga arwahnya mendapat tempat yang damai.\" Saat melayat, beri soja atau sembahyang hio bila dipersilakan."
+    ],
+    "timing": "",
+    "variations": [],
+    "links": [],
+    "tags": [
+      "duka cita",
+      "belasungkawa",
+      "melayat",
+      "ucapan",
+      "innalillahi",
+      "rip",
+      "swargantu"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (tokoh lintas agama / FKUB)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
   }
 ]

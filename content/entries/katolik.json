@@ -1010,5 +1010,69 @@
     "reviewed_at": null,
     "version": 1,
     "updated": "2026-11-03"
+  },
+  {
+    "id": "kat-siklus-misa-arwah",
+    "faith": "katolik",
+    "streams": [],
+    "section": "siklus-hidup",
+    "title": "Misa arwah dan peringatan orang yang telah meninggal",
+    "summary": "Doa dan misa bagi arwah: hari ke-3, 7, 40, 100, ulang tahun wafat, dan 2 November.",
+    "body": [
+      "Gereja Katolik mengajarkan persekutuan para kudus dan mendoakan jiwa-jiwa orang yang telah meninggal. Keluarga dapat memohon intensi misa bagi almarhum kepada paroki.",
+      "Di Indonesia, banyak keluarga mengadakan doa atau misa arwah pada hari ke-3, 7, 40, 100, dan peringatan tahunan; di sebagian keluarga Jawa juga hari ke-1000. Ini kebiasaan inkulturasi, bukan kewajiban liturgis.",
+      "Setiap 2 November Gereja memperingati Arwah Semua Orang Beriman; banyak umat berziarah ke makam."
+    ],
+    "steps": [
+      {
+        "text": "Hubungi sekretariat paroki untuk intensi misa atau ibadat arwah.",
+        "why": "Intensi didaftarkan agar didoakan dalam misa."
+      },
+      {
+        "text": "Ibadat atau doa arwah di rumah bersama lingkungan/wilayah.",
+        "why": "Kebersamaan umat basis."
+      },
+      {
+        "text": "Ziarah dan doa di makam pada peringatan atau 2 November.",
+        "why": "Mengenang dan mendoakan."
+      }
+    ],
+    "items": [],
+    "timing": "Hari ke-3, 7, 40, 100, tahunan; 2 November.",
+    "variations": [
+      {
+        "label": "Inkulturasi Jawa",
+        "text": "Peringatan nelung dina, mitung dina, matang puluh, nyatus, nyewu dengan doa Katolik.",
+        "stream": null
+      },
+      {
+        "label": "Keluarga Tionghoa Katolik",
+        "text": "Sebagian keluarga memadukan penghormatan leluhur (tanpa unsur penyembahan) sesuai pedoman keuskupan.",
+        "stream": null
+      }
+    ],
+    "links": [],
+    "tags": [
+      "misa arwah",
+      "requiem",
+      "intensi",
+      "2 November",
+      "arwah",
+      "kematian",
+      "40 hari",
+      "100 hari"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (KWI / paroki / Puji Syukur)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
   }
 ]

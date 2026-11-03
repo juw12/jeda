@@ -949,5 +949,68 @@
     "reviewed_at": null,
     "version": 1,
     "updated": "2026-11-03"
+  },
+  {
+    "id": "hin-hariraya-siwaratri",
+    "faith": "hindu",
+    "streams": [],
+    "section": "hari-raya",
+    "title": "Siwaratri: malam perenungan dosa",
+    "summary": "Malam Siwa pada purwaning Tilem Kapitu, dengan jagra (bergadang sadar), upawasa (puasa), dan monabrata (diam).",
+    "body": [
+      "Siwaratri jatuh pada malam sebelum Tilem (bulan mati) sasih Kapitu, sekitar Januari. Umat Hindu merenungkan perbuatan, memohon pengampunan, dan memuja Sang Hyang Siwa.",
+      "Tiga brata utama: jagra (tetap terjaga semalam dengan kesadaran), upawasa (tidak makan dan minum), dan monabrata (tidak berbicara). Umat memilih tingkat brata sesuai kemampuan.",
+      "Kisah Lubdhaka, seorang pemburu yang tanpa sengaja terjaga semalaman di atas pohon bila sambil memetik daunnya hingga jatuh ke lingga Siwa, sering dibacakan sebagai teladan perenungan."
+    ],
+    "steps": [
+      {
+        "text": "Persembahyangan di pura atau merajan pada pagi/sore hari.",
+        "why": "Membuka brata dengan bakti."
+      },
+      {
+        "text": "Menjalankan brata yang dipilih: jagra, upawasa, monabrata.",
+        "why": "Pengendalian diri dan perenungan."
+      },
+      {
+        "text": "Persembahyangan tengah malam dan dini hari; membaca kidung atau kisah Lubdhaka.",
+        "why": "Menjaga kesadaran sepanjang malam."
+      }
+    ],
+    "items": [],
+    "timing": "Purwaning Tilem Kapitu (sekitar Januari); tanggal resmi dari PHDI.",
+    "variations": [
+      {
+        "label": "Hindu Bali",
+        "text": "Persembahyangan di pura desa dan merajan, sering bersama-sama hingga pagi.",
+        "stream": "hindu-bali"
+      },
+      {
+        "label": "Hindu di luar Bali",
+        "text": "Dilaksanakan di pura setempat dengan penyesuaian.",
+        "stream": "hindu-umum"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "siwaratri",
+      "jagra",
+      "upawasa",
+      "monabrata",
+      "lubdhaka",
+      "tilem kapitu",
+      "siwa"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (PHDI / parisada setempat)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
   }
 ]

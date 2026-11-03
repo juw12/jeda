@@ -958,5 +958,115 @@
     "reviewed_at": null,
     "version": 1,
     "updated": "2026-11-03"
+  },
+  {
+    "id": "bud-hariraya-asadha",
+    "faith": "buddha",
+    "streams": [],
+    "section": "hari-raya",
+    "title": "Asadha: khotbah pertama Sang Buddha",
+    "summary": "Memperingati Dhammacakkappavattana Sutta di Taman Rusa Isipatana dan terbentuknya Sangha pertama.",
+    "body": [
+      "Asadha diperingati pada purnama bulan Asalha (sekitar Juli). Pada hari itu Sang Buddha menyampaikan khotbah pertama, Pemutaran Roda Dhamma, kepada lima petapa di Isipatana, Benares.",
+      "Peristiwa ini juga dikenang sebagai lengkapnya Tiga Permata (Buddha, Dhamma, Sangha). Sehari setelahnya para bhikkhu Theravada memulai masa vassa."
+    ],
+    "steps": [
+      {
+        "text": "Puja bakti di vihara, pembacaan paritta dan Dhammacakkappavattana Sutta.",
+        "why": "Mengenang ajaran pertama."
+      },
+      {
+        "text": "Mendengarkan Dhammadesana tentang Empat Kebenaran Mulia.",
+        "why": "Inti khotbah pertama."
+      },
+      {
+        "text": "Berdana kepada Sangha.",
+        "why": "Mendukung kehidupan suci menjelang vassa."
+      }
+    ],
+    "items": [],
+    "timing": "Purnama bulan Asalha (sekitar Juli); tanggal dari majelis agama Buddha.",
+    "variations": [
+      {
+        "label": "Theravada",
+        "text": "Diikuti awal masa vassa para bhikkhu.",
+        "stream": "theravada"
+      },
+      {
+        "label": "Mahayana / Buddhayana",
+        "text": "Diperingati dengan puja bakti dan dharmadesana.",
+        "stream": "buddhayana"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "asadha",
+      "asalha",
+      "khotbah pertama",
+      "dhammacakka",
+      "sangha",
+      "vassa"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (WALUBI / majelis agama Buddha)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "bud-hariraya-magha",
+    "faith": "buddha",
+    "streams": [],
+    "section": "hari-raya",
+    "title": "Magha Puja: berkumpulnya 1.250 arahat",
+    "summary": "Memperingati pertemuan 1.250 bhikkhu arahat tanpa undangan dan pembabaran Ovada Patimokkha.",
+    "body": [
+      "Magha Puja diperingati pada purnama bulan Magha (sekitar Februari–Maret). Menurut tradisi, 1.250 bhikkhu arahat berkumpul tanpa janji di Veluvana, dan Sang Buddha membabarkan Ovada Patimokkha: tidak berbuat jahat, memperbanyak kebajikan, dan menyucikan pikiran."
+    ],
+    "steps": [
+      {
+        "text": "Puja bakti dan pembacaan Ovada Patimokkha.",
+        "why": "Inti ajaran yang dibabarkan."
+      },
+      {
+        "text": "Pradaksina (mengelilingi stupa/vihara tiga kali) dengan lilin dan dupa di sebagian vihara.",
+        "why": "Penghormatan kepada Tiga Permata."
+      }
+    ],
+    "items": [],
+    "timing": "Purnama bulan Magha (sekitar Februari–Maret).",
+    "variations": [
+      {
+        "label": "Theravada",
+        "text": "Dirayakan luas dengan pradaksina malam hari.",
+        "stream": "theravada"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "magha puja",
+      "ovada patimokkha",
+      "arahat",
+      "pradaksina"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (WALUBI / majelis agama Buddha)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
   }
 ]

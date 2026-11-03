@@ -890,5 +890,57 @@
     "reviewed_at": null,
     "version": 1,
     "updated": "2026-11-03"
+  },
+  {
+    "id": "pro-hariraya-reformasi",
+    "faith": "protestan",
+    "streams": [],
+    "section": "hari-raya",
+    "title": "Hari Reformasi (31 Oktober)",
+    "summary": "Mengenang Martin Luther menempelkan 95 dalil pada 1517 dan lahirnya gereja-gereja Protestan.",
+    "body": [
+      "Pada 31 Oktober 1517 Martin Luther menyampaikan 95 dalil di Wittenberg, yang memicu Reformasi Protestan. Prinsip yang sering diringkas: sola scriptura, sola gratia, sola fide.",
+      "Banyak gereja Lutheran dan Calvinis di Indonesia (misalnya HKBP dan gereja-gereja anggota PGI) mengadakan ibadah syukur Reformasi pada Minggu terdekat."
+    ],
+    "steps": [
+      {
+        "text": "Ibadah syukur Reformasi dengan pembacaan Alkitab dan nyanyian seperti \"Allah Bentengku yang Teguh\".",
+        "why": "Mensyukuri Injil kasih karunia."
+      }
+    ],
+    "items": [],
+    "timing": "31 Oktober atau Minggu terdekat.",
+    "variations": [
+      {
+        "label": "Lutheran (mis. HKBP)",
+        "text": "Diperingati dengan ibadah khusus.",
+        "stream": "lutheran"
+      },
+      {
+        "label": "Pentakosta / Baptis",
+        "text": "Tidak semua gereja memperingati secara khusus.",
+        "stream": "pentakosta"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "reformasi",
+      "luther",
+      "31 oktober",
+      "sola fide",
+      "95 dalil"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (PGI / sinode gereja)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
   }
 ]

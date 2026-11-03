@@ -156,3 +156,10 @@ jeda.id is an active news site; small apps/brands named "Jeda" exist (holiday ca
 - #/kitab without id now lists all scriptures (was a dead end).
 - Version 0.6.0; sw.js precaches js/card.js and js/views/extras.js.
 - Tested in headless Edge: calendar unit check, journal add/delete, card render (not tainted), 23 routes render with no JS errors.
+
+## Iteration 10 — v0.7 (done)
+- Peringatan Arwah (#/peringatan, js/memorial.js): device-only memorial list; day series per tradition (Tionghoa 7..49+100, tahlilan 3/7/40/100/1000, Katolik 3/7/40/100/1000, Buddha 7/49/100; Protestan/Hindu/Islam-umum none) counting death day as day 1; yearly anniversary by Imlek (ki-jit), Hijriah (haul) or Masehi; .ics export (series + 5 anniversaries). Short-month day-30 falls back to day 29; leap lunar month uses regular month; 29 Feb -> 28 Feb. Imlek month-1 dates corrected with official Imlek overrides (ICU puts 2027 CNY on 7 Feb; official 6 Feb). Lunar/Hijri dates labelled ±1 day.
+- +13 entries (151): tahlilan & haul (NU vs Muhammadiyah/Persis), misa arwah, Siwaratri, Asadha, Magha Puja, Hari Reformasi, ki-jit, Hokkien, Hakka (Singkawang tatung), Teochew (Pontianak), Kanton & Hainan, Peranakan/Cina Benteng (Ciotau), ucapan duka lintas iman. Dialect variations tagged with dialect ids so the user's own dialect is highlighted.
+- +16 glossary terms (96).
+- Links: More menu, Arsip page.
+- Not yet in calendar: Siwaratri, Asadha, Magha (need official dates from PHDI / majelis Buddha).

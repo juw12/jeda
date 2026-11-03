@@ -1355,5 +1355,75 @@
     "reviewed_at": null,
     "version": 1,
     "updated": "2026-11-03"
+  },
+  {
+    "id": "isl-siklus-tahlilan-haul",
+    "faith": "islam",
+    "streams": [],
+    "section": "siklus-hidup",
+    "title": "Tahlilan dan haul: mendoakan yang telah wafat",
+    "summary": "Tradisi mendoakan almarhum pada hari ke-3, 7, 40, 100, 1000 dan haul tahunan, serta perbedaan pandangan antarormas.",
+    "body": [
+      "Tahlilan adalah pertemuan membaca tahlil (la ilaha illallah), ayat-ayat Al-Qur'an, zikir, dan doa untuk almarhum. Di banyak daerah, terutama di lingkungan NU dan masyarakat Jawa, tahlilan diadakan pada malam-malam pertama setelah wafat serta hari ke-40, 100, dan 1000.",
+      "Haul adalah peringatan tahunan wafatnya seseorang menurut kalender Hijriah, sering diadakan untuk ulama dan tokoh, juga untuk keluarga.",
+      "Sebagian ormas, misalnya Muhammadiyah dan Persis, tidak menganjurkan tahlilan dan haul sebagai ritual dengan waktu tertentu, namun tetap menganjurkan mendoakan orang tua dan almarhum kapan saja. Jeda menampilkan keduanya tanpa menilai."
+    ],
+    "steps": [
+      {
+        "text": "Keluarga mengundang tetangga dan kerabat, biasanya selepas Magrib atau Isya.",
+        "why": "Kebersamaan dan doa bersama."
+      },
+      {
+        "text": "Pembacaan Yasin, tahlil, zikir, dan doa dipimpin ustaz atau tokoh setempat.",
+        "why": "Memohonkan ampunan dan rahmat bagi almarhum."
+      },
+      {
+        "text": "Hidangan sederhana atau berkat dibagikan kepada yang hadir.",
+        "why": "Sedekah atas nama almarhum menurut kebiasaan setempat."
+      }
+    ],
+    "items": [],
+    "timing": "Malam ke-1 sampai ke-7, hari ke-40, 100, 1000; haul setiap tahun (Hijriah).",
+    "variations": [
+      {
+        "label": "NU dan tradisi Jawa",
+        "text": "Tahlilan dan haul dilaksanakan sebagai tradisi yang dianjurkan.",
+        "stream": "nu"
+      },
+      {
+        "label": "Muhammadiyah",
+        "text": "Tidak mengadakan tahlilan pada hari tertentu; doa untuk almarhum dapat dipanjatkan kapan saja.",
+        "stream": "muhammadiyah"
+      },
+      {
+        "label": "Persis",
+        "text": "Umumnya tidak mengamalkan tahlilan berjadwal.",
+        "stream": "persis"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "tahlilan",
+      "haul",
+      "7 hari",
+      "40 hari",
+      "100 hari",
+      "1000 hari",
+      "nyewu",
+      "doa arwah",
+      "kematian"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (PBNU / PP Muhammadiyah / ulama setempat)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
   }
 ]

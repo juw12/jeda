@@ -1648,5 +1648,324 @@
     "reviewed_at": null,
     "version": 1,
     "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-siklus-ki-jit",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "siklus-hidup",
+    "title": "Ki-jit: peringatan hari wafat leluhur",
+    "summary": "Sembahyang tahunan pada tanggal wafat menurut kalender Imlek, di meja abu atau klenteng.",
+    "body": [
+      "Ki-jit (Hokkien, 忌日) adalah peringatan tahunan hari wafat orang tua atau leluhur. Umumnya dihitung dengan tanggal Imlek, bukan Masehi, sehingga tanggal Masehinya berubah setiap tahun.",
+      "Keluarga menyiapkan sajian makanan kesukaan almarhum, teh/arak, buah, dan menyalakan hio di depan meja abu (sinci). Di sebagian keluarga, sembahyang dilakukan sehari sebelumnya (malam menjelang tanggal wafat).",
+      "Bila wafat pada bulan kabisat (lun gwee), peringatan umumnya mengikuti bulan biasa dengan angka yang sama; tanyakan kebiasaan keluarga."
+    ],
+    "steps": [
+      {
+        "text": "Tentukan tanggal Imlek wafat; Jeda dapat menghitung tanggal Masehinya di menu Peringatan Arwah.",
+        "why": "Tanggal Masehi berubah tiap tahun."
+      },
+      {
+        "text": "Siapkan sajian dan bersihkan meja abu.",
+        "why": "Penghormatan dan kebersihan."
+      },
+      {
+        "text": "Sembahyang hio oleh anggota keluarga, dimulai dari yang tertua.",
+        "why": "Urutan menurut senioritas."
+      },
+      {
+        "text": "Bakar kim cua bila menjadi kebiasaan keluarga, lalu sajian disantap bersama.",
+        "why": "Kebersamaan keluarga."
+      }
+    ],
+    "items": [],
+    "timing": "Setiap tahun pada tanggal Imlek wafat (atau malam sebelumnya).",
+    "variations": [
+      {
+        "label": "Hokkien",
+        "text": "Disebut ki-jit; sajian sering mencakup masakan kesukaan almarhum.",
+        "stream": "hokkien"
+      },
+      {
+        "label": "Hakka",
+        "text": "Disebut ki-ngit; kebiasaan sajian berbeda menurut daerah asal.",
+        "stream": "hakka"
+      },
+      {
+        "label": "Agama Khonghucu (MATAKIN)",
+        "text": "Doa mengikuti tata agama di litang atau rumah.",
+        "stream": "khonghucu-matakin"
+      },
+      {
+        "label": "Keluarga Kristen/Katolik",
+        "text": "Sebagian keluarga mengadakan doa atau misa peringatan pada tanggal Masehi.",
+        "stream": null
+      }
+    ],
+    "links": [],
+    "tags": [
+      "ki-jit",
+      "kijit",
+      "peringatan leluhur",
+      "hari wafat",
+      "meja abu",
+      "sinci",
+      "imlek"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (MATAKIN / pengurus klenteng / tetua keluarga)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-aliran-hokkien",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "perbedaan-aliran",
+    "title": "Tradisi keluarga Hokkien di Indonesia",
+    "summary": "Kelompok dialek terbesar di banyak kota pesisir; menonjol dengan Sembahyang King Thi Kong dan istilah Hokkien yang menjadi bahasa sehari-hari Tionghoa Indonesia.",
+    "body": [
+      "Banyak istilah Tionghoa yang umum di Indonesia berasal dari Hokkien: Imlek, Cap Go Meh, Ceng Beng, Cioko, hio, kim cua, angpao, sinci, ki-jit.",
+      "Sembahyang King Thi Kong (Tuhan Yang Maha Esa) pada malam ke-8 menuju tanggal 9 bulan pertama Imlek sangat penting bagi keluarga Hokkien, dengan meja tinggi dan tebu sebagai hiasan.",
+      "Komunitas Hokkien tersebar di pesisir Jawa, Medan, Riau, Palembang, Makassar, dan banyak kota lain; kebiasaannya bercampur dengan budaya lokal."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": "",
+    "variations": [
+      {
+        "label": "Hokkien Medan",
+        "text": "Bahasa Hokkien masih dipakai sehari-hari oleh banyak keluarga.",
+        "stream": "hokkien"
+      },
+      {
+        "label": "Hokkien Jawa (peranakan)",
+        "text": "Bahasa sehari-hari bercampur Jawa/Melayu; istilah ritual tetap Hokkien.",
+        "stream": "peranakan"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "hokkien",
+      "king thi kong",
+      "dialek",
+      "tebu",
+      "bahasa hokkien",
+      "medan"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (tetua komunitas Hokkien / perkumpulan marga)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-aliran-hakka",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "perbedaan-aliran",
+    "title": "Tradisi keluarga Hakka (Khek) di Indonesia",
+    "summary": "Komunitas Hakka di Singkawang, Bangka Belitung, dan Jakarta, dengan tradisi Cap Go Meh tatung yang terkenal.",
+    "body": [
+      "Orang Hakka (Khek) banyak tinggal di Kalimantan Barat (terutama Singkawang), Bangka Belitung, dan Jakarta. Banyak yang datang sebagai penambang emas dan timah sejak abad ke-18.",
+      "Cap Go Meh di Singkawang terkenal dengan pawai tatung, yaitu orang yang diyakini dirasuki dewa dan menunjukkan kekebalan. Ini tradisi religius-budaya yang dihormati masyarakat setempat.",
+      "Istilah Hakka berbeda dari Hokkien, misalnya sapaan kerabat dan nama hidangan; keluarga Hakka sering memiliki kebiasaan sembahyang leluhur sendiri."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": "",
+    "variations": [
+      {
+        "label": "Singkawang",
+        "text": "Cap Go Meh dengan tatung dan ratusan klenteng/pekong.",
+        "stream": "hakka"
+      },
+      {
+        "label": "Bangka Belitung",
+        "text": "Tradisi sembahyang rebut (Cioko) dan Ceng Beng berskala besar.",
+        "stream": "hakka"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "hakka",
+      "khek",
+      "singkawang",
+      "tatung",
+      "bangka",
+      "belitung",
+      "dialek"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (tetua komunitas Hakka / klenteng Singkawang)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-aliran-teochew",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "perbedaan-aliran",
+    "title": "Tradisi keluarga Teochew (Tiociu) di Indonesia",
+    "summary": "Komunitas Teochew di Pontianak, Riau, dan Jambi, dengan kekhasan bahasa, kuliner, dan perayaan.",
+    "body": [
+      "Orang Teochew (Tiociu) banyak tinggal di Pontianak dan sekitarnya, Kepulauan Riau, Riau, dan Jambi. Bahasanya serumpun dengan Hokkien namun berbeda dalam pelafalan dan kosakata.",
+      "Pontianak dikenal dengan perayaan Imlek dan Cap Go Meh yang meriah, termasuk naga dan barongsai, serta sembahyang kubur (Ceng Beng) yang ramai.",
+      "Kebiasaan sajian dan sapaan keluarga Teochew berbeda dari Hokkien dan Hakka; tanyakan kepada tetua keluarga."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": "",
+    "variations": [
+      {
+        "label": "Pontianak",
+        "text": "Imlek dan Cap Go Meh dengan naga; komunitas Teochew dan Hakka hidup berdampingan.",
+        "stream": "teochew"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "teochew",
+      "tiociu",
+      "pontianak",
+      "riau",
+      "jambi",
+      "dialek"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (tetua komunitas Teochew / yayasan marga Pontianak)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-aliran-kanton-hainan",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "perbedaan-aliran",
+    "title": "Tradisi keluarga Kanton (Konghu) dan Hainan",
+    "summary": "Komunitas yang lebih kecil namun berakar lama di Medan, Makassar, Jakarta, dan kota lain.",
+    "body": [
+      "Orang Kanton (Konghu) dikenal sebagai perajin dan pedagang di Medan, Makassar, Jakarta, dan kota lain. Bahasa Kanton berbeda jauh dari Hokkien.",
+      "Orang Hainan tersebar di berbagai kota dan banyak yang dahulu bergerak di usaha kedai kopi dan kuliner. Sebagian klenteng Hainan memuliakan Thian Siang Seng Bo (Mazu) sebagai pelindung pelaut.",
+      "Karena komunitasnya kecil, banyak kebiasaan keluarga Kanton dan Hainan mulai hilang. Arsip Tradisi Keluarga di Jeda dapat dipakai untuk mencatatnya."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": "",
+    "variations": [
+      {
+        "label": "Kanton",
+        "text": "Istilah kekerabatan dan masakan khas Kanton.",
+        "stream": "kanton"
+      },
+      {
+        "label": "Hainan",
+        "text": "Perkumpulan Hainan dan klenteng marga di beberapa kota.",
+        "stream": "hainan"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "kanton",
+      "konghu",
+      "hainan",
+      "hailam",
+      "makassar",
+      "dialek"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (perkumpulan Kanton / Hainan setempat)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-aliran-peranakan-benteng",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "perbedaan-aliran",
+    "title": "Peranakan dan Cina Benteng",
+    "summary": "Keluarga Tionghoa yang telah lama berbaur dengan budaya lokal, seperti Cina Benteng di Tangerang dengan tradisi pernikahan Ciotau.",
+    "body": [
+      "Peranakan adalah keturunan Tionghoa yang telah turun-temurun di Nusantara dan berbaur dengan budaya Jawa, Betawi, Sunda, atau Melayu. Banyak yang tidak lagi berbahasa Tionghoa namun tetap menjaga sembahyang leluhur.",
+      "Cina Benteng di Tangerang dikenal dengan pernikahan adat Ciotau (upacara menyisir rambut pengantin), musik gambang kromong, dan klenteng tua seperti Boen Tek Bio.",
+      "Kuliner seperti lontong Cap Go Meh dan pakaian kebaya encim adalah contoh perpaduan budaya peranakan."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": "",
+    "variations": [
+      {
+        "label": "Cina Benteng (Tangerang)",
+        "text": "Ciotau, gambang kromong, Boen Tek Bio.",
+        "stream": "peranakan"
+      },
+      {
+        "label": "Peranakan Jawa",
+        "text": "Sembahyang leluhur dengan pengaruh adat Jawa; lontong Cap Go Meh.",
+        "stream": "peranakan"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "peranakan",
+      "cina benteng",
+      "ciotau",
+      "gambang kromong",
+      "boen tek bio",
+      "tangerang",
+      "kebaya encim"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (tetua komunitas Cina Benteng / pengurus Boen Tek Bio)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
   }
 ]

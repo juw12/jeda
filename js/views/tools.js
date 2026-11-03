@@ -245,6 +245,7 @@ export async function archive(main) {
     <section class="stack narrow">
       <h1 class="h2">Arsip Tradisi Keluarga</h1>
       <p class="muted">Catat tata cara, resep, doa, dan cerita dari orang tua dan kakek-nenek sebelum hilang. Rekam suara mereka. Semua tersimpan hanya di perangkat ini; ekspor untuk dibagikan ke keluarga.</p>
+      <p class="small"><a href="#/peringatan">🕯 Peringatan Arwah: catat tanggal wafat dan hari peringatan leluhur</a></p>
       <form class="card archive-form">
         <label class="field"><span>Judul</span><input name="title" required maxlength="100" placeholder="Mis. Cara Ma menyiapkan sembahyang Ceng Beng"></label>
         <label class="field"><span>Kategori</span><select name="category">${CATEGORIES.map((c) => `<option>${c}</option>`).join('')}</select></label>

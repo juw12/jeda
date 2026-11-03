@@ -35,6 +35,13 @@
     "status": "draft"
   },
   {
+    "term": "Asadha",
+    "faith": "buddha",
+    "definition": "Hari raya memperingati khotbah pertama Sang Buddha dan terbentuknya Sangha.",
+    "entry": "bud-hariraya-asadha",
+    "status": "draft"
+  },
+  {
     "term": "Banten",
     "faith": "hindu",
     "definition": "Sarana persembahan dalam upacara Hindu Bali.",
@@ -91,6 +98,13 @@
     "status": "draft"
   },
   {
+    "term": "Ciotau",
+    "faith": "khonghucu",
+    "definition": "Upacara menyisir rambut pengantin dalam pernikahan adat Cina Benteng.",
+    "entry": "khc-aliran-peranakan-benteng",
+    "status": "draft"
+  },
+  {
     "term": "Cuntaka",
     "faith": "hindu",
     "definition": "Keadaan tidak suci (mis. berduka) yang membuat seseorang tidak memasuki pura.",
@@ -133,6 +147,13 @@
     "status": "draft"
   },
   {
+    "term": "Gambang kromong",
+    "faith": "khonghucu",
+    "definition": "Musik perpaduan Tionghoa–Betawi yang lekat dengan komunitas Cina Benteng.",
+    "entry": "khc-aliran-peranakan-benteng",
+    "status": "draft"
+  },
+  {
     "term": "Genufleksi",
     "faith": "katolik",
     "definition": "Berlutut dengan satu lutut menghadap tabernakel sebagai tanda hormat.",
@@ -140,10 +161,24 @@
     "status": "draft"
   },
   {
+    "term": "Hakka (Khek)",
+    "faith": "khonghucu",
+    "definition": "Kelompok dialek Tionghoa yang banyak tinggal di Singkawang, Bangka Belitung, dan Jakarta.",
+    "entry": "khc-aliran-hakka",
+    "status": "draft"
+  },
+  {
     "term": "Halal",
     "faith": "islam",
     "definition": "Diperbolehkan menurut syariat, terutama untuk makanan dan minuman.",
     "entry": "isl-aturan-halal",
+    "status": "draft"
+  },
+  {
+    "term": "Haul",
+    "faith": "islam",
+    "definition": "Peringatan tahunan wafatnya seseorang menurut kalender Hijriah, sering untuk ulama.",
+    "entry": "isl-siklus-tahlilan-haul",
     "status": "draft"
   },
   {
@@ -175,6 +210,13 @@
     "status": "draft"
   },
   {
+    "term": "Jagra",
+    "faith": "hindu",
+    "definition": "Brata tetap terjaga dengan sadar sepanjang malam Siwaratri.",
+    "entry": "hin-hariraya-siwaratri",
+    "status": "draft"
+  },
+  {
     "term": "Karmaphala",
     "faith": "hindu",
     "definition": "Hukum sebab-akibat dari perbuatan.",
@@ -203,10 +245,24 @@
     "status": "draft"
   },
   {
+    "term": "Ki-jit",
+    "faith": "khonghucu",
+    "definition": "Peringatan tahunan hari wafat leluhur menurut tanggal Imlek (Hokkien).",
+    "entry": "khc-siklus-ki-jit",
+    "status": "draft"
+  },
+  {
     "term": "Kim cua",
     "faith": "khonghucu",
     "definition": "Kertas sembahyang emas; gin cua (perak) umumnya untuk leluhur.",
     "entry": "khc-ibadah-kertas",
+    "status": "draft"
+  },
+  {
+    "term": "King Thi Kong",
+    "faith": "khonghucu",
+    "definition": "Sembahyang kepada Tuhan (Thian) pada malam tanggal 9 bulan pertama Imlek.",
+    "entry": "khc-aliran-hokkien",
     "status": "draft"
   },
   {
@@ -245,6 +301,13 @@
     "status": "draft"
   },
   {
+    "term": "Magha Puja",
+    "faith": "buddha",
+    "definition": "Peringatan berkumpulnya 1.250 arahat dan pembabaran Ovada Patimokkha.",
+    "entry": "bud-hariraya-magha",
+    "status": "draft"
+  },
+  {
     "term": "Mala",
     "faith": "buddha",
     "definition": "Untaian butir (umumnya 108) untuk menghitung lafal atau perenungan.",
@@ -273,6 +336,13 @@
     "status": "draft"
   },
   {
+    "term": "Misa arwah",
+    "faith": "katolik",
+    "definition": "Misa yang dipersembahkan dengan intensi bagi orang yang telah meninggal.",
+    "entry": "kat-siklus-misa-arwah",
+    "status": "draft"
+  },
+  {
     "term": "Moksa",
     "faith": "hindu",
     "definition": "Kebebasan abadi, tujuan tertinggi hidup.",
@@ -291,6 +361,13 @@
     "faith": "hindu",
     "definition": "Upacara kremasi dalam Pitra Yadnya.",
     "entry": "hin-siklus-ngaben",
+    "status": "draft"
+  },
+  {
+    "term": "Nyewu",
+    "faith": "islam",
+    "definition": "Peringatan hari ke-1000 setelah wafat dalam tradisi Jawa.",
+    "entry": "isl-siklus-tahlilan-haul",
     "status": "draft"
   },
   {
@@ -343,6 +420,13 @@
     "status": "draft"
   },
   {
+    "term": "Peranakan",
+    "faith": "khonghucu",
+    "definition": "Keturunan Tionghoa yang telah turun-temurun di Nusantara dan berbaur dengan budaya lokal.",
+    "entry": "khc-aliran-peranakan-benteng",
+    "status": "draft"
+  },
+  {
     "term": "Perjamuan Kudus",
     "faith": "protestan",
     "definition": "Sakramen peringatan pengorbanan Kristus dengan roti dan anggur.",
@@ -375,6 +459,13 @@
     "faith": "islam",
     "definition": "Doa yang dibaca dalam sholat, mis. pada sholat Subuh menurut sebagian ulama.",
     "entry": "isl-ibadah-sholat",
+    "status": "draft"
+  },
+  {
+    "term": "Reformasi",
+    "faith": "kristen",
+    "definition": "Gerakan pembaruan gereja yang dimulai Martin Luther pada 1517; diperingati 31 Oktober.",
+    "entry": "pro-hariraya-reformasi",
     "status": "draft"
   },
   {
@@ -420,6 +511,13 @@
     "status": "draft"
   },
   {
+    "term": "Siwaratri",
+    "faith": "hindu",
+    "definition": "Malam Siwa menjelang Tilem Kapitu, untuk perenungan dan pengendalian diri.",
+    "entry": "hin-hariraya-siwaratri",
+    "status": "draft"
+  },
+  {
     "term": "Soja",
     "faith": "khonghucu",
     "definition": "Sikap hormat dengan kedua tangan dikatupkan di depan dada.",
@@ -448,10 +546,24 @@
     "status": "draft"
   },
   {
+    "term": "Tatung",
+    "faith": "khonghucu",
+    "definition": "Peserta pawai Cap Go Meh Singkawang yang diyakini dirasuki dewa.",
+    "entry": "khc-aliran-hakka",
+    "status": "draft"
+  },
+  {
     "term": "Teapai",
     "faith": "khonghucu",
     "definition": "Penghormatan teh oleh pengantin kepada orang tua dan kerabat.",
     "entry": "khc-siklus-pernikahan",
+    "status": "draft"
+  },
+  {
+    "term": "Teochew (Tiociu)",
+    "faith": "khonghucu",
+    "definition": "Kelompok dialek Tionghoa yang banyak tinggal di Pontianak, Riau, dan Jambi.",
+    "entry": "khc-aliran-teochew",
     "status": "draft"
   },
   {
