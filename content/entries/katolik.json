@@ -1,0 +1,572 @@
+[
+  {
+    "id": "kat-pokok-syahadat",
+    "faith": "katolik",
+    "streams": [],
+    "section": "pokok-ajaran",
+    "title": "Syahadat dan pokok iman Katolik",
+    "summary": "Allah Tritunggal, Yesus Kristus, Gereja, dan sumber iman: Kitab Suci, Tradisi, Magisterium.",
+    "body": [
+      "Iman Katolik dirumuskan dalam Syahadat Para Rasul dan Syahadat Nicea-Konstantinopel.",
+      "Gereja Katolik mengajarkan bahwa wahyu diteruskan melalui Kitab Suci dan Tradisi Suci, ditafsirkan oleh Magisterium."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [
+      {
+        "name": "Katekismus Gereja Katolik (Vatikan, bahasa Inggris)",
+        "url": "https://www.vatican.va/archive/ENG0015/_INDEX.HTM",
+        "note": ""
+      }
+    ],
+    "tags": [
+      "syahadat",
+      "credo",
+      "tritunggal",
+      "magisterium",
+      "tradisi",
+      "katekismus"
+    ],
+    "sources": [
+      {
+        "title": "Katekismus Gereja Katolik"
+      },
+      {
+        "title": "Perlu ditinjau imam/katekis paroki atau Komisi Kateketik KWI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "kat-pokok-sakramen",
+    "faith": "katolik",
+    "streams": [],
+    "section": "pokok-ajaran",
+    "title": "Tujuh Sakramen",
+    "summary": "Tanda keselamatan yang ditetapkan Kristus dan dirayakan Gereja.",
+    "body": [
+      "Sakramen tidak dapat dirayakan secara virtual; Hening hanya menyediakan penjelasan dan devosi pribadi."
+    ],
+    "steps": [
+      {
+        "text": "Baptis"
+      },
+      {
+        "text": "Krisma (Penguatan)"
+      },
+      {
+        "text": "Ekaristi"
+      },
+      {
+        "text": "Tobat (Rekonsiliasi)"
+      },
+      {
+        "text": "Pengurapan Orang Sakit"
+      },
+      {
+        "text": "Imamat"
+      },
+      {
+        "text": "Perkawinan"
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "sakramen",
+      "baptis",
+      "krisma",
+      "ekaristi",
+      "komuni",
+      "tobat",
+      "pengakuan dosa",
+      "perkawinan"
+    ],
+    "sources": [
+      {
+        "title": "Katekismus Gereja Katolik no. 1113"
+      },
+      {
+        "title": "Perlu ditinjau imam/katekis paroki atau Komisi Kateketik KWI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "kat-kitab-alkitab",
+    "faith": "katolik",
+    "streams": [],
+    "section": "kitab-suci",
+    "title": "Alkitab Katolik",
+    "summary": "73 kitab, termasuk kitab-kitab Deuterokanonika.",
+    "body": [
+      "Alkitab Katolik berisi 46 kitab Perjanjian Lama (termasuk Deuterokanonika seperti Tobit, Yudit, dan Kebijaksanaan) dan 27 kitab Perjanjian Baru."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [
+      {
+        "name": "Alkitab SABDA",
+        "url": "https://alkitab.sabda.org/",
+        "note": "termasuk Deuterokanonika"
+      },
+      {
+        "name": "Iman Katolik",
+        "url": "https://www.imankatolik.or.id/",
+        "note": "bacaan harian dan doa"
+      }
+    ],
+    "tags": [
+      "alkitab",
+      "kitab suci",
+      "deuterokanonika",
+      "perjanjian lama",
+      "perjanjian baru"
+    ],
+    "sources": [
+      {
+        "title": "Lembaga Biblika Indonesia / LAI (terjemahan, hak cipta)"
+      },
+      {
+        "title": "Perlu ditinjau imam/katekis paroki atau Komisi Kateketik KWI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "kat-ibadah-rosario",
+    "faith": "katolik",
+    "streams": [],
+    "section": "ibadah-harian",
+    "title": "Doa Rosario",
+    "summary": "Merenungkan misteri hidup Yesus bersama Maria dalam lima peristiwa.",
+    "body": [
+      "Rosario terdiri atas doa pembuka (Tanda Salib, Aku Percaya, Bapa Kami, tiga Salam Maria, Kemuliaan) dan lima peristiwa. Setiap peristiwa: Bapa Kami, sepuluh Salam Maria, dan Kemuliaan. Ditutup dengan Salam, ya Ratu.",
+      "Pembagian peristiwa: Senin dan Sabtu Gembira, Selasa dan Jumat Sedih, Rabu dan Minggu Mulia, Kamis Terang."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Bulan Rosario",
+        "text": "Oktober dikenal sebagai bulan Rosario; Mei sebagai bulan Maria.",
+        "stream": null
+      }
+    ],
+    "links": [],
+    "tags": [
+      "rosario",
+      "salam maria",
+      "peristiwa gembira",
+      "peristiwa sedih",
+      "peristiwa mulia",
+      "peristiwa terang",
+      "devosi"
+    ],
+    "sources": [
+      {
+        "title": "Surat Apostolik Rosarium Virginis Mariae (2002)"
+      },
+      {
+        "title": "Perlu ditinjau imam/katekis paroki atau Komisi Kateketik KWI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "kat-ibadah-angelus",
+    "faith": "katolik",
+    "streams": [],
+    "section": "ibadah-harian",
+    "title": "Doa Malaikat Tuhan (Angelus)",
+    "summary": "Doa pukul 06.00, 12.00, dan 18.00 untuk mengenang inkarnasi.",
+    "body": [
+      "Pada Masa Paskah, Doa Malaikat Tuhan diganti dengan Ratu Surga (Regina Caeli)."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "angelus",
+      "malaikat tuhan",
+      "regina caeli",
+      "ratu surga"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau imam/katekis paroki atau Komisi Kateketik KWI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "kat-ibadah-misa",
+    "faith": "katolik",
+    "streams": [],
+    "section": "ibadah-harian",
+    "title": "Perayaan Ekaristi (Misa)",
+    "summary": "Struktur Misa dan kewajiban mengikuti Misa hari Minggu.",
+    "body": [
+      "Umat Katolik wajib mengikuti Misa pada hari Minggu dan hari raya wajib. Puasa Ekaristi: tidak makan dan minum (kecuali air dan obat) setidaknya satu jam sebelum menyambut komuni."
+    ],
+    "steps": [
+      {
+        "text": "Ritus Pembuka.",
+        "why": "Umat berhimpun dan menyiapkan diri."
+      },
+      {
+        "text": "Liturgi Sabda.",
+        "why": "Bacaan Kitab Suci dan homili."
+      },
+      {
+        "text": "Liturgi Ekaristi.",
+        "why": "Persembahan, Doa Syukur Agung, komuni."
+      },
+      {
+        "text": "Ritus Penutup.",
+        "why": "Berkat dan perutusan."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "misa",
+      "ekaristi",
+      "komuni",
+      "minggu",
+      "puasa ekaristi",
+      "liturgi"
+    ],
+    "sources": [
+      {
+        "title": "Kitab Hukum Kanonik kan. 919, 1247"
+      },
+      {
+        "title": "Perlu ditinjau imam/katekis paroki atau Komisi Kateketik KWI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "kat-hariraya-liturgi",
+    "faith": "katolik",
+    "streams": [],
+    "section": "hari-raya",
+    "title": "Tahun liturgi, puasa, dan pantang",
+    "summary": "Masa liturgi dan warnanya, serta aturan puasa dan pantang.",
+    "body": [
+      "Warna liturgi: Adven ungu, Natal putih, Masa Biasa hijau, Prapaskah ungu, Paskah putih, Pentakosta merah.",
+      "Hari puasa dan pantang: Rabu Abu dan Jumat Agung. Puasa wajib bagi yang berusia 18 hingga awal 60 tahun; pantang bagi yang berusia 14 tahun ke atas. Setiap Jumat dalam Masa Prapaskah adalah hari pantang."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "liturgi",
+      "adven",
+      "prapaskah",
+      "paskah",
+      "natal",
+      "rabu abu",
+      "puasa",
+      "pantang"
+    ],
+    "sources": [
+      {
+        "title": "Kitab Hukum Kanonik kan. 1250–1253"
+      },
+      {
+        "title": "Ketentuan KWI tentang puasa dan pantang"
+      },
+      {
+        "title": "Perlu ditinjau imam/katekis paroki atau Komisi Kateketik KWI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "kat-siklus-baptis",
+    "faith": "katolik",
+    "streams": [],
+    "section": "siklus-hidup",
+    "title": "Baptis bayi",
+    "summary": "Persiapan orang tua dan wali baptis.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Menghubungi sekretariat paroki.",
+        "why": "Pendaftaran dan jadwal."
+      },
+      {
+        "text": "Mengikuti persiapan/pembinaan orang tua dan wali baptis.",
+        "why": "Agar orang tua siap mendidik anak dalam iman."
+      },
+      {
+        "text": "Memilih wali baptis: Katolik, telah menerima Krisma dan Ekaristi, minimal 16 tahun.",
+        "why": "Ketentuan Kitab Hukum Kanonik kan. 874."
+      },
+      {
+        "text": "Perayaan pembaptisan dan pencatatan di buku baptis paroki.",
+        "why": "Pengesahan gerejawi."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "baptis",
+      "bayi",
+      "wali baptis",
+      "paroki"
+    ],
+    "sources": [
+      {
+        "title": "Kitab Hukum Kanonik kan. 872–874"
+      },
+      {
+        "title": "Perlu ditinjau imam/katekis paroki atau Komisi Kateketik KWI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "kat-siklus-perkawinan",
+    "faith": "katolik",
+    "streams": [],
+    "section": "siklus-hidup",
+    "title": "Perkawinan Katolik",
+    "summary": "Kursus persiapan perkawinan, penyelidikan kanonik, dan perkawinan campur.",
+    "body": [
+      "Perkawinan dengan pihak yang dibaptis non-Katolik memerlukan izin, sedangkan dengan pihak yang tidak dibaptis memerlukan dispensasi dari Ordinaris wilayah."
+    ],
+    "steps": [
+      {
+        "text": "Mengikuti Kursus Persiapan Perkawinan (KPP).",
+        "why": "Persiapan hidup berkeluarga."
+      },
+      {
+        "text": "Penyelidikan kanonik bersama pastor paroki.",
+        "why": "Memastikan tidak ada halangan perkawinan."
+      },
+      {
+        "text": "Pengumuman perkawinan di paroki.",
+        "why": "Kesempatan bagi umat melaporkan halangan."
+      },
+      {
+        "text": "Pemberkatan perkawinan dan pencatatan sipil.",
+        "why": "Sah secara Gereja dan negara."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "perkawinan",
+      "pernikahan",
+      "kpp",
+      "penyelidikan kanonik",
+      "kawin campur",
+      "dispensasi"
+    ],
+    "sources": [
+      {
+        "title": "Kitab Hukum Kanonik kan. 1086, 1124"
+      },
+      {
+        "title": "Perlu ditinjau imam/katekis paroki atau Komisi Kateketik KWI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "kat-aturan-adab-gereja",
+    "faith": "katolik",
+    "streams": [],
+    "section": "aturan-etika",
+    "title": "Adab di gereja Katolik",
+    "summary": "Berlutut, keheningan, dan sikap bagi tamu.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Mengambil air suci dan membuat Tanda Salib saat masuk.",
+        "why": "Mengingat baptisan."
+      },
+      {
+        "text": "Berlutut (genuflexi) menghadap tabernakel sebelum masuk bangku.",
+        "why": "Hormat kepada Sakramen Mahakudus."
+      },
+      {
+        "text": "Menjaga keheningan dan berpakaian sopan.",
+        "why": "Gereja adalah rumah doa."
+      },
+      {
+        "text": "Tamu non-Katolik tidak menerima komuni; boleh maju dengan tangan bersilang di dada untuk berkat atau tetap duduk.",
+        "why": "Komuni adalah tanda kesatuan iman Katolik."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "adab",
+      "gereja",
+      "berlutut",
+      "tabernakel",
+      "komuni",
+      "tamu"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau imam/katekis paroki atau Komisi Kateketik KWI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "kat-aliran-indonesia",
+    "faith": "katolik",
+    "streams": [],
+    "section": "perbedaan-aliran",
+    "title": "Kesatuan dan inkulturasi Katolik di Indonesia",
+    "summary": "Satu Gereja Katolik dengan ungkapan budaya setempat.",
+    "body": [
+      "Gereja Katolik di Indonesia berada dalam persekutuan dengan Paus dan dikoordinasikan Konferensi Waligereja Indonesia (KWI). Ajaran iman sama; perbedaan umumnya pada ungkapan budaya.",
+      "Contoh inkulturasi: Gereja Hati Kudus Yesus Ganjuran (Bantul) dengan arsitektur dan liturgi bernuansa Jawa; nyanyian dan busana adat di Flores, Batak, dan Papua."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "kwi",
+      "inkulturasi",
+      "ganjuran",
+      "flores",
+      "ritus latin"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau imam/katekis paroki atau Komisi Kateketik KWI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "kat-sejarah-indonesia",
+    "faith": "katolik",
+    "streams": [],
+    "section": "sejarah-tokoh",
+    "title": "Sejarah Katolik di Indonesia",
+    "summary": "Dari Fransiskus Xaverius hingga Mgr. Soegijapranata.",
+    "body": [
+      "Santo Fransiskus Xaverius berkarya di Maluku pada 1546–1547.",
+      "Mgr. Albertus Soegijapranata, SJ, ditahbiskan sebagai uskup pribumi pertama pada 1940 dan kemudian ditetapkan sebagai Pahlawan Nasional."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "sejarah",
+      "fransiskus xaverius",
+      "maluku",
+      "soegijapranata"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau imam/katekis paroki atau Komisi Kateketik KWI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  }
+]

@@ -1,0 +1,535 @@
+[
+  {
+    "id": "bud-pokok-empat-kebenaran",
+    "faith": "buddha",
+    "streams": [],
+    "section": "pokok-ajaran",
+    "title": "Empat Kebenaran Mulia dan Jalan Mulia Berunsur Delapan",
+    "summary": "Ajaran pertama Buddha di Taman Rusa Isipatana.",
+    "body": [
+      "Jalan Mulia Berunsur Delapan: pandangan benar, pikiran benar, ucapan benar, perbuatan benar, penghidupan benar, daya upaya benar, perhatian benar, konsentrasi benar."
+    ],
+    "steps": [
+      {
+        "text": "Dukkha: hidup mengandung ketidakpuasan.",
+        "why": "Kebenaran pertama."
+      },
+      {
+        "text": "Samudaya: sebab dukkha adalah keinginan (tanha).",
+        "why": "Kebenaran kedua."
+      },
+      {
+        "text": "Nirodha: dukkha dapat dipadamkan (Nibbana).",
+        "why": "Kebenaran ketiga."
+      },
+      {
+        "text": "Magga: jalan menuju lenyapnya dukkha, Jalan Mulia Berunsur Delapan.",
+        "why": "Kebenaran keempat."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [
+      {
+        "name": "SuttaCentral: SN 56.11",
+        "url": "https://suttacentral.net/sn56.11",
+        "note": "teks Pali dan terjemahan"
+      }
+    ],
+    "tags": [
+      "empat kebenaran mulia",
+      "dukkha",
+      "jalan mulia",
+      "nibbana",
+      "nirwana"
+    ],
+    "sources": [
+      {
+        "title": "Dhammacakkappavattana Sutta (Samyutta Nikaya 56.11)"
+      },
+      {
+        "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "bud-pokok-tisarana-pancasila",
+    "faith": "buddha",
+    "streams": [],
+    "section": "pokok-ajaran",
+    "title": "Tisarana dan Pancasila Buddhis",
+    "summary": "Berlindung kepada Tiga Permata dan lima latihan moral.",
+    "body": [
+      "Tisarana: berlindung kepada Buddha, Dhamma, dan Sangha."
+    ],
+    "steps": [
+      {
+        "text": "Bertekad melatih diri menghindari pembunuhan makhluk hidup."
+      },
+      {
+        "text": "Bertekad melatih diri menghindari mengambil barang yang tidak diberikan."
+      },
+      {
+        "text": "Bertekad melatih diri menghindari perbuatan asusila."
+      },
+      {
+        "text": "Bertekad melatih diri menghindari ucapan yang tidak benar."
+      },
+      {
+        "text": "Bertekad melatih diri menghindari makanan/minuman yang melemahkan kesadaran."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "tisarana",
+      "tiga permata",
+      "pancasila buddhis",
+      "sila",
+      "moral"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "bud-kitab-tipitaka",
+    "faith": "buddha",
+    "streams": [],
+    "section": "kitab-suci",
+    "title": "Tipitaka dan sutra Mahayana",
+    "summary": "Kanon Pali (Tipitaka) dan kitab-kitab Mahayana.",
+    "body": [
+      "Tipitaka (Tiga Keranjang) dalam bahasa Pali menjadi rujukan Theravada: Vinaya Pitaka (tata tertib), Sutta Pitaka (khotbah), dan Abhidhamma Pitaka (analisis batin).",
+      "Tradisi Mahayana merujuk Tripitaka berbahasa Sanskerta/Mandarin, termasuk Sutra Hati, Sutra Intan, dan Sutra Bunga Teratai.",
+      "Dhammapada, bagian dari Sutta Pitaka, sering menjadi bacaan pertama."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [
+      {
+        "name": "SuttaCentral",
+        "url": "https://suttacentral.net/",
+        "note": "teks Pali dan terjemahan, banyak berlisensi terbuka"
+      }
+    ],
+    "tags": [
+      "tipitaka",
+      "tripitaka",
+      "dhammapada",
+      "sutra",
+      "pali",
+      "sutra hati"
+    ],
+    "sources": [
+      {
+        "title": "Tipitaka Pali"
+      },
+      {
+        "title": "Tripitaka Mahayana"
+      },
+      {
+        "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "bud-ibadah-pujabakti",
+    "faith": "buddha",
+    "streams": [],
+    "section": "ibadah-harian",
+    "title": "Puja bakti di vihara dan rumah",
+    "summary": "Garis besar puja bakti: namaskara, persembahan, pembacaan paritta, dan meditasi.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Bersihkan altar dan siapkan persembahan.",
+        "why": "Persembahan melambangkan ketidakkekalan (bunga) dan cahaya kebijaksanaan (pelita)."
+      },
+      {
+        "text": "Namaskara tiga kali.",
+        "why": "Hormat kepada Buddha, Dhamma, dan Sangha."
+      },
+      {
+        "text": "Membaca Namo Tassa tiga kali, Tisarana, dan Pancasila.",
+        "why": "Mengulang tekad berlindung dan berlatih."
+      },
+      {
+        "text": "Membaca paritta atau sutra sesuai tradisi.",
+        "why": "Merenungkan ajaran."
+      },
+      {
+        "text": "Meditasi beberapa menit.",
+        "why": "Menenangkan dan menyadari batin."
+      },
+      {
+        "text": "Pelimpahan jasa dan namaskara penutup.",
+        "why": "Berbagi kebajikan kepada semua makhluk."
+      }
+    ],
+    "items": [
+      "Dupa (umumnya 3 batang)",
+      "Lilin/pelita",
+      "Bunga",
+      "Air"
+    ],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Theravada",
+        "text": "Paritta dalam bahasa Pali.",
+        "stream": "theravada"
+      },
+      {
+        "label": "Mahayana",
+        "text": "Pembacaan sutra (mis. Sutra Hati) dan nama Buddha Amitabha atau Bodhisattva Avalokitesvara (Kwan Im).",
+        "stream": "mahayana"
+      },
+      {
+        "label": "Buddhayana",
+        "text": "Memadukan unsur berbagai aliran.",
+        "stream": "buddhayana"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "puja bakti",
+      "namaskara",
+      "paritta",
+      "dupa",
+      "altar",
+      "vihara"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "bud-ibadah-meditasi",
+    "faith": "buddha",
+    "streams": [],
+    "section": "ibadah-harian",
+    "title": "Meditasi dasar: perhatian pada napas",
+    "summary": "Anapanasati sebagai latihan meditasi yang sederhana untuk pemula.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Duduk tegak dengan nyaman, mata terpejam atau setengah terbuka.",
+        "why": "Postur stabil membantu kewaspadaan."
+      },
+      {
+        "text": "Perhatikan napas masuk dan keluar di ujung hidung.",
+        "why": "Napas selalu ada di saat ini."
+      },
+      {
+        "text": "Saat pikiran mengembara, sadari dan kembalikan perhatian ke napas.",
+        "why": "Inti latihan adalah kembali, bukan tidak pernah teralihkan."
+      },
+      {
+        "text": "Mulai 5–10 menit, lalu tambah perlahan.",
+        "why": "Konsistensi lebih penting dari durasi."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [
+      {
+        "name": "SuttaCentral: MN 118",
+        "url": "https://suttacentral.net/mn118",
+        "note": ""
+      }
+    ],
+    "tags": [
+      "meditasi",
+      "anapanasati",
+      "napas",
+      "samatha",
+      "vipassana"
+    ],
+    "sources": [
+      {
+        "title": "Anapanasati Sutta (Majjhima Nikaya 118)"
+      },
+      {
+        "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "bud-hariraya-waisak",
+    "faith": "buddha",
+    "streams": [],
+    "section": "hari-raya",
+    "title": "Waisak dan hari raya Buddhis",
+    "summary": "Trisuci Waisak serta Asadha, Kathina, dan Magha Puja.",
+    "body": [
+      "Waisak memperingati tiga peristiwa: kelahiran Pangeran Siddhattha, pencapaian Penerangan Sempurna, dan Parinibbana Buddha. Di Indonesia, perayaan nasional dipusatkan di kawasan Candi Borobudur dan Mendut.",
+      "Asadha memperingati khotbah pertama; Kathina adalah masa persembahan jubah kepada Sangha setelah masa vassa; Magha Puja memperingati berkumpulnya 1.250 arahat."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "waisak",
+      "vesak",
+      "borobudur",
+      "asadha",
+      "kathina",
+      "magha puja"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "bud-siklus-pernikahan-kematian",
+    "faith": "buddha",
+    "streams": [],
+    "section": "siklus-hidup",
+    "title": "Pernikahan dan kematian dalam tradisi Buddhis",
+    "summary": "Pemberkatan di vihara dan upacara duka dengan paritta serta pelimpahan jasa.",
+    "body": [
+      "Pernikahan Buddhis umumnya diberkati oleh pandita atau bhikkhu di vihara, kemudian dicatat di Dukcapil.",
+      "Upacara duka diisi pembacaan paritta atau sutra dan pelimpahan jasa (pattidana) bagi almarhum."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "pernikahan",
+      "kematian",
+      "pattidana",
+      "pelimpahan jasa",
+      "pandita"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "bud-aturan-etika-vihara",
+    "faith": "buddha",
+    "streams": [],
+    "section": "aturan-etika",
+    "title": "Adab di vihara dan uposatha",
+    "summary": "Tata krama di vihara dan latihan delapan sila pada hari uposatha.",
+    "body": [
+      "Pada hari uposatha (purnama dan bulan gelap), umat dapat melatih delapan sila (atthasila)."
+    ],
+    "steps": [
+      {
+        "text": "Lepas alas kaki sebelum masuk Dhammasala.",
+        "why": "Menjaga kebersihan dan hormat."
+      },
+      {
+        "text": "Jangan mengarahkan kaki ke rupang Buddha atau bhikkhu.",
+        "why": "Kaki dianggap bagian tubuh yang rendah."
+      },
+      {
+        "text": "Duduk lebih rendah dari bhikkhu dan berbicara dengan sopan.",
+        "why": "Hormat kepada Sangha."
+      },
+      {
+        "text": "Dalam tradisi Theravada, perempuan tidak bersentuhan langsung dengan bhikkhu.",
+        "why": "Bagian dari vinaya bhikkhu."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "adab",
+      "vihara",
+      "uposatha",
+      "atthasila",
+      "bhikkhu"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "bud-aliran-indonesia",
+    "faith": "buddha",
+    "streams": [],
+    "section": "perbedaan-aliran",
+    "title": "Aliran Buddha di Indonesia",
+    "summary": "Theravada, Mahayana, Tantrayana, Buddhayana, Maitreya, dan Nichiren.",
+    "body": [
+      "Wadah organisasi antara lain Perwakilan Umat Buddha Indonesia (WALUBI) dan Konferensi Agung Sangha Indonesia (KASI)."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Theravada",
+        "text": "Merujuk Kanon Pali; Sangha Theravada Indonesia.",
+        "stream": "theravada"
+      },
+      {
+        "label": "Mahayana",
+        "text": "Banyak dijalankan di vihara tradisi Tionghoa.",
+        "stream": "mahayana"
+      },
+      {
+        "label": "Tantrayana / Vajrayana",
+        "text": "Termasuk tradisi Kasogatan dan Tibet.",
+        "stream": "tantrayana"
+      },
+      {
+        "label": "Buddhayana",
+        "text": "Dirintis Bhikkhu Ashin Jinarakkhita, memadukan berbagai aliran.",
+        "stream": "buddhayana"
+      },
+      {
+        "label": "Maitreya",
+        "text": "Majelis Pandita Buddha Maitreya Indonesia.",
+        "stream": "maitreya"
+      },
+      {
+        "label": "Nichiren",
+        "text": "Berpusat pada Sutra Bunga Teratai.",
+        "stream": "nichiren"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "theravada",
+      "mahayana",
+      "tantrayana",
+      "buddhayana",
+      "maitreya",
+      "nichiren",
+      "walubi",
+      "kasi"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "bud-sejarah-indonesia",
+    "faith": "buddha",
+    "streams": [],
+    "section": "sejarah-tokoh",
+    "title": "Sejarah Buddha di Nusantara",
+    "summary": "Sriwijaya, Borobudur, dan kebangkitan Buddhis modern.",
+    "body": [
+      "Sriwijaya dikenal sebagai pusat pembelajaran Buddhis; biksu I-Tsing dari Tiongkok singgah dan belajar di sana pada abad ke-7.",
+      "Candi Borobudur dibangun pada masa Wangsa Syailendra sekitar abad ke-8 hingga ke-9.",
+      "Kebangkitan Buddhis modern di Indonesia antara lain ditandai perayaan Waisak di Borobudur pada 1953 dan peran Bhikkhu Ashin Jinarakkhita."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "sejarah",
+      "sriwijaya",
+      "borobudur",
+      "syailendra",
+      "i-tsing",
+      "ashin jinarakkhita"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  }
+]

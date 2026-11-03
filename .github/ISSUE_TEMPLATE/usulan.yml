@@ -1,0 +1,14 @@
+name: Usulan entri baru
+description: Topik ajaran, ritual, atau upacara yang belum ada di Pustaka.
+labels: ["usulan"]
+body:
+  - type: textarea
+    id: topic
+    attributes:
+      label: Topik yang diusulkan
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Sumber yang kamu ketahui (opsional)

@@ -1,0 +1,225 @@
+[
+  {
+    "id": "lin-melayat",
+    "faith": "lintas",
+    "streams": [],
+    "section": "aturan-etika",
+    "title": "Melayat teman yang berbeda iman",
+    "summary": "Cara hormat menghadiri duka dari tradisi yang berbeda.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Berpakaian sopan dengan warna gelap atau netral; di rumah duka Tionghoa, hindari pakaian merah.",
+        "why": "Menghormati suasana duka."
+      },
+      {
+        "text": "Ucapkan belasungkawa sederhana, mis. 'Turut berduka cita.'",
+        "why": "Kesederhanaan lebih menghibur."
+      },
+      {
+        "text": "Ikuti sikap hormat tanpa harus melakukan ritual agama lain; berdiri diam atau menundukkan kepala sudah cukup.",
+        "why": "Menghormati tanpa melanggar keyakinan sendiri."
+      },
+      {
+        "text": "Bila memberi sumbangan duka, masukkan ke amplop putih polos.",
+        "why": "Lazim di banyak tradisi."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Muslim",
+        "text": "Jenazah biasanya segera dimakamkan; doakan dalam hati dan hadir di rumah duka atau takziah.",
+        "stream": null
+      },
+      {
+        "label": "Tionghoa",
+        "text": "Bila ditawari hio, boleh menolak dengan sopan dan cukup membungkuk.",
+        "stream": null
+      },
+      {
+        "label": "Kristen/Katolik",
+        "text": "Ikuti ibadah penghiburan dengan tenang; tidak wajib ikut berdoa atau bernyanyi.",
+        "stream": null
+      },
+      {
+        "label": "Hindu Bali",
+        "text": "Ngaben bisa berlangsung lama setelah kematian; tanyakan waktu kunjungan yang tepat.",
+        "stream": null
+      }
+    ],
+    "links": [],
+    "tags": [
+      "melayat",
+      "duka",
+      "pemakaman",
+      "lintas iman",
+      "takziah",
+      "hio",
+      "amplop"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau bersama reviewer lintas iman / FKUB"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "lin-pernikahan",
+    "faith": "lintas",
+    "streams": [],
+    "section": "aturan-etika",
+    "title": "Menghadiri pernikahan berbeda iman",
+    "summary": "Etiket tamu pada akad nikah, pemberkatan, atau Sangjit.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Tanyakan dress code; hindari pakaian serba putih (sering untuk pengantin) atau serba hitam pada pesta Tionghoa.",
+        "why": "Menghormati tuan rumah."
+      },
+      {
+        "text": "Pada akad nikah atau pemberkatan, duduk tenang dan matikan suara ponsel.",
+        "why": "Ini momen sakral."
+      },
+      {
+        "text": "Angpao atau amplop diberikan dengan dua tangan.",
+        "why": "Tanda hormat."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "pernikahan",
+      "nikah",
+      "tamu",
+      "angpao",
+      "dress code",
+      "lintas iman"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau bersama reviewer lintas iman / FKUB"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "lin-hari-raya",
+    "faith": "lintas",
+    "streams": [],
+    "section": "aturan-etika",
+    "title": "Berkunjung saat hari raya",
+    "summary": "Lebaran, Natal, Imlek, Galungan, dan Waisak: ucapan dan sikap yang tepat.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Ucapkan selamat sesuai hari raya: 'Selamat Idulfitri, mohon maaf lahir dan batin', 'Selamat Natal', 'Gong Xi Fa Cai / Sin Cun Kiong Hi', 'Rahajeng Galungan', 'Selamat Hari Raya Waisak'.",
+        "why": "Ucapan yang tepat menunjukkan perhatian."
+      },
+      {
+        "text": "Saat open house, hormati aturan makanan tuan rumah dan tamu lain.",
+        "why": "Mis. tidak membawa makanan berbabi ke rumah Muslim."
+      },
+      {
+        "text": "Bila diberi angpao atau parsel, terima dengan dua tangan dan ucapkan terima kasih.",
+        "why": "Tanda hormat."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "hari raya",
+      "lebaran",
+      "natal",
+      "imlek",
+      "galungan",
+      "waisak",
+      "ucapan",
+      "open house"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau bersama reviewer lintas iman / FKUB"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "lin-rumah-ibadah",
+    "faith": "lintas",
+    "streams": [],
+    "section": "aturan-etika",
+    "title": "Mengunjungi rumah ibadah agama lain",
+    "summary": "Pedoman umum sebagai tamu di masjid, gereja, pura, vihara, dan klenteng.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Berpakaian sopan; siapkan kain/kerudung bila diperlukan.",
+        "why": "Banyak rumah ibadah meminjamkannya."
+      },
+      {
+        "text": "Lepas alas kaki bila diminta.",
+        "why": "Menjaga kesucian ruang."
+      },
+      {
+        "text": "Mintalah izin sebelum memotret, dan jangan menyentuh benda suci.",
+        "why": "Menghormati umat yang beribadah."
+      },
+      {
+        "text": "Hindari kunjungan wisata saat ibadah berlangsung, kecuali diundang.",
+        "why": "Tidak mengganggu kekhusyukan."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "kunjungan",
+      "rumah ibadah",
+      "tamu",
+      "masjid",
+      "gereja",
+      "pura",
+      "vihara",
+      "klenteng",
+      "foto"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau bersama reviewer lintas iman / FKUB"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  }
+]

@@ -1,0 +1,34 @@
+name: Daftar / perbarui rumah ibadah
+description: Untuk pengurus rumah ibadah. Info donasi hanya tampil setelah verifikasi langsung.
+labels: ["rumah-ibadah"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Nama rumah ibadah
+    validations:
+      required: true
+  - type: input
+    id: city
+    attributes:
+      label: Kota / provinsi
+    validations:
+      required: true
+  - type: dropdown
+    id: faith
+    attributes:
+      label: Agama / tradisi
+      options: [Islam, Kristen Protestan, Katolik, Hindu, Buddha, Khonghucu / Tri Dharma, Lainnya]
+  - type: textarea
+    id: info
+    attributes:
+      label: Jadwal ibadah, kontak resmi, situs web
+  - type: textarea
+    id: donation
+    attributes:
+      label: Info donasi resmi (rekening atas nama lembaga / QRIS resmi)
+      description: Akan diverifikasi dengan menghubungi pengurus melalui kontak resmi sebelum ditampilkan.
+  - type: input
+    id: contact
+    attributes:
+      label: Kontak pengurus untuk verifikasi (tidak dipublikasikan di aplikasi)

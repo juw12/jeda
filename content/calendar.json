@@ -1,0 +1,124 @@
+{
+  "source": "SKB 3 Menteri tentang Hari Libur Nasional dan Cuti Bersama Tahun 2027 (diumumkan September 2026)",
+  "overrides": [
+    {
+      "date": "2027-01-05",
+      "id": "isra-mikraj",
+      "name": "Isra Mikraj",
+      "faith": "islam",
+      "official": true
+    },
+    {
+      "date": "2027-01-13",
+      "id": "galungan",
+      "name": "Galungan",
+      "faith": "hindu",
+      "official": true
+    },
+    {
+      "date": "2027-01-23",
+      "id": "kuningan",
+      "name": "Kuningan",
+      "faith": "hindu",
+      "official": true
+    },
+    {
+      "date": "2027-02-06",
+      "id": "imlek",
+      "name": "Tahun Baru Imlek (Sin Cia)",
+      "faith": "khonghucu",
+      "official": true
+    },
+    {
+      "date": "2027-03-08",
+      "id": "nyepi",
+      "name": "Hari Suci Nyepi (Tahun Baru Saka)",
+      "faith": "hindu",
+      "official": true
+    },
+    {
+      "date": "2027-03-10",
+      "id": "idulfitri",
+      "name": "Idulfitri (1 Syawal)",
+      "faith": "islam",
+      "official": true
+    },
+    {
+      "date": "2027-03-26",
+      "id": "jumat-agung",
+      "name": "Jumat Agung (Wafat Isa Almasih)",
+      "faith": "kristen",
+      "official": true
+    },
+    {
+      "date": "2027-03-28",
+      "id": "paskah",
+      "name": "Paskah",
+      "faith": "kristen",
+      "official": true
+    },
+    {
+      "date": "2027-05-06",
+      "id": "kenaikan",
+      "name": "Kenaikan Isa Almasih",
+      "faith": "kristen",
+      "official": true
+    },
+    {
+      "date": "2027-05-17",
+      "id": "iduladha",
+      "name": "Iduladha (10 Zulhijah)",
+      "faith": "islam",
+      "official": true
+    },
+    {
+      "date": "2027-05-20",
+      "id": "waisak",
+      "name": "Hari Raya Trisuci Waisak",
+      "faith": "buddha",
+      "official": true
+    },
+    {
+      "date": "2027-06-06",
+      "id": "tahun-baru-islam",
+      "name": "Tahun Baru Islam (1 Muharram)",
+      "faith": "islam",
+      "official": true
+    },
+    {
+      "date": "2027-08-11",
+      "id": "galungan",
+      "name": "Galungan",
+      "faith": "hindu",
+      "official": true
+    },
+    {
+      "date": "2027-08-15",
+      "id": "maulid",
+      "name": "Maulid Nabi Muhammad SAW",
+      "faith": "islam",
+      "official": true
+    },
+    {
+      "date": "2027-08-21",
+      "id": "kuningan",
+      "name": "Kuningan",
+      "faith": "hindu",
+      "official": true
+    },
+    {
+      "date": "2027-12-25",
+      "id": "natal",
+      "name": "Natal",
+      "faith": "kristen",
+      "official": true
+    },
+    {
+      "date": "2027-12-26",
+      "id": "isra-mikraj",
+      "name": "Isra Mikraj",
+      "faith": "islam",
+      "official": true
+    }
+  ]
+}

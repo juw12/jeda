@@ -1,0 +1,747 @@
+{
+  "sections": [
+    {
+      "id": "pokok-ajaran",
+      "name": "Pokok Ajaran",
+      "icon": "☯",
+      "desc": "Keyakinan dan ajaran dasar"
+    },
+    {
+      "id": "kitab-suci",
+      "name": "Kitab Suci & Sumber",
+      "icon": "📜",
+      "desc": "Kitab, strukturnya, dan cara membacanya"
+    },
+    {
+      "id": "ibadah-harian",
+      "name": "Ibadah Harian",
+      "icon": "🕯",
+      "desc": "Tata cara ibadah sehari-hari, langkah demi langkah"
+    },
+    {
+      "id": "hari-raya",
+      "name": "Hari Raya & Kalender",
+      "icon": "🏮",
+      "desc": "Makna, persiapan, dan tata cara hari suci"
+    },
+    {
+      "id": "siklus-hidup",
+      "name": "Siklus Hidup",
+      "icon": "🌱",
+      "desc": "Kelahiran, pernikahan, kematian, peringatan"
+    },
+    {
+      "id": "aturan-etika",
+      "name": "Aturan & Etika",
+      "icon": "⚖",
+      "desc": "Kewajiban, larangan, dan adab beserta alasannya"
+    },
+    {
+      "id": "perbedaan-aliran",
+      "name": "Perbedaan Aliran",
+      "icon": "🔀",
+      "desc": "Perbedaan mazhab, aliran, dan daerah secara berdampingan"
+    },
+    {
+      "id": "sejarah-tokoh",
+      "name": "Sejarah & Tokoh di Indonesia",
+      "icon": "🏛",
+      "desc": "Sejarah lokal, tokoh, dan tempat bersejarah"
+    }
+  ],
+  "faiths": [
+    {
+      "id": "islam",
+      "name": "Islam",
+      "short": "Islam",
+      "icon": "☪",
+      "color": "#3fa36b",
+      "scene": "masjid",
+      "spaceName": "Masjid",
+      "pustaka": true,
+      "greeting": "Assalamu'alaikum. Duduklah sejenak, tenangkan hati dengan zikir.",
+      "virtualNote": "Ruang ini membantu zikir dan belajar. Sholat wajib tetap dilaksanakan secara nyata sesuai syariat; Hening tidak menampilkan sholat sebagai permainan.",
+      "visitTips": [
+        "Berpakaian sopan dan menutup aurat; perempuan umumnya diminta menutup rambut saat masuk area sholat.",
+        "Lepas alas kaki di area suci dan jangan melintas tepat di depan orang yang sedang sholat.",
+        "Hindari berkunjung tepat saat sholat berjamaah kecuali diundang; tanyakan kepada pengurus (takmir)."
+      ],
+      "streams": [
+        {
+          "id": "nu",
+          "name": "Nahdlatul Ulama (NU)",
+          "desc": "Ahlussunnah wal Jamaah, mazhab Syafi'i, tradisi pesantren"
+        },
+        {
+          "id": "muhammadiyah",
+          "name": "Muhammadiyah",
+          "desc": "Gerakan tajdid, Majelis Tarjih"
+        },
+        {
+          "id": "persis",
+          "name": "Persatuan Islam (Persis)",
+          "desc": "Dewan Hisbah"
+        },
+        {
+          "id": "al-washliyah",
+          "name": "Al-Washliyah",
+          "desc": "Berbasis di Sumatera Utara, mazhab Syafi'i"
+        },
+        {
+          "id": "islam-umum",
+          "name": "Umum / tidak berafiliasi",
+          "desc": "Panduan umum dengan perbedaan yang ditandai"
+        }
+      ],
+      "rituals": [
+        {
+          "type": "prayerTimes",
+          "id": "islam-jadwal",
+          "title": "Jadwal Sholat",
+          "desc": "Perkiraan waktu sholat untuk kotamu.",
+          "entry": "isl-ibadah-sholat"
+        },
+        {
+          "type": "counter",
+          "id": "islam-tasbih",
+          "title": "Tasbih Setelah Sholat",
+          "desc": "Subhanallah, Alhamdulillah, Allahu Akbar, masing-masing 33 kali.",
+          "style": "beads",
+          "entry": "isl-ibadah-dzikir",
+          "phases": [
+            {
+              "label": "Subhanallah",
+              "script": "سُبْحَانَ اللّٰهِ",
+              "n": 33
+            },
+            {
+              "label": "Alhamdulillah",
+              "script": "اَلْحَمْدُ لِلّٰهِ",
+              "n": 33
+            },
+            {
+              "label": "Allahu Akbar",
+              "script": "اَللّٰهُ أَكْبَرُ",
+              "n": 33
+            }
+          ],
+          "doneText": "Selesai 99 zikir. Lengkapi dengan tahlil dan doa sesuai tuntunan yang kamu ikuti."
+        },
+        {
+          "type": "link",
+          "id": "islam-quran",
+          "title": "Al-Qur'an & Murottal",
+          "desc": "Baca dan dengarkan Al-Qur'an dari sumber resmi Kementerian Agama.",
+          "url": "https://quran.kemenag.go.id/",
+          "linkLabel": "Buka Qur'an Kemenag",
+          "linkNote": "Pembaca di dalam Hening akan aktif setelah izin teks dan terjemahan diperoleh."
+        },
+        {
+          "type": "timer",
+          "id": "islam-tafakur",
+          "title": "Tafakur Hening",
+          "desc": "Waktu tenang untuk merenung dan berdoa.",
+          "durations": [
+            5,
+            10,
+            15
+          ]
+        },
+        {
+          "type": "ambience",
+          "id": "islam-ambience",
+          "title": "Suasana",
+          "options": [
+            "night",
+            "rain",
+            "wind"
+          ]
+        },
+        {
+          "type": "daily",
+          "id": "islam-daily",
+          "title": "Bacaan Hari Ini"
+        }
+      ]
+    },
+    {
+      "id": "protestan",
+      "name": "Kristen Protestan",
+      "short": "Protestan",
+      "icon": "✝",
+      "color": "#6c8fe0",
+      "scene": "gereja",
+      "spaceName": "Gereja",
+      "pustaka": true,
+      "greeting": "Damai sejahtera. Masuklah dalam keheningan dan bawa doamu.",
+      "virtualNote": "Ruang ini untuk doa pribadi dan saat teduh. Persekutuan ibadah, baptisan, dan Perjamuan Kudus tetap di gereja.",
+      "visitTips": [
+        "Berpakaian sopan; ikuti berdiri dan duduk jemaat dengan hormat.",
+        "Tamu tidak diharapkan mengikuti Perjamuan Kudus; cukup duduk dengan tenang.",
+        "Matikan nada dering dan tanyakan dahulu sebelum memotret."
+      ],
+      "streams": [
+        {
+          "id": "lutheran",
+          "name": "Lutheran (mis. HKBP, GKPI)",
+          "desc": "Tradisi Martin Luther"
+        },
+        {
+          "id": "calvinis",
+          "name": "Calvinis / Reformed (mis. GKI, GPIB, GKJ, GMIM)",
+          "desc": "Tradisi Yohanes Calvin"
+        },
+        {
+          "id": "pentakosta",
+          "name": "Pentakosta / Karismatik (mis. GPdI, GBI)",
+          "desc": "Penekanan karunia Roh Kudus"
+        },
+        {
+          "id": "baptis",
+          "name": "Baptis",
+          "desc": "Baptisan orang percaya"
+        },
+        {
+          "id": "advent",
+          "name": "Advent",
+          "desc": "Sabat hari Sabtu"
+        },
+        {
+          "id": "protestan-umum",
+          "name": "Umum / lainnya",
+          "desc": "Panduan umum"
+        }
+      ],
+      "rituals": [
+        {
+          "type": "candle",
+          "id": "protestan-lilin",
+          "title": "Lilin Doa",
+          "desc": "Nyalakan lilin dan tuliskan doamu.",
+          "entry": "pro-ibadah-doa"
+        },
+        {
+          "type": "timer",
+          "id": "protestan-saat-teduh",
+          "title": "Saat Teduh",
+          "desc": "Waktu tenang untuk berdoa dan merenungkan firman.",
+          "durations": [
+            5,
+            10,
+            20
+          ],
+          "entry": "pro-ibadah-doa"
+        },
+        {
+          "type": "link",
+          "id": "protestan-alkitab",
+          "title": "Alkitab",
+          "desc": "Baca Alkitab dari sumber resmi.",
+          "url": "https://alkitab.sabda.org/",
+          "linkLabel": "Buka Alkitab SABDA",
+          "linkNote": "Terjemahan Baru adalah hak cipta LAI; pembaca di dalam Hening menunggu izin."
+        },
+        {
+          "type": "ambience",
+          "id": "protestan-ambience",
+          "title": "Suasana",
+          "options": [
+            "chimes",
+            "rain",
+            "wind"
+          ]
+        },
+        {
+          "type": "daily",
+          "id": "protestan-daily",
+          "title": "Bacaan Hari Ini"
+        }
+      ]
+    },
+    {
+      "id": "katolik",
+      "name": "Katolik",
+      "short": "Katolik",
+      "icon": "✟",
+      "color": "#9b7fd1",
+      "scene": "katedral",
+      "spaceName": "Gereja & Gua Maria",
+      "pustaka": true,
+      "greeting": "Berkah Dalem. Hening sejenak di hadirat Tuhan.",
+      "virtualNote": "Ruang ini untuk devosi pribadi. Ekaristi dan sakramen lainnya tidak dapat digantikan secara virtual.",
+      "visitTips": [
+        "Berpakaian sopan dan menjaga keheningan di dalam gereja.",
+        "Tamu non-Katolik tidak menerima komuni; boleh maju dengan tangan bersilang di dada untuk menerima berkat, atau tetap duduk.",
+        "Jangan melintas di depan altar atau tabernakel tanpa keperluan."
+      ],
+      "streams": [
+        {
+          "id": "katolik-roma",
+          "name": "Katolik Roma (KWI)",
+          "desc": "Ritus Latin"
+        }
+      ],
+      "rituals": [
+        {
+          "type": "rosary",
+          "id": "katolik-rosario",
+          "title": "Doa Rosario",
+          "desc": "Rosario dengan peristiwa sesuai hari ini.",
+          "entry": "kat-ibadah-rosario"
+        },
+        {
+          "type": "candle",
+          "id": "katolik-lilin",
+          "title": "Lilin di Gua Maria",
+          "desc": "Nyalakan lilin dan sampaikan ujudmu.",
+          "intentionLabel": "Ujud doa (opsional)"
+        },
+        {
+          "type": "fixedTimes",
+          "id": "katolik-angelus",
+          "title": "Doa Malaikat Tuhan (Angelus)",
+          "desc": "Pukul 06.00, 12.00, dan 18.00.",
+          "times": [
+            "06:00",
+            "12:00",
+            "18:00"
+          ],
+          "entry": "kat-ibadah-angelus"
+        },
+        {
+          "type": "timer",
+          "id": "katolik-hening",
+          "title": "Hening di Hadirat Tuhan",
+          "durations": [
+            5,
+            10,
+            20
+          ]
+        },
+        {
+          "type": "ambience",
+          "id": "katolik-ambience",
+          "title": "Suasana",
+          "options": [
+            "temple",
+            "night",
+            "rain"
+          ]
+        },
+        {
+          "type": "daily",
+          "id": "katolik-daily",
+          "title": "Bacaan Hari Ini"
+        }
+      ]
+    },
+    {
+      "id": "hindu",
+      "name": "Hindu",
+      "short": "Hindu",
+      "icon": "ॐ",
+      "color": "#e3b341",
+      "scene": "pura",
+      "spaceName": "Pura",
+      "pustaka": true,
+      "greeting": "Om Swastyastu. Mari menenangkan pikiran dan menghaturkan bakti.",
+      "virtualNote": "Ruang ini membantu belajar dan bermeditasi. Persembahyangan dan upacara tetap dilakukan sesuai tuntunan di pura dan rumah.",
+      "visitTips": [
+        "Kenakan kain (kamen) dan selendang/senteng di pinggang; biasanya bisa dipinjam di pura wisata.",
+        "Perempuan yang sedang haid dan orang yang sedang berduka (cuntaka) tidak memasuki area pura.",
+        "Jangan berdiri lebih tinggi dari pemangku atau duduk di atas bangunan suci."
+      ],
+      "streams": [
+        {
+          "id": "hindu-bali",
+          "name": "Hindu Bali (PHDI)",
+          "desc": "Tradisi Bali dan diaspora Bali"
+        },
+        {
+          "id": "tengger",
+          "name": "Hindu Tengger",
+          "desc": "Komunitas Tengger, Jawa Timur"
+        },
+        {
+          "id": "kaharingan",
+          "name": "Hindu Kaharingan",
+          "desc": "Komunitas Dayak, Kalimantan"
+        },
+        {
+          "id": "hindu-india",
+          "name": "Hindu India-Indonesia",
+          "desc": "Komunitas Tamil dan India, mis. Medan"
+        },
+        {
+          "id": "hindu-umum",
+          "name": "Umum",
+          "desc": "Panduan umum"
+        }
+      ],
+      "rituals": [
+        {
+          "type": "offering",
+          "id": "hindu-canang",
+          "title": "Canang Sari",
+          "desc": "Susun bunga menurut arah mata angin, lalu haturkan.",
+          "entry": "hin-ibadah-canang"
+        },
+        {
+          "type": "incense",
+          "id": "hindu-dupa",
+          "title": "Dupa",
+          "desc": "Nyalakan dupa sebagai pengantar doa.",
+          "sticks": 3,
+          "burner": "tempat dupa"
+        },
+        {
+          "type": "fixedTimes",
+          "id": "hindu-trisandhya",
+          "title": "Puja Tri Sandhya",
+          "desc": "Tiga kali sehari: pagi, siang, dan sore.",
+          "times": [
+            "06:00",
+            "12:00",
+            "18:00"
+          ],
+          "entry": "hin-ibadah-trisandhya"
+        },
+        {
+          "type": "timer",
+          "id": "hindu-meditasi",
+          "title": "Dhyana (Meditasi)",
+          "durations": [
+            5,
+            10,
+            20
+          ]
+        },
+        {
+          "type": "ambience",
+          "id": "hindu-ambience",
+          "title": "Suasana",
+          "options": [
+            "gamelan",
+            "river",
+            "night"
+          ]
+        },
+        {
+          "type": "daily",
+          "id": "hindu-daily",
+          "title": "Bacaan Hari Ini"
+        }
+      ],
+      "specialDays": [
+        {
+          "date": "2027-03-08",
+          "text": "Hari Suci Nyepi. Umat Hindu menjalankan Catur Brata Penyepian. Hening meredupkan ruang ini sebagai bentuk hormat."
+        }
+      ]
+    },
+    {
+      "id": "buddha",
+      "name": "Buddha",
+      "short": "Buddha",
+      "icon": "☸",
+      "color": "#e0902c",
+      "scene": "vihara",
+      "spaceName": "Vihara",
+      "pustaka": true,
+      "greeting": "Namo Buddhaya. Semoga semua makhluk hidup berbahagia.",
+      "virtualNote": "Ruang ini untuk perenungan dan meditasi. Puja bakti bersama Sangha tetap bermakna di vihara.",
+      "visitTips": [
+        "Lepas alas kaki sebelum memasuki ruang Dhammasala.",
+        "Jangan menunjuk rupang Buddha dengan kaki; duduk dengan kaki dilipat ke belakang atau bersila.",
+        "Dalam tradisi Theravada, perempuan tidak bersentuhan langsung dengan bhikkhu."
+      ],
+      "streams": [
+        {
+          "id": "theravada",
+          "name": "Theravada",
+          "desc": "Kanon Pali"
+        },
+        {
+          "id": "mahayana",
+          "name": "Mahayana",
+          "desc": "Sutra Mahayana, tradisi Tionghoa"
+        },
+        {
+          "id": "tantrayana",
+          "name": "Tantrayana / Vajrayana",
+          "desc": "Tradisi Tibet dan Kasogatan"
+        },
+        {
+          "id": "buddhayana",
+          "name": "Buddhayana",
+          "desc": "Perpaduan aliran, dirintis Ashin Jinarakkhita"
+        },
+        {
+          "id": "maitreya",
+          "name": "Maitreya",
+          "desc": "Majelis Pandita Buddha Maitreya Indonesia"
+        },
+        {
+          "id": "nichiren",
+          "name": "Nichiren",
+          "desc": "Sutra Bunga Teratai"
+        }
+      ],
+      "rituals": [
+        {
+          "type": "incense",
+          "id": "buddha-dupa",
+          "title": "Persembahan Dupa",
+          "desc": "Tiga batang dupa untuk Tiga Permata.",
+          "sticks": 3,
+          "burner": "hiolo",
+          "entry": "bud-ibadah-pujabakti"
+        },
+        {
+          "type": "counter",
+          "id": "buddha-namaskara",
+          "title": "Namaskara",
+          "desc": "Bersujud penuh hormat. Pilih 3 atau 108 kali.",
+          "style": "bow",
+          "presets": [
+            3,
+            108
+          ],
+          "phases": [
+            {
+              "label": "Namaskara",
+              "n": 3
+            }
+          ],
+          "entry": "bud-ibadah-pujabakti"
+        },
+        {
+          "type": "counter",
+          "id": "buddha-mala",
+          "title": "Mala 108",
+          "desc": "Hitung lafal atau perenungan dengan 108 butir mala.",
+          "style": "beads",
+          "phases": [
+            {
+              "label": "Butir mala",
+              "n": 108
+            }
+          ]
+        },
+        {
+          "type": "candle",
+          "id": "buddha-pelita",
+          "title": "Pelita",
+          "desc": "Nyalakan pelita sebagai lambang cahaya kebijaksanaan.",
+          "intention": false
+        },
+        {
+          "type": "timer",
+          "id": "buddha-meditasi",
+          "title": "Meditasi",
+          "desc": "Perhatikan napas masuk dan keluar.",
+          "durations": [
+            5,
+            10,
+            20,
+            30
+          ],
+          "entry": "bud-ibadah-meditasi"
+        },
+        {
+          "type": "ambience",
+          "id": "buddha-ambience",
+          "title": "Suasana",
+          "options": [
+            "temple",
+            "rain",
+            "night"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "khonghucu",
+      "name": "Khonghucu & Tradisi Tionghoa",
+      "short": "Khonghucu",
+      "icon": "🏮",
+      "color": "#d4423a",
+      "scene": "klenteng",
+      "spaceName": "Klenteng",
+      "pustaka": true,
+      "flagship": true,
+      "greeting": "Selamat datang. Wei De Dong Tian, hanya kebajikan yang berkenan kepada Tuhan.",
+      "virtualNote": "Ruang ini untuk perenungan dan belajar tradisi. Sembahyang di klenteng, litang, dan meja abu rumah tetap yang utama.",
+      "visitTips": [
+        "Ikuti petunjuk pengurus: umumnya masuk lewat pintu Naga dan keluar lewat pintu Harimau.",
+        "Jangan menginjak ambang pintu dan jangan menunjuk patung atau altar.",
+        "Hio dinyalakan lalu apinya dikibas padam, tidak ditiup."
+      ],
+      "streams": [
+        {
+          "id": "khonghucu-matakin",
+          "name": "Agama Khonghucu (MATAKIN)",
+          "desc": "Litang, rohaniwan Jiao Sheng, Wenshi, Xueshi"
+        },
+        {
+          "id": "tridharma",
+          "name": "Tri Dharma / klenteng",
+          "desc": "Perpaduan Buddha, Tao, dan Khonghucu (Sam Kauw)"
+        },
+        {
+          "id": "tao",
+          "name": "Tao",
+          "desc": "Tradisi Taois"
+        },
+        {
+          "id": "tradisi-tionghoa",
+          "name": "Adat Tionghoa (keluarga)",
+          "desc": "Adat leluhur dan hari raya Tionghoa"
+        }
+      ],
+      "dialects": [
+        {
+          "id": "hokkien",
+          "name": "Hokkien",
+          "region": "Jawa, Medan, Riau, dan banyak kota lain"
+        },
+        {
+          "id": "hakka",
+          "name": "Hakka (Khek)",
+          "region": "Kalimantan Barat (Singkawang), Bangka Belitung, Jakarta"
+        },
+        {
+          "id": "teochew",
+          "name": "Teochew (Tiociu)",
+          "region": "Pontianak, Riau, Jambi"
+        },
+        {
+          "id": "kanton",
+          "name": "Kanton (Konghu)",
+          "region": "Medan, Makassar, Jakarta"
+        },
+        {
+          "id": "hainan",
+          "name": "Hainan",
+          "region": "Tersebar di berbagai kota"
+        },
+        {
+          "id": "peranakan",
+          "name": "Peranakan (mis. Cina Benteng)",
+          "region": "Tangerang, Jawa, Sumatera"
+        },
+        {
+          "id": "dialek-tidak-tahu",
+          "name": "Tidak tahu / campuran",
+          "region": "Tampilkan semua variasi"
+        }
+      ],
+      "rituals": [
+        {
+          "type": "incense",
+          "id": "khc-hio",
+          "title": "Pasang Hio",
+          "desc": "Tiga batang hio, kedua tangan, hening sejenak.",
+          "sticks": 3,
+          "burner": "hiolo",
+          "entry": "khc-ibadah-hio"
+        },
+        {
+          "type": "ciamsi",
+          "id": "khc-ciamsi",
+          "title": "Ciam Si",
+          "desc": "Kocok tabung ciam, lalu konfirmasi dengan poe.",
+          "set": "umum-100",
+          "count": 100,
+          "entry": "khc-ibadah-ciamsi"
+        },
+        {
+          "type": "poe",
+          "id": "khc-poe",
+          "title": "Poe (Jiaobei)",
+          "desc": "Lempar sepasang poe untuk bertanya dengan hormat.",
+          "entry": "khc-ibadah-ciamsi"
+        },
+        {
+          "type": "burn",
+          "id": "khc-kimcua",
+          "title": "Bakar Kim Cua",
+          "desc": "Kertas sembahyang dibakar di kim lo.",
+          "entry": "khc-hariraya-cengbeng"
+        },
+        {
+          "type": "ancestor",
+          "id": "khc-meja-abu",
+          "title": "Meja Abu Leluhur",
+          "desc": "Papan nama leluhur dan persembahan harian.",
+          "entry": "khc-ibadah-leluhur"
+        },
+        {
+          "type": "timer",
+          "id": "khc-hening",
+          "title": "Hening Sejenak",
+          "durations": [
+            3,
+            10,
+            20
+          ]
+        },
+        {
+          "type": "ambience",
+          "id": "khc-ambience",
+          "title": "Suasana",
+          "options": [
+            "temple",
+            "chimes",
+            "rain"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alam",
+      "name": "Ruang Alam (tanpa agama)",
+      "short": "Alam",
+      "icon": "🌿",
+      "color": "#6aa36f",
+      "scene": "alam",
+      "spaceName": "Ruang Alam",
+      "pustaka": false,
+      "greeting": "Tidak perlu apa-apa. Cukup bernapas dan beristirahat di sini.",
+      "virtualNote": "",
+      "visitTips": [],
+      "streams": [],
+      "rituals": [
+        {
+          "type": "breath",
+          "id": "alam-napas",
+          "title": "Napas Tenang",
+          "desc": "Ikuti lingkaran: tarik, tahan, embuskan."
+        },
+        {
+          "type": "ambience",
+          "id": "alam-ambience",
+          "title": "Suara Alam",
+          "options": [
+            "rain",
+            "river",
+            "wind",
+            "night",
+            "chimes"
+          ]
+        },
+        {
+          "type": "timer",
+          "id": "alam-istirahat",
+          "title": "Istirahat",
+          "durations": [
+            3,
+            5,
+            10,
+            20
+          ]
+        }
+      ]
+    }
+  ]
+}

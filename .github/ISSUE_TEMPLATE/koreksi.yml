@@ -1,0 +1,32 @@
+name: Laporkan koreksi
+description: Ada yang kurang tepat di Pustaka atau Panduan Upacara?
+labels: ["koreksi"]
+body:
+  - type: input
+    id: entry
+    attributes:
+      label: Entri / halaman
+      description: ID entri atau tautan halaman (otomatis terisi di judul bila dari aplikasi)
+  - type: textarea
+    id: issue
+    attributes:
+      label: Apa yang perlu diperbaiki?
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Sumber rujukan
+      description: Kitab, ayat, buku, keputusan majelis, atau nama pemuka agama/klenteng yang mengajarkan
+    validations:
+      required: true
+  - type: dropdown
+    id: role
+    attributes:
+      label: Kamu sebagai
+      options:
+        - Umat
+        - Pemuka agama / rohaniwan
+        - Pengurus rumah ibadah
+        - Akademisi
+        - Lainnya

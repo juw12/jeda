@@ -1,0 +1,571 @@
+[
+  {
+    "id": "upc-ceng-beng",
+    "faith": "khonghucu",
+    "title": "Ceng Beng: ziarah makam leluhur",
+    "summary": "Daftar persiapan ziarah dan sembahyang di makam atau rumah abu.",
+    "timing": "Sekitar 4–5 April (umumnya ±10 hari).",
+    "groups": [
+      {
+        "title": "Kebersihan makam",
+        "items": [
+          "Sapu, sikat, kain lap",
+          "Gunting rumput / sabit kecil",
+          "Cat dan kuas untuk tulisan nisan (bila perlu)",
+          "Kantong sampah"
+        ]
+      },
+      {
+        "title": "Sembahyang",
+        "items": [
+          "Hio dan korek",
+          "Lilin merah",
+          "Buah (mis. jeruk, apel, pisang)",
+          "Kue / makanan kesukaan leluhur",
+          "Teh atau arak dan cawan kecil",
+          "Persembahan untuk Toapekong Tanah (bila ada altar di makam)"
+        ]
+      },
+      {
+        "title": "Kertas sembahyang (sesuai adat keluarga)",
+        "items": [
+          "Kim cua / gin cua",
+          "Kertas untuk ditaruh di atas makam (tradisi Hokkien)",
+          "Wadah aman untuk membakar"
+        ]
+      },
+      {
+        "title": "Lain-lain",
+        "items": [
+          "Air minum dan payung/topi",
+          "Tikar",
+          "Daftar nama leluhur dan lokasi makam"
+        ]
+      }
+    ],
+    "steps": [
+      "Berangkat bersama keluarga; yang tertua memimpin.",
+      "Bersihkan makam dan perbaiki tulisan bila perlu.",
+      "Sembahyang kepada Toapekong Tanah (bila ada).",
+      "Tata persembahan, nyalakan lilin dan hio, soja/pai bergantian dari yang tertua.",
+      "Bakar kertas sembahyang di wadah aman sesuai adat dan aturan makam.",
+      "Rapikan kembali dan bawa pulang sampah."
+    ],
+    "dos": [
+      "Ajak anak-anak dan ceritakan tentang leluhur.",
+      "Patuhi aturan pengelola pemakaman tentang pembakaran."
+    ],
+    "donts": [
+      "Membakar kertas sembarangan di dekat makam lain.",
+      "Meninggalkan sampah dan sisa makanan."
+    ],
+    "variations": [
+      {
+        "label": "Hokkien",
+        "text": "Lazim menaruh kertas di atas makam."
+      },
+      {
+        "label": "Hakka",
+        "text": "Ziarah besar dapat dilakukan sebelum hari Ceng Beng; tanyakan tetua."
+      }
+    ],
+    "related": [
+      "khc-hariraya-cengbeng",
+      "khc-ibadah-leluhur"
+    ],
+    "holidays": [
+      "ceng-beng"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau reviewer agama/adat terkait"
+      }
+    ],
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "upc-imlek",
+    "faith": "khonghucu",
+    "title": "Imlek hingga Cap Go Meh",
+    "summary": "Persiapan rumah, sembahyang, dan kunjungan keluarga untuk Tahun Baru Imlek.",
+    "timing": "Tanggal 24 bulan 12 hingga 15 bulan 1 Imlek.",
+    "groups": [
+      {
+        "title": "Sebelum tahun baru",
+        "items": [
+          "Bersih-bersih rumah dan meja abu",
+          "Sembahyang Dewa Dapur (24 bulan 12, tradisi Hokkien)",
+          "Belanja kue keranjang, jeruk, manisan",
+          "Siapkan angpao dengan uang baru",
+          "Baju baru / rapi"
+        ]
+      },
+      {
+        "title": "Malam tahun baru",
+        "items": [
+          "Sembahyang leluhur",
+          "Makan malam bersama keluarga",
+          "Lampu rumah dinyalakan"
+        ]
+      },
+      {
+        "title": "Hari-hari Imlek",
+        "items": [
+          "Kunjungan ke orang tua dan kerabat (dari yang tertua)",
+          "Sembahyang di klenteng/litang",
+          "King Thi Kong (tanggal 9, tradisi Hokkien): tebu, persembahan",
+          "Cap Go Meh (tanggal 15)"
+        ]
+      }
+    ],
+    "steps": [],
+    "dos": [
+      "Mengunjungi orang tua lebih dahulu.",
+      "Berbagi kepada yang membutuhkan."
+    ],
+    "donts": [
+      "Bertengkar atau berkata kasar di hari pertama (adat).",
+      "Menyapu rumah pada hari pertama (adat di banyak keluarga)."
+    ],
+    "variations": [],
+    "related": [
+      "khc-hariraya-imlek"
+    ],
+    "holidays": [
+      "imlek",
+      "cap-go-meh",
+      "king-thi-kong",
+      "ji-si-sang-sin"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau reviewer agama/adat terkait"
+      }
+    ],
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "upc-duka-tionghoa",
+    "faith": "khonghucu",
+    "title": "Duka dalam keluarga Tionghoa",
+    "summary": "Hal-hal praktis yang perlu diurus ketika anggota keluarga wafat.",
+    "timing": null,
+    "groups": [
+      {
+        "title": "Segera",
+        "items": [
+          "Surat keterangan kematian dari rumah sakit/kelurahan",
+          "Hubungi rumah duka",
+          "Hubungi rohaniwan sesuai agama almarhum (Khonghucu, Buddha, Kristen, Katolik)",
+          "Kabari keluarga besar"
+        ]
+      },
+      {
+        "title": "Rumah duka",
+        "items": [
+          "Foto almarhum untuk altar",
+          "Pakaian berkabung keluarga (sesuai adat)",
+          "Buku tamu dan kotak sumbangan",
+          "Jadwal ibadah/sembahyang malam"
+        ]
+      },
+      {
+        "title": "Pemakaman / kremasi",
+        "items": [
+          "Pilih hari pemberangkatan",
+          "Makam atau kremasi dan rumah abu",
+          "Transportasi keluarga dan pelayat"
+        ]
+      },
+      {
+        "title": "Setelahnya",
+        "items": [
+          "Akta kematian di Dukcapil",
+          "Jadwal peringatan: hari ke-7, 49, 100, satu tahun, tiga tahun (sesuai adat)",
+          "Papan nama leluhur (sinci) di meja abu"
+        ]
+      }
+    ],
+    "steps": [],
+    "dos": [
+      "Ikuti petunjuk rohaniwan dan tetua keluarga.",
+      "Catat adat keluarga di Arsip Keluarga agar tidak hilang."
+    ],
+    "donts": [
+      "Memaksakan satu tata cara bila keluarga besar berbeda agama; diskusikan dengan tenang."
+    ],
+    "variations": [
+      {
+        "label": "Hokkien / Hakka / Teochew",
+        "text": "Warna pakaian berkabung, sajian, dan urutan acara berbeda."
+      }
+    ],
+    "related": [
+      "khc-siklus-kematian"
+    ],
+    "holidays": [],
+    "sources": [
+      {
+        "title": "Perlu ditinjau reviewer agama/adat terkait"
+      }
+    ],
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "upc-sangjit",
+    "faith": "khonghucu",
+    "title": "Sangjit (seserahan)",
+    "summary": "Persiapan seserahan dari keluarga pria kepada keluarga perempuan.",
+    "timing": null,
+    "groups": [
+      {
+        "title": "Seserahan (contoh umum, ikuti kesepakatan keluarga)",
+        "items": [
+          "Perhiasan",
+          "Uang susu / angpao untuk orang tua mempelai perempuan",
+          "Kue (mis. kue mangkok, kue lapis)",
+          "Buah (mis. jeruk, apel)",
+          "Pakaian dan perlengkapan mempelai",
+          "Arak/minuman (bila adat keluarga)"
+        ]
+      },
+      {
+        "title": "Perlengkapan",
+        "items": [
+          "Nampan merah",
+          "Kertas/tulisan Sang Hi (双喜)",
+          "Daftar seserahan"
+        ]
+      }
+    ],
+    "steps": [
+      "Sepakati tanggal dan isi seserahan.",
+      "Rombongan keluarga pria membawa nampan.",
+      "Keluarga perempuan menerima dan mengembalikan sebagian seserahan sesuai adat."
+    ],
+    "dos": [],
+    "donts": [],
+    "variations": [],
+    "related": [
+      "khc-siklus-pernikahan"
+    ],
+    "holidays": [],
+    "sources": [
+      {
+        "title": "Perlu ditinjau reviewer agama/adat terkait"
+      }
+    ],
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "upc-idulfitri",
+    "faith": "islam",
+    "title": "Menyambut Idulfitri",
+    "summary": "Persiapan akhir Ramadan hingga sholat Idulfitri dan silaturahmi.",
+    "timing": null,
+    "groups": [
+      {
+        "title": "Akhir Ramadan",
+        "items": [
+          "Tunaikan zakat fitrah sebelum sholat Id",
+          "Perbanyak ibadah di sepuluh malam terakhir",
+          "Pantau pengumuman sidang isbat Kemenag"
+        ]
+      },
+      {
+        "title": "Hari raya",
+        "items": [
+          "Mandi dan berpakaian terbaik",
+          "Makan sedikit sebelum berangkat sholat Idulfitri (sunnah)",
+          "Takbir dalam perjalanan",
+          "Sholat Id di masjid atau lapangan"
+        ]
+      },
+      {
+        "title": "Silaturahmi",
+        "items": [
+          "Sungkem/bermaafan dengan orang tua",
+          "Kunjungan keluarga dan tetangga",
+          "Sedekah dan berbagi"
+        ]
+      }
+    ],
+    "steps": [],
+    "dos": [],
+    "donts": [],
+    "variations": [],
+    "related": [
+      "isl-hariraya-ramadan-idulfitri"
+    ],
+    "holidays": [
+      "idulfitri",
+      "awal-ramadan"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau reviewer agama/adat terkait"
+      }
+    ],
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "upc-aqiqah",
+    "faith": "islam",
+    "title": "Aqiqah",
+    "summary": "Persiapan aqiqah pada hari ketujuh kelahiran.",
+    "timing": null,
+    "groups": [
+      {
+        "title": "Persiapan",
+        "items": [
+          "Hewan aqiqah (umumnya 2 kambing untuk laki-laki, 1 untuk perempuan)",
+          "Nama untuk bayi",
+          "Alat cukur rambut bayi",
+          "Timbangan (sedekah seberat rambut, menurut tradisi)"
+        ]
+      },
+      {
+        "title": "Acara",
+        "items": [
+          "Penyembelihan sesuai syariat",
+          "Memasak dan membagikan daging",
+          "Doa bersama (sesuai kebiasaan)"
+        ]
+      }
+    ],
+    "steps": [],
+    "dos": [],
+    "donts": [],
+    "variations": [],
+    "related": [
+      "isl-siklus-aqiqah"
+    ],
+    "holidays": [],
+    "sources": [
+      {
+        "title": "Perlu ditinjau reviewer agama/adat terkait"
+      }
+    ],
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "upc-waisak",
+    "faith": "buddha",
+    "title": "Menyambut Waisak",
+    "summary": "Persiapan mengikuti perayaan Trisuci Waisak.",
+    "timing": null,
+    "groups": [
+      {
+        "title": "Persiapan batin",
+        "items": [
+          "Latihan atthasila (delapan sila) pada hari Waisak",
+          "Meditasi dan membaca Dhammapada"
+        ]
+      },
+      {
+        "title": "Persiapan ke vihara",
+        "items": [
+          "Pakaian putih atau sopan",
+          "Bunga, lilin, dupa untuk persembahan",
+          "Dana untuk Sangha (makanan, kebutuhan pokok)"
+        ]
+      },
+      {
+        "title": "Kegiatan",
+        "items": [
+          "Puja bakti Waisak",
+          "Pradaksina (mengelilingi stupa/vihara)",
+          "Detik-detik Waisak sesuai pengumuman majelis"
+        ]
+      }
+    ],
+    "steps": [],
+    "dos": [],
+    "donts": [],
+    "variations": [],
+    "related": [
+      "bud-hariraya-waisak"
+    ],
+    "holidays": [
+      "waisak"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau reviewer agama/adat terkait"
+      }
+    ],
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "upc-galungan",
+    "faith": "hindu",
+    "title": "Galungan dan Kuningan",
+    "summary": "Rangkaian persiapan menyambut Galungan hingga Kuningan.",
+    "timing": null,
+    "groups": [
+      {
+        "title": "Menjelang Galungan",
+        "items": [
+          "Membersihkan sanggah/merajan",
+          "Membuat atau membeli penjor",
+          "Menyiapkan banten sesuai tuntunan keluarga",
+          "Pakaian adat sembahyang"
+        ]
+      },
+      {
+        "title": "Hari Galungan",
+        "items": [
+          "Sembahyang di sanggah/merajan",
+          "Sembahyang di pura desa/kahyangan tiga",
+          "Mengunjungi keluarga"
+        ]
+      },
+      {
+        "title": "Kuningan",
+        "items": [
+          "Banten Kuningan (tamiang, endongan)",
+          "Persembahyangan sebelum tengah hari"
+        ]
+      }
+    ],
+    "steps": [],
+    "dos": [],
+    "donts": [],
+    "variations": [],
+    "related": [
+      "hin-hariraya-galungan"
+    ],
+    "holidays": [
+      "galungan",
+      "kuningan"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau reviewer agama/adat terkait"
+      }
+    ],
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "upc-baptis-katolik",
+    "faith": "katolik",
+    "title": "Baptis bayi (Katolik)",
+    "summary": "Daftar persiapan administrasi dan perayaan baptis.",
+    "timing": null,
+    "groups": [
+      {
+        "title": "Administrasi",
+        "items": [
+          "Formulir pendaftaran dari sekretariat paroki",
+          "Fotokopi akta kelahiran anak",
+          "Surat nikah Gereja orang tua",
+          "Data wali baptis (Katolik, sudah Krisma, minimal 16 tahun)"
+        ]
+      },
+      {
+        "title": "Persiapan",
+        "items": [
+          "Mengikuti pembinaan orang tua dan wali baptis",
+          "Memilih nama baptis",
+          "Pakaian putih dan lilin baptis"
+        ]
+      }
+    ],
+    "steps": [],
+    "dos": [],
+    "donts": [],
+    "variations": [],
+    "related": [
+      "kat-siklus-baptis"
+    ],
+    "holidays": [],
+    "sources": [
+      {
+        "title": "Perlu ditinjau reviewer agama/adat terkait"
+      }
+    ],
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "upc-natal-protestan",
+    "faith": "protestan",
+    "title": "Menyambut Natal",
+    "summary": "Persiapan rohani dan keluarga selama Adven hingga Natal.",
+    "timing": null,
+    "groups": [
+      {
+        "title": "Adven",
+        "items": [
+          "Renungan Adven harian",
+          "Lilin Adven (empat minggu)",
+          "Latihan paduan suara / ibadah Natal gereja"
+        ]
+      },
+      {
+        "title": "Natal",
+        "items": [
+          "Ibadah malam Natal dan hari Natal",
+          "Kunjungan keluarga",
+          "Berbagi kasih kepada yang membutuhkan"
+        ]
+      }
+    ],
+    "steps": [],
+    "dos": [],
+    "donts": [],
+    "variations": [],
+    "related": [
+      "pro-hariraya"
+    ],
+    "holidays": [
+      "natal",
+      "adven"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau reviewer agama/adat terkait"
+      }
+    ],
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  }
+]

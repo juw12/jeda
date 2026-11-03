@@ -1,0 +1,484 @@
+[
+  {
+    "id": "pro-pokok-iman",
+    "faith": "protestan",
+    "streams": [],
+    "section": "pokok-ajaran",
+    "title": "Pokok iman Kristen Protestan",
+    "summary": "Allah Tritunggal, keselamatan oleh anugerah melalui iman, dan otoritas Alkitab.",
+    "body": [
+      "Gereja-gereja Protestan mengakui Allah Tritunggal dan Pengakuan Iman Rasuli.",
+      "Reformasi abad ke-16 menekankan sola scriptura (hanya Alkitab), sola gratia (hanya anugerah), dan sola fide (hanya iman), sebagaimana Efesus 2:8–9."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "iman",
+      "tritunggal",
+      "reformasi",
+      "sola scriptura",
+      "sola fide",
+      "anugerah",
+      "pengakuan iman rasuli"
+    ],
+    "sources": [
+      {
+        "title": "Efesus 2:8–9"
+      },
+      {
+        "title": "Pengakuan Iman Rasuli"
+      },
+      {
+        "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "pro-pokok-sakramen",
+    "faith": "protestan",
+    "streams": [],
+    "section": "pokok-ajaran",
+    "title": "Dua sakramen: Baptisan dan Perjamuan Kudus",
+    "summary": "Sakramen yang diakui sebagian besar gereja Protestan.",
+    "body": [],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Lutheran & Reformed",
+        "text": "Membaptis bayi dan dewasa; Perjamuan Kudus dirayakan berkala.",
+        "stream": "calvinis"
+      },
+      {
+        "label": "Baptis & banyak gereja Pentakosta",
+        "text": "Baptisan orang percaya (dewasa), umumnya dengan diselamkan.",
+        "stream": "baptis"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "sakramen",
+      "baptisan",
+      "perjamuan kudus",
+      "baptis selam"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "pro-kitab-alkitab",
+    "faith": "protestan",
+    "streams": [],
+    "section": "kitab-suci",
+    "title": "Alkitab",
+    "summary": "66 kitab: 39 Perjanjian Lama dan 27 Perjanjian Baru.",
+    "body": [
+      "Terjemahan yang banyak digunakan di Indonesia diterbitkan Lembaga Alkitab Indonesia (LAI), antara lain Terjemahan Baru (1974) dan Terjemahan Baru edisi kedua."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [
+      {
+        "name": "Alkitab SABDA",
+        "url": "https://alkitab.sabda.org/",
+        "note": ""
+      },
+      {
+        "name": "Lembaga Alkitab Indonesia",
+        "url": "https://www.alkitab.or.id/",
+        "note": ""
+      }
+    ],
+    "tags": [
+      "alkitab",
+      "perjanjian lama",
+      "perjanjian baru",
+      "lai",
+      "terjemahan baru"
+    ],
+    "sources": [
+      {
+        "title": "Lembaga Alkitab Indonesia (terjemahan, hak cipta)"
+      },
+      {
+        "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "pro-ibadah-doa",
+    "faith": "protestan",
+    "streams": [],
+    "section": "ibadah-harian",
+    "title": "Doa pribadi dan saat teduh",
+    "summary": "Kebiasaan berdoa dan membaca Alkitab setiap hari.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Pilih waktu dan tempat yang tenang.",
+        "why": "Membangun kebiasaan."
+      },
+      {
+        "text": "Baca bagian Alkitab atau renungan harian.",
+        "why": "Mendengarkan firman Tuhan."
+      },
+      {
+        "text": "Renungkan: apa yang Tuhan katakan dan bagaimana menerapkannya.",
+        "why": "Firman diterapkan dalam hidup."
+      },
+      {
+        "text": "Berdoa: syukur, pengakuan, permohonan, dan syafaat; dapat ditutup dengan Doa Bapa Kami (Matius 6:9–13).",
+        "why": "Komunikasi pribadi dengan Tuhan."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "doa",
+      "saat teduh",
+      "renungan",
+      "bapa kami"
+    ],
+    "sources": [
+      {
+        "title": "Matius 6:9–13"
+      },
+      {
+        "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "pro-ibadah-minggu",
+    "faith": "protestan",
+    "streams": [],
+    "section": "ibadah-harian",
+    "title": "Ibadah Minggu",
+    "summary": "Unsur umum liturgi ibadah Minggu.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Votum dan salam"
+      },
+      {
+        "text": "Nyanyian jemaat"
+      },
+      {
+        "text": "Pengakuan dosa dan berita anugerah"
+      },
+      {
+        "text": "Pembacaan Alkitab dan khotbah"
+      },
+      {
+        "text": "Persembahan"
+      },
+      {
+        "text": "Doa syafaat"
+      },
+      {
+        "text": "Berkat"
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Gereja liturgis (mis. HKBP, GPIB, GKI)",
+        "text": "Mengikuti tata ibadah sinode.",
+        "stream": "calvinis"
+      },
+      {
+        "label": "Pentakosta / Karismatik",
+        "text": "Pujian dan penyembahan lebih panjang dan bebas.",
+        "stream": "pentakosta"
+      },
+      {
+        "label": "Advent",
+        "text": "Ibadah utama pada hari Sabat (Sabtu).",
+        "stream": "advent"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "ibadah minggu",
+      "liturgi",
+      "khotbah",
+      "persembahan",
+      "sabat"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "pro-hariraya",
+    "faith": "protestan",
+    "streams": [],
+    "section": "hari-raya",
+    "title": "Hari raya gerejawi",
+    "summary": "Adven, Natal, Jumat Agung, Paskah, Kenaikan, dan Pentakosta.",
+    "body": [
+      "Natal memperingati kelahiran Yesus (25 Desember), didahului empat Minggu Adven.",
+      "Jumat Agung memperingati wafat Yesus; Paskah memperingati kebangkitan-Nya. Kenaikan diperingati 40 hari setelah Paskah, dan Pentakosta 50 hari setelah Paskah.",
+      "Hari Reformasi (31 Oktober) diperingati banyak gereja Protestan."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "natal",
+      "adven",
+      "jumat agung",
+      "paskah",
+      "kenaikan",
+      "pentakosta",
+      "reformasi"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "pro-siklus",
+    "faith": "protestan",
+    "streams": [],
+    "section": "siklus-hidup",
+    "title": "Baptisan, sidi, pernikahan, dan penghiburan",
+    "summary": "Garis besar peristiwa hidup dalam gereja Protestan.",
+    "body": [
+      "Sidi (peneguhan) dilakukan di banyak gereja Reformed dan Lutheran ketika remaja mengaku iman secara pribadi.",
+      "Pemberkatan nikah dilakukan di gereja dan dicatat di Dukcapil.",
+      "Saat duka, gereja mengadakan ibadah penghiburan dan pemakaman. Di beberapa suku (mis. Batak), ada pula rangkaian adat."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "baptisan",
+      "sidi",
+      "pemberkatan nikah",
+      "pernikahan",
+      "penghiburan",
+      "kematian"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "pro-aturan-hukum-kasih",
+    "faith": "protestan",
+    "streams": [],
+    "section": "aturan-etika",
+    "title": "Sepuluh Perintah dan Hukum Kasih",
+    "summary": "Dasar etika Kristen.",
+    "body": [
+      "Sepuluh Perintah tercatat dalam Keluaran 20. Yesus merangkum hukum dalam Hukum Kasih: mengasihi Tuhan dan mengasihi sesama seperti diri sendiri (Matius 22:37–39)."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "sepuluh perintah",
+      "hukum kasih",
+      "etika",
+      "kasih"
+    ],
+    "sources": [
+      {
+        "title": "Keluaran 20:1–17"
+      },
+      {
+        "title": "Matius 22:37–39"
+      },
+      {
+        "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "pro-aliran-indonesia",
+    "faith": "protestan",
+    "streams": [],
+    "section": "perbedaan-aliran",
+    "title": "Ragam gereja Protestan di Indonesia",
+    "summary": "Lutheran, Reformed/Calvinis, Pentakosta/Karismatik, Baptis, dan Advent.",
+    "body": [
+      "Banyak gereja bergabung dalam Persekutuan Gereja-gereja di Indonesia (PGI)."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Lutheran",
+        "text": "Contoh: HKBP, GKPI.",
+        "stream": "lutheran"
+      },
+      {
+        "label": "Reformed / Calvinis",
+        "text": "Contoh: GKI, GPIB, GKJ, GMIM.",
+        "stream": "calvinis"
+      },
+      {
+        "label": "Pentakosta / Karismatik",
+        "text": "Contoh: GPdI, GBI.",
+        "stream": "pentakosta"
+      },
+      {
+        "label": "Baptis",
+        "text": "Baptisan orang percaya.",
+        "stream": "baptis"
+      },
+      {
+        "label": "Advent",
+        "text": "Sabat hari Sabtu dan pola hidup sehat.",
+        "stream": "advent"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "lutheran",
+      "calvinis",
+      "reformed",
+      "pentakosta",
+      "karismatik",
+      "baptis",
+      "advent",
+      "pgi",
+      "hkbp",
+      "gki",
+      "gpib"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "pro-sejarah-indonesia",
+    "faith": "protestan",
+    "streams": [],
+    "section": "sejarah-tokoh",
+    "title": "Sejarah Kristen Protestan di Indonesia",
+    "summary": "Dari masa VOC, Nommensen di Tanah Batak, hingga PGI.",
+    "body": [
+      "Kekristenan Protestan masuk pada masa VOC di abad ke-17.",
+      "Ludwig Ingwer Nommensen berkarya di Tanah Batak sejak 1860-an; HKBP kemudian menjadi salah satu gereja terbesar di Indonesia.",
+      "Dewan Gereja-gereja di Indonesia (DGI) dibentuk pada 1950 dan kemudian menjadi PGI."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "sejarah",
+      "voc",
+      "nommensen",
+      "batak",
+      "hkbp",
+      "pgi",
+      "dgi"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  }
+]

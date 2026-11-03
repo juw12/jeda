@@ -1,0 +1,1103 @@
+[
+  {
+    "id": "khc-pokok-delapan-keimanan",
+    "faith": "khonghucu",
+    "streams": [
+      "khonghucu-matakin"
+    ],
+    "section": "pokok-ajaran",
+    "title": "Delapan Pengakuan Iman (Ba Cheng Zhen Gui)",
+    "summary": "Rumusan keimanan umat Khonghucu di Indonesia sebagaimana diajarkan MATAKIN.",
+    "body": [
+      "Agama Khonghucu di Indonesia merumuskan pokok keimanannya dalam delapan pengakuan iman (Pat Sing Ciam Kwi dalam lafal Hokkien).",
+      "Inti ajarannya adalah iman kepada Tuhan Yang Maha Esa (Thian), menjunjung kebajikan (De), dan menempuh Jalan Suci yang diajarkan para nabi dan Nabi Kongzi."
+    ],
+    "steps": [
+      {
+        "text": "Sepenuh iman kepada Tuhan Yang Maha Esa (Cheng Xin Huang Tian)."
+      },
+      {
+        "text": "Sepenuh iman menjunjung kebajikan (Cheng Zun Jue De)."
+      },
+      {
+        "text": "Sepenuh iman menegakkan Firman Gemilang (Cheng Li Ming Ming)."
+      },
+      {
+        "text": "Sepenuh iman percaya adanya nyawa dan roh (Cheng Zhi Gui Shen)."
+      },
+      {
+        "text": "Sepenuh iman memupuk cita berbakti (Cheng Yang Xiao Si)."
+      },
+      {
+        "text": "Sepenuh iman mengikuti Genta Rohani Nabi Kongzi (Cheng Shun Mu Duo)."
+      },
+      {
+        "text": "Sepenuh iman memuliakan Kitab Si Shu dan Wu Jing (Cheng Qin Jing Shu)."
+      },
+      {
+        "text": "Sepenuh iman menempuh Jalan Suci (Cheng Xing Da Dao)."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Tri Dharma / klenteng",
+        "text": "Umat Tri Dharma menghormati ajaran Khonghucu bersama ajaran Buddha dan Tao; rumusan delapan pengakuan iman ini khas agama Khonghucu (MATAKIN).",
+        "stream": "tridharma"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "iman",
+      "pengakuan",
+      "thian",
+      "matakin",
+      "pat sing ciam kwi"
+    ],
+    "sources": [
+      {
+        "title": "Majelis Tinggi Agama Khonghucu Indonesia (MATAKIN)",
+        "detail": "rumusan Delapan Pengakuan Iman; nama dan lafal perlu dikonfirmasi reviewer"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-pokok-wuchang",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "pokok-ajaran",
+    "title": "Lima Kebajikan (Wu Chang) dan Bakti (Xiao)",
+    "summary": "Ren, Yi, Li, Zhi, Xin: lima kebajikan pokok, berakar pada bakti kepada orang tua dan leluhur.",
+    "body": [
+      "Ajaran Nabi Kongzi menekankan pembinaan diri agar menjadi Junzi (Kuncu), manusia berbudi luhur.",
+      "Bakti (Xiao, Hauw) dipandang sebagai akar kebajikan: menghormati orang tua semasa hidup, merawat mereka, dan melanjutkan penghormatan setelah wafat melalui sembahyang leluhur."
+    ],
+    "steps": [
+      {
+        "text": "Ren (Jin): cinta kasih, peri kemanusiaan.",
+        "why": "Dasar hubungan antar-manusia."
+      },
+      {
+        "text": "Yi (Gi): kebenaran, keadilan, kewajiban.",
+        "why": "Bertindak benar walau tidak menguntungkan diri."
+      },
+      {
+        "text": "Li (Lee): kesusilaan, tata krama, tata ibadah.",
+        "why": "Ritual dan sopan santun menjaga keharmonisan."
+      },
+      {
+        "text": "Zhi (Ti): kebijaksanaan.",
+        "why": "Mampu membedakan benar dan salah."
+      },
+      {
+        "text": "Xin (Sin): dapat dipercaya, setia pada kata.",
+        "why": "Kepercayaan adalah dasar masyarakat."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [
+      {
+        "name": "Lun Yu (teks Tionghoa klasik & terjemahan Inggris)",
+        "url": "https://ctext.org/analects",
+        "note": "Chinese Text Project"
+      }
+    ],
+    "tags": [
+      "kebajikan",
+      "ren",
+      "yi",
+      "li",
+      "zhi",
+      "xin",
+      "bakti",
+      "xiao",
+      "hauw",
+      "junzi"
+    ],
+    "sources": [
+      {
+        "title": "Lun Yu (Analek / Sabda Suci), Kitab Si Shu"
+      },
+      {
+        "title": "Xiao Jing (Kitab Bakti)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-pokok-tridharma",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "pokok-ajaran",
+    "title": "Tri Dharma (Sam Kauw): klenteng di Indonesia",
+    "summary": "Banyak klenteng di Indonesia memadukan penghormatan dalam tradisi Buddha, Tao, dan Khonghucu.",
+    "body": [
+      "Klenteng (dari bunyi lonceng 'klinting' atau dari Kwan Im Teng menurut beberapa penjelasan) adalah rumah ibadah tradisi Tionghoa. Banyak di antaranya menghormati Buddha dan Bodhisattva (mis. Kwan Im), dewa-dewi Tao, serta Nabi Kongzi sekaligus.",
+      "Gerakan Sam Kauw Hwee dirintis oleh Kwee Tek Hoay pada 1934 dan kemudian berkembang menjadi wadah Tri Dharma. Secara administratif, umat Tri Dharma ada yang tercatat sebagai Buddha dan ada yang Khonghucu.",
+      "Litang adalah rumah ibadah khusus agama Khonghucu, dengan kebaktian yang dipimpin rohaniwan Khonghucu."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Agama Khonghucu (MATAKIN)",
+        "text": "Membedakan dengan tegas antara agama Khonghucu dan tradisi klenteng campuran; ibadah utama di litang.",
+        "stream": "khonghucu-matakin"
+      },
+      {
+        "label": "Tri Dharma",
+        "text": "Menghormati ketiga ajaran secara bersama di satu klenteng.",
+        "stream": "tridharma"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "tri dharma",
+      "sam kauw",
+      "klenteng",
+      "litang",
+      "kwan im",
+      "tao"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (MATAKIN / pengurus klenteng / tetua adat)"
+      },
+      {
+        "title": "Sejarah Sam Kauw Hwee (Kwee Tek Hoay, 1934)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-kitab-sishu-wujing",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "kitab-suci",
+    "title": "Kitab Si Shu dan Wu Jing",
+    "summary": "Empat Kitab dan Lima Kitab Klasik: kitab suci agama Khonghucu, ditambah Xiao Jing (Kitab Bakti).",
+    "body": [
+      "Si Shu (Su Si, Empat Kitab): Da Xue (Ajaran Besar), Zhong Yong (Tengah Sempurna), Lun Yu (Sabda Suci), dan Mengzi (Bingcu).",
+      "Wu Jing (Ngo King, Lima Kitab): Shi Jing (Kitab Sanjak), Shu Jing (Kitab Hikayat), Yi Jing (Kitab Perubahan), Li Jing (Kitab Kesusilaan), dan Chun Qiu Jing (Kitab Musim Semi dan Musim Gugur).",
+      "Bagi tradisi Tao, kitab rujukan utama adalah Dao De Jing karya Laozi."
+    ],
+    "steps": [
+      {
+        "text": "Mulai dari Lun Yu (Sabda Suci).",
+        "why": "Berisi percakapan Nabi Kongzi dan murid-muridnya, paling mudah dipahami."
+      },
+      {
+        "text": "Lanjutkan ke Da Xue dan Zhong Yong.",
+        "why": "Menjelaskan pembinaan diri dan Jalan Tengah."
+      },
+      {
+        "text": "Baca Mengzi.",
+        "why": "Mengembangkan ajaran tentang watak baik manusia."
+      },
+      {
+        "text": "Pelajari Wu Jing bersama rohaniwan.",
+        "why": "Teksnya lebih tua dan memerlukan bimbingan tafsir."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [
+      {
+        "name": "Chinese Text Project: Kitab klasik Konfusian",
+        "url": "https://ctext.org/confucianism",
+        "note": "teks Tionghoa klasik, terjemahan Inggris"
+      },
+      {
+        "name": "Dao De Jing",
+        "url": "https://ctext.org/dao-de-jing",
+        "note": "teks Tionghoa klasik, terjemahan Inggris"
+      }
+    ],
+    "tags": [
+      "kitab",
+      "si shu",
+      "wu jing",
+      "lun yu",
+      "mengzi",
+      "dao de jing",
+      "xiao jing"
+    ],
+    "sources": [
+      {
+        "title": "Si Shu (Empat Kitab)"
+      },
+      {
+        "title": "Wu Jing (Lima Kitab Klasik)"
+      },
+      {
+        "title": "Terjemahan Indonesia resmi oleh MATAKIN",
+        "detail": "izin penggunaan diperlukan"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-ibadah-hio",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "ibadah-harian",
+    "title": "Tata cara bersembahyang dengan hio",
+    "summary": "Langkah umum menyalakan dan menancapkan hio di klenteng atau di rumah.",
+    "body": [
+      "Hio (dupa batang) adalah sarana penghormatan dan pengantar doa. Jumlah batang dan urutan hiolo berbeda-beda di tiap klenteng; ikuti petunjuk pengurus.",
+      "Di klenteng dengan banyak altar, sembahyang biasanya dimulai dari altar Tuhan (Thian, Thi Kong) yang menghadap ke luar, lalu altar utama, kemudian altar-altar lain sesuai urutan yang ditandai."
+    ],
+    "steps": [
+      {
+        "text": "Cuci tangan dan rapikan diri.",
+        "why": "Kebersihan lahir adalah tanda hormat."
+      },
+      {
+        "text": "Nyalakan hio dari lilin yang disediakan, lalu kibaskan agar apinya padam.",
+        "why": "Hio tidak ditiup; napas dianggap kurang sopan untuk persembahan."
+      },
+      {
+        "text": "Pegang hio dengan kedua tangan sejajar dada atau dahi, hadap altar.",
+        "why": "Kedua tangan melambangkan kesungguhan."
+      },
+      {
+        "text": "Hening, sampaikan doa dalam hati, lalu soja/pai (membungkuk) tiga kali.",
+        "why": "Penghormatan kepada Thian, para suci, dan leluhur."
+      },
+      {
+        "text": "Tancapkan hio di hiolo satu per satu atau sesuai petunjuk.",
+        "why": "Urutan dan tangan yang dipakai berbeda per klenteng."
+      },
+      {
+        "text": "Lanjutkan ke altar berikutnya sesuai urutan.",
+        "why": "Menjaga tata tertib (Li)."
+      }
+    ],
+    "items": [
+      "Hio (umumnya 3 batang per altar, ikuti petunjuk setempat)",
+      "Lilin merah (bila disediakan)",
+      "Persembahan: buah, teh, kue (opsional)"
+    ],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Agama Khonghucu (MATAKIN)",
+        "text": "Jumlah batang hio memiliki makna tertentu dalam tata agama Khonghucu; tanyakan kepada rohaniwan di litang.",
+        "stream": "khonghucu-matakin"
+      },
+      {
+        "label": "Klenteng Tri Dharma",
+        "text": "Banyak klenteng menyediakan paket hio dan menempelkan urutan altar di dinding.",
+        "stream": "tridharma"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "hio",
+      "dupa",
+      "sembahyang",
+      "soja",
+      "pai",
+      "hiolo",
+      "klenteng",
+      "cara"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (MATAKIN / pengurus klenteng / tetua adat)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-ibadah-ciamsi",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "ibadah-harian",
+    "title": "Ciam si dan poe (jiaobei)",
+    "summary": "Tradisi memohon petunjuk dengan batang ciam dan sepasang poe, sebagai bahan perenungan.",
+    "body": [
+      "Ciam si (qiu qian) adalah tradisi memohon petunjuk di hadapan altar. Umat mengocok tabung berisi batang bernomor sampai satu batang jatuh, lalu memastikan nomornya dengan melempar poe.",
+      "Poe (jiaobei) adalah sepasang balok kayu berbentuk bulan sabit, satu sisi datar dan satu sisi cembung. Hasil lemparan dibaca sebagai jawaban.",
+      "Syair (lembar ciam) dan tafsirnya berbeda di setiap klenteng dan untuk setiap dewa. Ciam si dipahami sebagai bahan perenungan, bukan ramalan pasti."
+    ],
+    "steps": [
+      {
+        "text": "Sembahyang dahulu dengan hio dan sampaikan nama, alamat, dan pertanyaan dalam hati.",
+        "why": "Memohon dengan hormat sebelum bertanya."
+      },
+      {
+        "text": "Lempar poe untuk memohon izin mengambil ciam.",
+        "why": "Sing Poe berarti diizinkan."
+      },
+      {
+        "text": "Kocok tabung ciam perlahan hingga satu batang jatuh.",
+        "why": "Satu batang yang jatuh dipandang sebagai jawaban yang dipilih."
+      },
+      {
+        "text": "Lempar poe untuk memastikan nomornya; ulangi bila bukan Sing Poe.",
+        "why": "Beberapa klenteng mensyaratkan tiga kali Sing Poe."
+      },
+      {
+        "text": "Ambil lembar syair sesuai nomor dan mintalah tafsir kepada pengurus.",
+        "why": "Bahasa syair klasik perlu ditafsirkan sesuai konteks."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Sing Poe (satu datar, satu cembung)",
+        "text": "Dimaknai ya / setuju.",
+        "stream": null
+      },
+      {
+        "label": "Cio Poe (keduanya datar di atas)",
+        "text": "Dimaknai belum jelas, pertanyaan perlu diperjelas.",
+        "stream": null
+      },
+      {
+        "label": "Im Poe (keduanya cembung di atas)",
+        "text": "Dimaknai tidak / belum diizinkan.",
+        "stream": null
+      }
+    ],
+    "links": [],
+    "tags": [
+      "ciam si",
+      "ciamsi",
+      "poe",
+      "jiaobei",
+      "pwe",
+      "petunjuk",
+      "syair",
+      "kwan im"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (MATAKIN / pengurus klenteng / tetua adat)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-ibadah-leluhur",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "ibadah-harian",
+    "title": "Sembahyang leluhur di meja abu rumah",
+    "summary": "Penghormatan kepada leluhur di meja abu dengan papan nama (sinci), terutama tanggal 1 dan 15 Imlek.",
+    "body": [
+      "Meja abu adalah altar keluarga dengan papan nama leluhur (sinci) atau foto. Sembahyang leluhur adalah wujud bakti (Xiao) yang berkelanjutan.",
+      "Banyak keluarga bersembahyang setiap tanggal 1 (Ce It) dan 15 (Cap Go) bulan Imlek, pada hari peringatan wafat (ki jit), dan pada hari raya."
+    ],
+    "steps": [
+      {
+        "text": "Bersihkan meja abu dan ganti air/teh.",
+        "why": "Menyiapkan tempat dengan hormat."
+      },
+      {
+        "text": "Tata persembahan di depan papan nama.",
+        "why": "Persembahan adalah tanda ingat dan terima kasih."
+      },
+      {
+        "text": "Nyalakan lilin dan hio, lalu soja/pai.",
+        "why": "Menghadirkan penghormatan."
+      },
+      {
+        "text": "Sampaikan doa dan kabar keluarga dalam hati.",
+        "why": "Menjaga ikatan antar-generasi."
+      },
+      {
+        "text": "Setelah hio hampir habis, persembahan boleh disantap keluarga.",
+        "why": "Berkah dibagi bersama; kebiasaan berbeda tiap keluarga."
+      }
+    ],
+    "items": [
+      "Hio dan lilin",
+      "Teh atau arak kecil dalam cawan",
+      "Buah (jumlah ganjil atau sesuai kebiasaan keluarga)",
+      "Kue atau makanan kesukaan leluhur (saat peringatan)"
+    ],
+    "timing": "Tanggal 1 dan 15 setiap bulan Imlek; hari peringatan wafat; hari raya.",
+    "variations": [
+      {
+        "label": "Hokkien",
+        "text": "Istilah ki jit untuk hari peringatan wafat; banyak keluarga memakai meja abu bertingkat.",
+        "stream": "hokkien"
+      },
+      {
+        "label": "Hakka",
+        "text": "Tata sembahyang dan sajian dapat berbeda; tanyakan tetua keluarga.",
+        "stream": "hakka"
+      },
+      {
+        "label": "Peranakan",
+        "text": "Sebagian keluarga Peranakan memadukan adat setempat dalam sajian dan tata meja abu.",
+        "stream": "peranakan"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "leluhur",
+      "meja abu",
+      "sinci",
+      "ce it",
+      "cap go",
+      "ki jit",
+      "bakti"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (MATAKIN / pengurus klenteng / tetua adat)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-hariraya-imlek",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "hari-raya",
+    "title": "Imlek (Sin Cia) hingga Cap Go Meh",
+    "summary": "Rangkaian Tahun Baru Imlek: persiapan akhir tahun, malam tahun baru, King Thi Kong, dan Cap Go Meh.",
+    "body": [
+      "Tahun Baru Imlek jatuh pada tanggal 1 bulan 1 penanggalan Imlek. Dalam agama Khonghucu, tahun dihitung dengan Kongzili (tahun Masehi + 551).",
+      "Imlek menjadi hari libur nasional sejak 2003, setelah pembatasan adat Tionghoa melalui Inpres 14/1967 dicabut oleh Presiden Abdurrahman Wahid melalui Keppres 6/2000."
+    ],
+    "steps": [
+      {
+        "text": "Tanggal 24 bulan 12: sembahyang mengantar Dewa Dapur (Ji Si Sang Sin).",
+        "why": "Melaporkan keadaan keluarga selama setahun (tradisi Hokkien)."
+      },
+      {
+        "text": "Menjelang akhir tahun: bersih-bersih rumah dan melunasi urusan.",
+        "why": "Membuang sial lama, menyambut tahun baru dengan bersih."
+      },
+      {
+        "text": "Malam tahun baru: sembahyang leluhur dan makan malam bersama keluarga.",
+        "why": "Persatuan keluarga adalah inti Imlek."
+      },
+      {
+        "text": "Hari pertama: mengunjungi orang tua dan kerabat, memberi hormat, membagi angpao.",
+        "why": "Bakti kepada yang lebih tua dan berkat untuk yang muda."
+      },
+      {
+        "text": "Tanggal 9: Sembahyang Tuhan (King Thi Kong).",
+        "why": "Syukur kepada Thian (terutama tradisi Hokkien)."
+      },
+      {
+        "text": "Tanggal 15: Cap Go Meh, penutup rangkaian Imlek.",
+        "why": "Perayaan dengan lampion dan kebersamaan."
+      }
+    ],
+    "items": [
+      "Baju baru / rapi (banyak yang memilih warna merah)",
+      "Angpao",
+      "Kue keranjang (nian gao)",
+      "Jeruk",
+      "Hio, lilin, dan persembahan untuk sembahyang leluhur",
+      "Perlengkapan bersih-bersih rumah"
+    ],
+    "timing": "Dari tanggal 24 bulan 12 Imlek (sembahyang dapur) hingga tanggal 15 bulan 1 (Cap Go Meh).",
+    "variations": [
+      {
+        "label": "Kebiasaan umum",
+        "text": "Banyak keluarga tidak menyapu rumah pada hari pertama Imlek agar rezeki tidak 'tersapu'; ini adat, bukan ajaran agama.",
+        "stream": null
+      },
+      {
+        "label": "Keluarga yang sedang berduka",
+        "text": "Banyak keluarga tidak merayakan Imlek secara meriah bila ada anggota yang wafat dalam setahun terakhir; tanyakan tetua.",
+        "stream": null
+      },
+      {
+        "label": "Hokkien",
+        "text": "King Thi Kong pada malam tanggal 8 menuju 9 dirayakan besar, sering dengan tebu.",
+        "stream": "hokkien"
+      },
+      {
+        "label": "Singkawang (Hakka)",
+        "text": "Cap Go Meh di Singkawang terkenal dengan pawai tatung.",
+        "stream": "hakka"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "imlek",
+      "sin cia",
+      "tahun baru",
+      "cap go meh",
+      "king thi kong",
+      "angpao",
+      "kue keranjang"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (MATAKIN / pengurus klenteng / tetua adat)"
+      },
+      {
+        "title": "Keppres No. 6 Tahun 2000"
+      },
+      {
+        "title": "Keppres No. 19 Tahun 2002 (Imlek sebagai hari libur nasional)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-hariraya-cengbeng",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "hari-raya",
+    "title": "Ceng Beng (Qingming): ziarah makam leluhur",
+    "summary": "Hari membersihkan makam dan bersembahyang untuk leluhur, sekitar 4 atau 5 April.",
+    "body": [
+      "Ceng Beng adalah salah satu dari 24 periode matahari (jieqi), jatuh sekitar 4 atau 5 April. Keluarga berziarah ke makam atau rumah abu untuk membersihkan dan bersembahyang.",
+      "Banyak keluarga berziarah dalam rentang sekitar sepuluh hari sebelum hingga sesudah hari Ceng Beng, menyesuaikan jadwal keluarga."
+    ],
+    "steps": [
+      {
+        "text": "Bersihkan makam: cabut rumput, sapu, perbaiki cat tulisan bila perlu.",
+        "why": "Merawat tempat peristirahatan leluhur adalah wujud bakti."
+      },
+      {
+        "text": "Sembahyang kepada Toapekong Tanah (Hok Tek Ceng Sin / Tu Di Gong) di makam bila ada.",
+        "why": "Memohon izin dan berterima kasih kepada penjaga tanah."
+      },
+      {
+        "text": "Tata persembahan di depan makam, nyalakan lilin dan hio.",
+        "why": "Menghadirkan penghormatan."
+      },
+      {
+        "text": "Seluruh keluarga soja/pai bergantian, dari yang tertua.",
+        "why": "Urutan menunjukkan tata krama keluarga."
+      },
+      {
+        "text": "Bakar kertas sembahyang di tempat aman, sesuai adat keluarga.",
+        "why": "Simbol penghormatan; perhatikan aturan pemakaman setempat."
+      },
+      {
+        "text": "Rapikan kembali dan bawa pulang sampah.",
+        "why": "Menjaga kebersihan dan menghormati makam lain."
+      }
+    ],
+    "items": [
+      "Alat bersih makam (sapu, kain lap, cat bila perlu)",
+      "Hio dan lilin",
+      "Persembahan: buah, kue, makanan, teh/arak",
+      "Kertas sembahyang (kim cua / gin cua) sesuai kebiasaan",
+      "Kertas untuk ditaruh di atas makam (bila adat keluarga)"
+    ],
+    "timing": "Sekitar 4–5 April; umumnya dalam rentang ±10 hari.",
+    "variations": [
+      {
+        "label": "Hokkien",
+        "text": "Lazim menaruh kertas di atas gundukan makam sebagai tanda makam telah dikunjungi.",
+        "stream": "hokkien"
+      },
+      {
+        "label": "Hakka",
+        "text": "Sebagian keluarga Hakka melakukan ziarah besar sebelum Ceng Beng; tanyakan tetua.",
+        "stream": "hakka"
+      },
+      {
+        "label": "Abu di rumah abu / kolumbarium",
+        "text": "Sembahyang dilakukan di rumah abu dengan aturan tempat tersebut.",
+        "stream": null
+      }
+    ],
+    "links": [],
+    "tags": [
+      "ceng beng",
+      "qingming",
+      "ziarah",
+      "makam",
+      "kuburan",
+      "leluhur",
+      "kim cua",
+      "april"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (MATAKIN / pengurus klenteng / tetua adat)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-hariraya-lainnya",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "hari-raya",
+    "title": "Peh Cun, Cioko, Tiong Ciu, dan Tang Ce",
+    "summary": "Hari-hari raya penting lain dalam penanggalan Imlek dan perayaan matahari.",
+    "body": [
+      "Peh Cun (Duanwu, 5/5 Imlek): makan bakcang, lomba perahu naga di beberapa kota, dan tradisi mendirikan telur pada tengah hari.",
+      "Cioko / Sembahyang Rebutan (15/7 Imlek): sembahyang untuk arwah yang tidak terurus dan berbagi makanan kepada yang membutuhkan. Bulan 7 Imlek dikenal sebagai bulan arwah.",
+      "Tiong Ciu (15/8 Imlek): festival kue bulan dan kebersamaan keluarga di bawah bulan purnama.",
+      "Tang Ce (Dongzhi, sekitar 21–22 Desember): makan onde/ronde bersama keluarga sebagai tanda bertambah umur dan keutuhan keluarga.",
+      "Hari Lahir Nabi Kongzi diperingati umat Khonghucu pada tanggal 27 bulan 8 Imlek."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "peh cun",
+      "bakcang",
+      "cioko",
+      "rebutan",
+      "tiong ciu",
+      "kue bulan",
+      "tang ce",
+      "onde",
+      "ronde",
+      "dongzhi",
+      "kongzi"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (MATAKIN / pengurus klenteng / tetua adat)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-siklus-pernikahan",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "siklus-hidup",
+    "title": "Pernikahan Tionghoa: Sangjit, Cio Tao, Teapai, Liep Gwan",
+    "summary": "Rangkaian adat pernikahan yang lazim di keluarga Tionghoa Indonesia.",
+    "body": [
+      "Sangjit adalah seserahan dari keluarga pria kepada keluarga perempuan sebelum pernikahan, berisi barang-barang bermakna seperti perhiasan, kue, buah, dan angpao.",
+      "Cio Tao adalah upacara kedewasaan sebelum pernikahan yang dikenal terutama di kalangan Peranakan, termasuk Cina Benteng di Tangerang.",
+      "Teapai (penghormatan teh) dilakukan pengantin kepada orang tua dan kerabat yang lebih tua sebagai tanda bakti dan permohonan restu.",
+      "Bagi umat agama Khonghucu, pernikahan dikukuhkan melalui upacara Liep Gwan di litang yang dipimpin rohaniwan, dan dicatat oleh Dukcapil."
+    ],
+    "steps": [
+      {
+        "text": "Lamaran dan perundingan keluarga, menentukan hari baik.",
+        "why": "Banyak keluarga memilih tanggal berdasarkan penanggalan Imlek."
+      },
+      {
+        "text": "Sangjit, biasanya beberapa minggu atau bulan sebelum pernikahan.",
+        "why": "Tanda keseriusan dan penghormatan keluarga pria."
+      },
+      {
+        "text": "Cio Tao (bila menjalankan adat Peranakan).",
+        "why": "Menandai pengantin memasuki kedewasaan."
+      },
+      {
+        "text": "Pemberkatan/pengukuhan agama (mis. Liep Gwan di litang) dan pencatatan sipil.",
+        "why": "Pengesahan agama dan negara."
+      },
+      {
+        "text": "Teapai kepada orang tua dan kerabat.",
+        "why": "Bakti dan permohonan restu."
+      }
+    ],
+    "items": [
+      "Barang seserahan Sangjit (sesuai adat keluarga, sering berjumlah genap)",
+      "Perlengkapan teh dan cangkir untuk Teapai",
+      "Angpao",
+      "Dokumen pencatatan sipil"
+    ],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Peranakan / Cina Benteng",
+        "text": "Cio Tao masih dilestarikan dengan busana dan musik khas.",
+        "stream": "peranakan"
+      },
+      {
+        "label": "Hokkien",
+        "text": "Sangjit dengan seserahan dalam nampan, jumlah dan isi sesuai kebiasaan keluarga.",
+        "stream": "hokkien"
+      },
+      {
+        "label": "Hakka",
+        "text": "Detail seserahan dan urutan acara dapat berbeda; tanyakan tetua.",
+        "stream": "hakka"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "pernikahan",
+      "nikah",
+      "sangjit",
+      "cio tao",
+      "teapai",
+      "liep gwan",
+      "seserahan",
+      "lamaran"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (MATAKIN / pengurus klenteng / tetua adat)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-siklus-kematian",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "siklus-hidup",
+    "title": "Duka dan pemakaman dalam adat Tionghoa",
+    "summary": "Garis besar rumah duka, masa berkabung, dan peringatan 7 hari, 49 hari, 100 hari, hingga 3 tahun.",
+    "body": [
+      "Tata cara duka sangat beragam menurut agama (Khonghucu, Buddha, Kristen, Katolik) dan asal daerah keluarga. Uraian ini garis besar adat; ikuti petunjuk rohaniwan dan tetua keluarga.",
+      "Dalam adat, keluarga mengenakan pakaian berkabung (putih atau blacu, kadang dengan tanda kain berwarna menurut hubungan kekerabatan) dan menghindari perayaan selama masa berkabung."
+    ],
+    "steps": [
+      {
+        "text": "Menghubungi rumah duka dan rohaniwan sesuai agama almarhum.",
+        "why": "Tata ibadah mengikuti agama almarhum."
+      },
+      {
+        "text": "Persemayaman dan sembahyang di rumah duka; kerabat dan sahabat melayat.",
+        "why": "Memberi penghormatan terakhir."
+      },
+      {
+        "text": "Upacara tutup peti dan pemberangkatan.",
+        "why": "Dilakukan pada hari yang dipilih keluarga."
+      },
+      {
+        "text": "Pemakaman atau kremasi.",
+        "why": "Pilihan keluarga dan ketentuan agama."
+      },
+      {
+        "text": "Sembahyang peringatan berkala: hari ke-7, 49 hari, 100 hari, satu tahun, tiga tahun.",
+        "why": "Bakti berkelanjutan; jadwal persis berbeda tiap keluarga."
+      }
+    ],
+    "items": [],
+    "timing": "Rumah duka beberapa hari; peringatan hari ke-7, 49, 100, satu tahun, dan tiga tahun (menurut adat).",
+    "variations": [
+      {
+        "label": "Agama Khonghucu",
+        "text": "Upacara dipimpin rohaniwan Khonghucu dengan tata agama MATAKIN.",
+        "stream": "khonghucu-matakin"
+      },
+      {
+        "label": "Tradisi Buddhis",
+        "text": "Pembacaan paritta/sutra dan pelimpahan jasa oleh bhikkhu atau pandita.",
+        "stream": "tridharma"
+      },
+      {
+        "label": "Hokkien / Hakka / Teochew",
+        "text": "Warna pakaian berkabung, sajian, dan jadwal peringatan berbeda; ikuti tetua keluarga.",
+        "stream": null
+      }
+    ],
+    "links": [],
+    "tags": [
+      "kematian",
+      "duka",
+      "pemakaman",
+      "rumah duka",
+      "berkabung",
+      "7 hari",
+      "49 hari",
+      "100 hari",
+      "kremasi"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (MATAKIN / pengurus klenteng / tetua adat)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-siklus-kelahiran",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "siklus-hidup",
+    "title": "Kelahiran dan sebulan bayi (Mua Gwee)",
+    "summary": "Syukuran ketika bayi berusia sebulan, dengan telur merah dan kue ku.",
+    "body": [
+      "Banyak keluarga Tionghoa merayakan bayi berusia satu bulan (Mua Gwee / man yue) dengan sembahyang syukur kepada Thian dan leluhur, serta membagikan telur merah, nasi kuning, atau kue ku kepada kerabat.",
+      "Telur merah melambangkan kehidupan baru dan kebahagiaan."
+    ],
+    "steps": [],
+    "items": [
+      "Telur rebus yang diwarnai merah",
+      "Kue ku (ang ku kue) atau kue lain sesuai daerah",
+      "Hio dan persembahan untuk meja abu"
+    ],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "kelahiran",
+      "bayi",
+      "mua gwee",
+      "sebulan",
+      "telur merah",
+      "ang ku kue"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (MATAKIN / pengurus klenteng / tetua adat)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-aturan-etika-klenteng",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "aturan-etika",
+    "title": "Adab di klenteng dan litang",
+    "summary": "Tata krama umum saat berkunjung atau bersembahyang di klenteng dan litang.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Berpakaian sopan dan rapi.",
+        "why": "Menghormati tempat suci."
+      },
+      {
+        "text": "Ikuti petunjuk masuk dan keluar; umumnya lewat pintu Naga lalu keluar lewat pintu Harimau.",
+        "why": "Melambangkan keseimbangan; arah persis ditandai di setiap klenteng."
+      },
+      {
+        "text": "Jangan menginjak ambang pintu.",
+        "why": "Ambang pintu dihormati sebagai batas ruang suci."
+      },
+      {
+        "text": "Jangan menunjuk patung atau altar dengan jari; gunakan telapak tangan terbuka bila perlu.",
+        "why": "Menunjuk dianggap kurang sopan."
+      },
+      {
+        "text": "Hio dipadamkan dengan dikibas, tidak ditiup.",
+        "why": "Menjaga kesucian persembahan."
+      },
+      {
+        "text": "Mintalah izin sebelum memotret dan jangan menyentuh benda di altar.",
+        "why": "Menghormati umat dan pengurus."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "adab",
+      "etika",
+      "klenteng",
+      "litang",
+      "pintu naga",
+      "ambang pintu",
+      "foto"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (MATAKIN / pengurus klenteng / tetua adat)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-aliran-perbedaan",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "perbedaan-aliran",
+    "title": "Khonghucu, Tri Dharma, Tao, dan perbedaan suku/dialek",
+    "summary": "Peta keragaman praktik Tionghoa di Indonesia agar tidak saling menyalahkan.",
+    "body": [
+      "Agama Khonghucu (MATAKIN) memiliki kitab, rohaniwan, dan rumah ibadah (litang) sendiri. Tri Dharma memadukan tiga ajaran di klenteng. Tradisi Tao menekankan Dao De Jing dan praktik Taois.",
+      "Di luar agama, adat keluarga berbeda menurut asal leluhur: Hokkien banyak di Jawa dan Medan; Hakka di Kalimantan Barat dan Bangka Belitung; Teochew di Pontianak dan Riau; Kanton dan Hainan tersebar di berbagai kota; Peranakan (termasuk Cina Benteng) telah lama berbaur dengan budaya setempat.",
+      "Perbedaan ini wajar. Hening menampilkan variasi berdampingan dan tidak menyatakan satu cara paling benar."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Hokkien",
+        "text": "Contoh: King Thi Kong dirayakan besar; istilah sembahyang memakai lafal Hokkien.",
+        "stream": "hokkien"
+      },
+      {
+        "label": "Hakka",
+        "text": "Contoh: tradisi Cap Go Meh dan tatung di Singkawang.",
+        "stream": "hakka"
+      },
+      {
+        "label": "Teochew",
+        "text": "Contoh: ragam sajian dan istilah khas Teochew.",
+        "stream": "teochew"
+      },
+      {
+        "label": "Peranakan",
+        "text": "Contoh: Cio Tao dan perpaduan adat setempat.",
+        "stream": "peranakan"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "perbedaan",
+      "aliran",
+      "hokkien",
+      "hakka",
+      "teochew",
+      "kanton",
+      "hainan",
+      "peranakan",
+      "cina benteng",
+      "tri dharma",
+      "tao"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (MATAKIN / pengurus klenteng / tetua adat)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-sejarah-indonesia",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "sejarah-tokoh",
+    "title": "Sejarah Khonghucu dan tradisi Tionghoa di Indonesia",
+    "summary": "Dari pelayaran Cheng Ho, Tiong Hoa Hwe Koan, masa pembatasan, hingga pengakuan kembali.",
+    "body": [
+      "Pelayaran Laksamana Cheng Ho (Zheng He) pada awal abad ke-15 meninggalkan jejak di Nusantara, termasuk Klenteng Sam Poo Kong di Semarang.",
+      "Tiong Hoa Hwe Koan berdiri di Batavia pada 1900 dan mendorong pendidikan serta ajaran Khonghucu.",
+      "Inpres No. 14 Tahun 1967 membatasi agama, kepercayaan, dan adat Tionghoa di depan umum. Presiden Abdurrahman Wahid mencabutnya melalui Keppres No. 6 Tahun 2000.",
+      "Imlek menjadi hari libur nasional sejak 2003, dan agama Khonghucu kembali dilayani negara pada pertengahan 2000-an."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "sejarah",
+      "cheng ho",
+      "sam poo kong",
+      "tiong hoa hwe koan",
+      "gus dur",
+      "inpres 14 1967"
+    ],
+    "sources": [
+      {
+        "title": "Keppres No. 6 Tahun 2000"
+      },
+      {
+        "title": "Keppres No. 19 Tahun 2002"
+      },
+      {
+        "title": "Perlu rujukan resmi dari reviewer (MATAKIN / pengurus klenteng / tetua adat)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  }
+]

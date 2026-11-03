@@ -1,0 +1,157 @@
+[
+  {
+    "id": "quran",
+    "faith": "islam",
+    "name": "Al-Qur'an",
+    "summary": "Kalam Allah, 114 surah dalam 30 juz.",
+    "structure": [
+      "114 surah",
+      "30 juz",
+      "Makkiyah dan Madaniyah"
+    ],
+    "inApp": false,
+    "licenseNote": "Teks Arab dan terjemahan Kemenag memerlukan izin/atribusi resmi.",
+    "links": [
+      {
+        "name": "Qur'an Kemenag",
+        "url": "https://quran.kemenag.go.id/",
+        "note": "teks, terjemahan, tafsir resmi"
+      }
+    ]
+  },
+  {
+    "id": "hadis",
+    "faith": "islam",
+    "name": "Hadis",
+    "summary": "Kumpulan sabda, perbuatan, dan ketetapan Nabi Muhammad SAW.",
+    "structure": [
+      "Shahih al-Bukhari",
+      "Shahih Muslim",
+      "Sunan Abu Dawud",
+      "Sunan at-Tirmidzi",
+      "Sunan an-Nasa'i",
+      "Sunan Ibnu Majah"
+    ],
+    "inApp": false,
+    "licenseNote": "Terjemahan Indonesia memerlukan izin penerbit.",
+    "links": [
+      {
+        "name": "Sunnah.com",
+        "url": "https://sunnah.com/",
+        "note": "Arab dan Inggris"
+      }
+    ]
+  },
+  {
+    "id": "alkitab-protestan",
+    "faith": "protestan",
+    "name": "Alkitab",
+    "summary": "66 kitab: 39 Perjanjian Lama, 27 Perjanjian Baru.",
+    "structure": [
+      "Perjanjian Lama: 39 kitab",
+      "Perjanjian Baru: 27 kitab"
+    ],
+    "inApp": false,
+    "licenseNote": "Terjemahan Baru adalah hak cipta Lembaga Alkitab Indonesia.",
+    "links": [
+      {
+        "name": "Alkitab SABDA",
+        "url": "https://alkitab.sabda.org/"
+      },
+      {
+        "name": "Lembaga Alkitab Indonesia",
+        "url": "https://www.alkitab.or.id/"
+      }
+    ]
+  },
+  {
+    "id": "alkitab-katolik",
+    "faith": "katolik",
+    "name": "Alkitab Katolik (dengan Deuterokanonika)",
+    "summary": "73 kitab: 46 Perjanjian Lama, 27 Perjanjian Baru.",
+    "structure": [
+      "Perjanjian Lama: 46 kitab termasuk Deuterokanonika",
+      "Perjanjian Baru: 27 kitab"
+    ],
+    "inApp": false,
+    "licenseNote": "Terjemahan Indonesia memerlukan izin LAI/LBI.",
+    "links": [
+      {
+        "name": "Alkitab SABDA",
+        "url": "https://alkitab.sabda.org/"
+      },
+      {
+        "name": "Katekismus Gereja Katolik (Inggris)",
+        "url": "https://www.vatican.va/archive/ENG0015/_INDEX.HTM"
+      }
+    ]
+  },
+  {
+    "id": "weda",
+    "faith": "hindu",
+    "name": "Weda dan Bhagavad Gita",
+    "summary": "Catur Weda (Sruti), Smrti, Bhagavad Gita, dan Sarasamuccaya.",
+    "structure": [
+      "Rg Weda",
+      "Sama Weda",
+      "Yajur Weda",
+      "Atharwa Weda",
+      "Bhagavad Gita",
+      "Sarasamuccaya"
+    ],
+    "inApp": false,
+    "licenseNote": "Terjemahan Indonesia memerlukan izin penerjemah/penerbit.",
+    "links": [
+      {
+        "name": "PHDI",
+        "url": "https://phdi.or.id/"
+      }
+    ]
+  },
+  {
+    "id": "tipitaka",
+    "faith": "buddha",
+    "name": "Tipitaka / Tripitaka",
+    "summary": "Kanon Pali (Theravada) dan sutra-sutra Mahayana.",
+    "structure": [
+      "Vinaya Pitaka",
+      "Sutta Pitaka",
+      "Abhidhamma Pitaka"
+    ],
+    "inApp": false,
+    "licenseNote": "Banyak terjemahan SuttaCentral berlisensi terbuka; akan diimpor setelah pemeriksaan lisensi per teks.",
+    "links": [
+      {
+        "name": "SuttaCentral",
+        "url": "https://suttacentral.net/",
+        "note": "Pali dan banyak terjemahan"
+      }
+    ]
+  },
+  {
+    "id": "sishu-wujing",
+    "faith": "khonghucu",
+    "name": "Si Shu dan Wu Jing",
+    "summary": "Empat Kitab dan Lima Kitab Klasik; serta Xiao Jing.",
+    "structure": [
+      "Da Xue",
+      "Zhong Yong",
+      "Lun Yu",
+      "Mengzi",
+      "Shi Jing",
+      "Shu Jing",
+      "Yi Jing",
+      "Li Jing",
+      "Chun Qiu"
+    ],
+    "inApp": false,
+    "licenseNote": "Teks Tionghoa klasik berstatus domain publik; terjemahan Indonesia MATAKIN memerlukan izin.",
+    "links": [
+      {
+        "name": "Chinese Text Project",
+        "url": "https://ctext.org/confucianism",
+        "note": "teks klasik & terjemahan Inggris"
+      }
+    ]
+  }
+]

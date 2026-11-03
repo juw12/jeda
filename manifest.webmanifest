@@ -1,0 +1,14 @@
+{
+  "name": "Hening — Ruang Hening Nusantara",
+  "short_name": "Hening",
+  "description": "Ruang ibadah virtual dan pustaka untuk setiap iman di Indonesia.",
+  "start_url": "./#/",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#14110f",
+  "theme_color": "#14110f",
+  "lang": "id",
+  "icons": [
+    { "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

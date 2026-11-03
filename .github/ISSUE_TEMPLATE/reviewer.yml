@@ -1,0 +1,20 @@
+name: Daftar sebagai reviewer
+description: Bantu meninjau Pustaka untuk agama, aliran, atau tradisi tertentu.
+labels: ["reviewer"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Nama
+    validations:
+      required: true
+  - type: input
+    id: tradition
+    attributes:
+      label: Agama / aliran / tradisi (mis. Khonghucu MATAKIN, Tri Dharma Hokkien, NU, HKBP)
+    validations:
+      required: true
+  - type: textarea
+    id: credential
+    attributes:
+      label: Peran & lembaga (mis. rohaniwan, pengurus klenteng, ustaz, pendeta, pinandita)

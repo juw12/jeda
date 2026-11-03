@@ -1,0 +1,578 @@
+[
+  {
+    "id": "hin-pokok-panca-sradha",
+    "faith": "hindu",
+    "streams": [],
+    "section": "pokok-ajaran",
+    "title": "Panca Sradha",
+    "summary": "Lima keyakinan dasar umat Hindu.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Percaya kepada Brahman / Ida Sang Hyang Widhi Wasa."
+      },
+      {
+        "text": "Percaya kepada Atman."
+      },
+      {
+        "text": "Percaya kepada Karmaphala (hukum sebab-akibat perbuatan)."
+      },
+      {
+        "text": "Percaya kepada Punarbhawa / Samsara (kelahiran kembali)."
+      },
+      {
+        "text": "Percaya kepada Moksa (kebebasan abadi)."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "panca sradha",
+      "brahman",
+      "sang hyang widhi",
+      "atman",
+      "karmaphala",
+      "punarbhawa",
+      "moksa"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau pinandita/sulinggih atau PHDI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "hin-pokok-tri-hita-karana",
+    "faith": "hindu",
+    "streams": [],
+    "section": "pokok-ajaran",
+    "title": "Tri Hita Karana dan Catur Purusa Artha",
+    "summary": "Tiga penyebab kebahagiaan dan empat tujuan hidup.",
+    "body": [
+      "Tri Hita Karana: keharmonisan hubungan manusia dengan Tuhan (parhyangan), dengan sesama (pawongan), dan dengan alam (palemahan).",
+      "Catur Purusa Artha: dharma (kebenaran), artha (kesejahteraan), kama (keinginan yang wajar), dan moksa (kebebasan abadi)."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "tri hita karana",
+      "catur purusa artha",
+      "dharma",
+      "artha",
+      "kama",
+      "moksa"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau pinandita/sulinggih atau PHDI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "hin-kitab-weda",
+    "faith": "hindu",
+    "streams": [],
+    "section": "kitab-suci",
+    "title": "Weda dan kitab-kitab Hindu",
+    "summary": "Weda Sruti dan Smrti, Bhagavad Gita, Sarasamuccaya, dan lontar.",
+    "body": [
+      "Weda Sruti (wahyu) terdiri atas Catur Weda: Rg Weda, Sama Weda, Yajur Weda, dan Atharwa Weda. Weda Smrti mencakup kitab-kitab tafsir dan hukum.",
+      "Bhagavad Gita, bagian dari Mahabharata, berisi ajaran Sri Krishna kepada Arjuna. Sarasamuccaya dan lontar-lontar menjadi rujukan penting di Bali."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [
+      {
+        "name": "Parisada Hindu Dharma Indonesia",
+        "url": "https://phdi.or.id/",
+        "note": "majelis umat Hindu"
+      }
+    ],
+    "tags": [
+      "weda",
+      "veda",
+      "bhagavad gita",
+      "sarasamuccaya",
+      "lontar",
+      "sruti",
+      "smrti"
+    ],
+    "sources": [
+      {
+        "title": "Catur Weda"
+      },
+      {
+        "title": "Bhagavad Gita"
+      },
+      {
+        "title": "Sarasamuccaya"
+      },
+      {
+        "title": "Perlu ditinjau pinandita/sulinggih atau PHDI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "hin-ibadah-trisandhya",
+    "faith": "hindu",
+    "streams": [],
+    "section": "ibadah-harian",
+    "title": "Puja Tri Sandhya",
+    "summary": "Persembahyangan tiga kali sehari: pagi, siang, dan sore.",
+    "body": [
+      "Puja Tri Sandhya dilakukan pada pagi, tengah hari, dan senja (sekitar pukul 06.00, 12.00, dan 18.00). Bait pertama adalah Gayatri Mantram. Biasanya dilanjutkan dengan Kramaning Sembah."
+    ],
+    "steps": [
+      {
+        "text": "Bersihkan diri dan duduk dengan sikap sila (laki-laki) atau bersimpuh (perempuan).",
+        "why": "Sikap tubuh yang tenang membantu konsentrasi."
+      },
+      {
+        "text": "Pranayama: mengatur napas.",
+        "why": "Menenangkan pikiran."
+      },
+      {
+        "text": "Mengucapkan enam bait mantram Tri Sandhya.",
+        "why": "Pemujaan kepada Sang Hyang Widhi."
+      },
+      {
+        "text": "Dilanjutkan Kramaning Sembah bila sempat.",
+        "why": "Rangkaian sembah dengan dan tanpa bunga."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "tri sandhya",
+      "gayatri",
+      "mantram",
+      "kramaning sembah",
+      "sembahyang"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau pinandita/sulinggih atau PHDI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "hin-ibadah-canang",
+    "faith": "hindu",
+    "streams": [],
+    "section": "ibadah-harian",
+    "title": "Canang sari dan persembahan harian",
+    "summary": "Persembahan harian sebagai ungkapan terima kasih, dengan bunga menurut arah mata angin.",
+    "body": [
+      "Canang sari terdiri dari alas janur (ceper/tamas), porosan (sirih, kapur, pinang), dan bunga berwarna yang disusun menurut arah: umumnya timur putih, selatan merah, barat kuning, utara biru/hitam, sesuai dewa penjaga arah (Nawa Sanga).",
+      "Selain canang, banyak keluarga menghaturkan banten saiban (yadnya sesa) setelah memasak, sebagai persembahan pertama sebelum makan."
+    ],
+    "steps": [],
+    "items": [
+      "Ceper/tamas dari janur",
+      "Porosan",
+      "Bunga putih, merah, kuning, biru/hitam",
+      "Dupa",
+      "Tirta (air suci)"
+    ],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Daerah di Bali",
+        "text": "Bentuk dan isi canang berbeda antar-daerah dan keperluan; ikuti petunjuk keluarga atau sulinggih.",
+        "stream": "hindu-bali"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "canang",
+      "canang sari",
+      "banten",
+      "saiban",
+      "yadnya sesa",
+      "bunga",
+      "persembahan"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau pinandita/sulinggih atau PHDI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "hin-hariraya-galungan",
+    "faith": "hindu",
+    "streams": [],
+    "section": "hari-raya",
+    "title": "Galungan dan Kuningan",
+    "summary": "Kemenangan dharma atas adharma, dirayakan setiap 210 hari menurut kalender Pawukon.",
+    "body": [
+      "Galungan jatuh pada Buda (Rabu) Kliwon wuku Dungulan; Kuningan sepuluh hari kemudian pada Saniscara (Sabtu) Kliwon wuku Kuningan.",
+      "Rumah dihias penjor, dan umat bersembahyang di pura keluarga dan pura desa."
+    ],
+    "steps": [
+      {
+        "text": "Rangkaian persiapan: Sugihan, Penyekeban, Penyajaan, Penampahan.",
+        "why": "Persiapan lahir dan batin."
+      },
+      {
+        "text": "Memasang penjor pada Penampahan Galungan.",
+        "why": "Lambang kemakmuran dan gunung suci."
+      },
+      {
+        "text": "Sembahyang di sanggah/merajan dan pura pada hari Galungan.",
+        "why": "Syukur atas kemenangan dharma."
+      },
+      {
+        "text": "Kuningan, sepuluh hari kemudian; persembahyangan sebelum tengah hari.",
+        "why": "Memohon keselamatan; leluhur kembali ke alam asal."
+      }
+    ],
+    "items": [
+      "Penjor (bambu melengkung berhias)",
+      "Banten sesuai tuntunan",
+      "Pakaian adat untuk sembahyang"
+    ],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "galungan",
+      "kuningan",
+      "penjor",
+      "pawukon",
+      "dungulan",
+      "dharma"
+    ],
+    "sources": [
+      {
+        "title": "Kalender Bali (Pawukon)"
+      },
+      {
+        "title": "Perlu ditinjau pinandita/sulinggih atau PHDI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "hin-hariraya-nyepi",
+    "faith": "hindu",
+    "streams": [],
+    "section": "hari-raya",
+    "title": "Nyepi: Tahun Baru Saka",
+    "summary": "Melasti, Tawur Kesanga, Catur Brata Penyepian, dan Ngembak Geni.",
+    "body": [
+      "Catur Brata Penyepian: tidak menyalakan api/lampu, tidak bekerja, tidak bepergian, dan tidak bersenang-senang."
+    ],
+    "steps": [
+      {
+        "text": "Melasti: penyucian pratima dan alam ke laut atau sumber air.",
+        "why": "Menyucikan diri dan alam."
+      },
+      {
+        "text": "Tawur Kesanga dan pengerupukan (pawai ogoh-ogoh) sehari sebelum Nyepi.",
+        "why": "Menetralisir unsur negatif (bhuta kala)."
+      },
+      {
+        "text": "Nyepi: Catur Brata Penyepian selama 24 jam.",
+        "why": "Amati geni, amati karya, amati lelungan, amati lelanguan."
+      },
+      {
+        "text": "Ngembak Geni: saling memaafkan pada hari berikutnya.",
+        "why": "Memulai tahun baru dengan hati bersih."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "nyepi",
+      "saka",
+      "melasti",
+      "ogoh-ogoh",
+      "tawur",
+      "catur brata",
+      "ngembak geni"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau pinandita/sulinggih atau PHDI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "hin-siklus-manusa-yadnya",
+    "faith": "hindu",
+    "streams": [],
+    "section": "siklus-hidup",
+    "title": "Manusa Yadnya: dari kelahiran hingga pernikahan",
+    "summary": "Upacara tiga bulanan, otonan, metatah (potong gigi), dan pawiwahan.",
+    "body": [
+      "Upacara bayi meliputi upacara 12 hari, 42 hari, dan tiga bulanan (nyambutin).",
+      "Otonan diperingati setiap 210 hari (satu siklus Pawukon) sesuai hari kelahiran.",
+      "Metatah/mepandes (potong gigi) dilakukan saat remaja atau sebelum menikah, melambangkan pengendalian sad ripu (enam musuh dalam diri).",
+      "Pawiwahan adalah upacara pernikahan."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "manusa yadnya",
+      "otonan",
+      "metatah",
+      "mepandes",
+      "potong gigi",
+      "tiga bulanan",
+      "pawiwahan"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau pinandita/sulinggih atau PHDI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "hin-siklus-ngaben",
+    "faith": "hindu",
+    "streams": [],
+    "section": "siklus-hidup",
+    "title": "Pitra Yadnya: Ngaben",
+    "summary": "Upacara kremasi untuk mengembalikan unsur Panca Maha Bhuta.",
+    "body": [
+      "Ngaben adalah upacara pembakaran jenazah untuk mengembalikan unsur Panca Maha Bhuta ke asalnya dan menghantar atma.",
+      "Karena biayanya besar, banyak desa menyelenggarakan ngaben massal (ngaben bersama)."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "ngaben",
+      "pitra yadnya",
+      "kremasi",
+      "kematian",
+      "panca maha bhuta"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau pinandita/sulinggih atau PHDI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "hin-aturan-panca-yadnya",
+    "faith": "hindu",
+    "streams": [],
+    "section": "aturan-etika",
+    "title": "Panca Yadnya dan adab di pura",
+    "summary": "Lima persembahan suci dan aturan memasuki pura.",
+    "body": [
+      "Panca Yadnya: Dewa Yadnya, Rsi Yadnya, Pitra Yadnya, Manusa Yadnya, dan Bhuta Yadnya."
+    ],
+    "steps": [
+      {
+        "text": "Kenakan pakaian adat: kamen dan selendang/senteng.",
+        "why": "Menghormati kesucian pura."
+      },
+      {
+        "text": "Tidak memasuki pura saat cuntaka (berduka) atau haid.",
+        "why": "Aturan kesucian (sebel)."
+      },
+      {
+        "text": "Tidak memanjat atau duduk di bangunan suci.",
+        "why": "Menghormati palinggih."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "panca yadnya",
+      "pura",
+      "adab",
+      "kamen",
+      "cuntaka",
+      "sebel"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau pinandita/sulinggih atau PHDI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "hin-aliran-indonesia",
+    "faith": "hindu",
+    "streams": [],
+    "section": "perbedaan-aliran",
+    "title": "Keragaman Hindu di Indonesia",
+    "summary": "Hindu Bali, Tengger, Kaharingan, dan komunitas India.",
+    "body": [],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Hindu Bali (PHDI)",
+        "text": "Tradisi terbesar, dengan sistem pura dan kalender Pawukon serta Saka.",
+        "stream": "hindu-bali"
+      },
+      {
+        "label": "Tengger",
+        "text": "Upacara Yadnya Kasada di Gunung Bromo.",
+        "stream": "tengger"
+      },
+      {
+        "label": "Kaharingan",
+        "text": "Kepercayaan Dayak yang secara administratif bernaung di bawah Hindu sejak 1980.",
+        "stream": "kaharingan"
+      },
+      {
+        "label": "Hindu India-Indonesia",
+        "text": "Komunitas Tamil di Medan, misalnya perayaan Thaipusam.",
+        "stream": "hindu-india"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "bali",
+      "tengger",
+      "kasada",
+      "kaharingan",
+      "dayak",
+      "tamil",
+      "thaipusam"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau pinandita/sulinggih atau PHDI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "hin-sejarah-indonesia",
+    "faith": "hindu",
+    "streams": [],
+    "section": "sejarah-tokoh",
+    "title": "Sejarah Hindu di Nusantara",
+    "summary": "Dari Kutai dan Tarumanagara hingga Majapahit dan PHDI.",
+    "body": [
+      "Prasasti Yupa dari Kerajaan Kutai (sekitar abad ke-4–5) adalah salah satu bukti tertua pengaruh Hindu di Nusantara, disusul Tarumanagara di Jawa Barat.",
+      "Majapahit menjadi kerajaan Hindu-Buddha besar terakhir di Jawa. Parisada Hindu Dharma (cikal bakal PHDI) dibentuk di Bali pada 1959."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "sejarah",
+      "kutai",
+      "yupa",
+      "tarumanagara",
+      "majapahit",
+      "phdi"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau pinandita/sulinggih atau PHDI"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  }
+]

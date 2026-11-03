@@ -1,0 +1,913 @@
+[
+  {
+    "id": "isl-pokok-rukun-iman",
+    "faith": "islam",
+    "streams": [],
+    "section": "pokok-ajaran",
+    "title": "Rukun Iman",
+    "summary": "Enam pokok keimanan dalam Islam.",
+    "body": [
+      "Rukun Iman disebutkan dalam hadis Jibril yang diriwayatkan Imam Muslim, ketika Malaikat Jibril bertanya kepada Nabi Muhammad SAW tentang iman."
+    ],
+    "steps": [
+      {
+        "text": "Iman kepada Allah SWT."
+      },
+      {
+        "text": "Iman kepada para malaikat."
+      },
+      {
+        "text": "Iman kepada kitab-kitab Allah (Taurat, Zabur, Injil, Al-Qur'an)."
+      },
+      {
+        "text": "Iman kepada para rasul."
+      },
+      {
+        "text": "Iman kepada hari akhir."
+      },
+      {
+        "text": "Iman kepada qada dan qadar."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "iman",
+      "rukun iman",
+      "akidah",
+      "malaikat",
+      "qada qadar"
+    ],
+    "sources": [
+      {
+        "title": "Hadis Jibril, HR. Muslim (Kitab al-Iman)"
+      },
+      {
+        "title": "Perlu ditinjau ustaz/ulama dari ormas terkait (NU, Muhammadiyah, Persis, dll.)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "isl-pokok-rukun-islam",
+    "faith": "islam",
+    "streams": [],
+    "section": "pokok-ajaran",
+    "title": "Rukun Islam",
+    "summary": "Lima pilar amalan seorang Muslim.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Mengucapkan dua kalimat syahadat.",
+        "why": "Persaksian bahwa tiada Tuhan selain Allah dan Muhammad adalah utusan Allah."
+      },
+      {
+        "text": "Mendirikan sholat lima waktu.",
+        "why": "Tiang agama dan hubungan langsung dengan Allah."
+      },
+      {
+        "text": "Menunaikan zakat.",
+        "why": "Menyucikan harta dan menolong sesama."
+      },
+      {
+        "text": "Berpuasa di bulan Ramadan.",
+        "why": "Melatih takwa (QS. Al-Baqarah 2:183)."
+      },
+      {
+        "text": "Menunaikan ibadah haji bagi yang mampu.",
+        "why": "Kewajiban sekali seumur hidup bagi yang mampu."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "rukun islam",
+      "syahadat",
+      "sholat",
+      "zakat",
+      "puasa",
+      "haji"
+    ],
+    "sources": [
+      {
+        "title": "Hadis Jibril, HR. Muslim"
+      },
+      {
+        "title": "QS. Al-Baqarah 2:183"
+      },
+      {
+        "title": "Perlu ditinjau ustaz/ulama dari ormas terkait (NU, Muhammadiyah, Persis, dll.)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "isl-kitab-quran-hadis",
+    "faith": "islam",
+    "streams": [],
+    "section": "kitab-suci",
+    "title": "Al-Qur'an dan Hadis",
+    "summary": "Al-Qur'an sebagai kalam Allah dan Hadis sebagai sumber hukum kedua.",
+    "body": [
+      "Al-Qur'an diturunkan kepada Nabi Muhammad SAW dalam bahasa Arab secara berangsur-angsur selama sekitar 23 tahun. Terdiri atas 114 surah dan dibagi menjadi 30 juz.",
+      "Hadis adalah perkataan, perbuatan, dan ketetapan Nabi. Kumpulan yang dikenal luas antara lain Kutubus Sittah: Shahih al-Bukhari, Shahih Muslim, Sunan Abu Dawud, Sunan at-Tirmidzi, Sunan an-Nasa'i, dan Sunan Ibnu Majah.",
+      "Membaca Al-Qur'an dianjurkan dalam keadaan suci, dengan tajwid yang benar, dan memahami maknanya melalui terjemahan dan tafsir dari ulama yang terpercaya."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [
+      {
+        "name": "Qur'an Kemenag (teks, terjemahan, tafsir)",
+        "url": "https://quran.kemenag.go.id/",
+        "note": "Kementerian Agama RI"
+      },
+      {
+        "name": "Sunnah.com (koleksi hadis, Arab & Inggris)",
+        "url": "https://sunnah.com/",
+        "note": ""
+      }
+    ],
+    "tags": [
+      "quran",
+      "al-quran",
+      "hadis",
+      "hadits",
+      "surah",
+      "juz",
+      "tajwid",
+      "tafsir"
+    ],
+    "sources": [
+      {
+        "title": "Al-Qur'an"
+      },
+      {
+        "title": "Kutubus Sittah"
+      },
+      {
+        "title": "Perlu ditinjau ustaz/ulama dari ormas terkait (NU, Muhammadiyah, Persis, dll.)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "isl-ibadah-wudu",
+    "faith": "islam",
+    "streams": [],
+    "section": "ibadah-harian",
+    "title": "Tata cara wudu",
+    "summary": "Bersuci sebelum sholat, berdasarkan QS. Al-Ma'idah ayat 6.",
+    "body": [
+      "Wudu adalah syarat sah sholat. Fardu (rukun) wudu dalam mazhab Syafi'i ada enam; amalan sunnah melengkapinya."
+    ],
+    "steps": [
+      {
+        "text": "Niat dalam hati untuk berwudu.",
+        "why": "Fardu; niat membedakan ibadah dari kebiasaan."
+      },
+      {
+        "text": "Membaca basmalah dan membasuh kedua telapak tangan.",
+        "why": "Sunnah."
+      },
+      {
+        "text": "Berkumur dan membersihkan hidung.",
+        "why": "Sunnah."
+      },
+      {
+        "text": "Membasuh seluruh wajah.",
+        "why": "Fardu (QS. Al-Ma'idah 5:6)."
+      },
+      {
+        "text": "Membasuh kedua tangan hingga siku.",
+        "why": "Fardu."
+      },
+      {
+        "text": "Mengusap sebagian kepala.",
+        "why": "Fardu; mazhab lain mensyaratkan lebih luas."
+      },
+      {
+        "text": "Mengusap kedua telinga.",
+        "why": "Sunnah."
+      },
+      {
+        "text": "Membasuh kedua kaki hingga mata kaki.",
+        "why": "Fardu."
+      },
+      {
+        "text": "Melakukannya dengan tertib (berurutan) dan membaca doa setelah wudu.",
+        "why": "Tertib termasuk fardu dalam mazhab Syafi'i."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Mazhab Syafi'i (umum di Indonesia, NU)",
+        "text": "Enam fardu: niat, membasuh wajah, tangan hingga siku, mengusap sebagian kepala, membasuh kaki, tertib.",
+        "stream": "nu"
+      },
+      {
+        "label": "Muhammadiyah (Tarjih)",
+        "text": "Mengikuti tuntunan Himpunan Putusan Tarjih; secara umum langkahnya serupa.",
+        "stream": "muhammadiyah"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "wudu",
+      "wudhu",
+      "bersuci",
+      "taharah",
+      "cara"
+    ],
+    "sources": [
+      {
+        "title": "QS. Al-Ma'idah 5:6"
+      },
+      {
+        "title": "Perlu ditinjau ustaz/ulama dari ormas terkait (NU, Muhammadiyah, Persis, dll.)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "isl-ibadah-sholat",
+    "faith": "islam",
+    "streams": [],
+    "section": "ibadah-harian",
+    "title": "Sholat lima waktu",
+    "summary": "Waktu, jumlah rakaat, syarat, dan garis besar tata cara sholat fardu.",
+    "body": [
+      "Sholat fardu: Subuh 2 rakaat, Dzuhur 4, Ashar 4, Maghrib 3, Isya 4.",
+      "Syarat sah antara lain: suci dari hadas dan najis, menutup aurat, menghadap kiblat, dan telah masuk waktu.",
+      "Hening hanya menampilkan panduan teks dan jadwal. Belajarlah gerakan dan bacaan sholat dari guru atau ustaz."
+    ],
+    "steps": [
+      {
+        "text": "Berwudu dan memastikan pakaian serta tempat suci.",
+        "why": "Syarat sah sholat."
+      },
+      {
+        "text": "Menghadap kiblat, niat, takbiratul ihram.",
+        "why": "Awal sholat."
+      },
+      {
+        "text": "Membaca Al-Fatihah di setiap rakaat, rukuk, i'tidal, sujud, duduk di antara dua sujud.",
+        "why": "Rukun sholat."
+      },
+      {
+        "text": "Tasyahud akhir dan salam.",
+        "why": "Penutup sholat."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Qunut Subuh",
+        "text": "Umumnya dilakukan oleh warga NU (mazhab Syafi'i); Muhammadiyah umumnya tidak melakukan qunut Subuh secara rutin.",
+        "stream": "nu"
+      },
+      {
+        "label": "Muhammadiyah",
+        "text": "Tidak membaca qunut Subuh secara rutin; tuntunan sholat merujuk Himpunan Putusan Tarjih.",
+        "stream": "muhammadiyah"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "sholat",
+      "salat",
+      "shalat",
+      "rakaat",
+      "subuh",
+      "dzuhur",
+      "ashar",
+      "maghrib",
+      "isya",
+      "qunut",
+      "jadwal"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau ustaz/ulama dari ormas terkait (NU, Muhammadiyah, Persis, dll.)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "isl-ibadah-dzikir",
+    "faith": "islam",
+    "streams": [],
+    "section": "ibadah-harian",
+    "title": "Zikir setelah sholat",
+    "summary": "Tasbih, tahmid, dan takbir masing-masing 33 kali, disempurnakan menjadi 100.",
+    "body": [
+      "Hadis riwayat Muslim menyebutkan anjuran membaca Subhanallah 33 kali, Alhamdulillah 33 kali, dan Allahu Akbar 33 kali setelah sholat, lalu menyempurnakannya menjadi seratus dengan tahlil."
+    ],
+    "steps": [
+      {
+        "text": "Subhanallah ×33"
+      },
+      {
+        "text": "Alhamdulillah ×33"
+      },
+      {
+        "text": "Allahu Akbar ×33"
+      },
+      {
+        "text": "Tahlil penyempurna dan doa"
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Tradisi NU",
+        "text": "Sering dilanjutkan wirid dan doa bersama yang dipimpin imam.",
+        "stream": "nu"
+      },
+      {
+        "label": "Muhammadiyah",
+        "text": "Zikir umumnya dibaca sendiri-sendiri dengan suara pelan.",
+        "stream": "muhammadiyah"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "zikir",
+      "dzikir",
+      "tasbih",
+      "tahmid",
+      "takbir",
+      "wirid"
+    ],
+    "sources": [
+      {
+        "title": "HR. Muslim (Kitab al-Masajid)"
+      },
+      {
+        "title": "Perlu ditinjau ustaz/ulama dari ormas terkait (NU, Muhammadiyah, Persis, dll.)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "isl-hariraya-ramadan-idulfitri",
+    "faith": "islam",
+    "streams": [],
+    "section": "hari-raya",
+    "title": "Ramadan dan Idulfitri",
+    "summary": "Puasa sebulan penuh, zakat fitrah, dan sholat Idulfitri.",
+    "body": [
+      "Puasa Ramadan diwajibkan atas orang beriman (QS. Al-Baqarah 2:183). Awal Ramadan dan 1 Syawal di Indonesia ditetapkan pemerintah melalui sidang isbat Kementerian Agama.",
+      "Zakat fitrah wajib ditunaikan sebelum sholat Idulfitri."
+    ],
+    "steps": [
+      {
+        "text": "Sahur dan niat puasa, menahan diri dari fajar hingga maghrib.",
+        "why": "Inti ibadah puasa."
+      },
+      {
+        "text": "Memperbanyak ibadah: tarawih, tadarus, sedekah, i'tikaf di sepuluh malam terakhir.",
+        "why": "Keutamaan bulan Ramadan."
+      },
+      {
+        "text": "Menunaikan zakat fitrah sebelum sholat Id.",
+        "why": "Membersihkan diri dan membantu fakir miskin."
+      },
+      {
+        "text": "Takbiran pada malam 1 Syawal.",
+        "why": "Mengagungkan Allah."
+      },
+      {
+        "text": "Sholat Idulfitri dan saling bermaafan.",
+        "why": "Kembali fitri dan menyambung silaturahmi."
+      }
+    ],
+    "items": [
+      "Zakat fitrah (beras atau uang, sesuai ketentuan BAZNAS/lembaga setempat)",
+      "Pakaian bersih untuk sholat Id",
+      "Sajadah"
+    ],
+    "timing": null,
+    "variations": [
+      {
+        "label": "NU",
+        "text": "Penentuan awal bulan dengan rukyatul hilal (melihat hilal), mengikuti isbat pemerintah.",
+        "stream": "nu"
+      },
+      {
+        "label": "Muhammadiyah",
+        "text": "Menggunakan hisab hakiki wujudul hilal; tanggal dapat diumumkan lebih awal dan kadang berbeda dengan pemerintah.",
+        "stream": "muhammadiyah"
+      },
+      {
+        "label": "Tarawih",
+        "text": "Sebagian umat melaksanakan 20 rakaat + 3 witir (umum di NU), sebagian 8 + 3 (umum di Muhammadiyah).",
+        "stream": null
+      }
+    ],
+    "links": [],
+    "tags": [
+      "ramadan",
+      "puasa",
+      "idulfitri",
+      "lebaran",
+      "zakat fitrah",
+      "takbiran",
+      "tarawih",
+      "isbat",
+      "hilal"
+    ],
+    "sources": [
+      {
+        "title": "QS. Al-Baqarah 2:183–185"
+      },
+      {
+        "title": "Perlu ditinjau ustaz/ulama dari ormas terkait (NU, Muhammadiyah, Persis, dll.)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "isl-hariraya-iduladha",
+    "faith": "islam",
+    "streams": [],
+    "section": "hari-raya",
+    "title": "Iduladha dan kurban",
+    "summary": "Hari raya 10 Zulhijah, sholat Id, dan penyembelihan hewan kurban.",
+    "body": [
+      "Iduladha memperingati keteladanan Nabi Ibrahim AS. Penyembelihan kurban dilakukan setelah sholat Id hingga akhir hari tasyrik (11–13 Zulhijah).",
+      "Dianjurkan puasa Arafah pada 9 Zulhijah bagi yang tidak berhaji."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "iduladha",
+      "kurban",
+      "qurban",
+      "arafah",
+      "tasyrik",
+      "zulhijah"
+    ],
+    "sources": [
+      {
+        "title": "QS. Al-Kautsar 108:2"
+      },
+      {
+        "title": "Perlu ditinjau ustaz/ulama dari ormas terkait (NU, Muhammadiyah, Persis, dll.)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "isl-siklus-aqiqah",
+    "faith": "islam",
+    "streams": [],
+    "section": "siklus-hidup",
+    "title": "Aqiqah dan menyambut kelahiran",
+    "summary": "Syukuran kelahiran dengan menyembelih kambing, mencukur rambut, dan memberi nama.",
+    "body": [
+      "Aqiqah dianjurkan pada hari ketujuh kelahiran. Dalam mazhab Syafi'i, umumnya dua ekor kambing untuk anak laki-laki dan satu ekor untuk anak perempuan."
+    ],
+    "steps": [
+      {
+        "text": "Mengumandangkan azan di telinga bayi (tradisi yang banyak diamalkan).",
+        "why": "Menyambut kelahiran dengan kalimat tauhid."
+      },
+      {
+        "text": "Pada hari ketujuh: menyembelih hewan aqiqah.",
+        "why": "Wujud syukur."
+      },
+      {
+        "text": "Mencukur rambut bayi dan bersedekah.",
+        "why": "Sunnah yang diajarkan Nabi."
+      },
+      {
+        "text": "Memberi nama yang baik.",
+        "why": "Nama adalah doa."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Waktu aqiqah",
+        "text": "Bila tidak mampu pada hari ketujuh, sebagian ulama membolehkan pada hari ke-14, ke-21, atau setelahnya.",
+        "stream": null
+      }
+    ],
+    "links": [],
+    "tags": [
+      "aqiqah",
+      "akikah",
+      "kelahiran",
+      "bayi",
+      "kambing",
+      "nama"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau ustaz/ulama dari ormas terkait (NU, Muhammadiyah, Persis, dll.)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "isl-siklus-nikah",
+    "faith": "islam",
+    "streams": [],
+    "section": "siklus-hidup",
+    "title": "Akad nikah",
+    "summary": "Rukun nikah dan pencatatan di KUA.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Calon suami dan calon istri.",
+        "why": "Rukun nikah."
+      },
+      {
+        "text": "Wali nikah dari pihak perempuan.",
+        "why": "Rukun nikah dalam mazhab Syafi'i."
+      },
+      {
+        "text": "Dua orang saksi.",
+        "why": "Rukun nikah."
+      },
+      {
+        "text": "Ijab dan kabul.",
+        "why": "Inti akad."
+      },
+      {
+        "text": "Mahar diberikan kepada istri.",
+        "why": "Hak istri."
+      },
+      {
+        "text": "Pencatatan oleh KUA.",
+        "why": "Kewajiban hukum negara."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "nikah",
+      "akad",
+      "pernikahan",
+      "wali",
+      "saksi",
+      "mahar",
+      "kua",
+      "ijab kabul"
+    ],
+    "sources": [
+      {
+        "title": "UU No. 1 Tahun 1974 tentang Perkawinan (dan perubahannya)"
+      },
+      {
+        "title": "Kompilasi Hukum Islam"
+      },
+      {
+        "title": "Perlu ditinjau ustaz/ulama dari ormas terkait (NU, Muhammadiyah, Persis, dll.)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "isl-siklus-jenazah",
+    "faith": "islam",
+    "streams": [],
+    "section": "siklus-hidup",
+    "title": "Pengurusan jenazah",
+    "summary": "Empat kewajiban kolektif (fardu kifayah): memandikan, mengafani, menyalatkan, menguburkan.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Memandikan jenazah.",
+        "why": "Fardu kifayah; dilakukan oleh keluarga atau petugas sesuai jenis kelamin."
+      },
+      {
+        "text": "Mengafani dengan kain putih.",
+        "why": "Fardu kifayah."
+      },
+      {
+        "text": "Menyalatkan (sholat jenazah).",
+        "why": "Fardu kifayah; empat takbir tanpa rukuk dan sujud."
+      },
+      {
+        "text": "Menguburkan secepatnya.",
+        "why": "Fardu kifayah."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Tahlilan",
+        "text": "Tradisi doa bersama pada hari-hari tertentu (mis. 1–7, 40, 100 hari) banyak diamalkan warga NU.",
+        "stream": "nu"
+      },
+      {
+        "label": "Muhammadiyah",
+        "text": "Umumnya tidak menyelenggarakan tahlilan; mendoakan almarhum dilakukan tanpa penentuan hari khusus.",
+        "stream": "muhammadiyah"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "jenazah",
+      "kematian",
+      "sholat jenazah",
+      "kafan",
+      "tahlilan",
+      "pemakaman",
+      "melayat"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau ustaz/ulama dari ormas terkait (NU, Muhammadiyah, Persis, dll.)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "isl-aturan-halal",
+    "faith": "islam",
+    "streams": [],
+    "section": "aturan-etika",
+    "title": "Makanan halal dan haram",
+    "summary": "Pokok aturan makanan dan minuman dalam Islam serta sertifikasi halal di Indonesia.",
+    "body": [
+      "Al-Qur'an mengharamkan antara lain bangkai, darah, daging babi, dan hewan yang disembelih bukan atas nama Allah (QS. Al-Baqarah 2:173), serta khamr atau minuman memabukkan (QS. Al-Ma'idah 5:90).",
+      "Di Indonesia, sertifikasi halal diselenggarakan oleh BPJPH Kementerian Agama dengan fatwa kehalalan dari MUI."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "halal",
+      "haram",
+      "babi",
+      "khamr",
+      "alkohol",
+      "makanan",
+      "bpjph",
+      "mui"
+    ],
+    "sources": [
+      {
+        "title": "QS. Al-Baqarah 2:173"
+      },
+      {
+        "title": "QS. Al-Ma'idah 5:90"
+      },
+      {
+        "title": "UU No. 33 Tahun 2014 tentang Jaminan Produk Halal"
+      },
+      {
+        "title": "Perlu ditinjau ustaz/ulama dari ormas terkait (NU, Muhammadiyah, Persis, dll.)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "isl-aturan-adab-masjid",
+    "faith": "islam",
+    "streams": [],
+    "section": "aturan-etika",
+    "title": "Adab di masjid",
+    "summary": "Tata krama bagi jemaah dan tamu di masjid.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Berwudu dan berpakaian bersih yang menutup aurat.",
+        "why": "Menghormati rumah Allah."
+      },
+      {
+        "text": "Masuk dengan kaki kanan dan berdoa.",
+        "why": "Sunnah."
+      },
+      {
+        "text": "Sholat tahiyatul masjid dua rakaat sebelum duduk.",
+        "why": "Sunnah bagi Muslim."
+      },
+      {
+        "text": "Tidak melintas di depan orang yang sedang sholat.",
+        "why": "Menjaga kekhusyukan."
+      },
+      {
+        "text": "Menjaga ketenangan dan kebersihan.",
+        "why": "Masjid adalah tempat ibadah bersama."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "adab",
+      "masjid",
+      "tamu",
+      "etika",
+      "aurat",
+      "tahiyatul masjid"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau ustaz/ulama dari ormas terkait (NU, Muhammadiyah, Persis, dll.)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "isl-aliran-nu-muhammadiyah",
+    "faith": "islam",
+    "streams": [],
+    "section": "perbedaan-aliran",
+    "title": "NU, Muhammadiyah, dan ormas lain: perbedaan amaliah",
+    "summary": "Perbedaan yang sering ditanyakan, ditampilkan berdampingan tanpa menilai.",
+    "body": [
+      "NU dan Muhammadiyah sama-sama berakidah Ahlussunnah. Perbedaan umumnya pada metode ijtihad dan amaliah (furu'iyah), bukan pokok iman.",
+      "NU umumnya bermazhab Syafi'i dalam fikih dan melestarikan tradisi pesantren. Muhammadiyah merujuk langsung Al-Qur'an dan Sunnah melalui Majelis Tarjih. Persis memiliki Dewan Hisbah."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Penentuan awal bulan",
+        "text": "NU: rukyatul hilal. Muhammadiyah: hisab wujudul hilal. Pemerintah: sidang isbat.",
+        "stream": null
+      },
+      {
+        "label": "Qunut Subuh",
+        "text": "NU: umumnya membaca. Muhammadiyah: umumnya tidak.",
+        "stream": null
+      },
+      {
+        "label": "Tarawih",
+        "text": "NU: umumnya 20+3. Muhammadiyah: umumnya 8+3.",
+        "stream": null
+      },
+      {
+        "label": "Tahlilan & ziarah",
+        "text": "NU: tradisi tahlilan, ziarah wali. Muhammadiyah: umumnya tidak mengadakan tahlilan.",
+        "stream": null
+      }
+    ],
+    "links": [],
+    "tags": [
+      "nu",
+      "muhammadiyah",
+      "persis",
+      "perbedaan",
+      "mazhab",
+      "qunut",
+      "hisab",
+      "rukyat",
+      "tarawih"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau ustaz/ulama dari ormas terkait (NU, Muhammadiyah, Persis, dll.)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "isl-sejarah-nusantara",
+    "faith": "islam",
+    "streams": [],
+    "section": "sejarah-tokoh",
+    "title": "Islam di Nusantara",
+    "summary": "Kerajaan Islam awal, Walisongo, dan lahirnya ormas Islam modern.",
+    "body": [
+      "Samudera Pasai di Aceh (abad ke-13) dikenal sebagai salah satu kerajaan Islam awal di Nusantara. Di Jawa, dakwah Walisongo dan Kesultanan Demak berperan besar.",
+      "Muhammadiyah didirikan KH Ahmad Dahlan di Yogyakarta pada 1912. Nahdlatul Ulama didirikan KH Hasyim Asy'ari dan para ulama di Surabaya pada 1926.",
+      "Komunitas Muslim Tionghoa juga memiliki sejarah panjang, antara lain dikaitkan dengan Laksamana Cheng Ho; kini ada Masjid Muhammad Cheng Hoo di Surabaya."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "sejarah",
+      "walisongo",
+      "pasai",
+      "demak",
+      "ahmad dahlan",
+      "hasyim asyari",
+      "cheng ho"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau ustaz/ulama dari ormas terkait (NU, Muhammadiyah, Persis, dll.)"
+      }
+    ],
+    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  }
+]
