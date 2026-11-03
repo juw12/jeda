@@ -11,6 +11,7 @@ import { space } from './views/space.js';
 import { pustaka, entry, searchView, scripture } from './views/pustaka.js';
 import { tanya } from './views/tanya.js';
 import { planner, places, calendarView, archive } from './views/tools.js';
+import { review } from './views/review.js';
 
 const ROUTES = {
   '': core.home,
@@ -30,6 +31,7 @@ const ROUTES = {
   tentang: core.about,
   pengaturan: core.settings,
   lainnya: core.more,
+  tinjau: review,
 };
 
 let content = null;
@@ -65,7 +67,7 @@ function renderChrome(routeName) {
   const groups = {
     ruang: ['ruang', 'kunjungi'],
     pustaka: ['pustaka', 'entri', 'cari', 'kitab'],
-    lainnya: ['lainnya', 'upacara', 'ibadah', 'kalender', 'arsip', 'dukung', 'tentang', 'pengaturan'],
+    lainnya: ['lainnya', 'upacara', 'ibadah', 'kalender', 'arsip', 'dukung', 'tentang', 'pengaturan', 'tinjau'],
   };
   const isActive = (id) => id === routeName || (groups[id] || []).includes(routeName);
   const showTabs = Boolean(p.faith) || routeName !== '';

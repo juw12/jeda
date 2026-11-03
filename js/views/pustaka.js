@@ -5,6 +5,7 @@ import { prefs, load, save } from '../store.js';
 import { esc, draftBanner, toast } from '../ui.js';
 import { faithById, entryById, entriesFor, appliesToStreams } from '../content.js';
 import { buildIndex, search } from '../search.js';
+import { speakButton, stopSpeaking } from '../speak.js';
 
 let searchIndex = null;
 
@@ -152,7 +153,9 @@ function lintas(main, { content }) {
 }
 
 export function entry(main, [entryId], query, { content, navigate }) {
-  const item = entryById(content, entryId);
+  // Reviewers open drafts via ?tinjau=1 even when drafts are hidden from the public.
+  const item = entryById(content, entryId)
+    || (query.get('tinjau') ? content.rawEntries.find((e) => e.id === entryId) : null);
   if (!item) {
     main.innerHTML = '<section class="stack"><p>Entri tidak ditemukan atau belum ditinjau.</p><a href="#/pustaka">Kembali ke Pustaka</a></section>';
     return;
@@ -219,6 +222,12 @@ export function entry(main, [entryId], query, { content, navigate }) {
       </div>
     </article>`;
 
+  speakButton(main.querySelector('.entry .row:last-of-type'), () => [
+    item.title,
+    item.summary,
+    ...(item.body || []),
+    ...(item.steps || []).map((s, i) => `Langkah ${i + 1}. ${s.text}${s.why ? `. Mengapa: ${s.why}` : ''}`),
+  ].join('. '));
   main.querySelector('[data-act="bookmark"]').addEventListener('click', (event) => {
     const list = load('bookmarks', []);
     const index = list.indexOf(item.id);
@@ -244,6 +253,7 @@ export function entry(main, [entryId], query, { content, navigate }) {
       toast('Tautan disalin.');
     }
   });
+  return () => stopSpeaking();
 }
 
 export function searchView(main, params, query, { content, navigate }) {

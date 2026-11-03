@@ -5,6 +5,7 @@ import { prefs, load, save, archivePut, archiveAll, archiveDelete } from '../sto
 import { esc, toast, uid, formatShortDate, relativeDays, draftBanner } from '../ui.js';
 import { faithById, entryById } from '../content.js';
 import { holyDays, todaySummary, matchesFaith } from '../calendar.js';
+import { speakButton, stopSpeaking } from '../speak.js';
 
 function faithChips(content, active, base) {
   return `<div class="row chips">
@@ -76,6 +77,12 @@ export function planner(main, [ceremonyId], query, { content }) {
       save(stateKey, [...checked]);
     });
   });
+  speakButton(main.querySelector('.planner .row.no-print'), () => [
+    ceremony.title,
+    ceremony.summary,
+    ...ceremony.groups.map((g) => `${g.title}: ${g.items.join(', ')}`),
+    ...(ceremony.steps || []).map((s, i) => `Langkah ${i + 1}. ${s}`),
+  ].join('. '));
   main.querySelector('[data-act="print"]').addEventListener('click', () => window.print());
   main.querySelector('[data-act="reset"]').addEventListener('click', () => {
     save(stateKey, []);
@@ -83,6 +90,7 @@ export function planner(main, [ceremonyId], query, { content }) {
       box.checked = false;
     });
   });
+  return () => stopSpeaking();
 }
 
 // ---------- Places of worship ----------

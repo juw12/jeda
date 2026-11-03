@@ -123,3 +123,14 @@ jeda.id is an active news site; small apps/brands named "Jeda" exist (holiday ca
 - Full offline library: all content JSON precached by the service worker
 - Pustaka 95 → 120 entries; every faith now has ≥ 2 entries in all 8 sections (holy-book reading guides, Tri Hari Suci, Lectio Divina, Dhammapada, Xiao Jing, four madhhabs, ethnic churches, Catholic orders, Hindu outside Bali, Muslim Chinese-Indonesians, Ashin Jinarakkhita, oldest klenteng, Hokkien/Mandarin glossary, mourning customs, etc.)
 - Verified: monthly dates (lunar month 10 starts 9 Nov 2026), sleep timer, guest rename, all spaces load without errors
+
+
+---
+
+# Iteration 7: v0.4 additions
+
+- Holy-day decorations in spaces and home (lanterns Imlek/Cap Go Meh, ketupat Idulfitri/Iduladha, penjor Galungan/Kuningan, star Natal, lotus lamps Waisak) + greeting banner; window −3/+2 days; verified on official 2026–2027 dates
+- "Dengarkan" read-aloud (Web Speech API, id-ID) on Pustaka entries and ceremony guides
+- Reviewer workflow in-app (`#/tinjau`): approve/revise with notes → export file → owner merges files and downloads updated entry JSON; drafts viewable by reviewers via `?tinjau=1` even after launch. Merge verified end-to-end.
+- Search synonyms (lebaran, shalat, kuburan, sincia, nikah, meninggal, …) for Pustaka search and Tanya
+- Ceremony guides 13 → 20: pengurusan jenazah (Islam), akad nikah & KUA, menyambut Ramadan, pemberkatan nikah Kristen, otonan, duka Buddhis, Cioko

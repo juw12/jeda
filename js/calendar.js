@@ -273,6 +273,13 @@ export function holyDays(start = new Date(), days = 400, overrides = []) {
     .sort((a, b) => a.date - b.date);
 }
 
+// Festive window: from 3 days before until 2 days after a holy day of this faith.
+export function festiveHoliday(faithId, overrides = [], festiveMap = {}, today = new Date()) {
+  const start = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 2);
+  const list = holyDays(start, 6, overrides).filter((h) => matchesFaith(h, faithId) && festiveMap[h.id]);
+  return list[0] || null;
+}
+
 export function todaySummary(date = new Date()) {
   const lunar = chineseDate(date);
   const hijri = hijriDate(date);

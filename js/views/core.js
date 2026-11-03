@@ -4,8 +4,8 @@ import { CONFIG } from '../config.js';
 import { prefs, exportAll, importAll, clearAll, guestName, newGuestName } from '../store.js';
 import { esc, toast, formatDate, formatShortDate, relativeDays, timeOfDay } from '../ui.js';
 import { faithById } from '../content.js';
-import { holyDays, todaySummary, matchesFaith } from '../calendar.js';
-import { sceneSvg } from '../scenes.js';
+import { holyDays, todaySummary, matchesFaith, festiveHoliday } from '../calendar.js';
+import { sceneSvg, FESTIVE } from '../scenes.js';
 import { t, lang } from '../i18n.js';
 import { openPause } from '../pause.js';
 
@@ -61,7 +61,7 @@ export function home(main, params, query, ctx) {
   main.innerHTML = `
     <section class="hero" style="--accent:${faith.color}">
       <a class="hero-scene" href="#/ruang/${faith.id}" aria-label="Masuk ke ${esc(faith.spaceName)}">
-        ${sceneSvg(faith.scene, timeOfDay(), faith.spaceName)}
+        ${sceneSvg(faith.scene, timeOfDay(), faith.spaceName, (() => { const f = faith.id === 'alam' ? null : festiveHoliday(faith.id, content.calendarOverrides, FESTIVE); return f ? FESTIVE[f.id].decor : null; })())}
         <span class="hero-cta">${t('home.enter')} ${esc(faith.spaceName)} →</span>
       </a>
     </section>
@@ -240,6 +240,7 @@ export function more(main) {
     ['#/pustaka/lintas', 'Etiket Lintas Iman', 'Cara hormat menghadiri acara iman lain'],
     ['#/dukung', 'Dukung Jeda', 'Bantu biaya server dan pengembangan'],
     ['#/tentang', 'Tentang & Prinsip', 'Privasi, sumber, status tinjauan'],
+    ['#/tinjau', 'Tinjau Pustaka (reviewer)', 'Untuk pemuka agama: setujui atau koreksi entri'],
     ['#/pengaturan', 'Pengaturan', 'Ubah jalan iman, tampilan, data'],
   ];
   main.innerHTML = `

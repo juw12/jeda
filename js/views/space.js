@@ -3,8 +3,8 @@
 import { prefs, guestName } from '../store.js';
 import { esc, formatShortDate, relativeDays, timeOfDay } from '../ui.js';
 import { faithById, entryById } from '../content.js';
-import { sceneSvg } from '../scenes.js';
-import { holyDays, matchesFaith } from '../calendar.js';
+import { sceneSvg, FESTIVE } from '../scenes.js';
+import { holyDays, matchesFaith, festiveHoliday } from '../calendar.js';
 import { mountRitual, isDevotional } from './rituals.js';
 
 export function space(main, [faithId], query, { content, navigate }) {
@@ -18,6 +18,8 @@ export function space(main, [faithId], query, { content, navigate }) {
   document.body.dataset.faith = faith.id;
 
   const today = new Date();
+  const festive = faith.id === 'alam' ? null : festiveHoliday(faith.id, content.calendarOverrides, FESTIVE);
+  const festiveInfo = festive ? FESTIVE[festive.id] : null;
   const special = (faith.specialDays || []).find((day) => day.date === today.toISOString().slice(0, 10));
   const upcoming = faith.id === 'alam'
     ? []
@@ -25,7 +27,7 @@ export function space(main, [faithId], query, { content, navigate }) {
 
   main.innerHTML = `
     <section class="space-hero" style="--accent:${faith.color}">
-      ${sceneSvg(faith.scene, timeOfDay(), faith.spaceName)}
+      ${sceneSvg(faith.scene, timeOfDay(), faith.spaceName, festiveInfo ? festiveInfo.decor : null)}
       <svg class="guest-figure" viewBox="0 0 40 40" aria-hidden="true">
         <ellipse cx="20" cy="37" rx="14" ry="2.5" fill="#000" opacity="0.35"/>
         <circle cx="20" cy="12" r="5" fill="#f1ebe3"/>
@@ -40,6 +42,7 @@ export function space(main, [faithId], query, { content, navigate }) {
     </section>
     <section class="stack">
       ${special ? `<div class="notice">${esc(special.text)}</div>` : ''}
+      ${festiveInfo ? `<div class="festive-banner">${esc(festiveInfo.text)} · ${esc(festive.name)}, ${formatShortDate(festive.date)}</div>` : ''}
       ${mode === 'visit' ? `
         <div class="card visit-tips">
           <h2 class="h3">Sebagai tamu yang hormat</h2>

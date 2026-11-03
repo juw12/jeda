@@ -136,7 +136,49 @@ const BUILDINGS = {
     </g>`,
 };
 
-export function sceneSvg(sceneId, time = 'night', label = '') {
+const DECOR = {
+  lanterns: () => `
+    <g class="decor sway">
+      <path d="M0 22 Q200 52 400 22" stroke="#5a2a10" stroke-width="1.2" fill="none"/>
+      ${[50, 110, 170, 230, 290, 350].map((x, i) => `<g><line x1="${x}" y1="${30 + Math.sin(i) * 4}" x2="${x}" y2="${38 + Math.sin(i) * 4}" stroke="#5a2a10"/>
+        <ellipse cx="${x}" cy="${46 + Math.sin(i) * 4}" rx="8" ry="10" fill="#d72b2b"/><rect x="${x - 4}" y="${55 + Math.sin(i) * 4}" width="8" height="3" fill="#e0b44c"/></g>`).join('')}
+    </g>`,
+  ketupat: () => `
+    <g class="decor sway">
+      <path d="M0 18 Q200 40 400 18" stroke="#3e5e2a" stroke-width="1.2" fill="none"/>
+      ${[60, 140, 220, 300, 370].map((x) => `<g><line x1="${x}" y1="26" x2="${x}" y2="34" stroke="#3e5e2a"/>
+        <path d="M${x} 34 L${x + 9} 44 L${x} 54 L${x - 9} 44 Z" fill="#9bbf4a" stroke="#5c7d2a"/><path d="M${x - 9} 44 L${x + 9} 44 M${x} 34 L${x} 54" stroke="#5c7d2a" stroke-width="0.8"/></g>`).join('')}
+    </g>`,
+  penjor: () => `
+    <g class="decor">
+      <path d="M36 202 Q30 110 70 60 Q86 44 96 52" stroke="#c9a15a" stroke-width="3" fill="none"/>
+      <path d="M96 52 q4 10 -2 22" stroke="#e8c15a" stroke-width="2" fill="none" class="sway"/>
+      <path d="M364 202 Q370 110 330 60 Q314 44 304 52" stroke="#c9a15a" stroke-width="3" fill="none"/>
+      <path d="M304 52 q-4 10 2 22" stroke="#e8c15a" stroke-width="2" fill="none" class="sway"/>
+    </g>`,
+  star: () => `
+    <g class="decor twinkle">
+      <path d="M200 10 L205 24 L220 24 L208 33 L213 47 L200 38 L187 47 L192 33 L180 24 L195 24 Z" fill="#ffe08a"/>
+    </g>`,
+  'lotus-lamps': () => `
+    <g class="decor">
+      ${[70, 130, 190, 250, 310].map((x, i) => `<g class="flicker" style="animation-delay:${i * 0.3}s"><ellipse cx="${x}" cy="${70 + (i % 2) * 18}" rx="7" ry="9" fill="#ffd27a" opacity="0.85"/><ellipse cx="${x}" cy="${70 + (i % 2) * 18}" rx="14" ry="16" fill="#ffd27a" opacity="0.15"/></g>`).join('')}
+    </g>`,
+};
+
+// Holy-day id → decoration and greeting shown in the space.
+export const FESTIVE = {
+  imlek: { decor: 'lanterns', text: 'Selamat Tahun Baru Imlek' },
+  'cap-go-meh': { decor: 'lanterns', text: 'Selamat Cap Go Meh' },
+  idulfitri: { decor: 'ketupat', text: 'Selamat Idulfitri, mohon maaf lahir dan batin' },
+  iduladha: { decor: 'ketupat', text: 'Selamat Iduladha' },
+  galungan: { decor: 'penjor', text: 'Rahajeng Galungan' },
+  kuningan: { decor: 'penjor', text: 'Rahajeng Kuningan' },
+  natal: { decor: 'star', text: 'Selamat Natal' },
+  waisak: { decor: 'lotus-lamps', text: 'Selamat Hari Raya Waisak' },
+};
+
+export function sceneSvg(sceneId, time = 'night', label = '', decor = null) {
   const [top, middle, bottom] = SKIES[time] || SKIES.night;
   const dark = time === 'day' ? '#2d2a33' : '#0d0b10';
   const building = (BUILDINGS[sceneId] || BUILDINGS.alam)(dark);
@@ -153,6 +195,7 @@ export function sceneSvg(sceneId, time = 'night', label = '') {
     ${time === 'night' ? stars() : ''}
     ${sunOrMoon(time)}
     ${building}
+    ${decor && DECOR[decor] ? DECOR[decor]() : ''}
     <rect y="200" width="400" height="40" fill="${dark}"/>
     <g class="mist"><ellipse cx="200" cy="206" rx="240" ry="10" fill="#fff" opacity="0.05"/></g>
   </svg>`;

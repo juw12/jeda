@@ -41,3 +41,10 @@
 
 ## Syair ciam si
 Isi `content/ciamsi.json` → `sets.<id>.poems["1"] = { "hanzi": "...", "hokkien": "...", "id": "terjemahan" }`, beserta `source` (nama klenteng & izin).
+
+## Alur tinjauan tanpa perangkat lunak tambahan (halaman Tinjau)
+1. Reviewer membuka **Lainnya → Tinjau Pustaka** (`#/tinjau`), mengisi nama dan lembaga.
+2. Untuk setiap entri: baca, pilih *Setujui* atau *Perlu perbaikan*, tulis catatan/rujukan.
+3. Klik **Ekspor hasil tinjauan** → kirim berkas `tinjauan-*.json` kepada pengelola (WhatsApp/email).
+4. Pengelola membuka halaman yang sama → **Gabungkan tinjauan** → pilih berkas-berkas tinjauan.
+5. Jeda mengunduh `content/entries/<agama>.json` yang sudah diperbarui (status, reviewer, tanggal, catatan). Ganti berkas lama, lalu commit.

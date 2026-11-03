@@ -7,6 +7,19 @@ const STOPWORDS = new Set(`
   apa saja berapa kapan dimana siapa sih dong ya nya kita kami mereka
 `.split(/\s+/).filter(Boolean));
 
+// Everyday words and alternative spellings mapped to Pustaka terms.
+const SYNONYMS = {
+  lebaran: ['idulfitri'], kuburan: ['makam'], makam: ['kuburan'], sincia: ['imlek'], sinchia: ['imlek'],
+  shalat: ['sholat'], salat: ['sholat'], solat: ['sholat'], wudhu: ['wudu'], wudlu: ['wudu'],
+  natalan: ['natal'], misa: ['ekaristi'], komuni: ['ekaristi', 'perjamuan'],
+  nikah: ['pernikahan', 'perkawinan'], kawin: ['pernikahan', 'perkawinan'], menikah: ['pernikahan', 'perkawinan'],
+  meninggal: ['kematian', 'jenazah', 'duka'], wafat: ['kematian', 'duka'], mati: ['kematian'],
+  kremasi: ['ngaben', 'kremasi'], angpau: ['angpao'], hio: ['dupa', 'hio'], dupa: ['hio', 'dupa'],
+  sembahyang: ['sembahyang', 'ibadah', 'doa'], ibadah: ['sembahyang', 'doa'], berdoa: ['doa'],
+  bulan: ['imlek'], qingming: ['ceng', 'beng'], kitab: ['kitab', 'alkitab', 'quran'], vegetarian: ['ciak', 'cai'],
+  bayi: ['kelahiran', 'aqiqah', 'baptis'], puasa: ['puasa', 'pantang'],
+};
+
 export function normalize(text) {
   return String(text || '')
     .toLowerCase()
@@ -58,7 +71,8 @@ export function buildIndex(entries) {
 
 // BM25-style ranking with prefix matching for partial words.
 export function search(index, query, { faith = null, limit = 10 } = {}) {
-  const terms = tokenize(query);
+  const baseTerms = tokenize(query);
+  const terms = [...new Set([...baseTerms, ...baseTerms.flatMap((term) => SYNONYMS[term] || [])])];
   if (terms.length === 0) {
     return [];
   }
@@ -90,7 +104,7 @@ export function search(index, query, { faith = null, limit = 10 } = {}) {
       score += idf * ((frequency * (k1 + 1)) / (frequency + k1 * (1 - b + b * (doc.length / index.averageLength))));
     }
     if (score > 0) {
-      results.push({ entry: doc.entry, score: score * (matched / terms.length) });
+      results.push({ entry: doc.entry, score: score * Math.min(1, matched / baseTerms.length) });
     }
   }
   return results.sort((a, b2) => b2.score - a.score).slice(0, limit);

@@ -39,6 +39,7 @@ export async function loadContent() {
     sections: meta.sections,
     faiths: meta.faiths,
     entries: allEntries.filter(isVisible),
+    rawEntries: allEntries,
     allEntriesCount: allEntries.length,
     places: places.filter((place) => place.status !== 'removed'),
     calendarOverrides: calendar.overrides,

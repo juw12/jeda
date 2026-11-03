@@ -314,8 +314,7 @@
       "isl-hariraya-ramadan-idulfitri"
     ],
     "holidays": [
-      "idulfitri",
-      "awal-ramadan"
+      "idulfitri"
     ],
     "sources": [
       {
@@ -728,6 +727,424 @@
       "khc-ibadah-kertas"
     ],
     "holidays": [],
+    "sources": [
+      {
+        "title": "Perlu ditinjau reviewer agama/adat terkait"
+      }
+    ],
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "upc-jenazah-islam",
+    "faith": "islam",
+    "title": "Pengurusan jenazah (Islam)",
+    "summary": "Daftar hal yang perlu disiapkan dan dilakukan keluarga saat ada yang wafat.",
+    "timing": null,
+    "groups": [
+      {
+        "title": "Segera",
+        "items": [
+          "Pejamkan mata almarhum, doakan, dan tutup jenazah dengan kain",
+          "Kabari keluarga, pengurus masjid/musala, dan RT setempat",
+          "Surat keterangan kematian (rumah sakit atau kelurahan)",
+          "Hubungi pengelola makam atau TPU"
+        ]
+      },
+      {
+        "title": "Perlengkapan",
+        "items": [
+          "Kain kafan putih (umumnya 3 lapis untuk laki-laki, 5 untuk perempuan menurut mazhab Syafi'i)",
+          "Kapas, wewangian (mis. kapur barus, cendana)",
+          "Air bersih, sabun, sarung tangan untuk memandikan",
+          "Keranda atau ambulans jenazah",
+          "Nisan sementara"
+        ]
+      },
+      {
+        "title": "Setelah pemakaman",
+        "items": [
+          "Takziah dan menerima pelayat",
+          "Akta kematian di Dukcapil",
+          "Pelunasan utang dan wasiat almarhum sesuai syariat"
+        ]
+      }
+    ],
+    "steps": [
+      "Memandikan jenazah (oleh keluarga/petugas sesama jenis).",
+      "Mengafani.",
+      "Menyalatkan (sholat jenazah).",
+      "Mengantar dan menguburkan secepatnya."
+    ],
+    "dos": [],
+    "donts": [],
+    "variations": [
+      {
+        "label": "Tradisi NU",
+        "text": "Tahlilan pada hari tertentu (mis. 1–7, 40, 100 hari)."
+      },
+      {
+        "label": "Muhammadiyah",
+        "text": "Umumnya tanpa tahlilan; mendoakan almarhum tanpa penentuan hari khusus."
+      }
+    ],
+    "related": [
+      "isl-siklus-jenazah"
+    ],
+    "holidays": [],
+    "sources": [
+      {
+        "title": "Perlu ditinjau reviewer agama/adat terkait"
+      }
+    ],
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "upc-akad-nikah",
+    "faith": "islam",
+    "title": "Akad nikah dan pendaftaran di KUA",
+    "summary": "Persiapan administrasi dan rukun akad nikah.",
+    "timing": "Daftarkan ke KUA sekurang-kurangnya 10 hari kerja sebelum akad.",
+    "groups": [
+      {
+        "title": "Dokumen (cek ketentuan terbaru di KUA setempat)",
+        "items": [
+          "KTP dan Kartu Keluarga kedua calon",
+          "Akta kelahiran",
+          "Surat pengantar dari kelurahan/desa",
+          "Pas foto",
+          "Izin orang tua bila calon belum berusia 21 tahun",
+          "Akta cerai/kematian pasangan bila pernah menikah"
+        ]
+      },
+      {
+        "title": "Rukun & perlengkapan",
+        "items": [
+          "Wali nikah dari pihak perempuan",
+          "Dua orang saksi",
+          "Mahar",
+          "Teks ijab kabul"
+        ]
+      },
+      {
+        "title": "Persiapan lain",
+        "items": [
+          "Bimbingan perkawinan dari Kemenag (bila diwajibkan)",
+          "Tempat akad: di KUA (tanpa biaya) atau di luar KUA (dikenai biaya PNBP)"
+        ]
+      }
+    ],
+    "steps": [
+      "Pemberitahuan kehendak nikah dan pemeriksaan berkas di KUA.",
+      "Pengumuman kehendak nikah.",
+      "Akad nikah: khutbah nikah, ijab kabul, doa.",
+      "Penandatanganan dan penyerahan buku nikah."
+    ],
+    "dos": [],
+    "donts": [],
+    "variations": [],
+    "related": [
+      "isl-siklus-nikah"
+    ],
+    "holidays": [],
+    "sources": [
+      {
+        "title": "UU No. 1 Tahun 1974 jo. UU No. 16 Tahun 2019"
+      },
+      {
+        "title": "Ketentuan KUA / Kemenag (cek yang terbaru)"
+      }
+    ],
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "upc-ramadan",
+    "faith": "islam",
+    "title": "Menyambut Ramadan",
+    "summary": "Persiapan lahir dan batin sebelum dan selama bulan puasa.",
+    "timing": null,
+    "groups": [
+      {
+        "title": "Sebelum Ramadan",
+        "items": [
+          "Pantau pengumuman awal Ramadan (sidang isbat / ormas)",
+          "Jadwal imsakiyah kota",
+          "Rencana tadarus dan target bacaan",
+          "Melunasi utang puasa tahun lalu",
+          "Saling bermaafan dengan keluarga dan tetangga"
+        ]
+      },
+      {
+        "title": "Selama Ramadan",
+        "items": [
+          "Stok bahan sahur dan berbuka",
+          "Jadwal tarawih di masjid",
+          "Rencana sedekah dan zakat fitrah",
+          "Rencana i'tikaf di sepuluh malam terakhir"
+        ]
+      }
+    ],
+    "steps": [],
+    "dos": [],
+    "donts": [],
+    "variations": [
+      {
+        "label": "Munggahan (Sunda)",
+        "text": "Makan bersama dan bersilaturahmi menjelang Ramadan."
+      },
+      {
+        "label": "Padusan (Jawa)",
+        "text": "Mandi bersuci di sumber air menjelang Ramadan."
+      },
+      {
+        "label": "Meugang (Aceh)",
+        "text": "Tradisi memasak dan makan daging bersama sebelum Ramadan."
+      }
+    ],
+    "related": [
+      "isl-hariraya-ramadan-idulfitri",
+      "isl-ibadah-puasa-sunnah"
+    ],
+    "holidays": [
+      "awal-ramadan"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau reviewer agama/adat terkait"
+      }
+    ],
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "upc-pemberkatan-kristen",
+    "faith": "protestan",
+    "title": "Pemberkatan nikah di gereja",
+    "summary": "Persiapan pernikahan Kristen Protestan.",
+    "timing": null,
+    "groups": [
+      {
+        "title": "Administrasi gereja",
+        "items": [
+          "Surat baptis dan surat sidi (sesuai aturan sinode)",
+          "Katekisasi/bimbingan pranikah",
+          "Pendaftaran ke kantor gereja dan pengumuman di warta jemaat",
+          "Saksi dan pendamping"
+        ]
+      },
+      {
+        "title": "Pencatatan sipil",
+        "items": [
+          "Dokumen untuk Dukcapil (KTP, KK, akta kelahiran, surat pemberkatan)",
+          "Jadwal pencatatan setelah pemberkatan"
+        ]
+      },
+      {
+        "title": "Ibadah",
+        "items": [
+          "Liturgi dan lagu bersama majelis/pendeta",
+          "Cincin",
+          "Alkitab nikah (bila tradisi gereja)"
+        ]
+      }
+    ],
+    "steps": [],
+    "dos": [],
+    "donts": [],
+    "variations": [
+      {
+        "label": "Perbedaan sinode",
+        "text": "Syarat (mis. sidi, lama pengumuman) berbeda antar-gereja; tanyakan kantor gereja."
+      },
+      {
+        "label": "Adat (mis. Batak, Minahasa)",
+        "text": "Rangkaian adat dapat dilaksanakan sebelum atau sesudah pemberkatan."
+      }
+    ],
+    "related": [
+      "pro-siklus"
+    ],
+    "holidays": [],
+    "sources": [
+      {
+        "title": "Perlu ditinjau reviewer agama/adat terkait"
+      }
+    ],
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "upc-otonan",
+    "faith": "hindu",
+    "title": "Otonan (peringatan hari lahir Pawukon)",
+    "summary": "Peringatan kelahiran setiap 210 hari menurut kalender Pawukon.",
+    "timing": "Setiap 210 hari pada hari kelahiran (saptawara, pancawara, dan wuku yang sama). Otonan pertama bayi pada usia 210 hari.",
+    "groups": [
+      {
+        "title": "Persiapan",
+        "items": [
+          "Cek hari otonan di kalender Bali",
+          "Banten otonan sesuai tuntunan keluarga atau pemangku",
+          "Pakaian adat"
+        ]
+      },
+      {
+        "title": "Upacara",
+        "items": [
+          "Sembahyang di sanggah/merajan",
+          "Natab banten otonan",
+          "Memohon tirta dan bija"
+        ]
+      }
+    ],
+    "steps": [],
+    "dos": [],
+    "donts": [],
+    "variations": [
+      {
+        "label": "Otonan pertama",
+        "text": "Pada bayi berusia 210 hari, upacara biasanya lebih besar dan dipimpin pemangku atau sulinggih."
+      }
+    ],
+    "related": [
+      "hin-siklus-manusa-yadnya"
+    ],
+    "holidays": [],
+    "sources": [
+      {
+        "title": "Perlu ditinjau reviewer agama/adat terkait"
+      }
+    ],
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "upc-duka-buddhis",
+    "faith": "buddha",
+    "title": "Upacara duka Buddhis",
+    "summary": "Persiapan dan rangkaian upacara saat umat Buddha meninggal dunia.",
+    "timing": null,
+    "groups": [
+      {
+        "title": "Segera",
+        "items": [
+          "Hubungi vihara, bhikkhu, atau pandita",
+          "Surat keterangan kematian",
+          "Rumah duka atau persemayaman"
+        ]
+      },
+      {
+        "title": "Altar",
+        "items": [
+          "Foto almarhum",
+          "Lilin dan dupa",
+          "Bunga dan air",
+          "Rupang Buddha (bila ada)"
+        ]
+      },
+      {
+        "title": "Rangkaian",
+        "items": [
+          "Pembacaan paritta/sutra",
+          "Pelimpahan jasa (pattidana)",
+          "Kremasi atau pemakaman",
+          "Peringatan (mis. hari ke-7, ke-49, ke-100) sesuai tradisi"
+        ]
+      }
+    ],
+    "steps": [],
+    "dos": [],
+    "donts": [],
+    "variations": [
+      {
+        "label": "Theravada",
+        "text": "Paritta Pali dan dana makan kepada Sangha atas nama almarhum."
+      },
+      {
+        "label": "Mahayana",
+        "text": "Pembacaan sutra (mis. Sutra Amitabha) dan peringatan 49 hari."
+      }
+    ],
+    "related": [
+      "bud-ibadah-pattidana",
+      "bud-siklus-pernikahan-kematian"
+    ],
+    "holidays": [],
+    "sources": [
+      {
+        "title": "Perlu ditinjau reviewer agama/adat terkait"
+      }
+    ],
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "upc-cioko",
+    "faith": "khonghucu",
+    "title": "Cioko / Sembahyang Rebutan",
+    "summary": "Sembahyang untuk arwah yang tidak terurus pada bulan 7 Imlek, disertai berbagi kepada sesama.",
+    "timing": "Puncaknya tanggal 15 bulan 7 Imlek; banyak klenteng mengadakannya sepanjang bulan 7.",
+    "groups": [
+      {
+        "title": "Persiapan",
+        "items": [
+          "Cek jadwal sembahyang di klenteng",
+          "Sajian makanan (nasi, lauk, buah, kue)",
+          "Hio, lilin, dan kertas sembahyang sesuai adat",
+          "Sembako untuk dibagikan (bila ikut berdana)"
+        ]
+      },
+      {
+        "title": "Upacara",
+        "items": [
+          "Sembahyang di altar Cioko/Ulambana",
+          "Doa bagi arwah yang tidak terurus",
+          "Sajian dibagikan kepada yang membutuhkan"
+        ]
+      }
+    ],
+    "steps": [],
+    "dos": [],
+    "donts": [],
+    "variations": [
+      {
+        "label": "Tradisi Buddhis",
+        "text": "Dikenal sebagai Ulambana, dengan pembacaan sutra dan pelimpahan jasa."
+      },
+      {
+        "label": "Adat bulan 7",
+        "text": "Sebagian keluarga menghindari pindah rumah atau menikah di bulan 7 Imlek; ini adat, bukan aturan agama."
+      }
+    ],
+    "related": [
+      "khc-hariraya-lainnya"
+    ],
+    "holidays": [
+      "cioko"
+    ],
     "sources": [
       {
         "title": "Perlu ditinjau reviewer agama/adat terkait"
