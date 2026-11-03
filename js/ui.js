@@ -1,5 +1,7 @@
 // Shared UI helpers.
 
+import { lang } from './i18n.js';
+
 export function esc(value) {
   return String(value ?? '')
     .replace(/&/g, '&amp;')
@@ -17,13 +19,10 @@ export function toast(message, ms = 2600) {
   toast.timer = setTimeout(() => element.classList.remove('show'), ms);
 }
 
-const dateFormatter = new Intl.DateTimeFormat('id-ID', {
-  weekday: 'long',
-  day: 'numeric',
-  month: 'long',
-  year: 'numeric',
-  timeZone: 'Asia/Jakarta',
-});
+const dateFormatters = {
+  id: new Intl.DateTimeFormat('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Jakarta' }),
+  en: new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Jakarta' }),
+};
 
 const shortDateFormatter = new Intl.DateTimeFormat('id-ID', {
   day: 'numeric',
@@ -33,7 +32,7 @@ const shortDateFormatter = new Intl.DateTimeFormat('id-ID', {
 });
 
 export function formatDate(date) {
-  return dateFormatter.format(date);
+  return dateFormatters[lang()].format(date);
 }
 
 export function formatShortDate(date) {

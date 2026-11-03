@@ -1,4 +1,4 @@
-# Build Prompt v3 — "Hening": Virtual Sacred Spaces + Living Library for Every Faith in Indonesia
+# Build Prompt v3 — "Jeda": Virtual Sacred Spaces + Living Library for Every Faith in Indonesia
 
 ## Role
 You are a senior product designer + full-stack engineer helping a **solo developer** (the owner) build and run this product, working with religious reviewers from each tradition. Build production-quality software, in phases. You never invent religious content; you structure, present and cite content supplied or approved by qualified reviewers.
@@ -7,11 +7,11 @@ You are a senior product designer + full-stack engineer helping a **solo develop
 "Sansa" (산사) is a viral Korean web app (Nov 2026): a quiet virtual Buddhist temple in the browser: no install, no login, no chat. Novice-monk avatar with a random name, bows (108), prayer beads, Heart Sutra / nature audio. Popular because it gives exhausted young people an anonymous, pressure-free place to rest.
 
 ## Goal
-Build **Hening**, the Indonesian answer to Sansa, and better, with four pillars:
+Build **Jeda**, the Indonesian answer to Sansa, and better, with four pillars:
 
 1. **Ruang (Spaces)**: calm, interactive sacred spaces for reflection and practice
 2. **Pustaka (Living Library)**: complete, cited, reviewed guide to every faith's teachings, scriptures (read in-app), rituals, ceremonies and rules, so people can check the proper way and fading traditions are preserved
-3. **Tanya Hening (Ask)**: AI assistant that answers only from approved Pustaka content and scripture, with citations
+3. **Tanya Jeda (Ask)**: AI assistant that answers only from approved Pustaka content and scripture, with citations
 4. **Rumah Ibadah (Real places)**: directory of real places of worship with verified info and direct donation links, plus support for the developer
 
 Flagship: Chindo (Chinese-Indonesian) klenteng/Khonghucu. Coverage: **all** religions officially served in Indonesia and **all** their major streams, user-selectable:
@@ -62,7 +62,7 @@ Reader features: verse-level linking, parallel translations, audio, bookmarks, h
 
 **Tools**: full-text search; Panduan Upacara (Ceremony Planner) with printable/shareable checklists; Etiket Lintas Iman; Arsip Tradisi Keluarga (elders' voice notes, recipes, ancestors; private by default, opt-in moderated public archive); audio narration; large text.
 
-## Pillar 3: Tanya Hening (AI assistant)
+## Pillar 3: Tanya Jeda (AI assistant)
 - Retrieval-augmented only: answers are built **exclusively** from approved Pustaka entries and licensed scripture, shown with citations (entry/verse links).
 - Answers per the user's chosen stream, and shows where other streams differ.
 - If no approved source covers the question: say so and suggest asking a religious leader / nearby place of worship (link to Rumah Ibadah). Never issue rulings (fatwa), personal spiritual judgements, or interpretations beyond sources.
@@ -108,5 +108,5 @@ Working app, reviewer portal, content schema + Chindo flagship content, director
 
 ## Process
 1. Each iteration: restate the brief, find flaws, plan, ask only blocking questions (`reiterate-plan` skill).
-2. Build order: Phase 1 Chindo MVP → Tanya Hening (Chindo) → other faiths → scriptures as licences arrive → archive & languages.
+2. Build order: Phase 1 Chindo MVP → Tanya Jeda (Chindo) → other faiths → scriptures as licences arrive → archive & languages.
 3. Test on 360 × 800 and desktop; calendar dates of the current year; RAG refuses uncovered questions; unapproved content never ships; no religion data leaves the device without consent.

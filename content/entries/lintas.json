@@ -64,7 +64,7 @@
         "title": "Perlu ditinjau bersama reviewer lintas iman / FKUB"
       }
     ],
-    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
     "status": "draft",
     "drafted_by": "ai-seed",
     "reviewed_by": null,
@@ -111,7 +111,7 @@
         "title": "Perlu ditinjau bersama reviewer lintas iman / FKUB"
       }
     ],
-    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
     "status": "draft",
     "drafted_by": "ai-seed",
     "reviewed_by": null,
@@ -160,7 +160,7 @@
         "title": "Perlu ditinjau bersama reviewer lintas iman / FKUB"
       }
     ],
-    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
     "status": "draft",
     "drafted_by": "ai-seed",
     "reviewed_by": null,
@@ -214,7 +214,63 @@
         "title": "Perlu ditinjau bersama reviewer lintas iman / FKUB"
       }
     ],
-    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "lin-makanan",
+    "faith": "lintas",
+    "streams": [],
+    "section": "aturan-etika",
+    "title": "Menjamu tamu berbeda iman: makanan dan minuman",
+    "summary": "Panduan praktis menyiapkan hidangan saat acara bersama.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Sediakan hidangan halal dan beri label jelas bila ada tamu Muslim.",
+        "why": "Daging babi, alkohol, dan sembelihan tidak syar'i tidak dikonsumsi umat Islam."
+      },
+      {
+        "text": "Sediakan pilihan vegetarian.",
+        "why": "Sebagian umat Buddha (terutama Mahayana) dan umat Tionghoa pada hari tertentu (mis. ciak cai tanggal 1 dan 15 Imlek) tidak makan daging."
+      },
+      {
+        "text": "Pertimbangkan hidangan tanpa daging sapi.",
+        "why": "Banyak umat Hindu tidak mengonsumsi daging sapi."
+      },
+      {
+        "text": "Pisahkan alat masak dan saji untuk hidangan berbeda.",
+        "why": "Menghormati aturan kebersihan makanan."
+      },
+      {
+        "text": "Sediakan minuman tanpa alkohol.",
+        "why": "Dihindari oleh umat Islam dan sebagian umat lain, termasuk Advent."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "makanan",
+      "halal",
+      "vegetarian",
+      "ciak cai",
+      "daging sapi",
+      "alkohol",
+      "jamuan"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau bersama reviewer lintas iman / FKUB"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
     "status": "draft",
     "drafted_by": "ai-seed",
     "reviewed_by": null,

@@ -35,7 +35,7 @@
         "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
       }
     ],
-    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
     "status": "draft",
     "drafted_by": "ai-seed",
     "reviewed_by": null,
@@ -78,7 +78,7 @@
         "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
       }
     ],
-    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
     "status": "draft",
     "drafted_by": "ai-seed",
     "reviewed_by": null,
@@ -127,7 +127,7 @@
         "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
       }
     ],
-    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
     "status": "draft",
     "drafted_by": "ai-seed",
     "reviewed_by": null,
@@ -179,7 +179,7 @@
         "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
       }
     ],
-    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
     "status": "draft",
     "drafted_by": "ai-seed",
     "reviewed_by": null,
@@ -250,7 +250,7 @@
         "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
       }
     ],
-    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
     "status": "draft",
     "drafted_by": "ai-seed",
     "reviewed_by": null,
@@ -289,7 +289,7 @@
         "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
       }
     ],
-    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
     "status": "draft",
     "drafted_by": "ai-seed",
     "reviewed_by": null,
@@ -327,7 +327,7 @@
         "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
       }
     ],
-    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
     "status": "draft",
     "drafted_by": "ai-seed",
     "reviewed_by": null,
@@ -367,7 +367,7 @@
         "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
       }
     ],
-    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
     "status": "draft",
     "drafted_by": "ai-seed",
     "reviewed_by": null,
@@ -434,7 +434,7 @@
         "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
       }
     ],
-    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
     "status": "draft",
     "drafted_by": "ai-seed",
     "reviewed_by": null,
@@ -473,7 +473,114 @@
         "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
       }
     ],
-    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "pro-ibadah-perjamuan",
+    "faith": "protestan",
+    "streams": [],
+    "section": "ibadah-harian",
+    "title": "Perjamuan Kudus",
+    "summary": "Peringatan akan pengorbanan Kristus dengan roti dan anggur.",
+    "body": [
+      "Perjamuan Kudus dirayakan berdasarkan perintah Yesus pada malam sebelum Ia disalibkan (1 Korintus 11:23–26).",
+      "Frekuensi dan tata caranya berbeda antar-gereja: ada yang bulanan, triwulanan, atau pada hari raya tertentu. Sebagian gereja mensyaratkan peserta telah dibaptis dan/atau sidi."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Lutheran",
+        "text": "Menekankan kehadiran Kristus dalam perjamuan.",
+        "stream": "lutheran"
+      },
+      {
+        "label": "Reformed / Calvinis",
+        "text": "Menekankan kehadiran rohani Kristus; persiapan sebelum perjamuan.",
+        "stream": "calvinis"
+      },
+      {
+        "label": "Pentakosta / Baptis",
+        "text": "Sering dipahami sebagai peringatan; frekuensi beragam.",
+        "stream": "pentakosta"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "perjamuan kudus",
+      "roti",
+      "anggur",
+      "sakramen",
+      "komuni"
+    ],
+    "sources": [
+      {
+        "title": "1 Korintus 11:23–26"
+      },
+      {
+        "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "pro-aturan-persembahan",
+    "faith": "protestan",
+    "streams": [],
+    "section": "aturan-etika",
+    "title": "Persembahan dan perpuluhan",
+    "summary": "Memberi dengan sukacita bagi pelayanan gereja dan sesama.",
+    "body": [
+      "Persembahan adalah ungkapan syukur. Banyak gereja juga mengajarkan perpuluhan (sepersepuluh penghasilan), merujuk antara lain Maleakhi 3:10, sementara gereja lain menekankan memberi dengan sukarela sesuai kemampuan (2 Korintus 9:7).",
+      "Gereja yang sehat mengelola persembahan secara transparan dan melaporkannya kepada jemaat."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Banyak gereja Pentakosta/Karismatik",
+        "text": "Perpuluhan diajarkan sebagai praktik rutin.",
+        "stream": "pentakosta"
+      },
+      {
+        "label": "Banyak gereja arus utama",
+        "text": "Perpuluhan dianjurkan, tetapi pemberian sukarela sesuai kemampuan juga ditekankan.",
+        "stream": "calvinis"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "persembahan",
+      "perpuluhan",
+      "kolekte",
+      "memberi"
+    ],
+    "sources": [
+      {
+        "title": "Maleakhi 3:10"
+      },
+      {
+        "title": "2 Korintus 9:7"
+      },
+      {
+        "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
     "status": "draft",
     "drafted_by": "ai-seed",
     "reviewed_by": null,

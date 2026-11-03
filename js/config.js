@@ -1,22 +1,22 @@
 // Central configuration. Edit this file to rename the app, change links, or prepare for launch.
 
 export const CONFIG = {
-  appName: 'Hening',
-  tagline: 'Ruang hening untuk setiap iman di Nusantara',
-  version: '0.1.0',
+  appName: 'Jeda',
+  tagline: 'Ambil jeda. Ruang hening untuk setiap iman di Nusantara.',
+  version: '0.2.0',
 
   developer: {
     name: 'juw12',
     github: 'https://github.com/juw12',
   },
-  repo: 'https://github.com/juw12/hening',
+  repo: 'https://github.com/juw12/jeda',
 
   // Content visibility.
   // true  = show draft entries with a clear "Draf, belum ditinjau" banner (development / preview).
   // false = only entries with status "approved" are shown. MUST be false at public launch.
   showDrafts: true,
 
-  // Optional AI endpoint for Tanya Hening (see worker/tanya-worker.js).
+  // Optional AI endpoint for Tanya Jeda (see worker/tanya-worker.js).
   // Empty string = free mode: answers are citation search over the Pustaka only.
   tanyaEndpoint: '',
 
@@ -46,7 +46,7 @@ export const CONFIG = {
     },
   ],
 
-  // Shown by Tanya Hening when a message suggests a crisis.
+  // Shown by Tanya Jeda when a message suggests a crisis.
   helpLines: [
     { name: 'Layanan kesehatan jiwa SEJIWA', contact: '119 ext. 8' },
     { name: 'Nomor darurat', contact: '112' },

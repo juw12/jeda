@@ -6,19 +6,21 @@ import { esc, toast, formatDate, formatShortDate, relativeDays, timeOfDay } from
 import { faithById } from '../content.js';
 import { holyDays, todaySummary, matchesFaith } from '../calendar.js';
 import { sceneSvg } from '../scenes.js';
+import { t, lang } from '../i18n.js';
+import { openPause } from '../pause.js';
 
 function greeting() {
   const hour = new Date().getHours();
   if (hour < 11) {
-    return 'Selamat pagi';
+    return t('home.morning');
   }
   if (hour < 15) {
-    return 'Selamat siang';
+    return t('home.noon');
   }
   if (hour < 19) {
-    return 'Selamat sore';
+    return t('home.afternoon');
   }
-  return 'Selamat malam';
+  return t('home.night');
 }
 
 export function landing(main, params, query, { content }) {
@@ -27,13 +29,22 @@ export function landing(main, params, query, { content }) {
       <div class="landing-scene">${sceneSvg('alam', timeOfDay(), 'Pemandangan tenang')}</div>
       <div class="landing-text">
         <h1>${esc(CONFIG.appName)}</h1>
-        <p class="lead">${esc(CONFIG.tagline)}</p>
-        <p>Ruang ibadah virtual yang tenang, pustaka ajaran dan upacara, untuk umat Islam, Kristen, Katolik, Hindu, Buddha, dan Khonghucu.
-           Tanpa daftar. Tanpa iklan. Pilihanmu hanya tersimpan di perangkat ini.</p>
-        <a class="btn btn-big" href="#/pilih">Masuk dengan tenang</a>
-        <p class="small muted"><a href="#/pustaka">Jelajahi Pustaka</a> · <a href="#/tentang">Tentang Hening</a></p>
+        <p class="lead">${t('landing.tagline')}</p>
+        <p>${t('landing.body')}</p>
+        <div class="row center">
+          <a class="btn btn-big" href="#/pilih">${t('landing.enter')}</a>
+          <button class="btn-ghost" type="button" data-landing-pause>‖ ${t('pause.button')}</button>
+        </div>
+        <p class="small muted"><a href="#/pustaka">${t('landing.library')}</a> · <a href="#/tentang">${t('landing.about')}</a> ·
+          <a href="#" data-lang>${lang() === 'en' ? 'Bahasa Indonesia' : 'English'}</a></p>
       </div>
     </section>`;
+  main.querySelector('[data-landing-pause]').addEventListener('click', openPause);
+  main.querySelector('[data-lang]').addEventListener('click', (event) => {
+    event.preventDefault();
+    prefs.set({ lang: lang() === 'en' ? 'id' : 'en' });
+    location.reload();
+  });
 }
 
 export function home(main, params, query, ctx) {
@@ -51,7 +62,7 @@ export function home(main, params, query, ctx) {
     <section class="hero" style="--accent:${faith.color}">
       <a class="hero-scene" href="#/ruang/${faith.id}" aria-label="Masuk ke ${esc(faith.spaceName)}">
         ${sceneSvg(faith.scene, timeOfDay(), faith.spaceName)}
-        <span class="hero-cta">Masuk ke ${esc(faith.spaceName)} →</span>
+        <span class="hero-cta">${t('home.enter')} ${esc(faith.spaceName)} →</span>
       </a>
     </section>
     <section class="stack">
@@ -63,22 +74,28 @@ export function home(main, params, query, ctx) {
         <div class="mini-card"><span class="small muted">Pawukon Bali</span><span>${esc(today.pawukon)}</span></div>
       </div>
 
+      <button class="pause-card" type="button" data-home-pause>
+        <span class="pause-card-icon" aria-hidden="true">‖</span>
+        <span><strong>${t('pause.button')}</strong><span class="small muted"> · 1 menit</span></span>
+      </button>
       ${upcoming.length ? `
-      <h2 class="h3">Hari suci mendatang</h2>
+      <h2 class="h3">${t('home.upcoming')}</h2>
       <ul class="holy-list">
-        ${upcoming.map((h) => `<li><span>${esc(h.name)}</span><span class="muted small">${formatShortDate(h.date)} · ${relativeDays(h.date)}${h.estimated ? ' · perkiraan' : ''}</span></li>`).join('')}
+        ${upcoming.map((h) => `<li><span>${esc(h.name)}</span><span class="muted small">${formatShortDate(h.date)} · ${relativeDays(h.date)}${h.estimated ? ` · ${t('home.estimate')}` : ''}</span></li>`).join('')}
       </ul>
-      <a class="small" href="#/kalender">Lihat kalender lengkap</a>` : ''}
+      <a class="small" href="#/kalender">${t('home.calendar')}</a>` : ''}
 
       <div class="quick-grid">
-        <a class="quick" href="#/pustaka/${faith.pustaka ? faith.id : ''}"><strong>Pustaka</strong><span>Ajaran, kitab, ritual, upacara</span></a>
-        <a class="quick" href="#/tanya"><strong>Tanya Hening</strong><span>Jawaban bersumber dari Pustaka</span></a>
-        <a class="quick" href="#/upacara"><strong>Panduan Upacara</strong><span>Daftar persiapan yang bisa dicetak</span></a>
-        <a class="quick" href="#/ibadah"><strong>Rumah Ibadah</strong><span>Tempat ibadah nyata & donasi langsung</span></a>
-        <a class="quick" href="#/kunjungi"><strong>Kunjungi & Kenali</strong><span>Belajar mengenal iman sesama</span></a>
-        <a class="quick" href="#/arsip"><strong>Arsip Keluarga</strong><span>Simpan tradisi & suara para tetua</span></a>
+        <a class="quick" href="#/pustaka/${faith.pustaka ? faith.id : ''}"><strong>${t('quick.library')}</strong><span>${t('quick.library.desc')}</span></a>
+        <a class="quick" href="#/tanya"><strong>${t('quick.ask')}</strong><span>${t('quick.ask.desc')}</span></a>
+        <a class="quick" href="#/upacara"><strong>${t('quick.ceremony')}</strong><span>${t('quick.ceremony.desc')}</span></a>
+        <a class="quick" href="#/ibadah"><strong>${t('quick.places')}</strong><span>${t('quick.places.desc')}</span></a>
+        <a class="quick" href="#/kunjungi"><strong>${t('quick.visit')}</strong><span>${t('quick.visit.desc')}</span></a>
+        <a class="quick" href="#/arsip"><strong>${t('quick.archive')}</strong><span>${t('quick.archive.desc')}</span></a>
       </div>
+      ${t('content.indonesianOnly') ? `<p class="small muted">${t('content.indonesianOnly')}</p>` : ''}
     </section>`;
+  main.querySelector('[data-home-pause]')?.addEventListener('click', openPause);
 }
 
 export function choose(main, params, query, { content, navigate }) {
@@ -95,9 +112,9 @@ export function choose(main, params, query, { content, navigate }) {
     if (state.step === 1) {
       main.innerHTML = `
         <section class="stack narrow">
-          <p class="step-label">Langkah 1 dari ${faith && faith.dialects ? 3 : 2}</p>
-          <h1 class="h2">Apa jalan imanmu?</h1>
-          <p class="muted">Pilihan ini menentukan ruang utamamu dan hanya tersimpan di perangkat ini. Kamu tetap bisa mengunjungi ruang iman lain kapan saja.</p>
+          <p class="step-label">${t('choose.step')} 1 ${t('choose.of')} ${faith && faith.dialects ? 3 : 2}</p>
+          <h1 class="h2">${t('choose.title')}</h1>
+          <p class="muted">${t('choose.desc')}</p>
           <div class="faith-grid">
             ${content.faiths.map((f) => `
               <button class="faith-card ${state.faith === f.id ? 'selected' : ''}" data-faith="${f.id}" style="--accent:${f.color}">
@@ -128,9 +145,9 @@ export function choose(main, params, query, { content, navigate }) {
     if (state.step === 2) {
       main.innerHTML = `
         <section class="stack narrow">
-          <p class="step-label">Langkah 2 dari ${faith.dialects ? 3 : 2}</p>
-          <h1 class="h2">Aliran / komunitas</h1>
-          <p class="muted">Pilih satu atau lebih. Pustaka akan menampilkan panduan untuk alirannya, dan perbedaan dengan aliran lain tetap terlihat. Tidak yakin? Pilih "Umum".</p>
+          <p class="step-label">${t('choose.step')} 2 ${t('choose.of')} ${faith.dialects ? 3 : 2}</p>
+          <h1 class="h2">${t('choose.streams')}</h1>
+          <p class="muted">${t('choose.streams.desc')}</p>
           <div class="check-list">
             ${faith.streams.map((s) => `
               <label class="check-card">
@@ -139,8 +156,8 @@ export function choose(main, params, query, { content, navigate }) {
               </label>`).join('')}
           </div>
           <div class="row">
-            <button class="btn-ghost" data-act="back">Kembali</button>
-            <button class="btn" data-act="next">Lanjut</button>
+            <button class="btn-ghost" data-act="back">${t('choose.back')}</button>
+            <button class="btn" data-act="next">${t('choose.next')}</button>
           </div>
         </section>`;
       main.querySelector('[data-act="back"]').addEventListener('click', () => {
@@ -161,9 +178,9 @@ export function choose(main, params, query, { content, navigate }) {
     if (state.step === 3) {
       main.innerHTML = `
         <section class="stack narrow">
-          <p class="step-label">Langkah 3 dari 3</p>
-          <h1 class="h2">Tradisi keluarga (suku/dialek)</h1>
-          <p class="muted">Adat Tionghoa di Indonesia berbeda-beda menurut asal leluhur. Pilihan ini menonjolkan variasi yang sesuai di Pustaka.</p>
+          <p class="step-label">${t('choose.step')} 3 ${t('choose.of')} 3</p>
+          <h1 class="h2">${t('choose.dialect')}</h1>
+          <p class="muted">${t('choose.dialect.desc')}</p>
           <div class="check-list">
             ${faith.dialects.map((d) => `
               <label class="check-card">
@@ -172,8 +189,8 @@ export function choose(main, params, query, { content, navigate }) {
               </label>`).join('')}
           </div>
           <div class="row">
-            <button class="btn-ghost" data-act="back">Kembali</button>
-            <button class="btn" data-act="next">Selesai</button>
+            <button class="btn-ghost" data-act="back">${t('choose.back')}</button>
+            <button class="btn" data-act="next">${t('choose.finish')}</button>
           </div>
         </section>`;
       main.querySelector('[data-act="back"]').addEventListener('click', () => {
@@ -190,7 +207,7 @@ export function choose(main, params, query, { content, navigate }) {
 
   const finish = () => {
     prefs.set({ faith: state.faith, streams: state.streams, dialect: state.dialect });
-    toast('Tersimpan di perangkat ini.');
+    toast(t('choose.saved'));
     navigate(`#/ruang/${state.faith}`);
   };
 
@@ -221,13 +238,13 @@ export function more(main) {
     ['#/arsip', 'Arsip Tradisi Keluarga', 'Catatan dan rekaman suara, tersimpan di perangkat'],
     ['#/kunjungi', 'Kunjungi & Kenali', 'Ruang iman lain dalam mode amati'],
     ['#/pustaka/lintas', 'Etiket Lintas Iman', 'Cara hormat menghadiri acara iman lain'],
-    ['#/dukung', 'Dukung Hening', 'Bantu biaya server dan pengembangan'],
+    ['#/dukung', 'Dukung Jeda', 'Bantu biaya server dan pengembangan'],
     ['#/tentang', 'Tentang & Prinsip', 'Privasi, sumber, status tinjauan'],
     ['#/pengaturan', 'Pengaturan', 'Ubah jalan iman, tampilan, data'],
   ];
   main.innerHTML = `
     <section class="stack narrow">
-      <h1 class="h2">Lainnya</h1>
+      <h1 class="h2">${t('more.title')}</h1>
       <ul class="menu-list">
         ${links.map(([href, title, desc]) => `<li><a href="${href}"><strong>${title}</strong><span class="small muted">${desc}</span></a></li>`).join('')}
       </ul>
@@ -242,7 +259,15 @@ export function settings(main, params, query, { content, rerender }) {
     : '';
   main.innerHTML = `
     <section class="stack narrow">
-      <h1 class="h2">Pengaturan</h1>
+      <h1 class="h2">${t('settings.title')}</h1>
+      <div class="card">
+        <h2 class="h3">${t('settings.language')}</h2>
+        <div class="row">
+          <button class="chip ${lang() === 'id' ? 'active' : ''}" data-lang-set="id">Bahasa Indonesia</button>
+          <button class="chip ${lang() === 'en' ? 'active' : ''}" data-lang-set="en">English</button>
+        </div>
+        <p class="small muted">${t('settings.language.note')}</p>
+      </div>
       <div class="card">
         <h2 class="h3">Jalan iman</h2>
         <p>${faith ? `${esc(faith.name)}${streamNames ? ` · ${esc(streamNames)}` : ''}` : 'Belum dipilih'}</p>
@@ -265,6 +290,12 @@ export function settings(main, params, query, { content, rerender }) {
         </div>
       </div>
     </section>`;
+  main.querySelectorAll('[data-lang-set]').forEach((button) => {
+    button.addEventListener('click', () => {
+      prefs.set({ lang: button.dataset.langSet });
+      rerender();
+    });
+  });
   main.querySelectorAll('[data-pref]').forEach((input) => {
     input.addEventListener('change', () => {
       const key = input.dataset.pref;
@@ -280,7 +311,7 @@ export function settings(main, params, query, { content, rerender }) {
     const blob = new Blob([JSON.stringify(exportAll(), null, 2)], { type: 'application/json' });
     const anchor = document.createElement('a');
     anchor.href = URL.createObjectURL(blob);
-    anchor.download = `hening-cadangan-${new Date().toISOString().slice(0, 10)}.json`;
+    anchor.download = `jeda-cadangan-${new Date().toISOString().slice(0, 10)}.json`;
     anchor.click();
     URL.revokeObjectURL(anchor.href);
   });
@@ -298,7 +329,7 @@ export function settings(main, params, query, { content, rerender }) {
     }
   });
   main.querySelector('[data-act="clear"]').addEventListener('click', () => {
-    if (confirm('Hapus semua data Hening di perangkat ini?')) {
+    if (confirm('Hapus semua data Jeda di perangkat ini?')) {
       clearAll();
       toast('Data dihapus.');
       location.hash = '#/';
@@ -317,12 +348,12 @@ export function about(main, params, query, { content }) {
 
       <h2 class="h3">Prinsip</h2>
       <ul>
-        <li><strong>Bukan otoritas agama.</strong> Hening menyajikan ajaran dari sumber yang disebutkan dan ditinjau oleh pemuka/reviewer tiap agama. Perbedaan antar-aliran ditampilkan berdampingan, tidak dinilai.</li>
+        <li><strong>Bukan otoritas agama.</strong> Jeda menyajikan ajaran dari sumber yang disebutkan dan ditinjau oleh pemuka/reviewer tiap agama. Perbedaan antar-aliran ditampilkan berdampingan, tidak dinilai.</li>
         <li><strong>Tidak menggantikan ibadah.</strong> Ruang virtual membantu ketenangan dan belajar, bukan pengganti ibadah wajib atau sakramen.</li>
         <li><strong>Kunjungi dengan hormat.</strong> Di ruang iman lain, ritual hanya ditampilkan sebagai demonstrasi.</li>
         <li><strong>Tanpa poin, tanpa jual berkah.</strong> Tidak ada skor, peringkat, atau imbalan rohani berbayar. Donasi tidak pernah dikaitkan dengan ritual.</li>
         <li><strong>Privasi.</strong> Pilihan agama dan semua catatanmu hanya tersimpan di perangkat ini (UU PDP No. 27/2022). Tidak ada akun, iklan, atau pelacak.</li>
-        <li><strong>Konten AI.</strong> Kerangka awal Pustaka disusun dengan bantuan AI dan ditandai <em>Draf</em> sampai ditinjau. Tanya Hening hanya mengutip Pustaka.</li>
+        <li><strong>Konten AI.</strong> Kerangka awal Pustaka disusun dengan bantuan AI dan ditandai <em>Draf</em> sampai ditinjau. Tanya Jeda hanya mengutip Pustaka.</li>
       </ul>
 
       <h2 class="h3">Status Pustaka</h2>
@@ -330,7 +361,7 @@ export function about(main, params, query, { content }) {
       <p>Menemukan kesalahan? Setiap entri punya tombol <em>Laporkan koreksi</em>. Ingin menjadi reviewer? <a href="${CONFIG.issueUrl('reviewer.yml', 'Daftar reviewer')}" target="_blank" rel="noopener">Daftar di sini</a>.</p>
 
       <h2 class="h3">Sumber & lisensi</h2>
-      <p>Teks kitab suci hanya dimuat bila berstatus domain publik atau telah mendapat izin; selain itu Hening menautkan ke sumber resmi. Daftar sumber ada di setiap entri dan halaman <a href="#/pustaka">Kitab Suci</a> tiap agama.</p>
+      <p>Teks kitab suci hanya dimuat bila berstatus domain publik atau telah mendapat izin; selain itu Jeda menautkan ke sumber resmi. Daftar sumber ada di setiap entri dan halaman <a href="#/pustaka">Kitab Suci</a> tiap agama.</p>
 
       <h2 class="h3">Pembuat</h2>
       <p>Dibuat oleh <a href="${CONFIG.developer.github}" target="_blank" rel="noopener">${esc(CONFIG.developer.name)}</a>. Kode: <a href="${CONFIG.repo}" target="_blank" rel="noopener">${esc(CONFIG.repo.replace('https://', ''))}</a>. Versi ${esc(CONFIG.version)}.</p>
@@ -342,8 +373,8 @@ export function support(main) {
   const activeLinks = CONFIG.support.filter((s) => s.active);
   main.innerHTML = `
     <section class="stack narrow prose">
-      <h1 class="h2">Dukung Hening</h1>
-      <p>Hening gratis dan tanpa iklan, dibuat oleh satu orang:
+      <h1 class="h2">Dukung Jeda</h1>
+      <p>Jeda gratis dan tanpa iklan, dibuat oleh satu orang:
         <a href="${CONFIG.developer.github}" target="_blank" rel="noopener">${esc(CONFIG.developer.name)}</a>.
         Dukunganmu membantu biaya server, AI, dan peninjauan konten.</p>
       <div class="support-grid">
@@ -353,7 +384,7 @@ export function support(main) {
       </div>
       ${activeLinks.length === 0 ? '<p class="small muted">Tautan dukungan belum aktif.</p>' : ''}
       <h2 class="h3">Ingin berdonasi untuk rumah ibadah?</h2>
-      <p>Donasi untuk klenteng, vihara, pura, masjid, atau gereja <strong>langsung ke rekening/QRIS resmi rumah ibadah</strong>, bukan lewat Hening.
+      <p>Donasi untuk klenteng, vihara, pura, masjid, atau gereja <strong>langsung ke rekening/QRIS resmi rumah ibadah</strong>, bukan lewat Jeda.
          Lihat <a href="#/ibadah">Rumah Ibadah</a>; info donasi hanya tampil untuk tempat yang sudah terverifikasi.</p>
       <h2 class="h3">Janji kami</h2>
       <ul>

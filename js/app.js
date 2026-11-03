@@ -1,8 +1,10 @@
-// Hening app entry: hash router, chrome (top bar + tab bar), theme.
+// Jeda app entry: hash router, chrome (top bar + tab bar), theme.
 
 import { CONFIG } from './config.js';
 import { prefs } from './store.js';
 import { esc } from './ui.js';
+import { t, lang } from './i18n.js';
+import { openPause } from './pause.js';
 import { loadContent, faithById } from './content.js';
 import * as core from './views/core.js';
 import { space } from './views/space.js';
@@ -37,6 +39,7 @@ function applyTheme() {
   const p = prefs.get();
   const root = document.documentElement;
   root.dataset.theme = p.theme;
+  root.lang = lang();
   root.classList.toggle('large-text', p.largeText);
   root.classList.toggle('reduce-motion', p.reducedMotion);
 }
@@ -45,15 +48,19 @@ function renderChrome(routeName) {
   const p = prefs.get();
   const faith = p.faith ? faithById(content, p.faith) : null;
   document.getElementById('topbar').innerHTML = `
-    <a class="brand" href="#/">${esc(CONFIG.appName)}</a>
-    <a class="top-link" href="#/cari" aria-label="Cari">⌕</a>`;
+    <a class="brand" href="#/"><span class="brand-mark" aria-hidden="true">‖</span>${esc(CONFIG.appName)}</a>
+    <span class="top-actions">
+      <button class="pause-button" type="button" data-pause>${t('pause.button')}</button>
+      <a class="top-link" href="#/cari" aria-label="Cari">⌕</a>
+    </span>`;
+  document.querySelector('[data-pause]').addEventListener('click', openPause);
   const spaceHref = faith ? `#/ruang/${faith.id}` : '#/kunjungi';
   const tabs = [
-    ['', '#/', 'Beranda', '◎'],
-    ['ruang', spaceHref, 'Ruang', '⛩'],
-    ['pustaka', '#/pustaka', 'Pustaka', '❒'],
-    ['tanya', '#/tanya', 'Tanya', '?'],
-    ['lainnya', '#/lainnya', 'Lainnya', '≡'],
+    ['', '#/', t('tab.home'), '◎'],
+    ['ruang', spaceHref, t('tab.space'), '⛩'],
+    ['pustaka', '#/pustaka', t('tab.library'), '❒'],
+    ['tanya', '#/tanya', t('tab.ask'), '?'],
+    ['lainnya', '#/lainnya', t('tab.more'), '≡'],
   ];
   const groups = {
     ruang: ['ruang', 'kunjungi'],

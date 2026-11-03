@@ -1,4 +1,4 @@
-// Optional Cloudflare Worker for Tanya Hening (AI mode). Free tier is enough to start.
+// Optional Cloudflare Worker for Tanya Jeda (AI mode). Free tier is enough to start.
 // It only rewrites the Pustaka passages the app sends; it never answers from its own knowledge.
 //
 // Environment variables (Cloudflare dashboard → Worker → Settings → Variables):
@@ -8,7 +8,7 @@
 //   LLM_MODEL      model name offered by that provider
 //   ALLOWED_ORIGIN your site, e.g. https://juw12.github.io
 
-const SYSTEM_PROMPT = `Kamu adalah Tanya Hening, asisten pustaka keagamaan.
+const SYSTEM_PROMPT = `Kamu adalah Tanya Jeda, asisten pustaka keagamaan.
 ATURAN WAJIB:
 1. Jawab HANYA berdasarkan PASSAGES yang diberikan. Jangan menambah fakta, ayat, hadis, atau aturan dari pengetahuanmu sendiri.
 2. Jika PASSAGES tidak cukup menjawab, katakan dengan jujur bahwa sumber di Pustaka belum ada dan sarankan bertanya kepada pemuka agama.

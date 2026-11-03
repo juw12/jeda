@@ -335,6 +335,38 @@ textarea { resize: vertical; }
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+
+/* Jeda brand + pause */
+.brand { display: inline-flex; align-items: center; gap: 8px; }
+.brand-mark { color: var(--accent); font-weight: 700; letter-spacing: -0.1em; }
+.top-actions { display: inline-flex; align-items: center; gap: 6px; }
+.pause-button {
+  font: inherit; font-size: 0.85rem; cursor: pointer; color: var(--text);
+  background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; min-height: 36px;
+}
+.pause-button:hover { border-color: var(--accent); color: var(--accent); }
+.row.center { justify-content: center; }
+.pause-card {
+  font: inherit; color: var(--text); cursor: pointer; text-align: left;
+  display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: var(--radius);
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 22%, var(--surface)), var(--surface));
+  border: 1px solid var(--line);
+}
+.pause-card-icon { font-size: 1.6rem; color: var(--accent); font-weight: 700; letter-spacing: -0.1em; }
+.pause-overlay {
+  position: fixed; inset: 0; z-index: 100; display: grid; place-items: center;
+  background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(10px);
+  animation: fadein 0.4s ease;
+}
+.pause-overlay.closing { opacity: 0; transition: opacity 0.3s; }
+.pause-inner { display: flex; flex-direction: column; align-items: center; gap: 22px; padding: 24px; text-align: center; }
+.pause-title { font-family: var(--serif); font-size: 1.4rem; }
+.pause-circle { width: 120px; height: 120px; }
+.pause-label { font-size: 1.2rem; min-height: 1.6em; }
+.pause-progress { width: 220px; height: 4px; border-radius: 4px; background: var(--surface-2); overflow: hidden; }
+.pause-progress span { display: block; height: 100%; width: 0; background: var(--accent); transition: width 0.25s linear; }
+@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+
 /* Keyframes */
 @keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(1.8); opacity: 1; } }
 @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }

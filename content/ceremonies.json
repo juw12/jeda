@@ -567,5 +567,176 @@
     "reviewed_by": null,
     "version": 1,
     "updated": "2026-11-03"
+  },
+  {
+    "id": "upc-nyepi",
+    "faith": "hindu",
+    "title": "Nyepi (umat Hindu dan tamu di Bali)",
+    "summary": "Persiapan rangkaian Nyepi, termasuk bagi warga dan wisatawan non-Hindu di Bali.",
+    "timing": "Rangkaian beberapa hari: Melasti, Tawur Kesanga, Nyepi (24 jam), Ngembak Geni.",
+    "groups": [
+      {
+        "title": "Umat Hindu",
+        "items": [
+          "Mengikuti Melasti di desa adat",
+          "Persiapan Tawur Kesanga dan pengerupukan",
+          "Bahan makanan bagi yang tidak berpuasa penuh",
+          "Rencana Catur Brata Penyepian 24 jam"
+        ]
+      },
+      {
+        "title": "Warga & tamu non-Hindu di Bali",
+        "items": [
+          "Stok makanan dan air minum untuk 24 jam",
+          "Tidak keluar rumah/hotel selama Nyepi",
+          "Lampu diredupkan dan tirai ditutup",
+          "Cek jadwal: bandara di Bali tutup selama Nyepi",
+          "Obat-obatan pribadi; layanan darurat tetap tersedia"
+        ]
+      }
+    ],
+    "steps": [],
+    "dos": [
+      "Menghormati pecalang (petugas keamanan adat).",
+      "Menikmati keheningan: membaca, bermeditasi, beristirahat."
+    ],
+    "donts": [
+      "Menyalakan musik keras atau lampu terang.",
+      "Keluar rumah tanpa keperluan darurat."
+    ],
+    "variations": [],
+    "related": [
+      "hin-hariraya-nyepi"
+    ],
+    "holidays": [
+      "nyepi"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau reviewer agama/adat terkait"
+      }
+    ],
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "upc-prapaskah",
+    "faith": "katolik",
+    "title": "Masa Prapaskah",
+    "summary": "Persiapan 40 hari menuju Paskah.",
+    "timing": "Rabu Abu hingga Kamis Putih.",
+    "groups": [
+      {
+        "title": "Rabu Abu",
+        "items": [
+          "Mengikuti Misa dan penerimaan abu",
+          "Puasa dan pantang (sesuai usia)"
+        ]
+      },
+      {
+        "title": "Selama Prapaskah",
+        "items": [
+          "Pantang setiap Jumat",
+          "Doa Jalan Salib",
+          "Aksi Puasa Pembangunan (APP) sesuai program keuskupan",
+          "Sakramen Tobat sebelum Paskah"
+        ]
+      },
+      {
+        "title": "Pekan Suci",
+        "items": [
+          "Minggu Palma",
+          "Kamis Putih",
+          "Jumat Agung (puasa dan pantang)",
+          "Malam Paskah"
+        ]
+      }
+    ],
+    "steps": [],
+    "dos": [],
+    "donts": [],
+    "variations": [],
+    "related": [
+      "kat-hariraya-liturgi",
+      "kat-ibadah-jalan-salib",
+      "kat-ibadah-tobat"
+    ],
+    "holidays": [
+      "rabu-abu"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau reviewer agama/adat terkait"
+      }
+    ],
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "upc-peringatan-tionghoa",
+    "faith": "khonghucu",
+    "title": "Peringatan arwah: 7 hari, 49 hari, 100 hari, 1 dan 3 tahun",
+    "summary": "Persiapan sembahyang peringatan bagi anggota keluarga yang telah wafat.",
+    "timing": null,
+    "groups": [
+      {
+        "title": "Persiapan",
+        "items": [
+          "Tentukan tanggal bersama keluarga dan rohaniwan",
+          "Foto almarhum dan papan nama (sinci)",
+          "Undangan keluarga besar"
+        ]
+      },
+      {
+        "title": "Sembahyang",
+        "items": [
+          "Hio dan lilin",
+          "Hidangan kesukaan almarhum",
+          "Buah dan kue",
+          "Teh atau arak",
+          "Kertas sembahyang sesuai adat (gin cua untuk leluhur)"
+        ]
+      }
+    ],
+    "steps": [
+      "Tata meja abu dan sajian.",
+      "Sembahyang dipimpin anggota keluarga tertua atau rohaniwan.",
+      "Membakar kertas sembahyang di tempat aman.",
+      "Makan bersama keluarga."
+    ],
+    "dos": [],
+    "donts": [],
+    "variations": [
+      {
+        "label": "Hokkien / Hakka / Teochew",
+        "text": "Jadwal dan sajian berbeda menurut asal leluhur; ikuti tetua keluarga."
+      },
+      {
+        "label": "Tradisi Buddhis",
+        "text": "Pembacaan paritta/sutra dan pelimpahan jasa."
+      }
+    ],
+    "related": [
+      "khc-siklus-kematian",
+      "khc-ibadah-leluhur",
+      "khc-ibadah-kertas"
+    ],
+    "holidays": [],
+    "sources": [
+      {
+        "title": "Perlu ditinjau reviewer agama/adat terkait"
+      }
+    ],
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "version": 1,
+    "updated": "2026-11-03"
   }
 ]

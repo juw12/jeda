@@ -1,6 +1,6 @@
 # Checklist sebelum peluncuran publik
 
-Hening saat ini **mode pratinjau**: semua entri Pustaka berstatus *draf* (disusun dengan bantuan AI) dan ditampilkan dengan tanda.
+Jeda saat ini **mode pratinjau**: semua entri Pustaka berstatus *draf* (disusun dengan bantuan AI) dan ditampilkan dengan tanda.
 
 ## Wajib
 - [ ] Reviewer per agama/aliran terdaftar dan meninjau entri inti (minimal: ajaran pokok, ibadah harian, hari raya, siklus hidup).
@@ -15,7 +15,7 @@ Hening saat ini **mode pratinjau**: semua entri Pustaka berstatus *draf* (disusu
 - [ ] Tautan dukungan developer dibuat dan `active: true` di `js/config.js`.
 
 ## Disarankan
-- [ ] Domain sendiri (mis. hening.id / hening.app; cek ketersediaan).
+- [ ] Domain sendiri (mis. jeda.app / jeda.my.id; cek ketersediaan).
 - [ ] Uji di Android kelas bawah dan iPhone; mode teks besar; pembaca layar.
 - [ ] Uji tanggal kalender terhadap pengumuman resmi tahun berjalan.
-- [ ] Tes Tanya Hening dengan daftar pertanyaan sulit per agama bersama reviewer.
+- [ ] Tes Tanya Jeda dengan daftar pertanyaan sulit per agama bersama reviewer.

@@ -1,6 +1,6 @@
 // Offline support: app shell cache-first, content network-first (so reviewed updates arrive quickly).
 
-const VERSION = 'hening-v0.1.0';
+const VERSION = 'jeda-v0.2.0';
 const SHELL = [
   './',
   'index.html',
@@ -11,6 +11,8 @@ const SHELL = [
   'js/config.js',
   'js/store.js',
   'js/ui.js',
+  'js/i18n.js',
+  'js/pause.js',
   'js/audio.js',
   'js/calendar.js',
   'js/prayertimes.js',

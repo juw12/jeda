@@ -102,7 +102,7 @@ export function places(main, params, query, { content }) {
           </header>
           ${p.note ? `<p class="small">${esc(p.note)}</p>` : ''}
           <p class="small">${p.verified ? '<span class="badge badge-ok">Terverifikasi</span>' : '<span class="badge badge-dim">Belum terverifikasi</span>'}</p>
-          ${p.verified && p.donation ? `<div class="donation"><strong>Donasi langsung ke rumah ibadah</strong><p class="small">${esc(p.donation.method)}: ${esc(p.donation.detail)}</p><p class="small muted">Dana langsung ke rumah ibadah, tidak melalui Hening.</p></div>`
+          ${p.verified && p.donation ? `<div class="donation"><strong>Donasi langsung ke rumah ibadah</strong><p class="small">${esc(p.donation.method)}: ${esc(p.donation.detail)}</p><p class="small muted">Dana langsung ke rumah ibadah, tidak melalui Jeda.</p></div>`
     : '<p class="small muted">Info donasi tampil setelah diverifikasi langsung dengan pengurus.</p>'}
           <div class="row">
             <a class="btn-ghost small" href="${mapUrl}" target="_blank" rel="noopener">Lihat peta</a>
@@ -115,7 +115,7 @@ export function places(main, params, query, { content }) {
   main.innerHTML = `
     <section class="stack">
       <h1 class="h2">Rumah Ibadah</h1>
-      <p class="muted">Tempat ibadah nyata di Indonesia. Hening tidak menerima atau meneruskan dana; donasi selalu langsung ke rumah ibadah. Waspadai rekening palsu: percayai hanya info bertanda <em>Terverifikasi</em>.</p>
+      <p class="muted">Tempat ibadah nyata di Indonesia. Jeda tidak menerima atau meneruskan dana; donasi selalu langsung ke rumah ibadah. Waspadai rekening palsu: percayai hanya info bertanda <em>Terverifikasi</em>.</p>
       ${faithChips(content, active, '#/ibadah')}
       <input type="search" class="filter" placeholder="Cari nama atau kota…" aria-label="Cari rumah ibadah">
       <div class="places place-grid"></div>
@@ -303,7 +303,7 @@ export async function archive(main) {
       ...item,
       audio: item.audio ? await blobToDataUrl(item.audio) : null,
     })));
-    const blob = new Blob([JSON.stringify({ app: 'hening-arsip', items: serialised }, null, 2)], { type: 'application/json' });
+    const blob = new Blob([JSON.stringify({ app: 'jeda-arsip', items: serialised }, null, 2)], { type: 'application/json' });
     const anchor = document.createElement('a');
     anchor.href = URL.createObjectURL(blob);
     anchor.download = `arsip-keluarga-${new Date().toISOString().slice(0, 10)}.json`;
@@ -317,8 +317,8 @@ export async function archive(main) {
     }
     try {
       const payload = JSON.parse(await file.text());
-      if (payload.app !== 'hening-arsip') {
-        throw new Error('Bukan berkas arsip Hening.');
+      if (payload.app !== 'jeda-arsip') {
+        throw new Error('Bukan berkas arsip Jeda.');
       }
       for (const item of payload.items) {
         const audio = item.audio ? await (await fetch(item.audio)).blob() : null;

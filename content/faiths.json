@@ -60,7 +60,7 @@
       "spaceName": "Masjid",
       "pustaka": true,
       "greeting": "Assalamu'alaikum. Duduklah sejenak, tenangkan hati dengan zikir.",
-      "virtualNote": "Ruang ini membantu zikir dan belajar. Sholat wajib tetap dilaksanakan secara nyata sesuai syariat; Hening tidak menampilkan sholat sebagai permainan.",
+      "virtualNote": "Ruang ini membantu zikir dan belajar. Sholat wajib tetap dilaksanakan secara nyata sesuai syariat; Jeda tidak menampilkan sholat sebagai permainan.",
       "visitTips": [
         "Berpakaian sopan dan menutup aurat; perempuan umumnya diminta menutup rambut saat masuk area sholat.",
         "Lepas alas kaki di area suci dan jangan melintas tepat di depan orang yang sedang sholat.",
@@ -134,7 +134,7 @@
           "desc": "Baca dan dengarkan Al-Qur'an dari sumber resmi Kementerian Agama.",
           "url": "https://quran.kemenag.go.id/",
           "linkLabel": "Buka Qur'an Kemenag",
-          "linkNote": "Pembaca di dalam Hening akan aktif setelah izin teks dan terjemahan diperoleh."
+          "linkNote": "Pembaca di dalam Jeda akan aktif setelah izin teks dan terjemahan diperoleh."
         },
         {
           "type": "timer",
@@ -239,7 +239,7 @@
           "desc": "Baca Alkitab dari sumber resmi.",
           "url": "https://alkitab.sabda.org/",
           "linkLabel": "Buka Alkitab SABDA",
-          "linkNote": "Terjemahan Baru adalah hak cipta LAI; pembaca di dalam Hening menunggu izin."
+          "linkNote": "Terjemahan Baru adalah hak cipta LAI; pembaca di dalam Jeda menunggu izin."
         },
         {
           "type": "ambience",
@@ -435,7 +435,7 @@
       "specialDays": [
         {
           "date": "2027-03-08",
-          "text": "Hari Suci Nyepi. Umat Hindu menjalankan Catur Brata Penyepian. Hening meredupkan ruang ini sebagai bentuk hormat."
+          "text": "Hari Suci Nyepi. Umat Hindu menjalankan Catur Brata Penyepian. Jeda meredupkan ruang ini sebagai bentuk hormat."
         }
       ]
     },

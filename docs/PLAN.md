@@ -90,3 +90,24 @@ hosted free on **GitHub Pages**. Optional AI via a free **Cloudflare Worker**. S
 - Real reviewers sign off core entries; ciam si poems from a consenting klenteng
 - Anonymous presence counter (Supabase free tier), English UI, Javanese/Balinese/Hokkien
 - Pixel/illustrated scenes by an artist; recorded ambience
+
+
+---
+
+# Iteration 5: renamed to **Jeda** (v0.2)
+
+## Decisions
+| # | Question | Decision |
+|---|---|---|
+| 16 | Name | **Jeda** ("pause"). One word, Indonesian, easy to say worldwide, carries Sansa's "rest for a moment" spirit. "Hening" was taken by an existing meditation app and a Riliv feature. |
+| 17 | Folder / repo | E:\jeda, github.com/juw12/jeda |
+
+## Name risk (checked by web search, not a legal search)
+jeda.id is an active news site; small apps/brands named "Jeda" exist (holiday calendar app, Android Auto launcher, Jeda Academy, Jeda Digital detox device, Titik Jeda). None is a religious/multi-faith app. Use a distinctive full mark ("Jeda — ruang hening setiap iman") and check PDKI (DJKI) classes 9/42/45 before registering.
+
+## Built in v0.2
+- Rename across app, storage keys (jeda:v1:*), cache, manifest, docs
+- Pause-symbol logo; "Ambil jeda" 1-minute guided breathing from the top bar, landing and home
+- English interface toggle (navigation, landing, home, path chooser, settings, dates); Pustaka stays Indonesian
+- Pustaka 79 → 95 entries; ceremony guides 10 → 13 (Nyepi incl. tourists in Bali, Prapaskah, Chinese memorial rites)
+- Interaction tests: pause overlay, incense, ciam si + poe, tasbih, rosary, prayer times, visit-mode demo all pass

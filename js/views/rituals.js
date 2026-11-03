@@ -439,7 +439,7 @@ function ciamsi(body, ritual, { content }) {
       <p><strong>${info.title}.</strong> Nomor <strong>${number}</strong> dikonfirmasi.</p>
       ${poem
     ? `<blockquote class="poem">${poem.hanzi ? `<p lang="zh">${esc(poem.hanzi)}</p>` : ''}${poem.hokkien ? `<p class="muted">${esc(poem.hokkien)}</p>` : ''}<p>${esc(poem.id)}</p><footer class="small muted">${esc(set.name)}</footer></blockquote>`
-    : `<p class="muted">Teks syair nomor ${number} untuk ${esc(set.name)} belum tersedia di Hening.
+    : `<p class="muted">Teks syair nomor ${number} untuk ${esc(set.name)} belum tersedia di Jeda.
            Syair resmi berbeda di tiap klenteng; mintalah lembar syair dan tafsirnya kepada pengurus klenteng.</p>`}
       <p class="small muted">Ciam si adalah tradisi permenungan, bukan ramalan pasti. Beberapa klenteng mensyaratkan tiga kali Sing Poe berturut-turut.</p>`;
   };
@@ -920,7 +920,7 @@ function daily(body, ritual, { content, faith }) {
 // ---------- External link ----------
 function link(body, ritual) {
   body.innerHTML = `<a class="btn" href="${esc(ritual.url)}" target="_blank" rel="noopener">${esc(ritual.linkLabel || 'Buka')}</a>
-    <p class="small muted">${esc(ritual.linkNote || 'Membuka sumber resmi di luar Hening.')}</p>`;
+    <p class="small muted">${esc(ritual.linkNote || 'Membuka sumber resmi di luar Jeda.')}</p>`;
   return {};
 }
 

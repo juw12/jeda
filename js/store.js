@@ -1,7 +1,7 @@
 // Local-only storage. Nothing here is sent to a server.
 // Religion is specific personal data under UU PDP No. 27/2022, so it stays on the device.
 
-const PREFIX = 'hening:v1:';
+const PREFIX = 'jeda:v1:';
 
 const DEFAULT_PREFS = {
   faith: null,
@@ -56,12 +56,12 @@ export function exportAll() {
       data[key.slice(PREFIX.length)] = JSON.parse(localStorage.getItem(key));
     }
   }
-  return { app: 'hening', exportedAt: new Date().toISOString(), data };
+  return { app: 'jeda', exportedAt: new Date().toISOString(), data };
 }
 
 export function importAll(payload) {
-  if (!payload || payload.app !== 'hening' || typeof payload.data !== 'object') {
-    throw new Error('Berkas bukan cadangan Hening.');
+  if (!payload || payload.app !== 'jeda' || typeof payload.data !== 'object') {
+    throw new Error('Berkas bukan cadangan Jeda.');
   }
   for (const [name, value] of Object.entries(payload.data)) {
     save(name, value);
@@ -80,7 +80,7 @@ export function clearAll() {
 }
 
 // Small IndexedDB wrapper for larger blobs (family archive voice notes).
-const DB_NAME = 'hening-archive';
+const DB_NAME = 'jeda-archive';
 const STORE = 'items';
 
 function openDb() {

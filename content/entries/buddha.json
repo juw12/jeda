@@ -52,7 +52,7 @@
         "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
       }
     ],
-    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
     "status": "draft",
     "drafted_by": "ai-seed",
     "reviewed_by": null,
@@ -103,7 +103,7 @@
         "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
       }
     ],
-    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
     "status": "draft",
     "drafted_by": "ai-seed",
     "reviewed_by": null,
@@ -153,7 +153,7 @@
         "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
       }
     ],
-    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
     "status": "draft",
     "drafted_by": "ai-seed",
     "reviewed_by": null,
@@ -233,7 +233,7 @@
         "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
       }
     ],
-    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
     "status": "draft",
     "drafted_by": "ai-seed",
     "reviewed_by": null,
@@ -292,7 +292,7 @@
         "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
       }
     ],
-    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
     "status": "draft",
     "drafted_by": "ai-seed",
     "reviewed_by": null,
@@ -329,7 +329,7 @@
         "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
       }
     ],
-    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
     "status": "draft",
     "drafted_by": "ai-seed",
     "reviewed_by": null,
@@ -365,7 +365,7 @@
         "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
       }
     ],
-    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
     "status": "draft",
     "drafted_by": "ai-seed",
     "reviewed_by": null,
@@ -417,7 +417,7 @@
         "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
       }
     ],
-    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
     "status": "draft",
     "drafted_by": "ai-seed",
     "reviewed_by": null,
@@ -486,7 +486,7 @@
         "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
       }
     ],
-    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
     "status": "draft",
     "drafted_by": "ai-seed",
     "reviewed_by": null,
@@ -524,7 +524,145 @@
         "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
       }
     ],
-    "license": "Teks Hening: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "bud-hariraya-kathina",
+    "faith": "buddha",
+    "streams": [
+      "theravada",
+      "buddhayana"
+    ],
+    "section": "hari-raya",
+    "title": "Kathina: persembahan jubah kepada Sangha",
+    "summary": "Masa berdana setelah para bhikkhu menyelesaikan vassa (masa musim hujan).",
+    "body": [
+      "Setelah tiga bulan vassa, umat mempersembahkan kain jubah dan kebutuhan pokok kepada Sangha dalam masa Kathina, sekitar satu bulan setelah vassa berakhir.",
+      "Kathina terutama dirayakan dalam tradisi Theravada, sebagai wujud dukungan umat kepada para bhikkhu."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "kathina",
+      "jubah",
+      "vassa",
+      "sangha",
+      "dana",
+      "theravada"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "bud-ibadah-pattidana",
+    "faith": "buddha",
+    "streams": [],
+    "section": "ibadah-harian",
+    "title": "Pelimpahan jasa (pattidana)",
+    "summary": "Membagikan kebajikan yang dilakukan kepada leluhur dan semua makhluk.",
+    "body": [
+      "Setelah berbuat baik (berdana, membaca paritta, meditasi), umat dapat melimpahkan jasa kebajikan itu kepada sanak keluarga yang telah meninggal dan kepada semua makhluk.",
+      "Pelimpahan jasa lazim dilakukan pada upacara duka dan peringatan, serta di akhir puja bakti."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [
+      {
+        "name": "SuttaCentral: Khp 7",
+        "url": "https://suttacentral.net/kp7",
+        "note": ""
+      }
+    ],
+    "tags": [
+      "pattidana",
+      "pelimpahan jasa",
+      "leluhur",
+      "kematian",
+      "paritta"
+    ],
+    "sources": [
+      {
+        "title": "Tirokudda Sutta (Khuddakapatha 7)"
+      },
+      {
+        "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "bud-aturan-fangsheng",
+    "faith": "buddha",
+    "streams": [
+      "mahayana",
+      "buddhayana",
+      "maitreya"
+    ],
+    "section": "aturan-etika",
+    "title": "Fangsheng (pelepasan makhluk) dengan bijak",
+    "summary": "Tradisi melepaskan makhluk hidup sebagai wujud welas asih, dan cara melakukannya tanpa merugikan.",
+    "body": [
+      "Fangsheng banyak dilakukan dalam tradisi Mahayana sebagai praktik welas asih.",
+      "Banyak guru menekankan agar pelepasan tidak justru mendorong penangkapan hewan untuk dijual, dan tidak melepaskan spesies yang tidak sesuai habitat atau berpotensi invasif."
+    ],
+    "steps": [
+      {
+        "text": "Pastikan hewan sesuai dengan habitat tempat pelepasan.",
+        "why": "Mencegah kematian hewan dan kerusakan ekosistem."
+      },
+      {
+        "text": "Hindari membeli hewan yang ditangkap khusus untuk dilepas.",
+        "why": "Agar tidak memicu penangkapan berulang."
+      },
+      {
+        "text": "Pertimbangkan bentuk welas asih lain, mis. mendukung pelestarian habitat.",
+        "why": "Tujuan utamanya adalah mengurangi penderitaan."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "fangsheng",
+      "pelepasan satwa",
+      "welas asih",
+      "mahayana",
+      "lingkungan"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
     "status": "draft",
     "drafted_by": "ai-seed",
     "reviewed_by": null,

@@ -1,5 +1,5 @@
-# Run Hening locally without installing anything (Windows PowerShell).
-# Usage: right-click > Run with PowerShell, or:  powershell -ExecutionPolicy Bypass -File E:\hening\serve.ps1
+# Run Jeda locally without installing anything (Windows PowerShell).
+# Usage: right-click > Run with PowerShell, or:  powershell -ExecutionPolicy Bypass -File E:\jeda\serve.ps1
 # Then open http://localhost:8080 in your browser. Press Ctrl+C to stop.
 
 $port = 8080
@@ -12,7 +12,7 @@ $types = @{
 $listener = New-Object System.Net.HttpListener
 $listener.Prefixes.Add("http://localhost:$port/")
 $listener.Start()
-Write-Host "Hening berjalan di http://localhost:$port  (Ctrl+C untuk berhenti)"
+Write-Host "Jeda berjalan di http://localhost:$port  (Ctrl+C untuk berhenti)"
 Start-Process "http://localhost:$port"
 try {
   while ($listener.IsListening) {

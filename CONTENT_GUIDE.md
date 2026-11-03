@@ -1,7 +1,7 @@
 # Panduan konten & peninjauan
 
 ## Prinsip
-1. Hening bukan otoritas agama. Setiap pernyataan harus punya sumber.
+1. Jeda bukan otoritas agama. Setiap pernyataan harus punya sumber.
 2. Perbedaan aliran/daerah ditulis di `variations`, berdampingan, tanpa menilai.
 3. Tidak ada konten keagamaan baru dari AI yang terbit tanpa peninjauan manusia dari agama tersebut.
 4. Tulis "mengapa" untuk setiap langkah; banyak tradisi hilang karena alasannya tidak diwariskan.

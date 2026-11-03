@@ -1,4 +1,4 @@
-// Tanya Hening: answers only from Pustaka entries, always with citations.
+// Tanya Jeda: answers only from Pustaka entries, always with citations.
 // Free mode = retrieval over the Pustaka. Optional AI mode = CONFIG.tanyaEndpoint (worker), still citation-bound.
 
 import { CONFIG } from '../config.js';
@@ -20,7 +20,7 @@ function extractiveAnswer(results) {
   const top = results[0].entry;
   const steps = (top.steps || []).slice(0, 4);
   return `
-    <p>Dari Pustaka Hening, entri yang paling sesuai: <strong>${esc(top.title)}</strong>.</p>
+    <p>Dari Pustaka Jeda, entri yang paling sesuai: <strong>${esc(top.title)}</strong>.</p>
     <p>${esc(top.summary)}</p>
     ${steps.length ? `<ol>${steps.map((s) => `<li>${esc(s.text)}</li>`).join('')}</ol>` : ''}
     ${top.variations && top.variations.length ? '<p class="small muted">Ada perbedaan antar-aliran/daerah; lihat entrinya.</p>' : ''}
@@ -60,8 +60,8 @@ export function tanya(main, params, query, { content }) {
   const faithOptions = content.faiths.filter((f) => f.pustaka);
   main.innerHTML = `
     <section class="stack narrow tanya">
-      <h1 class="h2">Tanya Hening</h1>
-      <p class="muted small">Jawaban hanya diambil dari Pustaka Hening dan selalu disertai sumber. Hening tidak memberi fatwa atau tafsir pribadi.
+      <h1 class="h2">Tanya Jeda</h1>
+      <p class="muted small">Jawaban hanya diambil dari Pustaka Jeda dan selalu disertai sumber. Jeda tidak memberi fatwa atau tafsir pribadi.
         Untuk hal yang menyangkut keyakinan dan keputusan penting, tanyakan kepada pemuka agama Anda.</p>
       <label class="field inline"><span>Cari di</span>
         <select name="faith">
@@ -102,12 +102,12 @@ export function tanya(main, params, query, { content }) {
       return;
     }
     if (COMPARE.test(question)) {
-      add('bot', '<p>Hening tidak membandingkan atau menilai kebenaran agama. Setiap iman dihormati dan dijelaskan menurut ajarannya sendiri. Kamu bisa membaca Pustaka tiap agama atau etiket lintas iman.</p><p><a href="#/pustaka">Buka Pustaka</a></p>');
+      add('bot', '<p>Jeda tidak membandingkan atau menilai kebenaran agama. Setiap iman dihormati dan dijelaskan menurut ajarannya sendiri. Kamu bisa membaca Pustaka tiap agama atau etiket lintas iman.</p><p><a href="#/pustaka">Buka Pustaka</a></p>');
       return;
     }
     const results = search(getIndex(content), question, { faith: select.value || null, limit: 5 });
     if (results.length === 0 || results[0].score < MIN_SCORE) {
-      add('bot', `<p>Belum ada sumber di Pustaka Hening yang menjawab pertanyaan ini, jadi Hening tidak akan menebak.</p>
+      add('bot', `<p>Belum ada sumber di Pustaka Jeda yang menjawab pertanyaan ini, jadi Jeda tidak akan menebak.</p>
         <p>Silakan tanyakan kepada pemuka agama atau pengurus rumah ibadah terdekat: <a href="#/ibadah">Rumah Ibadah</a>.
         Kamu juga bisa <a href="${CONFIG.issueUrl('usulan.yml', `[Usulan entri] ${question.slice(0, 80)}`)}" target="_blank" rel="noopener">mengusulkan entri baru</a>.</p>`);
       return;

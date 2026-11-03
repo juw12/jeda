@@ -1,4 +1,4 @@
-// Lightweight full-text search over Pustaka entries (used by search page and Tanya Hening).
+// Lightweight full-text search over Pustaka entries (used by search page and Tanya Jeda).
 
 const STOPWORDS = new Set(`
   yang dan di ke dari untuk apa apakah bagaimana gimana cara itu ini dengan adalah saya aku kamu
