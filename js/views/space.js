@@ -8,8 +8,7 @@ import { sceneSvg, FESTIVE } from '../scenes.js';
 import { holyDays, matchesFaith, festiveHoliday } from '../calendar.js';
 import { mountRitual } from './rituals.js';
 import { bead, bell as bellSound } from '../audio.js';
-
-const EMOTES = ['🙏', '🕊️', '🤍', '🙂'];
+import { greetingsFor, greetingById } from '../world/greetings.js';
 const DZIKIR = ['Subhanallah', 'Alhamdulillah', 'Allahu Akbar'];
 
 export function avatarColor() {
@@ -38,14 +37,16 @@ function sitPanel(spot, faith) {
   }
 }
 
-export function space(main, [faithId], query, { content, navigate }) {
+export function space(main, [faithId], query, { content, navigate }, extra = {}) {
   const faith = faithById(content, faithId);
   if (!faith) {
     navigate('#/kunjungi');
     return undefined;
   }
   const userPrefs = prefs.get();
-  const mode = !userPrefs.faith || userPrefs.faith === faith.id || faith.id === 'alam' ? 'home' : 'visit';
+  const live = extra.live || null; // { code, host, secret?, mode }
+  const mode = live && live.mode ? live.mode : (!userPrefs.faith || userPrefs.faith === faith.id || faith.id === 'alam' ? 'home' : 'visit');
+  const greetings = greetingsFor(faith.id, mode);
   document.body.dataset.faith = faith.id;
   document.body.classList.add('in-space');
 
@@ -66,9 +67,15 @@ export function space(main, [faithId], query, { content, navigate }) {
           <span class="eyebrow">${mode === 'visit' ? 'Kunjungi & kenali' : 'Ruangmu'}</span>
           <h1>${esc(faith.spaceName)}</h1>
         </div>
-        <button class="pill" type="button" data-presence aria-pressed="false">
-          <span class="dot"></span><span data-presence-label>Sendiri</span>
-        </button>
+        <div class="stage-pills">
+          ${live ? `
+            <button class="pill live-pill" type="button" data-live-share><span class="rec"></span>LIVE · <span data-live-code>${esc(live.code)}</span></button>
+            <span class="pill count-pill" data-presence-label aria-live="polite">Menghubungkan…</span>` : `
+            <button class="pill" type="button" data-presence aria-pressed="false">
+              <span class="dot"></span><span data-presence-label>Sendiri</span>
+            </button>
+            <button class="pill" type="button" data-golive>Siarkan</button>`}
+        </div>
       </div>
       ${festiveInfo ? `<div class="stage-banner">${esc(festiveInfo.text)}</div>` : ''}
       <div class="stage-hint" data-hint>Ketuk tanah untuk berjalan · seret untuk melihat sekeliling</div>
@@ -78,10 +85,54 @@ export function space(main, [faithId], query, { content, navigate }) {
           <div><span class="eyebrow" data-action-kind></span><strong data-action-label></strong></div>
           <button class="btn" type="button" data-action-go></button>
         </div>
-        <div class="emotes" role="group" aria-label="Salam">
-          ${EMOTES.map((e) => `<button type="button" class="emote" data-emote="${e}">${e}</button>`).join('')}
+        ${live && live.host ? `
+          <div class="live-bar" role="group" aria-label="Alat pemandu">
+            <button type="button" data-host="share">Bagikan</button>
+            <button type="button" data-host="silence">Hening 1 menit</button>
+            <button type="button" data-host="gather">Ajak ke sini</button>
+            <button type="button" data-host="broadcast">Mode siaran</button>
+            <button type="button" data-host="end">Akhiri</button>
+          </div>` : ''}
+        <div class="greetings" role="group" aria-label="Salam">
+          ${greetings.map((g) => `<button type="button" class="greet" data-greet="${g.id}" title="${esc(g.note)}">${esc(g.label)}</button>`).join('')}
         </div>
       </div>
+      ${live ? `
+        <div class="silence-overlay" data-silence hidden>
+          <p class="eyebrow">Hening bersama</p>
+          <p class="silence-time" data-silence-time>1:00</p>
+          <p class="small">Dipimpin pemandu. Diam sejenak, di mana pun kamu berada.</p>
+        </div>
+        <div class="broadcast-card" data-broadcast hidden>
+          <div class="broadcast-qr" data-qr></div>
+          <div>
+            <p class="eyebrow">Ikut masuk ruang ini</p>
+            <p class="broadcast-code">${esc(live.code)}</p>
+            <p class="small">Buka <strong data-short-url></strong> lalu ketuk <strong>Gabung</strong></p>
+          </div>
+        </div>
+        <div class="live-ended" data-ended hidden>
+          <div class="card">
+            <h2 class="h3">Ruang Live telah selesai</h2>
+            <p>Terima kasih sudah hadir dan berdoa bersama.</p>
+            <a class="btn" href="#/">Ke beranda</a>
+          </div>
+        </div>
+        <div class="share-sheet" data-share-sheet hidden>
+          <div class="share-body">
+            <p class="eyebrow">Ruang Live · ${esc(faith.spaceName)}</p>
+            <p class="share-code">${esc(live.code)}</p>
+            <div class="share-qr" data-share-qr></div>
+            <input class="share-link" type="text" readonly data-share-link aria-label="Tautan Ruang Live">
+            <div class="row">
+              <button class="btn" type="button" data-copy="link">Salin tautan</button>
+              <button class="btn-ghost" type="button" data-copy="caption">Salin teks caption</button>
+              <button class="btn-ghost" type="button" data-native-share>Bagikan…</button>
+            </div>
+            <p class="small muted">TikTok sering tidak membuat tautan bisa diklik di komentar. Sebutkan atau tulis kodenya: penonton membuka <strong data-short-url></strong>, ketuk <strong>Gabung</strong>, lalu masukkan kode.</p>
+            <button class="btn-ghost" type="button" data-close-share>Tutup</button>
+          </div>
+        </div>` : ''}
       <div class="sit-sheet" data-sit hidden>
         <div class="sit-body" data-sit-body></div>
         <button class="btn-ghost" type="button" data-stand>Selesai</button>
@@ -258,23 +309,60 @@ export function space(main, [faithId], query, { content, navigate }) {
     }
     showSit(null);
   });
-  main.querySelectorAll('[data-emote]').forEach((button) => {
+  const explained = new Set();
+  main.querySelectorAll('[data-greet]').forEach((button) => {
     button.addEventListener('click', () => {
       if (!world) {
         return;
       }
-      world.emote(button.dataset.emote);
+      const greeting = greetingById(button.dataset.greet);
+      world.greet(greeting.id);
       if (presence) {
-        presence.sendEmote(button.dataset.emote);
+        presence.sendGreet(greeting.id);
+      }
+      if (!explained.has(greeting.id)) {
+        explained.add(greeting.id);
+        toast(greeting.note);
       }
     });
   });
 
+  let liveCount = null; // total reported by the host (viewers only see their own shard)
+  let hostPeerId = null;
+  const verifiedHosts = new Set();
+
   function updatePresenceLabel() {
     const count = presence ? presence.peerCount() : 0;
+    if (live) {
+      const total = live.host ? count + 1 : Math.max(liveCount || 0, count + 1);
+      presenceLabel.textContent = presence ? `${total} hadir` : 'Menghubungkan…';
+      return;
+    }
     presenceButton.setAttribute('aria-pressed', presence ? 'true' : 'false');
     presenceButton.classList.toggle('on', Boolean(presence));
     presenceLabel.textContent = presence ? (count ? `${count + 1} hadir` : 'Bersama · menunggu') : 'Sendiri';
+  }
+
+  async function addPeerChecked(id, info) {
+    let isHost = false;
+    if (live && info.host && info.proof) {
+      const { verifyHost } = await import('../world/live.js');
+      isHost = await verifyHost(live.code, info.proof);
+    }
+    if (isHost) {
+      verifiedHosts.add(id);
+      hostPeerId = id;
+    }
+    if (!world) {
+      return;
+    }
+    world.addPeer(id, { ...info, host: isHost });
+    if (isHost && !live.host) {
+      toast(`${info.name} (pemandu) sudah di sini`);
+    } else if (!live || live.host) {
+      toast(`${info.name} hadir${info.mode === 'visit' ? ' sebagai tamu' : ''}`);
+    }
+    updatePresenceLabel();
   }
 
   async function startPresence() {
@@ -283,25 +371,39 @@ export function space(main, [faithId], query, { content, navigate }) {
     }
     try {
       presenceLabel.textContent = 'Menghubungkan…';
-      presence = await joinPresenceLazy(`ruang-${faith.id}`, { name, color: avatarColor(), mode }, {
+      let rooms = `ruang-${faith.id}`;
+      const profile = { name, color: avatarColor(), mode };
+      if (live) {
+        const { shardRooms, viewerShard } = await import('../world/live.js');
+        rooms = live.host ? shardRooms(live.code) : [viewerShard(live.code)];
+        if (live.host) {
+          profile.host = true;
+          profile.proof = live.secret;
+        }
+      }
+      presence = await joinPresenceLazy(rooms, profile, {
         join: (id, info) => {
-          world.addPeer(id, info);
-          toast(`${info.name} hadir${info.mode === 'visit' ? ' sebagai tamu' : ''}`);
-          updatePresenceLabel();
+          addPeerChecked(id, info);
         },
         leave: (id) => {
           world.removePeer(id);
+          verifiedHosts.delete(id);
           updatePresenceLabel();
         },
         state: (id, state) => world.updatePeer(id, state),
         act: (id, spotId) => world.peerPerform(id, spotId),
-        emote: (id, emoji) => world.peerEmote(id, emoji),
+        greet: (id, greetingId) => world.peerGreet(id, greetingId),
+        lead: (id, data) => {
+          if (verifiedHosts.has(id)) {
+            onLead(data);
+          }
+        },
       });
       updatePresenceLabel();
     } catch (error) {
       console.error(error);
       presence = null;
-      presenceLabel.textContent = 'Sendiri';
+      presenceLabel.textContent = live ? 'Tidak terhubung' : 'Sendiri';
       toast('Tidak dapat terhubung. Kamu tetap bisa beribadah sendiri.');
     }
   }
@@ -311,31 +413,187 @@ export function space(main, [faithId], query, { content, navigate }) {
       presence.leave();
       presence = null;
     }
-    updatePresenceLabel();
+    if (!live) {
+      updatePresenceLabel();
+    }
   }
 
-  presenceButton.addEventListener('click', () => {
-    if (presence) {
-      stopPresence();
-      prefs.set({ presence: 'alone' });
-      return;
-    }
-    if (!prefs.get().presenceAcknowledged) {
-      const ok = confirm('Hadir bersama orang lain?\n\nPengunjung lain akan melihat nama tamu, warna, dan gerakmu di ruang ini. Koneksi langsung antarperangkat (peer-to-peer) juga memperlihatkan alamat IP-mu kepada mereka. Tidak ada akun dan tidak ada yang disimpan di server Jeda.');
+  if (!live) {
+    presenceButton.addEventListener('click', () => {
+      if (presence) {
+        stopPresence();
+        prefs.set({ presence: 'alone' });
+        return;
+      }
+      if (!prefs.get().presenceAcknowledged) {
+        const ok = confirm('Hadir bersama orang lain?\n\nPengunjung lain akan melihat nama tamu, warna, dan gerakmu di ruang ini. Koneksi langsung antarperangkat (peer-to-peer) juga memperlihatkan alamat IP-mu kepada mereka. Tidak ada akun dan tidak ada yang disimpan di server Jeda.');
+        if (!ok) {
+          return;
+        }
+        prefs.set({ presenceAcknowledged: true });
+      }
+      prefs.set({ presence: 'together' });
+      startPresence();
+    });
+    main.querySelector('[data-golive]').addEventListener('click', async () => {
+      const ok = confirm('Mulai Ruang Live?\n\nKamu akan mendapat tautan dan kode untuk dibagikan saat siaran (TikTok, Instagram, YouTube). Penonton masuk ruang ini bersamamu tanpa akun. Mereka melihat nama tamu dan gerakmu, dan koneksi antarperangkat memperlihatkan alamat IP.');
       if (!ok) {
         return;
       }
+      const { createLive } = await import('../world/live.js');
+      const record = await createLive(faith.id);
       prefs.set({ presenceAcknowledged: true });
+      navigate(`#/live/${record.code}`);
+    });
+  }
+
+  // ---------- Ruang Live: host tools & viewer overlays ----------
+  let silenceTimer = null;
+  let countTimer = null;
+  function runSilence(seconds) {
+    const overlay = main.querySelector('[data-silence]');
+    const label = main.querySelector('[data-silence-time]');
+    if (!overlay) {
+      return;
     }
-    prefs.set({ presence: 'together' });
-    startPresence();
-  });
+    clearInterval(silenceTimer);
+    let remaining = Math.max(5, Math.min(600, Math.round(seconds)));
+    overlay.hidden = false;
+    bellSound();
+    const render = () => {
+      label.textContent = `${Math.floor(remaining / 60)}:${String(remaining % 60).padStart(2, '0')}`;
+    };
+    render();
+    silenceTimer = setInterval(() => {
+      remaining -= 1;
+      render();
+      if (remaining <= 0) {
+        clearInterval(silenceTimer);
+        overlay.hidden = true;
+        bellSound();
+      }
+    }, 1000);
+  }
+
+  function onLead(data) {
+    if (data.type === 'silence') {
+      runSilence(Number(data.seconds) || 60);
+    } else if (data.type === 'count' && Number.isFinite(Number(data.n))) {
+      liveCount = Math.max(0, Math.min(100000, Math.round(Number(data.n))));
+      updatePresenceLabel();
+    } else if (data.type === 'gather' && typeof data.spot === 'string' && world) {
+      const spot = world.spots.find((s) => s.id === data.spot);
+      if (spot) {
+        toast(`Pemandu mengajak berkumpul: ${spot.label}`);
+        main.querySelector(`[data-chip="${CSS.escape(spot.id)}"]`)?.classList.add('invite');
+      }
+    } else if (data.type === 'end') {
+      stopPresence();
+      main.querySelector('[data-ended]').hidden = false;
+    }
+  }
+
+  async function fillShare() {
+    const { liveUrl, qrSvg, shortJoinHint } = await import('../world/live.js');
+    const url = liveUrl(live.code);
+    main.querySelectorAll('[data-short-url]').forEach((el) => {
+      el.textContent = shortJoinHint();
+    });
+    const linkInput = main.querySelector('[data-share-link]');
+    if (linkInput) {
+      linkInput.value = url;
+    }
+    try {
+      const svg = await qrSvg(url);
+      main.querySelectorAll('[data-qr], [data-share-qr]').forEach((el) => {
+        el.innerHTML = svg;
+      });
+    } catch (error) {
+      console.error(error);
+    }
+    return url;
+  }
+
+  if (live) {
+    fillShare();
+    const shareSheet = main.querySelector('[data-share-sheet]');
+    const caption = () => `Yuk hadir dan berdoa bersama di ${faith.spaceName} virtual Jeda. Buka ${main.querySelector('[data-share-link]').value} atau masuk ${main.querySelector('[data-short-url]').textContent} lalu ketik kode ${live.code}`;
+    main.querySelector('[data-live-share]').addEventListener('click', () => {
+      shareSheet.hidden = false;
+    });
+    main.querySelector('[data-close-share]').addEventListener('click', () => {
+      shareSheet.hidden = true;
+    });
+    main.querySelectorAll('[data-copy]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const text = button.dataset.copy === 'link' ? main.querySelector('[data-share-link]').value : caption();
+        try {
+          await navigator.clipboard.writeText(text);
+          toast('Tersalin');
+        } catch {
+          main.querySelector('[data-share-link]').select();
+          toast('Tekan lama untuk menyalin');
+        }
+      });
+    });
+    main.querySelector('[data-native-share]').addEventListener('click', async () => {
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: `Ruang Live Jeda · ${faith.spaceName}`, text: caption(), url: main.querySelector('[data-share-link]').value });
+        } catch {
+          // dismissed
+        }
+      } else {
+        toast('Gunakan "Salin tautan"');
+      }
+    });
+    if (live.host) {
+      main.querySelectorAll('[data-host]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const action = button.dataset.host;
+          if (action === 'share') {
+            shareSheet.hidden = false;
+          } else if (action === 'silence') {
+            runSilence(60);
+            presence?.sendLead({ type: 'silence', seconds: 60 });
+          } else if (action === 'gather') {
+            if (!currentSpot) {
+              toast('Berdirilah dekat salah satu tempat dulu, lalu ajak penonton ke sana.');
+              return;
+            }
+            presence?.sendLead({ type: 'gather', spot: currentSpot.id });
+            toast(`Penonton diajak ke: ${currentSpot.label}`);
+          } else if (action === 'broadcast') {
+            const card = main.querySelector('[data-broadcast]');
+            card.hidden = !card.hidden;
+            button.classList.toggle('on', !card.hidden);
+            stage.classList.toggle('broadcasting', !card.hidden);
+          } else if (action === 'end') {
+            if (!confirm('Akhiri Ruang Live untuk semua penonton?')) {
+              return;
+            }
+            presence?.sendLead({ type: 'end' });
+            import('../world/live.js').then(({ endHosting }) => endHosting());
+            setTimeout(() => {
+              stopPresence();
+              navigate(`#/ruang/${faith.id}`);
+            }, 600);
+          }
+        });
+      });
+      countTimer = setInterval(() => {
+        if (presence) {
+          presence.sendLead({ type: 'count', n: presence.peerCount() + 1 });
+          updatePresenceLabel();
+        }
+      }, 5000);
+    }
+  }
 
   (async () => {
     const { webglAvailable, createWorld } = await import('../world/engine.js');
     if (!webglAvailable()) {
-      worldBox.innerHTML = sceneSvg(faith.scene, time, faith.spaceName, festiveInfo ? festiveInfo.decor : null);
-      stage.classList.add('flat');
+      showFlat();
       return;
     }
     if (!main.isConnected) {
@@ -346,6 +604,7 @@ export function space(main, [faithId], query, { content, navigate }) {
       time,
       mode,
       me: { name, color: avatarColor() },
+      quality: prefs.get().quality3d || 'auto',
       onNearSpot: describeAction,
       onSit: showSit,
       onAction: (spot) => {
@@ -376,18 +635,29 @@ export function space(main, [faithId], query, { content, navigate }) {
       });
     });
     setTimeout(() => main.querySelector('[data-hint]')?.classList.add('fade'), 6000);
-    if (prefs.get().presence === 'together' && prefs.get().presenceAcknowledged) {
+    if (live || (prefs.get().presence === 'together' && prefs.get().presenceAcknowledged)) {
       startPresence();
     }
   })().catch((error) => {
     console.error(error);
-    worldBox.innerHTML = sceneSvg(faith.scene, time, faith.spaceName, festiveInfo ? festiveInfo.decor : null);
-    stage.classList.add('flat');
+    showFlat();
   });
+
+  // Last resort only (3D switched off in the browser or a blocklisted GPU): picture + how to turn 3D on.
+  function showFlat() {
+    worldBox.innerHTML = `${sceneSvg(faith.scene, time, faith.spaceName, festiveInfo ? festiveInfo.decor : null)}
+      <div class="flat-note">
+        <strong>3D belum aktif di browser ini</strong>
+        <span>Buka di Chrome/Safari terbaru, atau nyalakan "akselerasi perangkat keras" (Chrome: Setelan → Sistem). Kegiatan, salam, dan Ruang Live tetap bisa dipakai di bawah.</span>
+      </div>`;
+    stage.classList.add('flat');
+  }
 
   return () => {
     cleanups.forEach((fn) => fn && fn());
     clearInterval(sitTimer);
+    clearInterval(silenceTimer);
+    clearInterval(countTimer);
     stopPresence();
     if (world) {
       world.destroy();

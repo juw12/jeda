@@ -5,15 +5,42 @@
 import * as THREE from '../../vendor/three.module.min.js';
 import { buildPlace, mat, box, cyl, sphere, cone } from './places.js';
 import { bell, gong, chime, woodblock, crackle } from '../audio.js';
+import { greetingById } from './greetings.js';
 
 export function webglAvailable() {
   try {
     const canvas = document.createElement('canvas');
-    return Boolean(window.WebGLRenderingContext && (canvas.getContext('webgl2') || canvas.getContext('webgl')));
+    return Boolean(window.WebGLRenderingContext && (
+      canvas.getContext('webgl2') || canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
+    ));
   } catch {
     return false;
   }
 }
+
+// Pick a starting quality from the device; the loop then adapts to the real frame rate.
+// low: no shadows, 1x pixels, fewer particles and lights (older/budget phones)
+// medium: soft shadows, up to 1.5x pixels (most phones)  ·  high: laptops/desktops with a good GPU
+export function detectQuality() {
+  const memory = navigator.deviceMemory || 4;
+  const cores = navigator.hardwareConcurrency || 4;
+  const mobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && window.innerWidth < 900);
+  if (memory <= 3 || cores <= 4 && mobile) {
+    return 'low';
+  }
+  if (mobile) {
+    return 'medium';
+  }
+  return 'high';
+}
+
+const QUALITY = {
+  low: { pixelRatio: 1, shadows: false, shadowMap: 512, lights: 2, particles: 0.5, motes: 25, antialias: false },
+  medium: { pixelRatio: 1.5, shadows: true, shadowMap: 1024, lights: 3, particles: 0.8, motes: 45, antialias: true },
+  high: { pixelRatio: 2, shadows: true, shadowMap: 1024, lights: 4, particles: 1, motes: 60, antialias: true },
+};
+
+const MAX_RENDERED_PEERS = 40;
 
 const SKIES = {
   dawn: { top: '#f0a987', bottom: '#fde5c8', fog: '#f4d8be', sun: '#ffd2a1', sunIntensity: 1.6, hemi: 1.0, sunPos: [-20, 12, 10] },
@@ -80,37 +107,59 @@ function textSprite(text, { color = '#ffffff', background = 'rgba(20,18,16,0.55)
   return sprite;
 }
 
-function emojiSprite(emoji) {
-  const canvas = document.createElement('canvas');
-  canvas.width = 96;
-  canvas.height = 96;
-  const context = canvas.getContext('2d');
-  context.font = '72px "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif';
-  context.textAlign = 'center';
-  context.textBaseline = 'middle';
-  context.fillText(emoji, 48, 54);
-  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(canvas), transparent: true, depthWrite: false }));
-  sprite.scale.set(0.8, 0.8, 1);
-  return sprite;
-}
+// Arm angles per gesture: [rightX, rightZ, leftX, leftZ] (x = raise forward, z = swing in/out), body lean.
+const POSES = {
+  rest: { arms: [0, 0.12, 0, -0.12], lean: 0 },
+  anjali: { arms: [-1.25, -0.62, -1.25, 0.62], lean: 0 },
+  soja: { arms: [-1.45, -0.58, -1.45, 0.58], lean: 0.08 },
+  fold: { arms: [-1.0, -0.66, -1.0, 0.66], lean: 0.05 },
+  bow: { arms: [-1.2, -0.62, -1.2, 0.62], lean: 0.38 },
+  chest: { arms: [-1.15, -0.75, 0, -0.12], lean: 0.1 },
+  open: { arms: [-0.95, 0.35, -0.95, -0.35], lean: 0 },
+  raise: { arms: [-0.25, 2.7, -0.25, -2.7], lean: -0.05 },
+  wave: { arms: [-0.2, 2.5, 0, -0.12], lean: 0, wave: true },
+  cross: { arms: [-1.6, -0.5, 0, -0.12], lean: 0.05, cross: true },
+};
 
-function createAvatar(name, color, { visitor = false } = {}) {
+function createAvatar(name, color, { visitor = false, host = false } = {}) {
   const group = new THREE.Group();
+  const body = new THREE.Group();
   const robe = new THREE.Mesh(new THREE.CapsuleGeometry(0.32, 0.7, 4, 12), mat(color, { roughness: 0.7 }));
   robe.position.y = 0.72;
   robe.castShadow = true;
   const head = new THREE.Mesh(new THREE.SphereGeometry(0.22, 16, 12), mat('#f1d9bf', { roughness: 0.6 }));
   head.position.y = 1.52;
   head.castShadow = true;
+  // Arms hang from shoulder pivots so gestures (soja, anjali, salam…) read clearly from a distance.
+  const arms = [0.36, -0.36].map((x) => {
+    const pivot = new THREE.Group();
+    pivot.position.set(x, 1.22, 0);
+    const sleeve = new THREE.Mesh(new THREE.CapsuleGeometry(0.075, 0.42, 3, 8), mat(color, { roughness: 0.7 }));
+    sleeve.position.y = -0.28;
+    const hand = new THREE.Mesh(new THREE.SphereGeometry(0.075, 10, 8), mat('#f1d9bf', { roughness: 0.6 }));
+    hand.position.y = -0.56;
+    pivot.add(sleeve, hand);
+    body.add(pivot);
+    return pivot;
+  });
   const shadow = new THREE.Mesh(new THREE.CircleGeometry(0.42, 20), new THREE.MeshBasicMaterial({ color: '#000000', transparent: true, opacity: 0.18, depthWrite: false }));
   shadow.rotation.x = -Math.PI / 2;
   shadow.position.y = 0.02;
-  const label = textSprite(visitor ? `${name} · tamu` : name);
+  const labelText = host ? `${name} · pemandu` : visitor ? `${name} · tamu` : name;
+  const label = textSprite(labelText, host ? { background: 'rgba(120,80,10,0.8)' } : undefined);
   label.position.y = 2.05;
-  const body = new THREE.Group();
   body.add(robe, head);
   group.add(body, shadow, label);
-  return { group, body, label, target: new THREE.Vector3(), sitting: false, facing: 0, emoteSprite: null, emoteUntil: 0 };
+  if (host) {
+    const halo = new THREE.Mesh(new THREE.RingGeometry(0.5, 0.62, 32), new THREE.MeshBasicMaterial({ color: '#f3c84b', transparent: true, opacity: 0.85, depthWrite: false, side: THREE.DoubleSide }));
+    halo.rotation.x = -Math.PI / 2;
+    halo.position.y = 0.03;
+    group.add(halo);
+  }
+  return {
+    group, body, arms, label, target: new THREE.Vector3(), sitting: false, facing: 0,
+    pose: 'rest', poseUntil: 0, poseStart: 0, bubble: null, bubbleUntil: 0,
+  };
 }
 
 export function createWorld(container, options) {
@@ -124,12 +173,34 @@ export function createWorld(container, options) {
     onSit = () => {},
     onMove = () => {},
     onSpecial = () => {},
+    onQuality = () => {},
+    quality: requestedQuality = 'auto',
   } = options;
   const sky = SKIES[time] || SKIES.day;
+  let qualityName = requestedQuality === 'auto' ? detectQuality() : requestedQuality;
+  const quality = { ...(QUALITY[qualityName] || QUALITY.medium) };
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance', preserveDrawingBuffer: false });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-  renderer.shadowMap.enabled = true;
+  // Try the nicest renderer first, then progressively simpler ones, so almost every phone gets 3D.
+  let renderer = null;
+  const attempts = [
+    { antialias: quality.antialias, powerPreference: 'high-performance' },
+    { antialias: false, powerPreference: 'default' },
+    { antialias: false, powerPreference: 'low-power', precision: 'mediump', failIfMajorPerformanceCaveat: false },
+  ];
+  for (const attempt of attempts) {
+    try {
+      renderer = new THREE.WebGLRenderer({ ...attempt, preserveDrawingBuffer: false });
+      break;
+    } catch (error) {
+      renderer = null;
+    }
+  }
+  if (!renderer) {
+    throw new Error('webgl-unavailable');
+  }
+  let pixelRatio = Math.min(window.devicePixelRatio || 1, quality.pixelRatio);
+  renderer.setPixelRatio(pixelRatio);
+  renderer.shadowMap.enabled = quality.shadows;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
@@ -147,8 +218,8 @@ export function createWorld(container, options) {
   scene.add(new THREE.HemisphereLight(sky.top, '#8a7b66', sky.hemi));
   const sun = new THREE.DirectionalLight(sky.sun, sky.sunIntensity);
   sun.position.set(...sky.sunPos);
-  sun.castShadow = true;
-  sun.shadow.mapSize.set(1024, 1024);
+  sun.castShadow = quality.shadows;
+  sun.shadow.mapSize.set(quality.shadowMap, quality.shadowMap);
   sun.shadow.camera.left = -22;
   sun.shadow.camera.right = 22;
   sun.shadow.camera.top = 22;
@@ -181,7 +252,7 @@ export function createWorld(container, options) {
   }
 
   // Ambient floating motes (petals by day, fireflies at night)
-  const motes = createParticles(60, time === 'night' ? '#fff3a8' : '#ffffff', time === 'night' ? 0.22 : 0.12);
+  const motes = createParticles(quality.motes, time === 'night' ? '#fff3a8' : '#ffffff', time === 'night' ? 0.22 : 0.12);
   motes.points.material.opacity = time === 'night' ? 0.9 : 0.5;
   for (let i = 0; i < motes.count; i++) {
     motes.reset(i, new THREE.Vector3((Math.random() - 0.5) * 30, Math.random() * 6, (Math.random() - 0.5) * 30), new THREE.Vector3(0, 0.05, 0), 1e9);
@@ -240,7 +311,7 @@ export function createWorld(container, options) {
   const effects = [];
   const emitters = [];
   // Fixed pool of flame lights: the light count never changes, so three.js never recompiles shaders mid-ritual.
-  const LIGHT_POOL_SIZE = 4;
+  const LIGHT_POOL_SIZE = quality.lights;
   const dynamicLights = [];
   for (let i = 0; i < LIGHT_POOL_SIZE; i++) {
     const pooled = new THREE.PointLight('#ffb35c', 0, 4, 2);
@@ -308,9 +379,10 @@ export function createWorld(container, options) {
     const particles = createParticles(count, color, size);
     scene.add(particles.points);
     const emitter = { particles, origin: origin.clone(), elapsed: 0, duration, accumulator: 0, next: 0 };
+    const scaledRate = rate * quality.particles;
     emitter.update = (delta) => {
       emitter.elapsed += delta;
-      emitter.accumulator += delta * rate;
+      emitter.accumulator += delta * scaledRate;
       const spawning = emitter.elapsed < duration;
       while (spawning && emitter.accumulator >= 1) {
         emitter.accumulator -= 1;
@@ -578,14 +650,59 @@ export function createWorld(container, options) {
     }
   }
 
-  function emote(avatar, emoji) {
-    if (avatar.emoteSprite) {
-      avatar.group.remove(avatar.emoteSprite);
+  // A greeting = the faith's own words in a speech bubble + the matching body gesture.
+  function greet(avatar, greetingId) {
+    const greeting = greetingById(greetingId);
+    if (!greeting) {
+      return false;
     }
-    avatar.emoteSprite = emojiSprite(emoji);
-    avatar.emoteSprite.position.y = 2.6;
-    avatar.group.add(avatar.emoteSprite);
-    avatar.emoteUntil = performance.now() + 2600;
+    if (avatar.bubble) {
+      avatar.group.remove(avatar.bubble);
+    }
+    avatar.bubble = textSprite(greeting.say, { background: 'rgba(255,248,232,0.94)', color: '#2a2016', size: 40 });
+    avatar.bubble.position.y = 2.6;
+    avatar.group.add(avatar.bubble);
+    const now = performance.now();
+    avatar.bubbleUntil = now + 3600;
+    avatar.pose = greeting.pose;
+    avatar.poseStart = now;
+    avatar.poseUntil = now + (greeting.pose === 'cross' ? 3200 : 2600);
+    if (avatar === self && !self.sitting) {
+      // Turn toward the camera so you can see your own gesture, then turn back.
+      if (!self.faceCameraUntil || now > self.faceCameraUntil) {
+        self.facingBeforeGreet = self.facing;
+      }
+      self.faceCameraUntil = avatar.poseUntil;
+    }
+    return true;
+  }
+
+  function animatePose(avatar, delta, now) {
+    if (avatar.pose !== 'rest' && now > avatar.poseUntil) {
+      avatar.pose = 'rest';
+    }
+    const pose = POSES[avatar.pose] || POSES.rest;
+    const t = (now - avatar.poseStart) / 1000;
+    let [rightX, rightZ, leftX, leftZ] = pose.arms;
+    if (pose.wave) {
+      rightZ += Math.sin(t * 9) * 0.35;
+    }
+    if (pose.cross) {
+      // forehead → chest → left shoulder → right shoulder
+      const step = Math.min(3, Math.floor(t / 0.6));
+      [rightX, rightZ] = [[-2.3, -0.45], [-1.0, -0.55], [-1.5, -1.05], [-1.5, -0.2]][step];
+    }
+    const k = Math.min(1, delta * 9);
+    const [right, left] = avatar.arms;
+    right.rotation.x += (rightX - right.rotation.x) * k;
+    right.rotation.z += (rightZ - right.rotation.z) * k;
+    left.rotation.x += (leftX - left.rotation.x) * k;
+    left.rotation.z += (leftZ - left.rotation.z) * k;
+    avatar.body.rotation.x += (pose.lean - avatar.body.rotation.x) * k;
+    if (avatar.bubble && now > avatar.bubbleUntil) {
+      avatar.group.remove(avatar.bubble);
+      avatar.bubble = null;
+    }
   }
 
   // ---------- Input ----------
@@ -687,6 +804,21 @@ export function createWorld(container, options) {
     }
   };
   const onKeyUp = (event) => keys.delete(event.key.toLowerCase());
+  // Phones may drop the GPU context (backgrounding, memory pressure); keep the page alive and let it restore.
+  const onContextLost = (event) => {
+    event.preventDefault();
+    running = false;
+    cancelAnimationFrame(frame);
+    container.classList.add('context-lost');
+  };
+  const onContextRestored = () => {
+    container.classList.remove('context-lost');
+    running = true;
+    clock.getDelta();
+    tick();
+  };
+  canvas.addEventListener('webglcontextlost', onContextLost);
+  canvas.addEventListener('webglcontextrestored', onContextRestored);
   canvas.addEventListener('pointerdown', onPointerDown);
   canvas.addEventListener('pointermove', onPointerMove);
   canvas.addEventListener('pointerup', onPointerUp);
@@ -727,6 +859,44 @@ export function createWorld(container, options) {
 
   function applySitPose(avatar) {
     avatar.body.scale.y += ((avatar.sitting ? 0.62 : 1) - avatar.body.scale.y) * 0.2;
+  }
+
+  // Adaptive quality: if the device can't hold ~28 fps, lower resolution, then drop shadows.
+  let frameCount = 0;
+  let windowStart = performance.now();
+  let slowWindows = 0;
+  function adaptQuality(now) {
+    frameCount += 1;
+    if (now - windowStart < 2000) {
+      return;
+    }
+    const fps = (frameCount * 1000) / (now - windowStart);
+    frameCount = 0;
+    windowStart = now;
+    if (document.hidden || fps >= 28) {
+      slowWindows = 0;
+      return;
+    }
+    slowWindows += 1;
+    if (slowWindows < 2) {
+      return;
+    }
+    slowWindows = 0;
+    if (pixelRatio > 0.75) {
+      pixelRatio = Math.max(0.75, pixelRatio - 0.25);
+      renderer.setPixelRatio(pixelRatio);
+      resize();
+    } else if (renderer.shadowMap.enabled) {
+      renderer.shadowMap.enabled = false;
+      sun.castShadow = false;
+      scene.traverse((object) => {
+        if (object.material) {
+          object.material.needsUpdate = true;
+        }
+      });
+      qualityName = 'low';
+    }
+    onQuality({ quality: qualityName, pixelRatio, shadows: renderer.shadowMap.enabled, fps: Math.round(fps) });
   }
 
   function tick() {
@@ -791,15 +961,18 @@ export function createWorld(container, options) {
       moveAvatar(peer, delta, 3.6);
       turnTowards(peer, delta);
       applySitPose(peer);
-      if (peer.emoteSprite && now > peer.emoteUntil) {
-        peer.group.remove(peer.emoteSprite);
-        peer.emoteSprite = null;
-      }
+      animatePose(peer, delta, now);
     });
-    if (self.emoteSprite && now > self.emoteUntil) {
-      self.group.remove(self.emoteSprite);
-      self.emoteSprite = null;
+    if (self.faceCameraUntil) {
+      if (now < self.faceCameraUntil && !moving) {
+        self.facing = rig.yaw;
+      } else {
+        self.facing = moving ? self.facing : self.facingBeforeGreet;
+        self.faceCameraUntil = 0;
+      }
     }
+    animatePose(self, delta, now);
+    adaptQuality(now);
 
     spotMarkers.forEach(({ ring, beacon }, index) => {
       const pulse = 0.5 + Math.sin(elapsed * 2 + index) * 0.25;
@@ -883,7 +1056,8 @@ export function createWorld(container, options) {
     spots: place.spots,
     perform,
     standUp,
-    emote: (emoji) => emote(self, emoji),
+    greet: (greetingId) => greet(self, greetingId),
+    quality: () => ({ quality: qualityName, pixelRatio, shadows: renderer.shadowMap.enabled }),
     getState,
     walkTo(spotId, options = {}) {
       const spot = place.spots.find((s) => s.id === spotId);
@@ -899,7 +1073,10 @@ export function createWorld(container, options) {
       if (peers.has(id)) {
         return;
       }
-      const peer = createAvatar(info.name || 'Tamu', info.color || '#9aa3ad', { visitor: info.mode === 'visit' });
+      if (peers.size >= MAX_RENDERED_PEERS && !info.host) {
+        return;
+      }
+      const peer = createAvatar(info.name || 'Tamu', info.color || '#9aa3ad', { visitor: info.mode === 'visit', host: Boolean(info.host) });
       peer.group.position.set(info.x ?? place.spawn.x, 0, info.z ?? place.spawn.z);
       peer.target.copy(peer.group.position);
       scene.add(peer.group);
@@ -918,10 +1095,10 @@ export function createWorld(container, options) {
       }
       peer.sitting = Boolean(state.s);
     },
-    peerEmote(id, emoji) {
+    peerGreet(id, greetingId) {
       const peer = peers.get(id);
       if (peer) {
-        emote(peer, emoji);
+        greet(peer, greetingId);
       }
     },
     peerPerform(id, spotId) {
@@ -949,6 +1126,8 @@ export function createWorld(container, options) {
       canvas.removeEventListener('pointerup', onPointerUp);
       canvas.removeEventListener('pointercancel', onPointerUp);
       canvas.removeEventListener('wheel', onWheel);
+      canvas.removeEventListener('webglcontextlost', onContextLost);
+      canvas.removeEventListener('webglcontextrestored', onContextRestored);
       emitters.forEach((emitter) => emitter.dispose());
       renderer.dispose();
       canvas.remove();

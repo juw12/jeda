@@ -3,7 +3,7 @@
 export const CONFIG = {
   appName: 'Jeda',
   tagline: 'Ambil jeda. Ruang hening untuk setiap iman di Nusantara.',
-  version: '1.2.0',
+  version: '1.3.0',
 
   developer: {
     name: 'juw12',
@@ -19,6 +19,14 @@ export const CONFIG = {
   // Optional AI endpoint for Tanya Jeda (see worker/tanya-worker.js).
   // Empty string = free mode: answers are citation search over the Pustaka only.
   tanyaEndpoint: '',
+
+  // Public address used in Ruang Live share links and on-stream join cards.
+  publicUrl: 'https://juw12.github.io/jeda/',
+
+  // Optional TURN relay for "Bersama" / Ruang Live on strict networks (some office/mobile carriers).
+  // URL that returns a JSON array of RTCIceServer objects (e.g. a tiny Cloudflare Worker that asks
+  // Cloudflare Realtime TURN or Metered Open Relay for short-lived credentials). Empty = STUN only.
+  turnCredentialsUrl: '',
 
   // Support the developer. Set active: true after creating the account and checking the URL.
   // Recommended: Saweria (easiest: QRIS, GoPay, OVO, DANA, ShopeePay, no setup fee).

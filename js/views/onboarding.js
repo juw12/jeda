@@ -55,6 +55,7 @@ export function onboarding(main, params, query, { content, navigate }) {
           <h1 class="ob-title">Jeda</h1>
           <p class="ob-lead">Ruang hening untuk setiap iman.<br>Ambil jeda sejenak, di mana pun kamu berada.</p>
           <button class="btn btn-big" type="button" data-next>Mulai</button>
+          <a class="ob-link" href="#/gabung">Punya kode Ruang Live? Gabung</a>
           <button class="ob-link" type="button" data-lang>${lang() === 'en' ? 'Bahasa Indonesia' : 'English'}</button>`;
       case 'mood':
         return `

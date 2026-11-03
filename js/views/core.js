@@ -135,6 +135,12 @@ export function home(main, params, query, ctx) {
         <a href="#/kalender"><span>◷</span>Kalender</a>
       </nav>
 
+      <a class="live-join-row" href="#/gabung">
+        <span class="live-dot" aria-hidden="true"></span>
+        <span><strong>Gabung Ruang Live</strong><small>Punya kode dari siaran TikTok/IG? Masuk di sini</small></span>
+        <span aria-hidden="true">→</span>
+      </a>
+
       ${memorials.length ? `
         <div class="soft-card">
           <p class="eyebrow">🕯 Peringatan keluarga</p>
@@ -364,6 +370,11 @@ export function settings(main, params, query, { content, rerender }) {
         <label class="toggle"><input type="checkbox" data-pref="lightTheme" ${p.theme === 'dark' ? 'checked' : ''}> Tema gelap</label>
         <label class="toggle"><input type="checkbox" data-pref="sound" ${p.sound ? 'checked' : ''}> Suara (genta, ambience)</label>
         <label class="toggle"><input type="checkbox" data-pref="reducedMotion" ${p.reducedMotion ? 'checked' : ''}> Kurangi animasi</label>
+        <label class="select-row">Kualitas 3D
+          <select data-quality>
+            ${[['auto', 'Otomatis (disarankan)'], ['low', 'Hemat baterai / HP lama'], ['medium', 'Sedang'], ['high', 'Tinggi (laptop)']].map(([value, label]) => `<option value="${value}" ${(p.quality3d || 'auto') === value ? 'selected' : ''}>${label}</option>`).join('')}
+          </select>
+        </label>
       </div>
       <div class="card">
         <h2 class="h3">Data di perangkat ini</h2>
@@ -384,6 +395,9 @@ export function settings(main, params, query, { content, rerender }) {
       prefs.set({ lang: button.dataset.langSet });
       rerender();
     });
+  });
+  main.querySelector('[data-quality]').addEventListener('change', (event) => {
+    prefs.set({ quality3d: event.target.value });
   });
   main.querySelectorAll('[data-pref]').forEach((input) => {
     input.addEventListener('change', () => {

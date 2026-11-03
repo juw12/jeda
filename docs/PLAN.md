@@ -184,3 +184,12 @@ jeda.id is an active news site; small apps/brands named "Jeda" exist (holiday ca
 - Fixed light pool (4 point lights) so lighting candles never triggers shader recompiles; "Pergi ke" chips for people who don't play 3D games; reduced-motion users teleport instead of walking.
 
 Not yet verified: real phones (performance on low-end Android), presence across different networks/NAT (relays + STUN only, no TURN server).
+
+
+## Iteration 13 — v1.3 (faith greetings, Ruang Live for TikTok, 3D everywhere)
+
+- Emoji emotes replaced by faith-specific greetings with animated body gestures (avatars now have arms): soja, anjali/cakupang tangan, hand on chest, bow, open palms, raised arms, wave, sign of the cross. Your avatar turns to face the camera while greeting. Guests get neutral greetings.
+- Ruang Live: host taps "Siarkan" → 7-char code (faith letter + 6 chars from SHA-256 of a device secret, so viewers verify the host), link, QR, caption text. Viewers: link or #/gabung + code → one join card (name, colour, umat/tamu, consent) → 3D. Host tools: Hening 1 menit (synced countdown + bell), Ajak ke sini, Mode siaran (on-screen code + QR), Akhiri. 6 shards × full mesh; host joins all; viewers see the host's total count; max 40 avatars rendered.
+- 3D robustness: quality tiers (low/medium/high) from device memory/cores, adaptive pixel ratio then shadows-off when FPS < 28, renderer fallbacks (no AA → low-power/mediump), WebGL1 via three r160, webglcontextlost/restored handling, setting "Kualitas 3D".
+- Verified headless: host + viewer on separate origins (separate storage) through public Nostr relays: code entry, join card, host verification, count "2 hadir", synced silence, end-of-live screen.
+- Open: TURN relay (CONFIG.turnCredentialsUrl) needs an account (Cloudflare Realtime TURN free tier or Metered Open Relay); real-device testing on low-end Android / iOS Safari; shard capacity (~90 interactive viewers) not load-tested.
