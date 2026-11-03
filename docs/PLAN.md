@@ -171,3 +171,16 @@ jeda.id is an active news site; small apps/brands named "Jeda" exist (holiday ca
 - Publishing: publish.ps1 (gh repo create juw12/jeda --public, push, enable Pages), .nojekyll; README + LAUNCH_CHECKLIST updated (dialect review, memorial review, estimated dates, SKB 2028).
 - Version 1.0.0 = app feature-complete; content remains draft (preview mode) until reviewers approve.
 - Not done by design: public push (owner runs publish.ps1); ciam si poems (need licensed source); in-app scripture text (licences); AI endpoint (optional).
+
+
+## Iteration 12 — v1.2 (3D spaces, presence, card onboarding)
+
+- Every space is now a walkable low-poly 3D place (three.js r160, vendored): klenteng, vihara, pura, masjid, gereja, katedral + Gua Maria, alam.
+- Activities at spots with particle/light effects; sit sheet with zikir 33×3 counter, rosary counter, breathing, quiet timer.
+- Guests from another faith: devotional spots show "Pelajari" (links to Pustaka) instead of performing; zikir/rosario seats become quiet sitting.
+- Optional live presence via Trystero (Nostr relays, WebRTC): name, colour, position, activities, emotes. Opt-in with IP disclosure. Verified with two headless browsers through public relays (join, state, act, emote).
+- Card-based onboarding at `#/mulai` (one question per card, swipe, progress dots); `#/pilih` reuses it.
+- Light paper theme by default, floating tab bar, simplified home (mood check-in, 3D space tile, today strip, quick actions).
+- Fixed light pool (4 point lights) so lighting candles never triggers shader recompiles; "Pergi ke" chips for people who don't play 3D games; reduced-motion users teleport instead of walking.
+
+Not yet verified: real phones (performance on low-end Android), presence across different networks/NAT (relays + STUN only, no TURN server).

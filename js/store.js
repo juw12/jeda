@@ -8,7 +8,7 @@ const DEFAULT_PREFS = {
   streams: [],
   dialect: null,
   lang: 'id',
-  theme: 'dark',
+  theme: 'light',
   largeText: false,
   sound: true,
   reducedMotion: false,

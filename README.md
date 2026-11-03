@@ -8,7 +8,10 @@ Terinspirasi oleh "Sansa" (산사), kuil virtual dari Korea. Dibuat oleh [juw12]
 
 | Fitur | Isi |
 |---|---|
-| **Ruang** | 7 ruang (Klenteng, Vihara, Pura, Masjid, Gereja, Gereja & Gua Maria, Ruang Alam) dengan ritual interaktif: hio, ciam si + poe, kim cua, meja abu leluhur, namaskara 108, mala, canang sari, Tri Sandhya, tasbih, jadwal sholat, rosario (peristiwa sesuai hari), Angelus, lilin doa, meditasi, napas, ambience sintetis |
+| **Mulai** | Pertanyaan awal satu kartu per layar: suasana hati, jalan iman, aliran, dialek keluarga, nama tamu & warna jubah, sendiri atau bersama |
+| **Ruang 3D** | 7 tempat 3D yang bisa dijelajahi (WebGL, three.js): jalan dengan ketuk/WASD atau chip "Pergi ke", lalu lakukan kegiatan di tempatnya — tancapkan hio, gantung lampion, bakar kim cua, nyalakan lilin/dupa, letakkan teratai, haturkan canang (warna Nawa Sanga), berwudu, bunyikan lonceng/genta, duduk berzikir 33×3, rosario, meditasi, napas. Jatuh kembali ke gambar 2D bila WebGL tidak ada |
+| **Hadir bersama** | Opsional: lihat dan sapa pengunjung lain di ruang yang sama secara langsung (peer-to-peer WebRTC, sinyal lewat relay Nostr publik, tanpa server Jeda, tanpa akun). Gerak, kegiatan, dan salam (🙏🕊️🤍🙂) tersinkron. Tamu dari iman lain hanya mengamati ritual ibadah |
+| **Ruang (alat)** | 7 ruang (Klenteng, Vihara, Pura, Masjid, Gereja, Gereja & Gua Maria, Ruang Alam) dengan ritual interaktif: hio, ciam si + poe, kim cua, meja abu leluhur, namaskara 108, mala, canang sari, Tri Sandhya, tasbih, jadwal sholat, rosario (peristiwa sesuai hari), Angelus, lilin doa, meditasi, napas, ambience sintetis |
 | **Kunjungi & Kenali** | Ruang iman lain dalam mode amati: ritual ditampilkan sebagai demonstrasi + etiket tamu |
 | **Pustaka** | 8 bagian per agama (ajaran, kitab, ibadah harian, hari raya, siklus hidup, aturan, perbedaan aliran, sejarah), sumber, status tinjauan, variasi per aliran/dialek, laporan koreksi |
 | **Tanya Jeda** | Jawaban hanya dari Pustaka dengan sitasi; mode gratis (pencarian di perangkat) atau mode AI opsional (Cloudflare Worker) |
@@ -59,6 +62,11 @@ content/places.json                   rumah ibadah
 content/scriptures.json               info kitab suci + status lisensi
 content/ciamsi.json                   syair ciam si (diisi dari klenteng yang mengizinkan)
 content/glossary.json                 Kamus Istilah
+js/views/onboarding.js                kartu pertanyaan awal (#/mulai)
+js/world/engine.js                    mesin dunia 3D (kamera, avatar, efek, partikel)
+js/world/places.js                    model low-poly 7 tempat + titik kegiatan
+js/world/presence.js                  hadir bersama (Trystero/Nostr, peer-to-peer)
+vendor/                               three.js r160 & Trystero (MIT), disimpan lokal agar jalan offline
 js/memorial.js                        perhitungan Peringatan Arwah
 js/card.js                            pembuat Kartu Ucapan
 publish.ps1                           terbitkan ke GitHub Pages

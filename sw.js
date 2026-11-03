@@ -1,6 +1,6 @@
 // Offline support: app shell cache-first, content network-first (so reviewed updates arrive quickly).
 
-const VERSION = 'jeda-v1.1.0';
+const VERSION = 'jeda-v1.2.0';
 const SHELL = [
   './',
   'index.html',
@@ -31,6 +31,12 @@ const SHELL = [
   'js/card.js',
   'js/memorial.js',
   'js/review-lib.js',
+  'js/views/onboarding.js',
+  'js/world/engine.js',
+  'js/world/places.js',
+  'js/world/presence.js',
+  'vendor/three.module.min.js',
+  'vendor/trystero-nostr.js',
   'content/calendar.json',
   'content/ceremonies.json',
   'content/ciamsi.json',

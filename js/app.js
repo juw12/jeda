@@ -13,10 +13,12 @@ import { tanya } from './views/tanya.js';
 import { planner, places, calendarView, archive } from './views/tools.js';
 import { review } from './views/review.js';
 import { journal, greetingCard, memorialView } from './views/extras.js';
+import { onboarding } from './views/onboarding.js';
 
 const ROUTES = {
   '': core.home,
-  pilih: core.choose,
+  pilih: (main, params, query, ctx) => onboarding(main, params, new URLSearchParams('dari=pengaturan'), ctx),
+  mulai: onboarding,
   ruang: space,
   kunjungi: core.visitList,
   pustaka,

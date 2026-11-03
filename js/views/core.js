@@ -68,68 +68,109 @@ export function landing(main, params, query, { content }) {
   });
 }
 
+const MOOD_TIPS = {
+  tenang: { icon: '🌿', text: 'Nikmati hening ini. Ruangmu menunggu.', href: null },
+  lelah: { icon: '🌙', text: 'Istirahat sebentar: satu menit bernapas bisa membantu.', href: 'pause' },
+  gelisah: { icon: '🌊', text: 'Pelan-pelan. Tarik napas bersama Jeda.', href: 'pause' },
+  sedih: { icon: '🌧️', text: 'Kamu tidak sendirian. Bila terasa berat, hubungi 119 ext 8 (layanan kesehatan jiwa).', href: null },
+  syukur: { icon: '☀️', text: 'Simpan rasa syukurmu hari ini.', href: '#/syukur' },
+};
+const MOOD_CHOICES = [['tenang', '🌿'], ['lelah', '🌙'], ['gelisah', '🌊'], ['sedih', '🌧️'], ['syukur', '☀️']];
+
 export function home(main, params, query, ctx) {
   const { content } = ctx;
   const userPrefs = prefs.get();
   if (!userPrefs.faith) {
-    return landing(main, params, query, ctx);
+    location.hash = '#/mulai';
+    return undefined;
   }
   const faith = faithById(content, userPrefs.faith);
   const today = todaySummary();
+  const todayKey = new Date().toISOString().slice(0, 10);
+  const mood = userPrefs.moodDate === todayKey ? userPrefs.mood : null;
+  const tip = mood ? MOOD_TIPS[mood] : null;
   const upcoming = holyDays(new Date(), 120, content.calendarOverrides)
     .filter((h) => faith.id === 'alam' || matchesFaith(h, faith.id))
-    .slice(0, 4);
+    .slice(0, 3);
+  const festive = faith.id === 'alam' ? null : festiveHoliday(faith.id, content.calendarOverrides, FESTIVE);
+  const others = content.faiths.filter((f) => f.id !== faith.id);
+  const memorials = upcomingMemorials(content);
+  const friends = friendHolyDays(content, faith.id);
+
   main.innerHTML = `
-    <section class="hero" style="--accent:${faith.color}">
-      <a class="hero-scene" href="#/ruang/${faith.id}" aria-label="Masuk ke ${esc(faith.spaceName)}">
-        ${sceneSvg(faith.scene, timeOfDay(), faith.spaceName, (() => { const f = faith.id === 'alam' ? null : festiveHoliday(faith.id, content.calendarOverrides, FESTIVE); return f ? FESTIVE[f.id].decor : null; })())}
-        <span class="hero-cta">${t('home.enter')} ${esc(faith.spaceName)} →</span>
-      </a>
-    </section>
-    <section class="stack">
-      <h1 class="h2">${greeting()}.</h1>
-      <p class="muted">${esc(formatDate(new Date()))}</p>
-      <div class="today-grid">
-        <div class="mini-card"><span class="small muted">Imlek / Kongzili</span><span>${esc(today.lunar)}</span></div>
-        <div class="mini-card"><span class="small muted">Hijriah</span><span>${esc(today.hijri)}</span></div>
-        <div class="mini-card"><span class="small muted">Pawukon Bali</span><span>${esc(today.pawukon)}</span></div>
+    <section class="home" style="--accent:${faith.color}">
+      <header class="home-head">
+        <p class="eyebrow">${esc(formatDate(new Date()))}</p>
+        <h1 class="home-title">${greeting()},<br><span>${esc(guestName())}</span></h1>
+      </header>
+
+      <div class="mood">
+        ${tip ? `
+          <div class="mood-tip"><span class="mood-icon">${tip.icon}</span><p>${esc(tip.text)}</p>
+            ${tip.href === 'pause' ? '<button class="btn-ghost small" type="button" data-home-pause>Ambil jeda</button>' : tip.href ? `<a class="btn-ghost small" href="${tip.href}">Buka</a>` : ''}
+          </div>`
+    : `<p class="mood-q">Bagaimana hatimu hari ini?</p>
+          <div class="mood-row">${MOOD_CHOICES.map(([id, icon]) => `<button type="button" class="mood-chip" data-mood="${id}" aria-label="${id}">${icon}</button>`).join('')}</div>`}
       </div>
 
-      <button class="pause-card" type="button" data-home-pause>
-        <span class="pause-card-icon" aria-hidden="true">‖</span>
-        <span><strong>${t('pause.button')}</strong><span class="small muted"> · 1 menit</span></span>
-      </button>
-      ${upcoming.length ? `
-      <h2 class="h3">${t('home.upcoming')}</h2>
-      <ul class="holy-list">
-        ${upcoming.map((h) => `<li><span>${esc(h.name)}</span><span class="muted small">${formatShortDate(h.date)} · ${relativeDays(h.date)}${h.estimated ? ` · ${t('home.estimate')}` : ''}</span></li>`).join('')}
-      </ul>
-      <a class="small" href="#/kalender">${t('home.calendar')}</a>` : ''}
+      <a class="space-tile" href="#/ruang/${faith.id}" aria-label="Masuk ${esc(faith.spaceName)}">
+        <div class="space-tile-art">${sceneSvg(faith.scene, timeOfDay(), faith.spaceName, festive && FESTIVE[festive.id] ? FESTIVE[festive.id].decor : null)}</div>
+        <div class="space-tile-text">
+          <span class="eyebrow">Ruangmu · 3D</span>
+          <strong>${esc(faith.spaceName)}</strong>
+          <span class="space-tile-cta">Masuk →</span>
+        </div>
+      </a>
 
-      ${upcomingMemorials(content).length ? `
-        <div class="card memorial-reminder">
-          <span class="small muted">🕯 Peringatan keluarga</span>
-          ${upcomingMemorials(content).map((m) => `<span><strong>${esc(m.name)}</strong> · ${esc(m.label)} · ${formatShortDate(m.date)} (${relativeDays(m.date)})</span>`).join('')}
+      <div class="today-strip">
+        <span><small>Imlek</small>${esc(today.lunar)}</span>
+        <span><small>Hijriah</small>${esc(today.hijri)}</span>
+        <span><small>Pawukon</small>${esc(today.pawukon)}</span>
+      </div>
+
+      <nav class="quick4" aria-label="Pintasan">
+        <button type="button" data-home-pause><span>‖</span>Ambil jeda</button>
+        <a href="#/pustaka/${faith.pustaka ? faith.id : ''}"><span>❒</span>Pustaka</a>
+        <a href="#/tanya"><span>?</span>Tanya</a>
+        <a href="#/kalender"><span>◷</span>Kalender</a>
+      </nav>
+
+      ${memorials.length ? `
+        <div class="soft-card">
+          <p class="eyebrow">🕯 Peringatan keluarga</p>
+          ${memorials.map((m) => `<p><strong>${esc(m.name)}</strong> · ${esc(m.label)} · <span class="muted">${formatShortDate(m.date)}, ${relativeDays(m.date)}</span></p>`).join('')}
           <a class="small" href="#/peringatan">Lihat semua</a>
         </div>` : ''}
-      ${friendHolyDays(content, faith.id).map((h) => `
-        <div class="card friend-card">
-          <span class="small muted">Teman berbeda iman merayakan · ${relativeDays(h.date)}</span>
-          <strong>${esc(h.name)}</strong>
-          <span>Ucapan: “${esc(FRIEND_GREETINGS[h.id])}”</span>
-          <span class="row small"><a href="#/kartu/${esc(h.id)}">🖼 Buat kartu ucapan</a> · <a href="#/pustaka/lintas">Etiket berkunjung saat hari raya</a></span>
+
+      ${upcoming.length ? `
+        <div class="soft-card">
+          <p class="eyebrow">${t('home.upcoming')}</p>
+          <ul class="clean-list">
+            ${upcoming.map((h) => `<li><span>${esc(h.name)}</span><span class="muted small">${formatShortDate(h.date)} · ${relativeDays(h.date)}</span></li>`).join('')}
+          </ul>
+        </div>` : ''}
+
+      ${friends.map((h) => `
+        <div class="soft-card friend">
+          <p class="eyebrow">Teman berbeda iman · ${relativeDays(h.date)}</p>
+          <p><strong>${esc(h.name)}</strong> · “${esc(FRIEND_GREETINGS[h.id])}”</p>
+          <p class="small"><a href="#/kartu/${esc(h.id)}">Kirim kartu ucapan</a> · <a href="#/pustaka/lintas">Etiket</a></p>
         </div>`).join('')}
-      <div class="quick-grid">
-        <a class="quick" href="#/pustaka/${faith.pustaka ? faith.id : ''}"><strong>${t('quick.library')}</strong><span>${t('quick.library.desc')}</span></a>
-        <a class="quick" href="#/tanya"><strong>${t('quick.ask')}</strong><span>${t('quick.ask.desc')}</span></a>
-        <a class="quick" href="#/upacara"><strong>${t('quick.ceremony')}</strong><span>${t('quick.ceremony.desc')}</span></a>
-        <a class="quick" href="#/ibadah"><strong>${t('quick.places')}</strong><span>${t('quick.places.desc')}</span></a>
-        <a class="quick" href="#/kunjungi"><strong>${t('quick.visit')}</strong><span>${t('quick.visit.desc')}</span></a>
-        <a class="quick" href="#/arsip"><strong>${t('quick.archive')}</strong><span>${t('quick.archive.desc')}</span></a>
+
+      <div>
+        <p class="eyebrow pad">Kunjungi & kenali</p>
+        <div class="visit-strip">
+          ${others.map((f) => `<a href="#/ruang/${f.id}" style="--c:${f.color}"><span>${f.icon || '◌'}</span>${esc(f.spaceName)}</a>`).join('')}
+        </div>
       </div>
-      ${t('content.indonesianOnly') ? `<p class="small muted">${t('content.indonesianOnly')}</p>` : ''}
     </section>`;
-  main.querySelector('[data-home-pause]')?.addEventListener('click', openPause);
+
+  main.querySelectorAll('[data-home-pause]').forEach((b) => b.addEventListener('click', openPause));
+  main.querySelectorAll('[data-mood]').forEach((b) => b.addEventListener('click', () => {
+    prefs.set({ mood: b.dataset.mood, moodDate: todayKey });
+    home(main, params, query, ctx);
+  }));
+  return undefined;
 }
 
 export function choose(main, params, query, { content, navigate }) {
@@ -320,7 +361,7 @@ export function settings(main, params, query, { content, rerender }) {
       <div class="card">
         <h2 class="h3">Tampilan & suara</h2>
         <label class="toggle"><input type="checkbox" data-pref="largeText" ${p.largeText ? 'checked' : ''}> Teks besar</label>
-        <label class="toggle"><input type="checkbox" data-pref="lightTheme" ${p.theme === 'light' ? 'checked' : ''}> Tema terang</label>
+        <label class="toggle"><input type="checkbox" data-pref="lightTheme" ${p.theme === 'dark' ? 'checked' : ''}> Tema gelap</label>
         <label class="toggle"><input type="checkbox" data-pref="sound" ${p.sound ? 'checked' : ''}> Suara (genta, ambience)</label>
         <label class="toggle"><input type="checkbox" data-pref="reducedMotion" ${p.reducedMotion ? 'checked' : ''}> Kurangi animasi</label>
       </div>
@@ -348,7 +389,7 @@ export function settings(main, params, query, { content, rerender }) {
     input.addEventListener('change', () => {
       const key = input.dataset.pref;
       if (key === 'lightTheme') {
-        prefs.set({ theme: input.checked ? 'light' : 'dark' });
+        prefs.set({ theme: input.checked ? 'dark' : 'light' });
       } else {
         prefs.set({ [key]: input.checked });
       }

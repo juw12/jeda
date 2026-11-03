@@ -1,11 +1,42 @@
-// Sacred space view: scene, rituals, upcoming holy days. Home mode or visit (observe) mode.
+// Sacred space: a walkable 3D place with activities and (opt-in) other visitors, plus tools & guides below.
+// Home mode = your own faith. Visit mode = observe and learn; devotional acts are explained, not performed.
 
 import { prefs, guestName } from '../store.js';
-import { esc, formatShortDate, relativeDays, timeOfDay } from '../ui.js';
+import { esc, formatShortDate, relativeDays, timeOfDay, toast } from '../ui.js';
 import { faithById, entryById } from '../content.js';
 import { sceneSvg, FESTIVE } from '../scenes.js';
 import { holyDays, matchesFaith, festiveHoliday } from '../calendar.js';
-import { mountRitual, isDevotional } from './rituals.js';
+import { mountRitual } from './rituals.js';
+import { bead, bell as bellSound } from '../audio.js';
+
+const EMOTES = ['🙏', '🕊️', '🤍', '🙂'];
+const DZIKIR = ['Subhanallah', 'Alhamdulillah', 'Allahu Akbar'];
+
+export function avatarColor() {
+  const p = prefs.get();
+  return p.avatarColor || '#e8dcc8';
+}
+
+function sitPanel(spot, faith) {
+  switch (spot.sitMode) {
+    case 'dzikir':
+      return `<p class="sit-title">Zikir</p><p class="sit-phrase" data-phrase>${DZIKIR[0]}</p>
+        <button class="sit-tap" type="button" data-tap aria-label="Hitung">0</button>
+        <p class="small muted">Ketuk untuk menghitung · 33 × 3</p>`;
+    case 'rosary':
+      return `<p class="sit-title">Rosario</p><p class="sit-phrase" data-phrase>Salam Maria</p>
+        <button class="sit-tap" type="button" data-tap aria-label="Hitung butir">0</button>
+        <p class="small muted">Satu peristiwa = 1 Bapa Kami, 10 Salam Maria, 1 Kemuliaan</p>`;
+    case 'meditate':
+    case 'breathe':
+      return `<p class="sit-title">${spot.sitMode === 'meditate' ? 'Meditasi' : 'Bernapas'}</p>
+        <div class="sit-breath" data-breath></div><p class="sit-phrase" data-phrase>Tarik napas…</p>
+        <p class="small muted">Ikuti lingkaran. Satu menit saja sudah cukup.</p>`;
+    default:
+      return `<p class="sit-title">Hening</p><p class="sit-phrase">Diam sejenak di ${esc(faith.spaceName)}.</p>
+        <p class="sit-timer" data-timer>00:00</p>`;
+  }
+}
 
 export function space(main, [faithId], query, { content, navigate }) {
   const faith = faithById(content, faithId);
@@ -13,51 +44,69 @@ export function space(main, [faithId], query, { content, navigate }) {
     navigate('#/kunjungi');
     return undefined;
   }
-  const userFaith = prefs.get().faith;
-  const mode = !userFaith || userFaith === faith.id || faith.id === 'alam' ? 'home' : 'visit';
+  const userPrefs = prefs.get();
+  const mode = !userPrefs.faith || userPrefs.faith === faith.id || faith.id === 'alam' ? 'home' : 'visit';
   document.body.dataset.faith = faith.id;
+  document.body.classList.add('in-space');
 
   const today = new Date();
   const festive = faith.id === 'alam' ? null : festiveHoliday(faith.id, content.calendarOverrides, FESTIVE);
   const festiveInfo = festive ? FESTIVE[festive.id] : null;
-  const special = (faith.specialDays || []).find((day) => day.date === today.toISOString().slice(0, 10));
   const upcoming = faith.id === 'alam'
     ? []
     : holyDays(today, 180, content.calendarOverrides).filter((h) => matchesFaith(h, faith.id)).slice(0, 3);
+  const name = guestName();
+  const time = timeOfDay();
 
   main.innerHTML = `
-    <section class="space-hero" style="--accent:${faith.color}">
-      ${sceneSvg(faith.scene, timeOfDay(), faith.spaceName, festiveInfo ? festiveInfo.decor : null)}
-      <svg class="guest-figure" viewBox="0 0 40 40" aria-hidden="true">
-        <ellipse cx="20" cy="37" rx="14" ry="2.5" fill="#000" opacity="0.35"/>
-        <circle cx="20" cy="12" r="5" fill="#f1ebe3"/>
-        <path d="M9 36 Q10 22 20 19 Q30 22 31 36 Z" fill="#f1ebe3"/>
-      </svg>
-      <div class="space-hero-text">
-        <p class="small">${mode === 'visit' ? 'Mode Kunjungi & Kenali' : 'Ruangmu'}</p>
-        <h1>${esc(faith.spaceName)}</h1>
-        <p>${esc(faith.greeting)}</p>
-        <p class="small guest-name">Kamu hadir sebagai <strong>${esc(guestName())}</strong></p>
+    <section class="stage" style="--accent:${faith.color}">
+      <div class="stage-world" data-world></div>
+      <div class="stage-top">
+        <div class="stage-title">
+          <span class="eyebrow">${mode === 'visit' ? 'Kunjungi & kenali' : 'Ruangmu'}</span>
+          <h1>${esc(faith.spaceName)}</h1>
+        </div>
+        <button class="pill" type="button" data-presence aria-pressed="false">
+          <span class="dot"></span><span data-presence-label>Sendiri</span>
+        </button>
+      </div>
+      ${festiveInfo ? `<div class="stage-banner">${esc(festiveInfo.text)}</div>` : ''}
+      <div class="stage-hint" data-hint>Ketuk tanah untuk berjalan · seret untuk melihat sekeliling</div>
+      <div class="stage-bottom">
+        <div class="spot-chips" data-chips role="group" aria-label="Pergi ke"></div>
+        <div class="action-card" data-action hidden>
+          <div><span class="eyebrow" data-action-kind></span><strong data-action-label></strong></div>
+          <button class="btn" type="button" data-action-go></button>
+        </div>
+        <div class="emotes" role="group" aria-label="Salam">
+          ${EMOTES.map((e) => `<button type="button" class="emote" data-emote="${e}">${e}</button>`).join('')}
+        </div>
+      </div>
+      <div class="sit-sheet" data-sit hidden>
+        <div class="sit-body" data-sit-body></div>
+        <button class="btn-ghost" type="button" data-stand>Selesai</button>
       </div>
     </section>
-    <section class="stack">
-      ${special ? `<div class="notice">${esc(special.text)}</div>` : ''}
-      ${festiveInfo ? `<div class="festive-banner">${esc(festiveInfo.text)} · ${esc(festive.name)}, ${formatShortDate(festive.date)}</div>` : ''}
+
+    <section class="stack space-below">
+      <div class="space-intro">
+        <p class="lead">${esc(faith.greeting)}</p>
+        <p class="small muted">Kamu hadir sebagai <strong>${esc(name)}</strong>${mode === 'visit' ? ' · tamu yang mengamati' : ''}.</p>
+      </div>
       ${mode === 'visit' ? `
-        <div class="card visit-tips">
+        <div class="card soft">
           <h2 class="h3">Sebagai tamu yang hormat</h2>
           <ul>${(faith.visitTips || []).map((tip) => `<li>${esc(tip)}</li>`).join('')}</ul>
-          <p class="small muted">Ritual di bawah ditampilkan sebagai demonstrasi untuk dipelajari.</p>
+          <p class="small muted">Di ruang iman lain, ritual ibadah ditampilkan untuk dipelajari, tidak dilakukan.</p>
         </div>` : ''}
-      ${faith.virtualNote ? `<p class="small muted note">${esc(faith.virtualNote)}</p>` : ''}
-
+      <h2 class="h3 section-title">Alat & panduan</h2>
       <div class="ritual-grid">
         ${faith.rituals.map((ritual, index) => {
     const entry = ritual.entry ? entryById(content, ritual.entry) : null;
     return `
-          <article class="card ritual" data-index="${index}" tabindex="-1">
+          <article class="card ritual" data-index="${index}" data-type="${esc(ritual.type)}" tabindex="-1">
             <header>
-              <h2 class="h3">${esc(ritual.title)}</h2>
+              <h3 class="h3">${esc(ritual.title)}</h3>
               ${ritual.desc ? `<p class="small muted">${esc(ritual.desc)}</p>` : ''}
             </header>
             <div class="ritual-body"></div>
@@ -67,19 +116,16 @@ export function space(main, [faithId], query, { content, navigate }) {
                 ${ritual.about ? `<p>${esc(ritual.about)}</p>` : ''}
                 ${entry ? `<p><a href="#/entri/${encodeURIComponent(entry.id)}">Baca di Pustaka: ${esc(entry.title)}</a>${entry.status !== 'approved' ? ' <span class="badge">draf</span>' : ''}</p>` : ''}
               </details>` : ''}
-            ${mode === 'visit' && isDevotional(ritual) ? '' : ''}
           </article>`;
   }).join('')}
       </div>
-
       ${upcoming.length ? `
-        <div class="card">
+        <div class="card soft">
           <h2 class="h3">Hari suci mendatang</h2>
           <ul class="holy-list">
             ${upcoming.map((h) => `<li><span>${esc(h.name)}</span><span class="small muted">${formatShortDate(h.date)} · ${relativeDays(h.date)}${h.estimated ? ' · perkiraan' : ''}</span></li>`).join('')}
           </ul>
         </div>` : ''}
-
       <div class="row">
         ${faith.pustaka ? `<a class="btn-ghost" href="#/pustaka/${faith.id}">Pustaka ${esc(faith.short || faith.name)}</a>` : ''}
         <a class="btn-ghost" href="#/kunjungi">Ruang lainnya</a>
@@ -94,11 +140,265 @@ export function space(main, [faithId], query, { content, navigate }) {
       cleanups.push(mountRitual(card, ritual, { mode, faith, content }));
     } catch (error) {
       console.error(error);
-      card.querySelector('.ritual-body').innerHTML = '<p class="muted">Gagal memuat ritual ini.</p>';
+      card.querySelector('.ritual-body').innerHTML = '<p class="muted">Gagal memuat alat ini.</p>';
     }
   });
+
+  const stage = main.querySelector('.stage');
+  const worldBox = main.querySelector('[data-world]');
+  const actionCard = main.querySelector('[data-action]');
+  const actionLabel = main.querySelector('[data-action-label]');
+  const actionKind = main.querySelector('[data-action-kind]');
+  const actionGo = main.querySelector('[data-action-go]');
+  const sitSheet = main.querySelector('[data-sit]');
+  const sitBody = main.querySelector('[data-sit-body]');
+  const presenceButton = main.querySelector('[data-presence]');
+  const presenceLabel = main.querySelector('[data-presence-label]');
+  let world = null;
+  let presence = null;
+  let currentSpot = null;
+  let sitTimer = null;
+
+  const scrollToTool = (type) => {
+    const card = main.querySelector(`.ritual[data-type="${type}"]`);
+    if (card) {
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      card.classList.add('flash');
+      setTimeout(() => card.classList.remove('flash'), 1600);
+    }
+  };
+
+  function showSit(spot) {
+    clearInterval(sitTimer);
+    if (!spot) {
+      sitSheet.hidden = true;
+      return;
+    }
+    // Guests sit quietly; faith-specific prayer counters (zikir, rosario) are for that faith's own members.
+    const guestQuiet = mode === 'visit' && ['dzikir', 'rosary'].includes(spot.sitMode);
+    sitBody.innerHTML = guestQuiet
+      ? `${sitPanel({ ...spot, sitMode: 'pray' }, faith)}<p class="small muted">${spot.sitMode === 'dzikir' ? 'Zikir' : 'Rosario'} adalah doa umat ${esc(faith.short || faith.name)}. Sebagai tamu, duduklah dengan hening.</p>`
+      : sitPanel(spot, faith);
+    sitSheet.hidden = false;
+    const tap = sitBody.querySelector('[data-tap]');
+    const phrase = sitBody.querySelector('[data-phrase]');
+    if (tap) {
+      let count = 0;
+      tap.addEventListener('click', () => {
+        count += 1;
+        tap.textContent = String(count);
+        bead();
+        if (spot.sitMode === 'dzikir') {
+          phrase.textContent = DZIKIR[Math.min(2, Math.floor((count - 1) / 33))];
+          if (count === 99) {
+            phrase.textContent = 'Lā ilāha illallāh';
+          }
+        } else if (spot.sitMode === 'rosary') {
+          const inDecade = count % 12;
+          phrase.textContent = inDecade === 1 ? 'Bapa Kami' : inDecade === 0 ? 'Kemuliaan' : 'Salam Maria';
+        }
+        if (navigator.vibrate) {
+          navigator.vibrate(8);
+        }
+      });
+    }
+    const breath = sitBody.querySelector('[data-breath]');
+    if (breath) {
+      let inhale = true;
+      const cycle = () => {
+        breath.classList.toggle('in', inhale);
+        phrase.textContent = inhale ? 'Tarik napas…' : 'Hembuskan…';
+        inhale = !inhale;
+      };
+      cycle();
+      sitTimer = setInterval(cycle, 4000);
+    }
+    const timer = sitBody.querySelector('[data-timer]');
+    if (timer) {
+      const started = Date.now();
+      sitTimer = setInterval(() => {
+        const seconds = Math.floor((Date.now() - started) / 1000);
+        timer.textContent = `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
+        if (seconds > 0 && seconds % 300 === 0) {
+          bellSound();
+        }
+      }, 1000);
+    }
+  }
+
+  function describeAction(spot) {
+    main.querySelectorAll('[data-chip]').forEach((chip) => chip.classList.toggle('on', Boolean(spot) && chip.dataset.chip === spot.id));
+    if (!spot) {
+      actionCard.hidden = true;
+      return;
+    }
+    currentSpot = spot;
+    actionCard.hidden = false;
+    const learnOnly = mode === 'visit' && spot.devotional;
+    actionKind.textContent = learnOnly ? 'Mode amati' : 'Di dekatmu';
+    actionLabel.textContent = learnOnly ? `${spot.label} (untuk umat ${faith.short || faith.name})` : spot.label;
+    actionGo.textContent = learnOnly ? 'Pelajari' : spot.kind === 'sit' ? 'Duduk' : 'Lakukan';
+  }
+
+  actionGo.addEventListener('click', () => {
+    if (!currentSpot || !world) {
+      return;
+    }
+    if (mode === 'visit' && currentSpot.devotional) {
+      if (currentSpot.entry) {
+        location.hash = `#/entri/${currentSpot.entry}`;
+      }
+      return;
+    }
+    world.perform(currentSpot.id);
+  });
+  main.querySelector('[data-stand]').addEventListener('click', () => {
+    if (world) {
+      world.standUp();
+    }
+    showSit(null);
+  });
+  main.querySelectorAll('[data-emote]').forEach((button) => {
+    button.addEventListener('click', () => {
+      if (!world) {
+        return;
+      }
+      world.emote(button.dataset.emote);
+      if (presence) {
+        presence.sendEmote(button.dataset.emote);
+      }
+    });
+  });
+
+  function updatePresenceLabel() {
+    const count = presence ? presence.peerCount() : 0;
+    presenceButton.setAttribute('aria-pressed', presence ? 'true' : 'false');
+    presenceButton.classList.toggle('on', Boolean(presence));
+    presenceLabel.textContent = presence ? (count ? `${count + 1} hadir` : 'Bersama · menunggu') : 'Sendiri';
+  }
+
+  async function startPresence() {
+    if (presence || !world) {
+      return;
+    }
+    try {
+      presenceLabel.textContent = 'Menghubungkan…';
+      presence = await joinPresenceLazy(`ruang-${faith.id}`, { name, color: avatarColor(), mode }, {
+        join: (id, info) => {
+          world.addPeer(id, info);
+          toast(`${info.name} hadir${info.mode === 'visit' ? ' sebagai tamu' : ''}`);
+          updatePresenceLabel();
+        },
+        leave: (id) => {
+          world.removePeer(id);
+          updatePresenceLabel();
+        },
+        state: (id, state) => world.updatePeer(id, state),
+        act: (id, spotId) => world.peerPerform(id, spotId),
+        emote: (id, emoji) => world.peerEmote(id, emoji),
+      });
+      updatePresenceLabel();
+    } catch (error) {
+      console.error(error);
+      presence = null;
+      presenceLabel.textContent = 'Sendiri';
+      toast('Tidak dapat terhubung. Kamu tetap bisa beribadah sendiri.');
+    }
+  }
+
+  function stopPresence() {
+    if (presence) {
+      presence.leave();
+      presence = null;
+    }
+    updatePresenceLabel();
+  }
+
+  presenceButton.addEventListener('click', () => {
+    if (presence) {
+      stopPresence();
+      prefs.set({ presence: 'alone' });
+      return;
+    }
+    if (!prefs.get().presenceAcknowledged) {
+      const ok = confirm('Hadir bersama orang lain?\n\nPengunjung lain akan melihat nama tamu, warna, dan gerakmu di ruang ini. Koneksi langsung antarperangkat (peer-to-peer) juga memperlihatkan alamat IP-mu kepada mereka. Tidak ada akun dan tidak ada yang disimpan di server Jeda.');
+      if (!ok) {
+        return;
+      }
+      prefs.set({ presenceAcknowledged: true });
+    }
+    prefs.set({ presence: 'together' });
+    startPresence();
+  });
+
+  (async () => {
+    const { webglAvailable, createWorld } = await import('../world/engine.js');
+    if (!webglAvailable()) {
+      worldBox.innerHTML = sceneSvg(faith.scene, time, faith.spaceName, festiveInfo ? festiveInfo.decor : null);
+      stage.classList.add('flat');
+      return;
+    }
+    if (!main.isConnected) {
+      return;
+    }
+    world = createWorld(worldBox, {
+      sceneId: faith.scene,
+      time,
+      mode,
+      me: { name, color: avatarColor() },
+      onNearSpot: describeAction,
+      onSit: showSit,
+      onAction: (spot) => {
+        if (presence) {
+          presence.sendAct(spot.id);
+        }
+      },
+      onMove: (state) => {
+        if (presence) {
+          presence.sendState(state);
+        }
+      },
+      onSpecial: (spot) => {
+        if (spot.kind === 'ciamsi') {
+          scrollToTool('ciamsi');
+        } else if (spot.entry) {
+          location.hash = `#/entri/${spot.entry}`;
+        }
+      },
+    });
+    window.__jedaWorld = world;
+    const chips = main.querySelector('[data-chips]');
+    chips.innerHTML = world.spots.map((spot) => `<button type="button" class="chip" data-chip="${esc(spot.id)}">${esc(spot.short || spot.label)}</button>`).join('');
+    chips.querySelectorAll('[data-chip]').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        showSit(null);
+        world.walkTo(chip.dataset.chip, { instant: Boolean(prefs.get().reducedMotion) });
+      });
+    });
+    setTimeout(() => main.querySelector('[data-hint]')?.classList.add('fade'), 6000);
+    if (prefs.get().presence === 'together' && prefs.get().presenceAcknowledged) {
+      startPresence();
+    }
+  })().catch((error) => {
+    console.error(error);
+    worldBox.innerHTML = sceneSvg(faith.scene, time, faith.spaceName, festiveInfo ? festiveInfo.decor : null);
+    stage.classList.add('flat');
+  });
+
   return () => {
     cleanups.forEach((fn) => fn && fn());
+    clearInterval(sitTimer);
+    stopPresence();
+    if (world) {
+      world.destroy();
+    }
+    delete window.__jedaWorld;
     delete document.body.dataset.faith;
+    document.body.classList.remove('in-space');
   };
+}
+
+async function joinPresenceLazy(room, profile, handlers) {
+  const { joinPresence } = await import('../world/presence.js');
+  return joinPresence(room, profile, handlers);
 }
