@@ -1,20 +1,51 @@
 name: Daftar sebagai reviewer
-description: Bantu meninjau Pustaka untuk agama, aliran, atau tradisi tertentu.
+description: Pemuka agama, rohaniwan, atau pengurus rumah ibadah yang ingin meninjau Pustaka Jeda.
+title: "[Reviewer] "
 labels: ["reviewer"]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Terima kasih! Pengelola akan memverifikasi peran Anda (misalnya lewat lembaga Anda), lalu memberi label
+        `reviewer:terverifikasi`. Setelah itu nama Anda otomatis masuk daftar reviewer dan tinjauan yang Anda kirim
+        **dari akun GitHub ini** langsung diterapkan.
+        **Jangan tulis nomor HP atau alamat di sini** (halaman ini publik).
   - type: input
     id: name
     attributes:
       label: Nama
+      description: Nama yang akan tampil pada entri yang Anda setujui.
+    validations:
+      required: true
+  - type: dropdown
+    id: faiths
+    attributes:
+      label: Agama yang ditinjau
+      multiple: true
+      options:
+        - Islam
+        - Kristen Protestan
+        - Katolik
+        - Hindu
+        - Buddha
+        - Khonghucu & tradisi Tionghoa
+        - Lintas iman
     validations:
       required: true
   - type: input
     id: tradition
     attributes:
-      label: Agama / aliran / tradisi (mis. Khonghucu MATAKIN, Tri Dharma Hokkien, NU, HKBP)
-    validations:
-      required: true
+      label: Aliran / tradisi (mis. NU, Muhammadiyah, HKBP, Theravada, MATAKIN, Tri Dharma Hokkien)
   - type: textarea
     id: credential
     attributes:
-      label: Peran & lembaga (mis. rohaniwan, pengurus klenteng, ustaz, pendeta, pinandita)
+      label: Peran & lembaga (mis. rohaniwan Litang X, ustaz PCNU Y, pendeta GKI Z, pinandita Pura W)
+    validations:
+      required: true
+  - type: checkboxes
+    id: agree
+    attributes:
+      label: Pernyataan
+      options:
+        - label: Saya meninjau dengan jujur sesuai ajaran dan tradisi saya, dan bersedia nama serta peran saya tampil di entri yang saya setujui.
+          required: true

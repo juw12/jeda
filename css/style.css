@@ -413,3 +413,9 @@ textarea { resize: vertical; }
 .journal-text { margin: 0; white-space: pre-wrap; line-height: 1.6; }
 .card-canvas { width: 100%; max-width: 420px; aspect-ratio: 4 / 5; border-radius: var(--radius); border: 1px solid var(--line); align-self: center; background: var(--surface); }
 textarea, select { width: 100%; }
+
+/* v1.1: registries */
+.table-wrap { overflow-x: auto; }
+.table-wrap table { width: 100%; border-collapse: collapse; }
+.table-wrap th, .table-wrap td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+select { min-height: 40px; }

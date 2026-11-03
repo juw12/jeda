@@ -385,7 +385,28 @@ export function settings(main, params, query, { content, rerender }) {
   });
 }
 
-export function about(main, params, query, { content }) {
+async function fetchJsonSafe(path) {
+  try {
+    const response = await fetch(path);
+    return response.ok ? await response.json() : [];
+  } catch {
+    return [];
+  }
+}
+
+const PERMISSION_STATUS_TEXT = {
+  'belum-diminta': 'belum diminta',
+  diminta: 'sedang diminta',
+  diizinkan: 'diizinkan',
+  ditolak: 'ditolak',
+  'domain-publik': 'domain publik',
+};
+
+export async function about(main, params, query, { content }) {
+  const [reviewers, permissions] = await Promise.all([
+    fetchJsonSafe('content/reviewers.json'),
+    fetchJsonSafe('content/permissions.json'),
+  ]);
   const total = content.allEntriesCount;
   const approved = content.entries.filter((e) => e.status === 'approved').length;
   main.innerHTML = `
@@ -408,8 +429,18 @@ export function about(main, params, query, { content }) {
       <p>${approved} dari ${total} entri telah ditinjau. ${CONFIG.showDrafts ? 'Mode pratinjau: draf ditampilkan dengan tanda.' : 'Hanya entri yang telah ditinjau yang ditampilkan.'}</p>
       <p>Menemukan kesalahan? Setiap entri punya tombol <em>Laporkan koreksi</em>. Ingin menjadi reviewer? <a href="${CONFIG.issueUrl('reviewer.yml', 'Daftar reviewer')}" target="_blank" rel="noopener">Daftar di sini</a>.</p>
 
-      <h2 class="h3">Sumber & lisensi</h2>
-      <p>Teks kitab suci hanya dimuat bila berstatus domain publik atau telah mendapat izin; selain itu Jeda menautkan ke sumber resmi. Daftar sumber ada di setiap entri dan halaman <a href="#/pustaka">Kitab Suci</a> tiap agama.</p>
+      <h2 class="h3">Reviewer terverifikasi</h2>
+      ${reviewers.length ? `<ul>${reviewers.map((r) => `<li><strong>${esc(r.name)}</strong>${r.role ? `, ${esc(r.role)}` : ''} · ${esc(r.faiths.join(', '))}</li>`).join('')}</ul>`
+    : '<p class="muted">Belum ada reviewer terverifikasi. Semua entri masih draf.</p>'}
+      <p class="small">Cara kerja: reviewer mendaftar → pengelola memverifikasi → reviewer menyetujui atau mengoreksi entri di <a href="#/tinjau">Tinjau Pustaka</a> → bot Jeda menerapkan tinjauan secara terbuka di <a href="${CONFIG.repo}/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+
+      <h2 class="h3">Izin konten</h2>
+      <p>Teks kitab suci, terjemahan, dan syair ciam si hanya dimuat di dalam aplikasi bila berstatus domain publik atau telah diizinkan pemegang hak. Selain itu Jeda menautkan ke sumber resmi.</p>
+      <div class="table-wrap"><table class="small">
+        <thead><tr><th>Konten</th><th>Pemegang hak</th><th>Status</th></tr></thead>
+        <tbody>${permissions.map((p) => `<tr><td>${esc(p.name)}</td><td>${esc(p.holder)}</td><td>${esc(PERMISSION_STATUS_TEXT[p.status] || p.status)}${p.evidence ? ` · <a href="${esc(p.evidence)}" target="_blank" rel="noopener">bukti</a>` : ''}</td></tr>`).join('')}</tbody>
+      </table></div>
+      <p class="small">Mewakili pemegang hak? <a href="${CONFIG.repo}/issues/new?template=izin.yml" target="_blank" rel="noopener">Beri izin lewat formulir terbuka</a>.</p>
 
       <h2 class="h3">Pembuat</h2>
       <p>Dibuat oleh <a href="${CONFIG.developer.github}" target="_blank" rel="noopener">${esc(CONFIG.developer.name)}</a>. Kode: <a href="${CONFIG.repo}" target="_blank" rel="noopener">${esc(CONFIG.repo.replace('https://', ''))}</a>. Versi ${esc(CONFIG.version)}.</p>

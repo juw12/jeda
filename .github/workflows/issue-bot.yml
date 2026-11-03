@@ -1,0 +1,44 @@
+name: Bot tinjauan & izin
+
+on:
+  issues:
+    types: [opened, labeled]
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: jeda-content-bot
+  cancel-in-progress: false
+
+jobs:
+  bot:
+    if: startsWith(github.event.issue.title, '[Tinjauan]') || github.event.label.name == 'reviewer:terverifikasi' || github.event.label.name == 'izin:diterima'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Jalankan bot
+        run: node scripts/issue-bot.mjs
+      - name: Validasi konten
+        run: node scripts/validate.mjs
+      - name: Commit perubahan
+        run: |
+          if [ "$(node -p "require('./bot-result.json').changed")" = "true" ]; then
+            git config user.name "jeda-bot"
+            git config user.email "jeda-bot@users.noreply.github.com"
+            git add content
+            git commit -m "$(node -p "require('./bot-result.json').commitMessage")"
+            git push
+          fi
+      - name: Balas & tutup issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE: ${{ github.event.issue.number }}
+        run: |
+          node -p "require('./bot-result.json').comment" > comment.md
+          if [ -s comment.md ]; then gh issue comment "$ISSUE" --body-file comment.md; fi
+          if [ "$(node -p "require('./bot-result.json').close")" = "true" ]; then gh issue close "$ISSUE"; fi

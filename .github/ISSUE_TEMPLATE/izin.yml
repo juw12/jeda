@@ -1,0 +1,66 @@
+name: Beri izin konten
+description: Untuk lembaga/pemilik hak (LAI, Kemenag, MATAKIN, PHDI, klenteng, penerjemah) yang mengizinkan teksnya dipakai di Jeda.
+title: "[Izin] "
+labels: ["izin"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Formulir ini mencatat izin secara terbuka. Setelah pengelola mengonfirmasi (label `izin:diterima`),
+        status di `content/permissions.json` otomatis menjadi **diizinkan** dan pembaca di dalam aplikasi dapat diaktifkan.
+        Jeda nirlaba, tanpa iklan, dan selalu mencantumkan sumber.
+  - type: dropdown
+    id: resource
+    attributes:
+      label: Konten
+      options:
+        - "Teks & terjemahan Al-Qur'an Kemenag [quran-teks-terjemah-kemenag]"
+        - "Alkitab Terjemahan Baru (TB) [alkitab-tb-lai]"
+        - "Alkitab Deuterokanonika (edisi Katolik) [alkitab-deuterokanonika]"
+        - "Terjemahan Bhagavad Gita & kutipan Weda [weda-gita-terjemahan]"
+        - "Terjemahan Dhammapada & paritta [tipitaka-terjemahan]"
+        - "Terjemahan Si Shu (Kitab Yang Empat) [sishu-terjemahan-matakin]"
+        - "Syair ciam si Kwan Im (100 syair) [ciamsi-kwan-im-100]"
+    validations:
+      required: true
+  - type: input
+    id: institution
+    attributes:
+      label: Lembaga
+    validations:
+      required: true
+  - type: input
+    id: granted_by
+    attributes:
+      label: Nama & jabatan pemberi izin
+    validations:
+      required: true
+  - type: dropdown
+    id: license
+    attributes:
+      label: Jenis izin
+      options:
+        - Izin penggunaan non-komersial di aplikasi Jeda dengan atribusi
+        - CC BY 4.0
+        - CC BY-SA 4.0
+        - CC BY-NC 4.0
+        - Lainnya (jelaskan di cakupan)
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Cakupan izin (bagian teks, bahasa, syarat atribusi, masa berlaku)
+    validations:
+      required: true
+  - type: input
+    id: evidence
+    attributes:
+      label: Tautan surat resmi (opsional)
+  - type: checkboxes
+    id: authority
+    attributes:
+      label: Pernyataan
+      options:
+        - label: Saya berwenang memberi izin ini atas nama lembaga di atas.
+          required: true

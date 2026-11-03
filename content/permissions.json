@@ -1,0 +1,128 @@
+[
+  {
+    "id": "quran-teks-terjemah-kemenag",
+    "kind": "kitab",
+    "name": "Teks & terjemahan Al-Qur'an Kemenag",
+    "holder": "Lajnah Pentashihan Mushaf Al-Qur'an (LPMQ), Kementerian Agama RI",
+    "holder_url": "https://quran.kemenag.go.id/",
+    "applies_to": [
+      "quran"
+    ],
+    "status": "belum-diminta",
+    "note": "Teks Arab dan terjemahan resmi untuk pembaca di dalam aplikasi.",
+    "granted_by": "",
+    "institution": "",
+    "scope": "",
+    "license": "",
+    "evidence": "",
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "alkitab-tb-lai",
+    "kind": "kitab",
+    "name": "Alkitab Terjemahan Baru (TB)",
+    "holder": "Lembaga Alkitab Indonesia (LAI)",
+    "holder_url": "https://www.alkitab.or.id/",
+    "applies_to": [
+      "alkitab-protestan"
+    ],
+    "status": "belum-diminta",
+    "note": "Teks Alkitab untuk pembaca dan ayat harian.",
+    "granted_by": "",
+    "institution": "",
+    "scope": "",
+    "license": "",
+    "evidence": "",
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "alkitab-deuterokanonika",
+    "kind": "kitab",
+    "name": "Alkitab Deuterokanonika (edisi Katolik)",
+    "holder": "Lembaga Biblika Indonesia (LBI) / Konferensi Waligereja Indonesia (KWI) & LAI",
+    "holder_url": "https://www.dokpenkwi.org/",
+    "applies_to": [
+      "alkitab-katolik"
+    ],
+    "status": "belum-diminta",
+    "note": "Teks Alkitab edisi Katolik.",
+    "granted_by": "",
+    "institution": "",
+    "scope": "",
+    "license": "",
+    "evidence": "",
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "weda-gita-terjemahan",
+    "kind": "kitab",
+    "name": "Terjemahan Bhagavad Gita & kutipan Weda",
+    "holder": "Parisada Hindu Dharma Indonesia (PHDI) / penerbit terjemahan",
+    "holder_url": "https://phdi.or.id/",
+    "applies_to": [
+      "weda"
+    ],
+    "status": "belum-diminta",
+    "note": "Terjemahan Bahasa Indonesia yang diakui.",
+    "granted_by": "",
+    "institution": "",
+    "scope": "",
+    "license": "",
+    "evidence": "",
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "tipitaka-terjemahan",
+    "kind": "kitab",
+    "name": "Terjemahan Dhammapada & paritta",
+    "holder": "Majelis agama Buddha / penerbit terjemahan",
+    "holder_url": "https://walubi.or.id/",
+    "applies_to": [
+      "tipitaka"
+    ],
+    "status": "belum-diminta",
+    "note": "Teks Pali domain publik; terjemahan Indonesia perlu izin penerjemah.",
+    "granted_by": "",
+    "institution": "",
+    "scope": "",
+    "license": "",
+    "evidence": "",
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "sishu-terjemahan-matakin",
+    "kind": "kitab",
+    "name": "Terjemahan Si Shu (Kitab Yang Empat)",
+    "holder": "Majelis Tinggi Agama Khonghucu Indonesia (MATAKIN)",
+    "holder_url": "https://www.matakin.or.id/",
+    "applies_to": [
+      "sishu-wujing"
+    ],
+    "status": "belum-diminta",
+    "note": "Terjemahan Bahasa Indonesia resmi.",
+    "granted_by": "",
+    "institution": "",
+    "scope": "",
+    "license": "",
+    "evidence": "",
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "ciamsi-kwan-im-100",
+    "kind": "ciamsi",
+    "name": "Syair ciam si Kwan Im (100 syair)",
+    "holder": "Klenteng pemilik set ciam si (misalnya pengurus klenteng setempat)",
+    "holder_url": "",
+    "applies_to": [
+      "ciamsi"
+    ],
+    "status": "belum-diminta",
+    "note": "Teks klasik Tionghoa umumnya domain publik; terjemahan & tafsir milik klenteng/penerjemah.",
+    "granted_by": "",
+    "institution": "",
+    "scope": "",
+    "license": "",
+    "evidence": "",
+    "updated": "2026-11-03"
+  }
+]

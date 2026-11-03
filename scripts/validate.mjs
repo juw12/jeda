@@ -116,6 +116,32 @@ for (const rel of [...walk('js'), ...walk('content')]) {
   }
 }
 
+// Reviewer + permission registries.
+const reviewerList = JSON.parse(readFileSync(join(root, 'reviewers.json'), 'utf8'));
+const reviewerIds = new Set();
+for (const reviewer of reviewerList) {
+  if (!reviewer.id || !reviewer.name || !Array.isArray(reviewer.faiths) || reviewer.faiths.length === 0) {
+    errors.push(`reviewers.json → ${reviewer.id || '(tanpa id)'}: id, name, faiths wajib`);
+  }
+  reviewerIds.add(reviewer.id);
+}
+for (const file of readdirSync(join(root, 'entries'))) {
+  for (const entry of JSON.parse(readFileSync(join(root, 'entries', file), 'utf8'))) {
+    if (entry.reviewer_id && !reviewerIds.has(entry.reviewer_id)) {
+      errors.push(`${file} → ${entry.id}: reviewer_id "${entry.reviewer_id}" tidak terdaftar di reviewers.json`);
+    }
+  }
+}
+const permissionStatuses = new Set(['belum-diminta', 'diminta', 'diizinkan', 'ditolak', 'domain-publik']);
+for (const permission of JSON.parse(readFileSync(join(root, 'permissions.json'), 'utf8'))) {
+  if (!permissionStatuses.has(permission.status)) {
+    errors.push(`permissions.json → ${permission.id}: status tidak valid "${permission.status}"`);
+  }
+  if (permission.status === 'diizinkan' && !permission.evidence) {
+    errors.push(`permissions.json → ${permission.id}: izin "diizinkan" wajib punya bukti (evidence)`);
+  }
+}
+
 console.log(`Entri: ${total}, approved: ${approved}, draf/in_review: ${total - approved}`);
 if (errors.length) {
   console.error(errors.join('\n'));

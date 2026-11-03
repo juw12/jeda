@@ -6,6 +6,24 @@ import { esc, draftBanner, toast } from '../ui.js';
 import { faithById, entryById, entriesFor, appliesToStreams } from '../content.js';
 import { buildIndex, search } from '../search.js';
 import { speakButton, stopSpeaking } from '../speak.js';
+import { permissionFor, OPEN_STATUSES } from '../review-lib.js';
+
+const PERMISSION_LABELS = {
+  'belum-diminta': 'Izin belum diminta',
+  diminta: 'Izin sedang diminta',
+  diizinkan: 'Diizinkan',
+  ditolak: 'Izin ditolak',
+  'domain-publik': 'Domain publik',
+};
+
+async function loadPermissions() {
+  try {
+    const response = await fetch('content/permissions.json');
+    return response.ok ? await response.json() : [];
+  } catch {
+    return [];
+  }
+}
 
 let searchIndex = null;
 
@@ -342,6 +360,8 @@ export async function scripture(main, [scriptureId], query, { content }) {
     return;
   }
   const faith = faithById(content, item.faith);
+  const permission = permissionFor(await loadPermissions(), item.id);
+  const readable = Boolean(item.dataFile) && (item.inApp || (permission && OPEN_STATUSES.has(permission.status)));
   main.innerHTML = `
     <article class="stack narrow prose">
       <p class="crumbs"><a href="#/pustaka">Pustaka</a> / <a href="#/pustaka/${faith.id}">${esc(faith.short)}</a> / Kitab Suci</p>
@@ -350,14 +370,17 @@ export async function scripture(main, [scriptureId], query, { content }) {
       ${(item.structure || []).length ? `<h2 class="h3">Struktur</h2><ul>${item.structure.map((s) => `<li>${esc(s)}</li>`).join('')}</ul>` : ''}
       <h2 class="h3">Baca</h2>
       <div class="notice small">
-        ${item.inApp
+        ${readable
     ? 'Teks tersedia di dalam aplikasi.'
-    : `Pembaca di dalam aplikasi akan aktif setelah izin terjemahan diperoleh. ${esc(item.licenseNote || '')}`}
+    : `Pembaca di dalam aplikasi akan aktif setelah izin diperoleh. ${esc(item.licenseNote || '')}`}
+        ${permission ? `<p><strong>${esc(PERMISSION_LABELS[permission.status] || permission.status)}</strong> · ${esc(permission.name)} · pemegang hak: ${esc(permission.holder)}
+          ${permission.evidence ? ` · <a href="${esc(permission.evidence)}" target="_blank" rel="noopener">bukti izin</a>` : ''}</p>
+          ${OPEN_STATUSES.has(permission.status) ? '' : `<p>Mewakili ${esc(permission.holder)}? <a href="${CONFIG.repo}/issues/new?template=izin.yml" target="_blank" rel="noopener">Beri izin lewat formulir terbuka</a>.</p>`}` : ''}
       </div>
       <ul>${(item.links || []).map((l) => `<li><a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.name)}</a>${l.note ? ` <span class="small muted">${esc(l.note)}</span>` : ''}</li>`).join('')}</ul>
       <div class="reader"></div>
     </article>`;
-  if (item.inApp && item.dataFile) {
+  if (readable) {
     try {
       const response = await fetch(item.dataFile);
       const data = await response.json();

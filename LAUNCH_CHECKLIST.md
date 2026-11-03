@@ -2,6 +2,8 @@
 
 Jeda saat ini **mode pratinjau**: semua entri Pustaka berstatus *draf* (disusun dengan bantuan AI) dan ditampilkan dengan tanda.
 
+Alur otomatis tinjauan & izin: lihat `docs/TINJAUAN_IZIN.md`. Templat surat: `docs/SURAT_IZIN.md`.
+
 ## Wajib
 - [ ] Reviewer per agama/aliran terdaftar dan meninjau entri inti (minimal: ajaran pokok, ibadah harian, hari raya, siklus hidup).
 - [ ] Entri yang sudah ditinjau diubah ke `"status": "approved"` dengan `reviewed_by` dan `reviewed_at`.
