@@ -271,7 +271,7 @@ export function holyDays(start = new Date(), days = 400, overrides = []) {
         found.splice(i, 1);
       }
     }
-    found.push({ ...override, date, estimated: false, basis: override.basis || 'Tanggal resmi (SKB 3 Menteri)' });
+    found.push({ ...override, date, estimated: Boolean(override.estimated), basis: override.basis || 'Tanggal resmi (SKB 3 Menteri)' });
   });
 
   return found

@@ -9,6 +9,15 @@
       "official": true
     },
     {
+      "date": "2027-01-06",
+      "id": "siwaratri",
+      "name": "Siwaratri",
+      "faith": "hindu",
+      "official": false,
+      "estimated": true,
+      "basis": "Kalender Bali: purwaning Tilem Kapitu (Tilem 7 Jan 2027); konfirmasi dengan PHDI"
+    },
+    {
       "date": "2027-01-13",
       "id": "galungan",
       "name": "Galungan",
@@ -28,6 +37,15 @@
       "name": "Tahun Baru Imlek (Sin Cia)",
       "faith": "khonghucu",
       "official": true
+    },
+    {
+      "date": "2027-02-21",
+      "id": "magha-puja",
+      "name": "Magha Puja",
+      "faith": "buddha",
+      "official": false,
+      "estimated": true,
+      "basis": "Purnama bulan Magha (kalender Theravada); konfirmasi dengan majelis/vihara"
     },
     {
       "date": "2027-03-08",
@@ -84,6 +102,15 @@
       "name": "Tahun Baru Islam (1 Muharram)",
       "faith": "islam",
       "official": true
+    },
+    {
+      "date": "2027-07-18",
+      "id": "asadha",
+      "name": "Asadha",
+      "faith": "buddha",
+      "official": false,
+      "estimated": true,
+      "basis": "Purnama bulan Asalha (kalender Theravada); konfirmasi dengan majelis/vihara"
     },
     {
       "date": "2027-08-11",

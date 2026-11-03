@@ -1,7 +1,8 @@
 // Core views: landing, home, choose path, visit list, more menu, settings, about, support.
 
 import { CONFIG } from '../config.js';
-import { prefs, exportAll, importAll, clearAll, guestName, newGuestName } from '../store.js';
+import { prefs, load, exportAll, importAll, clearAll, guestName, newGuestName } from '../store.js';
+import { memorialSchedule } from '../memorial.js';
 import { esc, toast, formatDate, formatShortDate, relativeDays, timeOfDay } from '../ui.js';
 import { faithById } from '../content.js';
 import { holyDays, todaySummary, matchesFaith, festiveHoliday } from '../calendar.js';
@@ -16,6 +17,17 @@ function friendHolyDays(content, myFaith) {
   return holyDays(new Date(), 7, content.calendarOverrides)
     .filter((h) => FRIEND_GREETINGS[h.id] && !matchesFaith(h, myFaith))
     .slice(0, 2);
+}
+
+function upcomingMemorials(content, withinDays = 14) {
+  const horizon = new Date();
+  horizon.setDate(horizon.getDate() + withinDays);
+  return load('memorials', [])
+    .flatMap((memorial) => memorialSchedule(memorial, new Date(), content.calendarOverrides || [])
+      .filter((item) => item.date <= horizon)
+      .map((item) => ({ ...item, name: memorial.name })))
+    .sort((a, b) => a.date - b.date)
+    .slice(0, 3);
 }
 
 function greeting() {
@@ -94,6 +106,12 @@ export function home(main, params, query, ctx) {
       </ul>
       <a class="small" href="#/kalender">${t('home.calendar')}</a>` : ''}
 
+      ${upcomingMemorials(content).length ? `
+        <div class="card memorial-reminder">
+          <span class="small muted">🕯 Peringatan keluarga</span>
+          ${upcomingMemorials(content).map((m) => `<span><strong>${esc(m.name)}</strong> · ${esc(m.label)} · ${formatShortDate(m.date)} (${relativeDays(m.date)})</span>`).join('')}
+          <a class="small" href="#/peringatan">Lihat semua</a>
+        </div>` : ''}
       ${friendHolyDays(content, faith.id).map((h) => `
         <div class="card friend-card">
           <span class="small muted">Teman berbeda iman merayakan · ${relativeDays(h.date)}</span>

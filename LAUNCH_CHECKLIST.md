@@ -14,6 +14,11 @@ Jeda saat ini **mode pratinjau**: semua entri Pustaka berstatus *draf* (disusun 
 - [ ] Rumah ibadah: info donasi hanya setelah verifikasi langsung dengan pengurus (validator menolak donasi tanpa `verified: true`).
 - [ ] Tautan dukungan developer dibuat dan `active: true` di `js/config.js`.
 
+- [ ] Entri dialek Tionghoa (Hokkien, Hakka, Teochew, Kanton/Hainan, Peranakan/Cina Benteng) ditinjau tetua komunitas masing-masing.
+- [ ] Rangkaian hari Peringatan Arwah (`js/memorial.js`) dicek oleh reviewer tiap agama; cara hitung "hari wafat = hari ke-1" dikonfirmasi.
+- [ ] Tanggal perkiraan Siwaratri, Magha Puja, Asadha 2027 di `content/calendar.json` dikonfirmasi PHDI dan majelis Buddha (ubah `estimated` menjadi `false` bila resmi).
+- [ ] Tambahkan tanggal resmi tahun berikutnya (SKB 3 Menteri 2028) ke `content/calendar.json` begitu diumumkan.
+
 ## Disarankan
 - [ ] Domain sendiri (mis. jeda.app / jeda.my.id; cek ketersediaan).
 - [ ] Uji di Android kelas bawah dan iPhone; mode teks besar; pembaca layar.

@@ -163,3 +163,11 @@ jeda.id is an active news site; small apps/brands named "Jeda" exist (holiday ca
 - +16 glossary terms (96).
 - Links: More menu, Arsip page.
 - Not yet in calendar: Siwaratri, Asadha, Magha (need official dates from PHDI / majelis Buddha).
+
+## Iteration 11 — v1.0 (feature-complete release candidate)
+- Calendar: Siwaratri 2027-01-06 (purwaning Tilem Kapitu 7 Jan), Magha Puja 2027-02-21, Asadha 2027-07-18 added as *estimated* overrides (overrides now honour `estimated`); Asadha 27 Jul from one source rejected (not a full moon).
+- Home: "Peringatan keluarga" card shows memorial dates within 14 days.
+- Validator: variation stream/dialect ids, glossary links + duplicates, calendar override dates, memorial.js entry links, service-worker precache completeness.
+- Publishing: publish.ps1 (gh repo create juw12/jeda --public, push, enable Pages), .nojekyll; README + LAUNCH_CHECKLIST updated (dialect review, memorial review, estimated dates, SKB 2028).
+- Version 1.0.0 = app feature-complete; content remains draft (preview mode) until reviewers approve.
+- Not done by design: public push (owner runs publish.ps1); ciam si poems (need licensed source); in-app scripture text (licences); AI endpoint (optional).

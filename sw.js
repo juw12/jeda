@@ -1,6 +1,6 @@
 // Offline support: app shell cache-first, content network-first (so reviewed updates arrive quickly).
 
-const VERSION = 'jeda-v0.7.0';
+const VERSION = 'jeda-v1.0.0';
 const SHELL = [
   './',
   'index.html',

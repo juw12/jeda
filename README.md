@@ -16,6 +16,11 @@ Terinspirasi oleh "Sansa" (산사), kuil virtual dari Korea. Dibuat oleh [juw12]
 | **Kalender** | Imlek/Kongzili, Hijriah, Pawukon Bali, liturgi, titik matahari (Ceng Beng, Tang Ce) + tanggal resmi SKB 3 Menteri 2027 |
 | **Rumah Ibadah** | Daftar tempat ibadah nyata; info donasi hanya untuk yang terverifikasi, langsung ke rumah ibadah |
 | **Arsip Keluarga** | Catatan & rekaman suara tetua, tersimpan di perangkat, bisa diekspor |
+| **Peringatan Arwah** | Hari ke-7/49/100 (adat Tionghoa), tahlilan 3/7/40/100/1000 & haul, misa arwah, ki-jit menurut tanggal Imlek/Hijriah/Masehi; simpan ke kalender HP |
+| **Jurnal Syukur** | Catatan syukur pribadi tanpa target, hitungan, atau poin |
+| **Kartu Ucapan** | Kartu hari raya (gambar) untuk teman berbeda iman, dibagikan lewat WhatsApp dll. |
+| **Kamus Istilah** | ±100 istilah lintas agama dan dialek Tionghoa, terhubung ke Pustaka |
+| **Ambil Jeda** | Jeda napas 1 menit dari mana saja |
 | **Privasi** | Tanpa akun, tanpa iklan, tanpa pelacak. Pilihan agama hanya di perangkat (UU PDP) |
 
 ## Menjalankan di komputer (tanpa instal apa pun)
@@ -27,12 +32,19 @@ Browser akan terbuka di http://localhost:8080.
 
 ## Menerbitkan gratis (GitHub Pages)
 
-1. Buat repo baru `jeda` di akun GitHub `juw12`.
-2. Unggah seluruh isi folder ini (atau `git push`).
-3. Repo → Settings → Pages → Source: *Deploy from a branch*, branch `main`, folder `/ (root)`.
-4. Situs aktif di `https://juw12.github.io/jeda/`.
+Satu perintah (GitHub CLI sudah login sebagai `juw12`):
 
-Tidak perlu build. Setiap push otomatis memvalidasi konten (`.github/workflows/validate.yml`).
+```
+powershell -ExecutionPolicy Bypass -File E:\jeda\publish.ps1
+```
+
+Skrip membuat repo publik `juw12/jeda`, mengunggah semua commit, dan mengaktifkan Pages. Situs aktif di `https://juw12.github.io/jeda/`. Untuk pembaruan berikutnya cukup `git push` (atau jalankan skrip lagi).
+
+Manual: buat repo `jeda` → unggah isi folder → Settings → Pages → *Deploy from a branch*, `main`, `/ (root)`.
+
+Tidak perlu build. Setiap push otomatis memvalidasi konten, tautan antar-data, dan daftar offline (`.github/workflows/validate.yml`).
+
+**Sebelum promosi luas, baca `LAUNCH_CHECKLIST.md`** — semua isi Pustaka masih draf yang menunggu tinjauan pemuka agama.
 
 ## Struktur
 
@@ -46,6 +58,10 @@ content/calendar.json                 tanggal resmi (override perhitungan)
 content/places.json                   rumah ibadah
 content/scriptures.json               info kitab suci + status lisensi
 content/ciamsi.json                   syair ciam si (diisi dari klenteng yang mengizinkan)
+content/glossary.json                 Kamus Istilah
+js/memorial.js                        perhitungan Peringatan Arwah
+js/card.js                            pembuat Kartu Ucapan
+publish.ps1                           terbitkan ke GitHub Pages
 worker/tanya-worker.js                Cloudflare Worker opsional untuk mode AI
 scripts/validate.mjs                  validasi konten
 ```
