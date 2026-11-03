@@ -63,7 +63,14 @@ export async function joinPresence(roomNames, profile, handlers) {
   let lastState = null;
 
   const rooms = names.map((roomName) => {
-    const room = joinRoom(turnConfig ? { appId: APP_ID, turnConfig } : { appId: APP_ID }, roomName);
+    const roomConfig = { appId: APP_ID };
+    if (CONFIG.presenceRelays && CONFIG.presenceRelays.length) {
+      roomConfig.relayConfig = { urls: CONFIG.presenceRelays };
+    }
+    if (turnConfig) {
+      roomConfig.turnConfig = turnConfig;
+    }
+    const room = joinRoom(roomConfig, roomName);
     const actions = {
       hello: wrapAction(room, 'hello'),
       state: wrapAction(room, 'state'),

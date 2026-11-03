@@ -3,7 +3,7 @@
 export const CONFIG = {
   appName: 'Jeda',
   tagline: 'Ambil jeda. Ruang hening untuk setiap iman di Nusantara.',
-  version: '1.3.0',
+  version: '1.3.1',
 
   developer: {
     name: 'juw12',
@@ -27,6 +27,16 @@ export const CONFIG = {
   // URL that returns a JSON array of RTCIceServer objects (e.g. a tiny Cloudflare Worker that asks
   // Cloudflare Realtime TURN or Metered Open Relay for short-lived credentials). Empty = STUN only.
   turnCredentialsUrl: '',
+
+  // Public Nostr relays used only to introduce devices to each other (then traffic is direct, peer-to-peer).
+  // Well-known, high-uptime relays; joining is much faster and more reliable than random ones.
+  presenceRelays: [
+    'wss://relay.damus.io',
+    'wss://nos.lol',
+    'wss://relay.primal.net',
+    'wss://nostr.mom',
+    'wss://relay.snort.social',
+  ],
 
   // Support the developer. Set active: true after creating the account and checking the URL.
   // Recommended: Saweria (easiest: QRIS, GoPay, OVO, DANA, ShopeePay, no setup fee).

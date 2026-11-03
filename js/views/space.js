@@ -2,7 +2,7 @@
 // Home mode = your own faith. Visit mode = observe and learn; devotional acts are explained, not performed.
 
 import { prefs, guestName } from '../store.js';
-import { esc, formatShortDate, relativeDays, timeOfDay, toast } from '../ui.js';
+import { esc, formatShortDate, relativeDays, timeOfDay, toast, askConfirm } from '../ui.js';
 import { faithById, entryById } from '../content.js';
 import { sceneSvg, FESTIVE } from '../scenes.js';
 import { holyDays, matchesFaith, festiveHoliday } from '../calendar.js';
@@ -400,6 +400,15 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
         },
       });
       updatePresenceLabel();
+      if (live && !live.host) {
+        // If nobody shows up, say so instead of leaving people staring at "Menghubungkan…".
+        setTimeout(() => {
+          if (presence && presence.peerCount() === 0 && main.isConnected) {
+            presenceLabel.textContent = 'Menunggu pemandu…';
+            toast('Belum terhubung dengan pemandu. Pastikan siarannya masih berlangsung dan kodenya benar. Kamu tetap bisa berdoa di sini.');
+          }
+        }, 25000);
+      }
     } catch (error) {
       console.error(error);
       presence = null;
@@ -419,14 +428,18 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
   }
 
   if (!live) {
-    presenceButton.addEventListener('click', () => {
+    presenceButton.addEventListener('click', async () => {
       if (presence) {
         stopPresence();
         prefs.set({ presence: 'alone' });
         return;
       }
       if (!prefs.get().presenceAcknowledged) {
-        const ok = confirm('Hadir bersama orang lain?\n\nPengunjung lain akan melihat nama tamu, warna, dan gerakmu di ruang ini. Koneksi langsung antarperangkat (peer-to-peer) juga memperlihatkan alamat IP-mu kepada mereka. Tidak ada akun dan tidak ada yang disimpan di server Jeda.');
+        const ok = await askConfirm({
+          title: 'Hadir bersama orang lain?',
+          body: 'Pengunjung lain akan melihat nama tamu, warna, dan gerakmu di ruang ini. Koneksi langsung antarperangkat juga memperlihatkan alamat IP-mu. Tanpa akun; tidak ada yang disimpan di server Jeda.',
+          ok: 'Hadir bersama',
+        });
         if (!ok) {
           return;
         }
@@ -436,7 +449,11 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
       startPresence();
     });
     main.querySelector('[data-golive]').addEventListener('click', async () => {
-      const ok = confirm('Mulai Ruang Live?\n\nKamu akan mendapat tautan dan kode untuk dibagikan saat siaran (TikTok, Instagram, YouTube). Penonton masuk ruang ini bersamamu tanpa akun. Mereka melihat nama tamu dan gerakmu, dan koneksi antarperangkat memperlihatkan alamat IP.');
+      const ok = await askConfirm({
+        title: 'Mulai Ruang Live?',
+        body: 'Kamu mendapat tautan, kode, dan QR untuk dibagikan saat siaran (TikTok, Instagram, YouTube). Penonton masuk ruang ini bersamamu tanpa akun. Mereka melihat nama tamu dan gerakmu; koneksi antarperangkat memperlihatkan alamat IP.',
+        ok: 'Mulai',
+      });
       if (!ok) {
         return;
       }
@@ -549,7 +566,7 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
     });
     if (live.host) {
       main.querySelectorAll('[data-host]').forEach((button) => {
-        button.addEventListener('click', () => {
+        button.addEventListener('click', async () => {
           const action = button.dataset.host;
           if (action === 'share') {
             shareSheet.hidden = false;
@@ -569,7 +586,7 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
             button.classList.toggle('on', !card.hidden);
             stage.classList.toggle('broadcasting', !card.hidden);
           } else if (action === 'end') {
-            if (!confirm('Akhiri Ruang Live untuk semua penonton?')) {
+            if (!(await askConfirm({ title: 'Akhiri Ruang Live?', body: 'Semua penonton akan melihat bahwa siaran sudah selesai.', ok: 'Akhiri', danger: true }))) {
               return;
             }
             presence?.sendLead({ type: 'end' });

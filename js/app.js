@@ -144,7 +144,16 @@ async function start() {
   await router();
   document.documentElement.dataset.ready = 'true';
   if ('serviceWorker' in navigator && location.protocol !== 'file:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
-    navigator.serviceWorker.register('sw.js').catch((error) => console.warn('SW', error));
+    const hadController = Boolean(navigator.serviceWorker.controller);
+  let reloadedForUpdate = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    // A new version was installed: reload once so new features (e.g. Ruang Live) are available immediately.
+    if (hadController && !reloadedForUpdate) {
+      reloadedForUpdate = true;
+      location.reload();
+    }
+  });
+  navigator.serviceWorker.register('sw.js').then((registration) => registration.update()).catch((error) => console.warn('SW', error));
   }
 }
 

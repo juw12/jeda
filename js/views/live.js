@@ -22,7 +22,7 @@ export function joinView(main, params, query, { navigate }) {
           <h1 class="ob-title small">Gabung bersama</h1>
           <p class="ob-lead">Masukkan kode yang disebut atau ditulis oleh pemandu siaran.</p>
           <form class="code-form" data-form>
-            <input class="code-input" type="text" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="9" placeholder="K7QX2MA" aria-label="Kode Ruang Live" data-code value="${esc(params[0] || '')}">
+            <input class="code-input" type="text" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="K7QX2MA" aria-label="Kode Ruang Live" data-code value="${esc(params[0] || '')}">
             <p class="small code-error" data-error hidden>Kode tidak dikenal. Periksa lagi 7 hurufnya.</p>
             <button class="btn btn-big" type="submit">Masuk</button>
           </form>
@@ -32,9 +32,9 @@ export function joinView(main, params, query, { navigate }) {
     </section>`;
   const input = main.querySelector('[data-code]');
   input.addEventListener('input', () => {
-    const caret = input.selectionStart;
-    input.value = normalizeCode(input.value);
-    input.setSelectionRange(caret, caret);
+    // Accept a pasted link ("…#/live/K7QX2MA") or a caption that contains the code.
+    const fromLink = input.value.match(/live\/([A-Za-z0-9]{7})/);
+    input.value = normalizeCode(fromLink ? fromLink[1] : input.value);
     main.querySelector('[data-error]').hidden = true;
   });
   main.querySelector('[data-form]').addEventListener('submit', (event) => {
@@ -75,7 +75,6 @@ export function liveView(main, params, query, ctx) {
   const state = {
     name: userPrefs.guestName || newGuestName(),
     color: userPrefs.avatarColor || AVATAR_COLORS[0],
-    role: userPrefs.faith === parsed.faith ? 'member' : (userPrefs.faith ? 'guest' : null),
   };
   const askRole = parsed.faith !== 'alam';
   document.body.classList.add('onboarding-mode');
@@ -96,11 +95,12 @@ export function liveView(main, params, query, ctx) {
             ${AVATAR_COLORS.map((c) => `<button type="button" class="ob-color ${state.color === c ? 'on' : ''}" data-color="${c}" style="--c:${c}" aria-label="Warna ${c}"></button>`).join('')}
           </div>
           ${askRole ? `
-            <div class="ob-options two role-pick">
-              <button type="button" class="ob-option ${state.role === 'member' ? 'on' : ''}" data-role="member"><strong>Saya umat ${esc(faith.short || faith.name)}</strong><span>Ikut berdoa & beribadah</span></button>
-              <button type="button" class="ob-option ${state.role === 'guest' ? 'on' : ''}" data-role="guest"><strong>Saya tamu</strong><span>Mengamati dengan hormat</span></button>
-            </div>` : ''}
-          <button class="btn btn-big" type="button" data-enter ${askRole && !state.role ? 'disabled' : ''}>Masuk sekarang</button>
+            <p class="role-q">Masuk sebagai</p>
+            <div class="role-enter">
+              <button type="button" class="btn btn-big" data-enter="member">Umat ${esc(faith.short || faith.name)}<small>ikut berdoa & beribadah</small></button>
+              <button type="button" class="btn btn-big btn-soft" data-enter="guest">Tamu<small>mengamati dengan hormat</small></button>
+            </div>` : `
+            <button class="btn btn-big" type="button" data-enter="member">Masuk sekarang</button>`}
           <p class="ob-foot">Tanpa akun. Orang lain di ruang ini melihat nama tamu, warna, dan gerakmu; koneksi langsung antarperangkat juga memperlihatkan alamat IP. Tidak ada yang disimpan di server Jeda.</p>
         </article>
       </div>
@@ -108,7 +108,6 @@ export function liveView(main, params, query, ctx) {
 
   const card = main.querySelector('.live-card');
   const nameInput = card.querySelector('[data-name]');
-  const enter = card.querySelector('[data-enter]');
   nameInput.addEventListener('input', () => {
     state.name = nameInput.value;
   });
@@ -121,19 +120,13 @@ export function liveView(main, params, query, ctx) {
     card.querySelectorAll('[data-color]').forEach((x) => x.classList.toggle('on', x === button));
     card.querySelector('.ob-avatar').style.setProperty('--c', state.color);
   }));
-  card.querySelectorAll('[data-role]').forEach((button) => button.addEventListener('click', () => {
-    state.role = button.dataset.role;
-    card.querySelectorAll('[data-role]').forEach((x) => x.classList.toggle('on', x === button));
-    enter.disabled = false;
-  }));
-
   let cleanup = () => document.body.classList.remove('onboarding-mode');
-  enter.addEventListener('click', () => {
-    const role = askRole ? state.role : 'member';
+  card.querySelectorAll('[data-enter]').forEach((button) => button.addEventListener('click', () => {
+    const role = button.dataset.enter;
     prefs.set({ guestName: state.name.trim() || newGuestName(), avatarColor: state.color, presenceAcknowledged: true });
     sessionStorage.setItem(joinedKey, role);
     document.body.classList.remove('onboarding-mode');
     cleanup = space(main, [parsed.faith], query, ctx, { live: { code: parsed.code, host: false, mode: homeMode(role) } }) || (() => {});
-  });
+  }));
   return () => cleanup();
 }

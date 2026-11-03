@@ -193,3 +193,10 @@ Not yet verified: real phones (performance on low-end Android), presence across 
 - 3D robustness: quality tiers (low/medium/high) from device memory/cores, adaptive pixel ratio then shadows-off when FPS < 28, renderer fallbacks (no AA → low-power/mediump), WebGL1 via three r160, webglcontextlost/restored handling, setting "Kualitas 3D".
 - Verified headless: host + viewer on separate origins (separate storage) through public Nostr relays: code entry, join card, host verification, count "2 hadir", synced silence, end-of-live screen.
 - Open: TURN relay (CONFIG.turnCredentialsUrl) needs an account (Cloudflare Realtime TURN free tier or Metered Open Relay); real-device testing on low-end Android / iOS Safari; shard capacity (~90 interactive viewers) not load-tested.
+
+### v1.3.1 hotfix — "cannot press join"
+- Join card: the greyed-out "Masuk sekarang" (disabled until a role was picked) replaced by two one-tap buttons: "Umat …" / "Tamu".
+- Native confirm() (blocked silently in TikTok/Instagram in-app browsers) replaced by an in-page dialog for Bersama, Siarkan, Akhiri.
+- Code box accepts a pasted link or caption; viewers get a clear "Menunggu pemandu…" message after 25 s.
+- Pinned reliable Nostr relays (damus, nos.lol, primal, nostr.mom, snort): handshake + greeting round trip measured at 5 s (was 6–50+ s with random relays).
+- Service worker: network-first for app code + reload once on update, so nobody is stuck on an older build.
