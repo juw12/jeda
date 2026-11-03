@@ -1,4 +1,54 @@
-# Jeda
+<!-- HERO:START -->
+<p align="center">
+  <a href="https://juw12.github.io/jeda/"><img src="docs/media/banner.jpg" alt="Jeda: A quiet space for every faith in Indonesia." width="100%"></a>
+</p>
+
+<p align="center">
+  <b>A quiet space for every faith in Indonesia.</b><br>
+  A virtual place of stillness and a living library of teachings, rituals and holy days. No account needed.
+</p>
+
+<p align="center">
+  <a href="https://juw12.github.io/jeda/"><b>Try it live</b></a> ·
+  <a href="#see-it-in-action">See it in action</a> ·
+  <a href="#highlights">Highlights</a> ·
+  <a href="https://github.com/juw12">More by juw12</a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/juw12/jeda"><img src="https://img.shields.io/github/last-commit/juw12/jeda?label=updated&color=a16207" alt="Last updated"></a>
+  <a href="https://juw12.github.io/jeda/"><img src="https://img.shields.io/badge/demo-live-2ea44f" alt="Live demo"></a>
+  <img src="https://img.shields.io/badge/Web_%28PWA%29-24292f" alt="Web (PWA)">
+  <img src="https://img.shields.io/badge/Offline-24292f" alt="Offline">
+</p>
+
+<a id="highlights"></a>
+<table>
+  <tr>
+    <td width="33%" valign="top">
+      <b>Your own quiet space</b><br>
+      Light incense or a candle in your space and visit others' spaces respectfully.
+    </td>
+    <td width="33%" valign="top">
+      <b>A living library</b><br>
+      Teachings and rituals per stream and dialect, reviewed in the open by verified clergy.
+    </td>
+    <td width="33%" valign="top">
+      <b>Holy days and memorials</b><br>
+      Imlek, Hijri and Pawukon calendars plus family memorial dates.
+    </td>
+  </tr>
+</table>
+
+## See it in action
+
+<p align="center">
+  <a href="https://juw12.github.io/jeda/"><img src="docs/media/demo.png" alt="Jeda screenshot" width="820"></a><br>
+  <sub>Open the interactive demo at <a href="https://juw12.github.io/jeda/">juw12.github.io/jeda/</a></sub>
+</p>
+<!-- HERO:END -->
+
+## About
 
 Ruang hening virtual dan pustaka untuk setiap iman di Indonesia: Islam, Kristen Protestan, Katolik, Hindu, Buddha, dan Khonghucu & tradisi Tionghoa (flagship), plus Ruang Alam tanpa agama.
 
