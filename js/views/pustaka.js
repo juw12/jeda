@@ -327,7 +327,18 @@ export function searchView(main, params, query, { content, navigate }) {
 export async function scripture(main, [scriptureId], query, { content }) {
   const item = content.scriptures.find((s) => s.id === scriptureId);
   if (!item) {
-    main.innerHTML = '<section class="stack"><p>Kitab tidak ditemukan.</p></section>';
+    const byFaith = content.faiths.filter((f) => f.pustaka);
+    main.innerHTML = `
+      <section class="stack narrow">
+        <h1 class="h2">Kitab Suci</h1>
+        ${scriptureId ? '<p class="notice small">Kitab tidak ditemukan. Silakan pilih dari daftar.</p>' : ''}
+        <p class="muted small">Informasi dan tautan ke sumber resmi. Teks dibaca di dalam aplikasi hanya bila terjemahan sudah berizin.</p>
+        ${byFaith.map((f) => {
+    const items = content.scriptures.filter((s) => s.faith === f.id);
+    return items.length ? `<h2 class="h3">${esc(f.short)}</h2>
+          <ul class="menu-list">${items.map((s) => `<li><a href="#/kitab/${esc(s.id)}"><strong>${esc(s.name)}</strong><span class="small muted">${esc(s.summary || '')}</span></a></li>`).join('')}</ul>` : '';
+  }).join('')}
+      </section>`;
     return;
   }
   const faith = faithById(content, item.faith);

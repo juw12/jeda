@@ -146,3 +146,13 @@ jeda.id is an active news site; small apps/brands named "Jeda" exist (holiday ca
 - "Teman berbeda iman merayakan" card on home with the right greeting for friends' holy days in the next 7 days
 - Places directory 26 → 36 (still unverified; no donation info)
 - Verified: glossary filter, combined search, .ics content (13 Chindo events), home render
+
+
+## Iteration 9 — v0.6 (done)
+- +18 library entries (138 total, all draft/ai-seed): Jumat, khitan, adab salam, ibadah keluarga, Paskah, Koronka, Krisma, Pengurapan Orang Sakit, Tumpek, pawiwahan, Purnama-Tilem, Atthasila, metta, Dewa Dapur, bakti sehari-hari, shio, nikah beda agama (hukum), toleransi kerja/sekolah.
+- Calendar: 5 Tumpek days (Landep −60, Wariga −25, Krulut +45, Kandang +80, Wayang +115 from Galungan); verified all fall on Saniscara Kliwon in the right wuku (e.g. Tumpek Landep 2026-11-14).
+- Jurnal Syukur (#/syukur): private, device-only, faith-aware daily prompt, no streaks/counts.
+- Kartu Ucapan (#/kartu/<holiday>): canvas 1080x1350 card with faith scene + festive decor, Web Share files or PNG download; linked from home friend card, calendar, More menu.
+- #/kitab without id now lists all scriptures (was a dead end).
+- Version 0.6.0; sw.js precaches js/card.js and js/views/extras.js.
+- Tested in headless Edge: calendar unit check, journal add/delete, card render (not tainted), 23 routes render with no JS errors.

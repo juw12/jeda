@@ -277,5 +277,98 @@
     "reviewed_at": null,
     "version": 1,
     "updated": "2026-11-03"
+  },
+  {
+    "id": "lin-hukum-nikah-beda-agama",
+    "faith": "lintas",
+    "streams": [],
+    "section": "aturan-etika",
+    "title": "Pernikahan beda agama di Indonesia",
+    "summary": "Gambaran hukum yang berlaku, tanpa menilai pilihan pribadi.",
+    "body": [
+      "UU Perkawinan menyatakan perkawinan sah apabila dilakukan menurut hukum masing-masing agama dan kepercayaannya, lalu dicatat negara.",
+      "Mahkamah Agung melalui SEMA No. 2 Tahun 2023 meminta pengadilan tidak mengabulkan permohonan pencatatan perkawinan antarumat yang berbeda agama dan kepercayaan.",
+      "Setiap agama memiliki ajaran sendiri tentang pernikahan beda agama. Bicarakan dengan pemuka agama masing-masing dan konsultasikan aspek hukum dengan ahli hukum."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "nikah beda agama",
+      "pernikahan",
+      "hukum",
+      "sema",
+      "pencatatan"
+    ],
+    "sources": [
+      {
+        "title": "UU No. 1 Tahun 1974 Pasal 2"
+      },
+      {
+        "title": "SEMA No. 2 Tahun 2023"
+      },
+      {
+        "title": "Perlu ditinjau bersama reviewer lintas iman / FKUB dan ahli hukum"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "lin-toleransi-kerja-sekolah",
+    "faith": "lintas",
+    "streams": [],
+    "section": "aturan-etika",
+    "title": "Toleransi di tempat kerja dan sekolah",
+    "summary": "Kebiasaan sederhana agar semua rekan dapat beribadah dengan nyaman.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Atur jadwal rapat agar tidak bentrok dengan waktu sholat Jumat atau ibadah lain.",
+        "why": "Memberi ruang beribadah."
+      },
+      {
+        "text": "Sediakan ruang ibadah atau ruang tenang yang bersih.",
+        "why": "Kebutuhan dasar bagi banyak umat."
+      },
+      {
+        "text": "Perhatikan rekan yang berpuasa saat menjamu makan siang.",
+        "why": "Saling menghormati."
+      },
+      {
+        "text": "Beri kelonggaran cuti untuk hari raya dan upacara keluarga (mis. ngaben, Ceng Beng).",
+        "why": "Hari suci setiap agama sama penting bagi umatnya."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "toleransi",
+      "kantor",
+      "sekolah",
+      "ruang ibadah",
+      "cuti hari raya"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau bersama reviewer lintas iman / FKUB dan ahli hukum"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
   }
 ]

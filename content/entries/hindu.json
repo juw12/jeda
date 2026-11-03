@@ -810,5 +810,144 @@
     "reviewed_at": null,
     "version": 1,
     "updated": "2026-11-03"
+  },
+  {
+    "id": "hin-hariraya-tumpek",
+    "faith": "hindu",
+    "streams": [],
+    "section": "hari-raya",
+    "title": "Hari Tumpek",
+    "summary": "Hari suci setiap Saniscara (Sabtu) Kliwon, dengan makna berbeda menurut wuku.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Tumpek Landep (wuku Landep): persembahan untuk benda tajam dan logam, kini termasuk kendaraan dan peralatan kerja.",
+        "why": "Syukur atas ketajaman pikiran dan sarana hidup."
+      },
+      {
+        "text": "Tumpek Wariga/Pengatag (wuku Wariga): persembahan untuk tumbuh-tumbuhan, 25 hari sebelum Galungan.",
+        "why": "Syukur atas kesuburan alam."
+      },
+      {
+        "text": "Tumpek Kuningan: bersamaan dengan Hari Raya Kuningan.",
+        "why": "Penutup rangkaian Galungan."
+      },
+      {
+        "text": "Tumpek Krulut (wuku Krulut): hari kesenian dan gamelan.",
+        "why": "Syukur atas keindahan dan kasih sayang."
+      },
+      {
+        "text": "Tumpek Kandang/Uye (wuku Uye): persembahan untuk hewan ternak.",
+        "why": "Menghormati hewan sebagai bagian dari alam."
+      },
+      {
+        "text": "Tumpek Wayang (wuku Wayang): persembahan untuk wayang dan seni pertunjukan.",
+        "why": "Syukur atas seni dan pengetahuan."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "tumpek",
+      "tumpek landep",
+      "tumpek wariga",
+      "tumpek kandang",
+      "tumpek wayang",
+      "tumpek krulut"
+    ],
+    "sources": [
+      {
+        "title": "Kalender Bali (Pawukon)"
+      },
+      {
+        "title": "Perlu ditinjau pinandita/sulinggih atau PHDI"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "hin-siklus-pawiwahan",
+    "faith": "hindu",
+    "streams": [],
+    "section": "siklus-hidup",
+    "title": "Pawiwahan (pernikahan Hindu)",
+    "summary": "Upacara pernikahan dalam Manusa Yadnya.",
+    "body": [
+      "Pawiwahan disahkan dengan upacara agama yang dipimpin pemangku atau sulinggih, disaksikan keluarga dan prajuru adat, lalu dicatat di Dukcapil.",
+      "Dalam adat Bali umumnya pengantin perempuan masuk ke keluarga suami (patrilineal), dengan upacara mepamit di rumah asal."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Daerah dan komunitas",
+        "text": "Tata cara di Bali, Lombok, Jawa, dan komunitas Hindu lainnya dapat berbeda.",
+        "stream": "hindu-bali"
+      }
+    ],
+    "links": [],
+    "tags": [
+      "pawiwahan",
+      "pernikahan",
+      "nikah",
+      "mepamit",
+      "manusa yadnya"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau pinandita/sulinggih atau PHDI"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "hin-ibadah-purnama-tilem",
+    "faith": "hindu",
+    "streams": [],
+    "section": "ibadah-harian",
+    "title": "Purnama dan Tilem",
+    "summary": "Hari bulan penuh dan bulan mati sebagai hari baik untuk bersembahyang.",
+    "body": [
+      "Pada Purnama (bulan penuh) dan Tilem (bulan mati), umat Hindu bersembahyang di sanggah atau pura dan menghaturkan persembahan.",
+      "Tanggalnya mengikuti kalender Bali (Saka); Jeda menampilkan perkiraan di ruang Pura."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "purnama",
+      "tilem",
+      "bulan purnama",
+      "sembahyang"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau pinandita/sulinggih atau PHDI"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
   }
 ]

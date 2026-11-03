@@ -194,6 +194,12 @@ function pawukonHolidays(start, end) {
       { date: addDays(local, 10), id: 'kuningan', name: 'Kuningan', faith: 'hindu' },
       { date: addDays(local, 136), id: 'saraswati', name: 'Hari Saraswati', faith: 'hindu' },
       { date: addDays(local, 140), id: 'pagerwesi', name: 'Pagerwesi', faith: 'hindu' },
+      // Tumpek days (Saniscara Kliwon) as offsets from Galungan (Buda Kliwon Dungulan).
+      { date: addDays(local, -60), id: 'tumpek-landep', name: 'Tumpek Landep', faith: 'hindu' },
+      { date: addDays(local, -25), id: 'tumpek-wariga', name: 'Tumpek Wariga (Bubuh)', faith: 'hindu' },
+      { date: addDays(local, 45), id: 'tumpek-krulut', name: 'Tumpek Krulut', faith: 'hindu' },
+      { date: addDays(local, 80), id: 'tumpek-kandang', name: 'Tumpek Kandang (Uye)', faith: 'hindu' },
+      { date: addDays(local, 115), id: 'tumpek-wayang', name: 'Tumpek Wayang', faith: 'hindu' },
     );
     galungan += cycle;
   }

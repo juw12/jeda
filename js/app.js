@@ -12,6 +12,7 @@ import { pustaka, entry, searchView, scripture, kamus } from './views/pustaka.js
 import { tanya } from './views/tanya.js';
 import { planner, places, calendarView, archive } from './views/tools.js';
 import { review } from './views/review.js';
+import { journal, greetingCard } from './views/extras.js';
 
 const ROUTES = {
   '': core.home,
@@ -33,6 +34,8 @@ const ROUTES = {
   lainnya: core.more,
   tinjau: review,
   kamus,
+  syukur: journal,
+  kartu: greetingCard,
 };
 
 let content = null;

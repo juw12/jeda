@@ -8,21 +8,9 @@ import { holyDays, todaySummary, matchesFaith, festiveHoliday } from '../calenda
 import { sceneSvg, FESTIVE } from '../scenes.js';
 import { t, lang } from '../i18n.js';
 import { openPause } from '../pause.js';
+import { GREETINGS } from '../card.js';
 
-const FRIEND_GREETINGS = {
-  idulfitri: 'Selamat Idulfitri, mohon maaf lahir dan batin',
-  iduladha: 'Selamat Iduladha',
-  'tahun-baru-islam': 'Selamat Tahun Baru Islam',
-  maulid: 'Selamat memperingati Maulid Nabi',
-  natal: 'Selamat Natal',
-  paskah: 'Selamat Paskah',
-  imlek: 'Gong Xi Fa Cai / Selamat Tahun Baru Imlek',
-  'cap-go-meh': 'Selamat Cap Go Meh',
-  waisak: 'Selamat Hari Raya Waisak',
-  nyepi: 'Selamat Hari Raya Nyepi, Tahun Baru Saka',
-  galungan: 'Rahajeng Galungan',
-  kuningan: 'Rahajeng Kuningan',
-};
+const FRIEND_GREETINGS = GREETINGS;
 
 function friendHolyDays(content, myFaith) {
   return holyDays(new Date(), 7, content.calendarOverrides)
@@ -111,7 +99,7 @@ export function home(main, params, query, ctx) {
           <span class="small muted">Teman berbeda iman merayakan · ${relativeDays(h.date)}</span>
           <strong>${esc(h.name)}</strong>
           <span>Ucapan: “${esc(FRIEND_GREETINGS[h.id])}”</span>
-          <a class="small" href="#/pustaka/lintas">Etiket berkunjung saat hari raya</a>
+          <span class="row small"><a href="#/kartu/${esc(h.id)}">🖼 Buat kartu ucapan</a> · <a href="#/pustaka/lintas">Etiket berkunjung saat hari raya</a></span>
         </div>`).join('')}
       <div class="quick-grid">
         <a class="quick" href="#/pustaka/${faith.pustaka ? faith.id : ''}"><strong>${t('quick.library')}</strong><span>${t('quick.library.desc')}</span></a>
@@ -264,6 +252,8 @@ export function more(main) {
     ['#/upacara', 'Panduan Upacara', 'Daftar persiapan dan urutan acara'],
     ['#/ibadah', 'Rumah Ibadah', 'Tempat ibadah nyata dan donasi langsung'],
     ['#/arsip', 'Arsip Tradisi Keluarga', 'Catatan dan rekaman suara, tersimpan di perangkat'],
+    ['#/syukur', 'Jurnal Syukur', 'Catatan syukur pribadi, tanpa target'],
+    ['#/kartu', 'Kartu Ucapan', 'Buat kartu hari raya untuk teman berbeda iman'],
     ['#/kunjungi', 'Kunjungi & Kenali', 'Ruang iman lain dalam mode amati'],
     ['#/pustaka/lintas', 'Etiket Lintas Iman', 'Cara hormat menghadiri acara iman lain'],
     ['#/kamus', 'Kamus Istilah', 'Arti istilah dari setiap agama'],

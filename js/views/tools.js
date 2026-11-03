@@ -6,6 +6,7 @@ import { esc, toast, uid, formatShortDate, relativeDays, draftBanner } from '../
 import { faithById, entryById } from '../content.js';
 import { holyDays, todaySummary, matchesFaith } from '../calendar.js';
 import { speakButton, stopSpeaking } from '../speak.js';
+import { GREETINGS } from '../card.js';
 
 function faithChips(content, active, base) {
   return `<div class="row chips">
@@ -211,7 +212,7 @@ export function calendarView(main, params, query, { content }) {
         <h2 class="h3">${esc(month)}</h2>
         <ul class="holy-list">
           ${days.map((h) => `<li>
-              <span>${esc(h.name)} ${guides[h.id] ? `<a class="small" href="#/upacara/${guides[h.id]}">panduan</a>` : ''}</span>
+              <span>${esc(h.name)} ${guides[h.id] ? `<a class="small" href="#/upacara/${guides[h.id]}">panduan</a>` : ''} ${GREETINGS[h.id] ? `<a class="small" href="#/kartu/${h.id}">kartu</a>` : ''}</span>
               <span class="small muted">${formatShortDate(h.date)} · ${relativeDays(h.date)}${h.estimated ? ' · perkiraan' : ' · resmi/terhitung'}</span>
             </li>`).join('')}
         </ul>`).join('')}

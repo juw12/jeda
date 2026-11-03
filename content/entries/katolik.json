@@ -885,5 +885,130 @@
     "reviewed_at": null,
     "version": 1,
     "updated": "2026-11-03"
+  },
+  {
+    "id": "kat-ibadah-koronka",
+    "faith": "katolik",
+    "streams": [],
+    "section": "ibadah-harian",
+    "title": "Koronka Kerahiman Ilahi",
+    "summary": "Devosi kepada Kerahiman Ilahi yang didoakan dengan untaian rosario.",
+    "body": [
+      "Koronka Kerahiman Ilahi berasal dari pengalaman rohani Santa Faustina Kowalska. Umat sering mendoakannya pukul 15.00 (Jam Kerahiman).",
+      "Minggu Kerahiman Ilahi dirayakan pada Minggu Paskah II."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "koronka",
+      "kerahiman ilahi",
+      "faustina",
+      "devosi",
+      "jam tiga"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau imam/katekis paroki atau Komisi Kateketik KWI"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "kat-siklus-krisma",
+    "faith": "katolik",
+    "streams": [],
+    "section": "siklus-hidup",
+    "title": "Krisma (Sakramen Penguatan)",
+    "summary": "Penguatan iman oleh Roh Kudus, biasanya diterimakan oleh uskup.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Mengikuti persiapan krisma di paroki.",
+        "why": "Mendalami iman dan tanggung jawab sebagai umat dewasa."
+      },
+      {
+        "text": "Memilih wali krisma dan nama krisma (sesuai kebiasaan paroki).",
+        "why": "Wali mendampingi perkembangan iman."
+      },
+      {
+        "text": "Menerima krisma dalam Misa yang dipimpin uskup atau imam yang ditunjuk.",
+        "why": "Penumpangan tangan dan pengurapan minyak krisma."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "krisma",
+      "penguatan",
+      "sakramen",
+      "uskup"
+    ],
+    "sources": [
+      {
+        "title": "Katekismus Gereja Katolik no. 1285–1321"
+      },
+      {
+        "title": "Perlu ditinjau imam/katekis paroki atau Komisi Kateketik KWI"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "kat-siklus-pengurapan",
+    "faith": "katolik",
+    "streams": [],
+    "section": "siklus-hidup",
+    "title": "Pengurapan Orang Sakit",
+    "summary": "Sakramen bagi umat yang sakit berat atau lanjut usia.",
+    "body": [
+      "Pengurapan Orang Sakit diterimakan oleh imam dengan doa dan pengurapan minyak suci, memohon kekuatan, penghiburan, dan bila Tuhan menghendaki, kesembuhan.",
+      "Keluarga dapat menghubungi sekretariat paroki kapan saja; sakramen ini tidak hanya untuk saat menjelang ajal."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "pengurapan",
+      "orang sakit",
+      "sakramen",
+      "minyak suci"
+    ],
+    "sources": [
+      {
+        "title": "Yakobus 5:14–15"
+      },
+      {
+        "title": "Katekismus Gereja Katolik no. 1499–1532"
+      },
+      {
+        "title": "Perlu ditinjau imam/katekis paroki atau Komisi Kateketik KWI"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
   }
 ]

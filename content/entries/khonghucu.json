@@ -1508,5 +1508,145 @@
     "reviewed_at": null,
     "version": 1,
     "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-hariraya-dewa-dapur",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "hari-raya",
+    "title": "Ji Si Sang Sin: mengantar Dewa Dapur",
+    "summary": "Sembahyang tanggal 24 bulan 12 Imlek, sepekan sebelum Tahun Baru.",
+    "body": [
+      "Dalam tradisi Hokkien, Dewa Dapur (Cao Kun Kong) dipercaya naik melaporkan keadaan keluarga selama setahun. Keluarga bersembahyang dengan sajian manis.",
+      "Hari ini juga menjadi awal bersih-bersih rumah menjelang Imlek."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Hokkien",
+        "text": "Dilakukan tanggal 24 bulan 12.",
+        "stream": "hokkien"
+      },
+      {
+        "label": "Tradisi lain",
+        "text": "Sebagian komunitas melakukannya tanggal 23 bulan 12.",
+        "stream": null
+      }
+    ],
+    "links": [],
+    "tags": [
+      "dewa dapur",
+      "ji si sang sin",
+      "cao kun kong",
+      "imlek",
+      "bersih-bersih"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (MATAKIN / pengurus klenteng / tetua adat)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-pokok-bakti-sehari-hari",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "pokok-ajaran",
+    "title": "Bakti dalam kehidupan sehari-hari",
+    "summary": "Cara mempraktikkan bakti (Xiao) kepada orang tua semasa hidup.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Merawat kesehatan dan kebutuhan orang tua.",
+        "why": "Bakti dimulai dari kepedulian nyata."
+      },
+      {
+        "text": "Menghormati dan berbicara dengan lembut.",
+        "why": "Lun Yu mengajarkan bahwa bakti bukan sekadar memberi makan, tetapi disertai hormat."
+      },
+      {
+        "text": "Memberi kabar bila bepergian jauh.",
+        "why": "Agar orang tua tidak cemas."
+      },
+      {
+        "text": "Menjaga nama baik keluarga dengan hidup bajik.",
+        "why": "Mengharumkan nama orang tua."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "bakti",
+      "xiao",
+      "orang tua",
+      "hau"
+    ],
+    "sources": [
+      {
+        "title": "Lun Yu II:7"
+      },
+      {
+        "title": "Xiao Jing"
+      },
+      {
+        "title": "Perlu rujukan resmi dari reviewer (MATAKIN / pengurus klenteng / tetua adat)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "khc-pokok-shio",
+    "faith": "khonghucu",
+    "streams": [],
+    "section": "pokok-ajaran",
+    "title": "Shio dan siklus tahun Imlek",
+    "summary": "Dua belas shio dalam tradisi Tionghoa, sebagai budaya dan penanda tahun.",
+    "body": [
+      "Tahun Imlek berputar dalam siklus dua belas shio: Tikus, Kerbau, Macan, Kelinci, Naga, Ular, Kuda, Kambing, Monyet, Ayam, Anjing, dan Babi; dipadukan dengan lima unsur sehingga terbentuk siklus 60 tahun.",
+      "Tahun Imlek 2026 adalah tahun Kuda, dan Imlek 2027 (6 Februari 2027) memasuki tahun Kambing.",
+      "Shio adalah tradisi budaya. Dalam agama Khonghucu, penekanan utama tetap pada iman kepada Thian dan pembinaan kebajikan."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "shio",
+      "zodiak",
+      "tahun kuda",
+      "tahun kambing",
+      "imlek",
+      "siklus 60"
+    ],
+    "sources": [
+      {
+        "title": "Perlu rujukan resmi dari reviewer (MATAKIN / pengurus klenteng / tetua adat)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
   }
 ]

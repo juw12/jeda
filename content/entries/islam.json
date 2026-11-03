@@ -1207,5 +1207,153 @@
     "reviewed_at": null,
     "version": 1,
     "updated": "2026-11-03"
+  },
+  {
+    "id": "isl-ibadah-jumat",
+    "faith": "islam",
+    "streams": [],
+    "section": "ibadah-harian",
+    "title": "Sholat Jumat",
+    "summary": "Sholat berjamaah setiap Jumat pengganti Dzuhur bagi laki-laki Muslim.",
+    "body": [
+      "Sholat Jumat wajib bagi laki-laki Muslim yang balig, berakal, merdeka, sehat, dan bermukim. Perempuan boleh mengikuti; bila tidak, ia sholat Dzuhur."
+    ],
+    "steps": [
+      {
+        "text": "Mandi, berpakaian bersih, dan memakai wewangian (sunnah).",
+        "why": "Memuliakan hari Jumat."
+      },
+      {
+        "text": "Datang lebih awal ke masjid.",
+        "why": "Keutamaan bersegera menuju sholat Jumat."
+      },
+      {
+        "text": "Mendengarkan khutbah dengan tenang, tanpa berbicara.",
+        "why": "Khutbah termasuk rangkaian ibadah Jumat."
+      },
+      {
+        "text": "Sholat Jumat dua rakaat berjamaah.",
+        "why": "Menggantikan sholat Dzuhur."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "jumat",
+      "jumatan",
+      "khutbah",
+      "sholat jumat"
+    ],
+    "sources": [
+      {
+        "title": "QS. Al-Jumu'ah 62:9"
+      },
+      {
+        "title": "Perlu ditinjau ustaz/ulama dari ormas terkait (NU, Muhammadiyah, Persis, dll.)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "isl-siklus-khitan",
+    "faith": "islam",
+    "streams": [],
+    "section": "siklus-hidup",
+    "title": "Khitan",
+    "summary": "Sunat bagi anak laki-laki sebagai bagian dari fitrah.",
+    "body": [
+      "Khitan bagi laki-laki dipandang wajib oleh mazhab Syafi'i dan sunnah muakkadah oleh sebagian mazhab lain. Di Indonesia umumnya dilakukan pada usia anak-anak dengan tenaga medis.",
+      "Banyak keluarga mengadakan syukuran khitan dengan doa bersama."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [
+      {
+        "label": "Khitan perempuan",
+        "text": "Pemerintah Indonesia melarang praktik sunat perempuan (P2GP) melalui PP No. 28 Tahun 2024; tanyakan tenaga kesehatan.",
+        "stream": null
+      }
+    ],
+    "links": [],
+    "tags": [
+      "khitan",
+      "sunat",
+      "sunatan",
+      "anak"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau ustaz/ulama dari ormas terkait (NU, Muhammadiyah, Persis, dll.)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "isl-aturan-adab-salam",
+    "faith": "islam",
+    "streams": [],
+    "section": "aturan-etika",
+    "title": "Adab salam, bertamu, dan makan",
+    "summary": "Akhlak sehari-hari yang diajarkan dalam Islam.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Mengucapkan salam saat bertemu dan masuk rumah.",
+        "why": "Menebarkan kedamaian."
+      },
+      {
+        "text": "Meminta izin hingga tiga kali saat bertamu; bila tidak dijawab, kembali.",
+        "why": "Menghormati privasi tuan rumah."
+      },
+      {
+        "text": "Membaca basmalah sebelum makan dan hamdalah sesudahnya; makan dengan tangan kanan.",
+        "why": "Mensyukuri rezeki."
+      },
+      {
+        "text": "Tidak berlebihan dan tidak menyisakan makanan dengan sia-sia.",
+        "why": "Menjauhi sifat mubazir."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "adab",
+      "salam",
+      "bertamu",
+      "makan",
+      "akhlak"
+    ],
+    "sources": [
+      {
+        "title": "QS. An-Nur 24:27"
+      },
+      {
+        "title": "Perlu ditinjau ustaz/ulama dari ormas terkait (NU, Muhammadiyah, Persis, dll.)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
   }
 ]

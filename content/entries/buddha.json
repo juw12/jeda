@@ -843,5 +843,120 @@
     "reviewed_at": null,
     "version": 1,
     "updated": "2026-11-03"
+  },
+  {
+    "id": "bud-aturan-atthasila",
+    "faith": "buddha",
+    "streams": [],
+    "section": "aturan-etika",
+    "title": "Atthasila: delapan latihan moral",
+    "summary": "Sila tambahan yang dilatih pada hari Uposatha atau saat retret.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Menghindari pembunuhan makhluk hidup."
+      },
+      {
+        "text": "Menghindari mengambil barang yang tidak diberikan."
+      },
+      {
+        "text": "Menghindari perbuatan tidak suci (hidup selibat selama latihan)."
+      },
+      {
+        "text": "Menghindari ucapan yang tidak benar."
+      },
+      {
+        "text": "Menghindari minuman atau zat yang melemahkan kesadaran."
+      },
+      {
+        "text": "Tidak makan setelah tengah hari."
+      },
+      {
+        "text": "Menghindari hiburan, perhiasan, dan wewangian."
+      },
+      {
+        "text": "Menghindari tempat tidur dan tempat duduk yang tinggi dan mewah."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "atthasila",
+      "delapan sila",
+      "uposatha",
+      "retret"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "bud-ibadah-metta",
+    "faith": "buddha",
+    "streams": [],
+    "section": "ibadah-harian",
+    "title": "Meditasi cinta kasih (metta bhavana)",
+    "summary": "Mengembangkan harapan baik bagi diri sendiri dan semua makhluk.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Duduk tenang dan arahkan harapan baik kepada diri sendiri: semoga aku bahagia, sehat, dan damai.",
+        "why": "Cinta kasih dimulai dari menerima diri sendiri."
+      },
+      {
+        "text": "Arahkan kepada orang yang dikasihi, lalu orang netral.",
+        "why": "Memperluas lingkaran kepedulian."
+      },
+      {
+        "text": "Arahkan kepada orang yang sulit.",
+        "why": "Melatih melepaskan kebencian."
+      },
+      {
+        "text": "Arahkan kepada semua makhluk tanpa batas.",
+        "why": "Metta yang tidak membeda-bedakan."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [
+      {
+        "name": "SuttaCentral: Snp 1.8",
+        "url": "https://suttacentral.net/snp1.8",
+        "note": ""
+      }
+    ],
+    "tags": [
+      "metta",
+      "cinta kasih",
+      "meditasi",
+      "karaniya metta"
+    ],
+    "sources": [
+      {
+        "title": "Karaniya Metta Sutta (Sutta Nipata 1.8)"
+      },
+      {
+        "title": "Perlu ditinjau bhikkhu/pandita dari majelis terkait (WALUBI, KASI, dll.)"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
   }
 ]

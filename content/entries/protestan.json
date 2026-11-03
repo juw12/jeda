@@ -807,5 +807,88 @@
     "reviewed_at": null,
     "version": 1,
     "updated": "2026-11-03"
+  },
+  {
+    "id": "pro-ibadah-keluarga",
+    "faith": "protestan",
+    "streams": [],
+    "section": "ibadah-harian",
+    "title": "Ibadah keluarga dan doa makan",
+    "summary": "Membangun kebiasaan rohani di rumah.",
+    "body": [],
+    "steps": [
+      {
+        "text": "Doa sebelum makan, dipimpin bergantian.",
+        "why": "Mensyukuri berkat setiap hari."
+      },
+      {
+        "text": "Ibadah keluarga mingguan: nyanyian, pembacaan Alkitab, berbagi, doa.",
+        "why": "Iman tumbuh dalam keluarga."
+      },
+      {
+        "text": "Mendoakan anak sebelum tidur.",
+        "why": "Menanamkan iman sejak kecil."
+      }
+    ],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "ibadah keluarga",
+      "doa makan",
+      "mezbah keluarga",
+      "anak"
+    ],
+    "sources": [
+      {
+        "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
+  },
+  {
+    "id": "pro-hariraya-paskah",
+    "faith": "protestan",
+    "streams": [],
+    "section": "hari-raya",
+    "title": "Jumat Agung dan Paskah",
+    "summary": "Mengenang wafat dan merayakan kebangkitan Yesus Kristus.",
+    "body": [
+      "Jumat Agung diperingati dengan kebaktian yang khidmat, sering disertai Perjamuan Kudus.",
+      "Paskah dirayakan dengan kebaktian subuh atau pagi, nyanyian sukacita, dan di banyak tempat dengan kegiatan anak seperti mencari telur Paskah."
+    ],
+    "steps": [],
+    "items": [],
+    "timing": null,
+    "variations": [],
+    "links": [],
+    "tags": [
+      "paskah",
+      "jumat agung",
+      "kebangkitan",
+      "subuh paskah"
+    ],
+    "sources": [
+      {
+        "title": "Matius 27–28"
+      },
+      {
+        "title": "Perlu ditinjau pendeta dari sinode terkait / PGI"
+      }
+    ],
+    "license": "Teks Jeda: lisensi akan ditetapkan (usulan CC BY-SA 4.0)",
+    "status": "draft",
+    "drafted_by": "ai-seed",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "version": 1,
+    "updated": "2026-11-03"
   }
 ]
