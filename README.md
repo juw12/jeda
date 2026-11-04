@@ -142,3 +142,7 @@ Lihat juga `CONTENT_GUIDE.md`, `LAUNCH_CHECKLIST.md`, dan `docs/TINJAUAN_IZIN.md
 
 ## Catatan offline
 Semua file `content/*.json` di-precache oleh `sw.js`. Jika menambah file konten baru, tambahkan juga ke daftar `SHELL` di `sw.js` dan naikkan `VERSION`.
+
+## License
+
+Released under the [MIT License](LICENSE) © 2026 Juwen Lie. Contributions are welcome under the same license; see the [contributing guide](https://github.com/juw12/.github/blob/main/CONTRIBUTING.md) and [Code of Conduct](https://github.com/juw12/.github/blob/main/CODE_OF_CONDUCT.md).
