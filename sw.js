@@ -1,6 +1,6 @@
 // Offline support: app shell cache-first, content network-first (so reviewed updates arrive quickly).
 
-const VERSION = 'jeda-v1.3.3';
+const VERSION = 'jeda-v1.4.0';
 const SHELL = [
   './',
   'index.html',
@@ -37,6 +37,9 @@ const SHELL = [
   'js/world/presence.js',
   'js/world/greetings.js',
   'js/world/live.js',
+  'js/world/avatar.js',
+  'js/world/nav.js',
+  'js/world/life.js',
   'js/views/live.js',
   'vendor/three.module.min.js',
   'vendor/trystero-nostr.js',

@@ -641,8 +641,12 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
           location.hash = `#/entri/${spot.entry}`;
         }
       },
+      onBlocked: (message) => toast(message),
     });
     window.__jedaWorld = world;
+    if (world.attire) {
+      setTimeout(() => toast(`Pakaianmu di ${faith.spaceName}: ${world.attire}`), 900);
+    }
     const chips = main.querySelector('[data-chips]');
     chips.innerHTML = world.spots.map((spot) => `<button type="button" class="chip" data-chip="${esc(spot.id)}">${esc(spot.short || spot.label)}</button>`).join('');
     chips.querySelectorAll('[data-chip]').forEach((chip) => {

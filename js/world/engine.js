@@ -6,6 +6,9 @@ import * as THREE from '../../vendor/three.module.min.js';
 import { buildPlace, mat, box, cyl, sphere, cone } from './places.js';
 import { bell, gong, chime, woodblock, crackle } from '../audio.js';
 import { greetingById } from './greetings.js';
+import { createAvatar, attireFor, animateAvatar, playClip, stopClip, setSitting, textSprite } from './avatar.js';
+import { buildNav, createBarriers } from './nav.js';
+import { createLife } from './life.js';
 
 export function webglAvailable() {
   try {
@@ -83,85 +86,6 @@ function softDotTexture() {
   return softDot;
 }
 
-function textSprite(text, { color = '#ffffff', background = 'rgba(20,18,16,0.55)', size = 44 } = {}) {
-  const canvas = document.createElement('canvas');
-  const context = canvas.getContext('2d');
-  context.font = `600 ${size}px system-ui, "Segoe UI", sans-serif`;
-  const width = Math.ceil(context.measureText(text).width) + 40;
-  canvas.width = width;
-  canvas.height = size + 28;
-  context.font = `600 ${size}px system-ui, "Segoe UI", sans-serif`;
-  context.fillStyle = background;
-  const radius = canvas.height / 2;
-  context.beginPath();
-  context.roundRect(0, 0, width, canvas.height, radius);
-  context.fill();
-  context.fillStyle = color;
-  context.textBaseline = 'middle';
-  context.fillText(text, 20, canvas.height / 2 + 2);
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.colorSpace = THREE.SRGBColorSpace;
-  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, depthWrite: false, transparent: true }));
-  const scale = 0.0042;
-  sprite.scale.set(width * scale, canvas.height * scale, 1);
-  return sprite;
-}
-
-// Arm angles per gesture: [rightX, rightZ, leftX, leftZ] (x = raise forward, z = swing in/out), body lean.
-const POSES = {
-  rest: { arms: [0, 0.12, 0, -0.12], lean: 0 },
-  anjali: { arms: [-1.25, -0.62, -1.25, 0.62], lean: 0 },
-  soja: { arms: [-1.45, -0.58, -1.45, 0.58], lean: 0.08 },
-  fold: { arms: [-1.0, -0.66, -1.0, 0.66], lean: 0.05 },
-  bow: { arms: [-1.2, -0.62, -1.2, 0.62], lean: 0.38 },
-  chest: { arms: [-1.15, -0.75, 0, -0.12], lean: 0.1 },
-  open: { arms: [-0.95, 0.35, -0.95, -0.35], lean: 0 },
-  raise: { arms: [-0.25, 2.7, -0.25, -2.7], lean: -0.05 },
-  wave: { arms: [-0.2, 2.5, 0, -0.12], lean: 0, wave: true },
-  cross: { arms: [-1.6, -0.5, 0, -0.12], lean: 0.05, cross: true },
-};
-
-function createAvatar(name, color, { visitor = false, host = false } = {}) {
-  const group = new THREE.Group();
-  const body = new THREE.Group();
-  const robe = new THREE.Mesh(new THREE.CapsuleGeometry(0.32, 0.7, 4, 12), mat(color, { roughness: 0.7 }));
-  robe.position.y = 0.72;
-  robe.castShadow = true;
-  const head = new THREE.Mesh(new THREE.SphereGeometry(0.22, 16, 12), mat('#f1d9bf', { roughness: 0.6 }));
-  head.position.y = 1.52;
-  head.castShadow = true;
-  // Arms hang from shoulder pivots so gestures (soja, anjali, salam…) read clearly from a distance.
-  const arms = [0.36, -0.36].map((x) => {
-    const pivot = new THREE.Group();
-    pivot.position.set(x, 1.22, 0);
-    const sleeve = new THREE.Mesh(new THREE.CapsuleGeometry(0.075, 0.42, 3, 8), mat(color, { roughness: 0.7 }));
-    sleeve.position.y = -0.28;
-    const hand = new THREE.Mesh(new THREE.SphereGeometry(0.075, 10, 8), mat('#f1d9bf', { roughness: 0.6 }));
-    hand.position.y = -0.56;
-    pivot.add(sleeve, hand);
-    body.add(pivot);
-    return pivot;
-  });
-  const shadow = new THREE.Mesh(new THREE.CircleGeometry(0.42, 20), new THREE.MeshBasicMaterial({ color: '#000000', transparent: true, opacity: 0.18, depthWrite: false }));
-  shadow.rotation.x = -Math.PI / 2;
-  shadow.position.y = 0.02;
-  const labelText = host ? `${name} · pemandu` : visitor ? `${name} · tamu` : name;
-  const label = textSprite(labelText, host ? { background: 'rgba(120,80,10,0.8)' } : undefined);
-  label.position.y = 2.05;
-  body.add(robe, head);
-  group.add(body, shadow, label);
-  if (host) {
-    const halo = new THREE.Mesh(new THREE.RingGeometry(0.5, 0.62, 32), new THREE.MeshBasicMaterial({ color: '#f3c84b', transparent: true, opacity: 0.85, depthWrite: false, side: THREE.DoubleSide }));
-    halo.rotation.x = -Math.PI / 2;
-    halo.position.y = 0.03;
-    group.add(halo);
-  }
-  return {
-    group, body, arms, label, target: new THREE.Vector3(), sitting: false, facing: 0,
-    pose: 'rest', poseUntil: 0, poseStart: 0, bubble: null, bubbleUntil: 0,
-  };
-}
-
 export function createWorld(container, options) {
   const {
     sceneId,
@@ -174,6 +98,7 @@ export function createWorld(container, options) {
     onMove = () => {},
     onSpecial = () => {},
     onQuality = () => {},
+    onBlocked = () => {},
     quality: requestedQuality = 'auto',
   } = options;
   const sky = SKIES[time] || SKIES.day;
@@ -238,6 +163,8 @@ export function createWorld(container, options) {
   walkway.receiveShadow = true;
   scene.add(walkway);
   scene.add(place.group);
+  const nav = buildNav(place);
+  scene.add(createBarriers(place));
 
   if (time === 'night') {
     const starGeometry = new THREE.BufferGeometry();
@@ -283,28 +210,92 @@ export function createWorld(container, options) {
   });
 
   // ---------- Avatars ----------
-  const self = createAvatar(me.name, me.color, { visitor: mode === 'visit' });
+  const self = createAvatar(me.name, me.color, { visitor: mode === 'visit', attire: attireFor(sceneId, mode) });
+  self.path = [];
+  self.exitPoint = null;
+  self.sitSpot = null;
   self.group.position.set(place.spawn.x, 0, place.spawn.z);
   self.target.copy(self.group.position);
   self.facing = Math.PI;
   scene.add(self.group);
   const peers = new Map();
+  const life = createLife({ scene, place, nav, sceneId, time, quality, addEmitter });
 
   // ---------- Camera rig ----------
-  const rig = { yaw: 0, pitch: 0.42, distance: 10.5, targetDistance: 10.5 };
+  const rig = { yaw: 0, pitch: 0.42, distance: 10.5, targetDistance: 10.5, savedYaw: null, savedView: null, actionYaw: 0, cancelled: false, ahead: 2.6 };
+  // Solid scenery that may hide the avatar from the camera (see updateCamera).
+  const cameraRay = new THREE.Raycaster();
+  const occluders = [];
+  place.group.traverse((object) => {
+    if (object.isMesh && !object.userData.noCollide && !(object.parent && object.parent.userData.noCollide)) {
+      occluders.push(object);
+    }
+  });
+
+  // While our avatar performs an action, swing the camera to a side view so the gesture is visible,
+  // then return to where the visitor was looking. Dragging cancels this.
+  function updateActionCamera(delta) {
+    if (self.clip && rig.savedYaw === null && !rig.cancelled) {
+      rig.savedYaw = rig.yaw;
+      rig.savedView = { distance: rig.targetDistance, pitch: rig.pitch };
+      rig.actionYaw = self.facing - Math.PI + 1.45;
+      // Come closer and lower so roofs and eaves don't block the view of the gesture.
+      rig.targetDistance = Math.min(rig.targetDistance, 7);
+    }
+    if (self.clip && rig.savedYaw !== null) {
+      rig.pitch += (0.3 - rig.pitch) * Math.min(1, delta * 2.5);
+    } else if (!self.clip && rig.savedView) {
+      rig.targetDistance = rig.savedView.distance;
+      rig.pitch += (rig.savedView.pitch - rig.pitch) * Math.min(1, delta * 2.5);
+      if (Math.abs(rig.savedView.pitch - rig.pitch) < 0.01) {
+        rig.savedView = null;
+      }
+    }
+    let goal = null;
+    if (self.clip && rig.savedYaw !== null) {
+      goal = rig.actionYaw;
+    } else if (!self.clip && rig.savedYaw !== null) {
+      goal = rig.savedYaw;
+    }
+    if (goal === null) {
+      if (!self.clip) {
+        rig.cancelled = false;
+      }
+      return;
+    }
+    let difference = Math.atan2(Math.sin(goal - rig.yaw), Math.cos(goal - rig.yaw));
+    rig.yaw += difference * Math.min(1, delta * 2.5);
+    if (!self.clip && Math.abs(difference) < 0.02) {
+      rig.savedYaw = null;
+    }
+  }
 
   function updateCamera(delta) {
+    updateActionCamera(delta);
     rig.distance += (rig.targetDistance - rig.distance) * Math.min(1, delta * 6);
-    // Look a little ahead of the avatar so it sits in the lower third and the sacred building stays in view.
-    const ahead = new THREE.Vector3(-Math.sin(rig.yaw), 0, -Math.cos(rig.yaw)).multiplyScalar(2.6);
+    // Look a little ahead of the avatar so it sits in the lower third and the sacred building stays in view;
+    // during an action, look at the avatar itself so the gesture is centred.
+    rig.ahead += ((self.clip ? 0 : 2.6) - rig.ahead) * Math.min(1, delta * 3);
+    const ahead = new THREE.Vector3(-Math.sin(rig.yaw), 0, -Math.cos(rig.yaw)).multiplyScalar(rig.ahead);
     const focus = self.group.position.clone().add(new THREE.Vector3(0, 1.5, 0)).add(ahead);
-    const offset = new THREE.Vector3(
+    const direction = new THREE.Vector3(
       Math.sin(rig.yaw) * Math.cos(rig.pitch),
       Math.sin(rig.pitch),
       Math.cos(rig.yaw) * Math.cos(rig.pitch),
-    ).multiplyScalar(rig.distance);
-    camera.position.lerp(focus.clone().add(offset), Math.min(1, delta * 5));
+    );
+    // Keep walls, pillars and roofs from coming between the camera and the avatar.
+    let distance = rig.distance;
+    const head = self.group.position.clone().add(new THREE.Vector3(0, 1.4, 0));
+    const wanted = focus.clone().addScaledVector(direction, distance);
+    const toCamera = wanted.clone().sub(head);
+    const reach = toCamera.length();
+    cameraRay.set(head, toCamera.normalize());
+    cameraRay.far = reach;
+    const blocker = cameraRay.intersectObjects(occluders, false)[0];
+    const target = blocker ? head.clone().addScaledVector(toCamera, Math.max(1.6, blocker.distance - 0.35)) : wanted;
+    camera.position.lerp(target, Math.min(1, delta * (blocker ? 9 : 5)));
     camera.lookAt(focus);
+    self.label.material.opacity = self.clip ? 0.35 : 1;
   }
 
   // ---------- Effects ----------
@@ -597,7 +588,17 @@ export function createWorld(container, options) {
     return object;
   }
 
-  // Run an activity locally (and tell the UI to broadcast it unless it came from another visitor).
+  function faceSpot(avatar, spot) {
+    const position = avatar.group.position;
+    const dx = spot.position.x - position.x;
+    const dz = spot.position.z - position.z;
+    if (Math.abs(dx) + Math.abs(dz) > 0.01) {
+      avatar.facing = Math.atan2(dx, dz);
+    }
+  }
+
+  // Run an activity: the avatar plays the matching animation (with a prop in hand) and the offering
+  // appears at the moment it is placed. Remote = another visitor did it; their avatar animates too.
   function perform(spotId, { remote = false, by = null } = {}) {
     const spot = place.spots.find((s) => s.id === spotId);
     if (!spot) {
@@ -609,11 +610,23 @@ export function createWorld(container, options) {
       }
       return true;
     }
+    if (!remote && self.clip) {
+      return false;
+    }
+    const actor = remote ? by : self;
+    if (!remote) {
+      standUp();
+      self.path = [];
+      self.faceCameraUntil = 0;
+    }
     if (spot.kind === 'ciamsi' || spot.kind === 'read') {
-      if (!remote) {
-        if (spot.kind === 'ciamsi') {
-          woodblock();
-        }
+      if (spot.kind === 'ciamsi' && !remote) {
+        woodblock();
+      }
+      if (actor) {
+        faceSpot(actor, spot);
+        playClip(actor, spot.kind, { onEnd: remote ? null : () => onSpecial(spot) });
+      } else if (!remote) {
         onSpecial(spot);
       }
       return true;
@@ -622,7 +635,12 @@ export function createWorld(container, options) {
     if (!run) {
       return false;
     }
-    run(spot);
+    if (actor) {
+      faceSpot(actor, spot);
+      playClip(actor, spot.kind, { onRelease: () => run(spot) });
+    } else {
+      run(spot);
+    }
     if (!remote) {
       onAction(spot);
     } else if (by) {
@@ -638,16 +656,66 @@ export function createWorld(container, options) {
     setTimeout(() => peer.group.remove(sprite), 2500);
   }
 
+  // Gentle explanation when someone tries to walk into a sacred area (throttled).
+  let lastBlockedAt = 0;
+  function notifyZone(zone) {
+    const now = performance.now();
+    if (zone && now - lastBlockedAt > 2500) {
+      lastBlockedAt = now;
+      onBlocked(zone.message);
+    }
+  }
+
+  function routeTo(x, z, { quietZone = false } = {}) {
+    if (self.clip) {
+      stopClip(self);
+    }
+    self.pendingSit = null;
+    const origin = self.exitPoint || self.group.position;
+    const result = nav.findPath(origin, { x, z });
+    self.path = self.exitPoint ? [self.exitPoint.clone(), ...result.path] : result.path;
+    self.exitPoint = null;
+    if (result.zone && !quietZone) {
+      notifyZone(result.zone);
+    }
+    return result;
+  }
+
   function sitAt(spot) {
-    self.target.copy(spot.stand);
+    routeTo(spot.stand.x, spot.stand.z, { quietZone: true });
     self.pendingSit = spot;
   }
 
   function standUp() {
-    if (self.sitting) {
-      self.sitting = false;
-      onSit(null);
+    if (!self.sitting) {
+      return;
     }
+    const spot = self.sitSpot;
+    setSitting(self, false);
+    self.sitSpot = null;
+    onSit(null);
+    if (spot && spot.seat) {
+      // Step off the bench/bale back to where we came from.
+      self.exitPoint = spot.stand.clone();
+      self.path = [spot.stand.clone()];
+    }
+  }
+
+  function nearestSitSpot(point) {
+    let best = null;
+    let bestDistance = 1.2;
+    place.spots.filter((spot) => spot.kind === 'sit').forEach((spot) => {
+      const distances = [Math.hypot(point.x - spot.stand.x, point.z - spot.stand.z)];
+      if (spot.seat) {
+        distances.push(Math.hypot(point.x - spot.seat.x, point.z - spot.seat.z));
+      }
+      const distance = Math.min(...distances);
+      if (distance < bestDistance) {
+        bestDistance = distance;
+        best = spot;
+      }
+    });
+    return best;
   }
 
   // A greeting = the faith's own words in a speech bubble + the matching body gesture.
@@ -677,34 +745,6 @@ export function createWorld(container, options) {
     return true;
   }
 
-  function animatePose(avatar, delta, now) {
-    if (avatar.pose !== 'rest' && now > avatar.poseUntil) {
-      avatar.pose = 'rest';
-    }
-    const pose = POSES[avatar.pose] || POSES.rest;
-    const t = (now - avatar.poseStart) / 1000;
-    let [rightX, rightZ, leftX, leftZ] = pose.arms;
-    if (pose.wave) {
-      rightZ += Math.sin(t * 9) * 0.35;
-    }
-    if (pose.cross) {
-      // forehead → chest → left shoulder → right shoulder
-      const step = Math.min(3, Math.floor(t / 0.6));
-      [rightX, rightZ] = [[-2.3, -0.45], [-1.0, -0.55], [-1.5, -1.05], [-1.5, -0.2]][step];
-    }
-    const k = Math.min(1, delta * 9);
-    const [right, left] = avatar.arms;
-    right.rotation.x += (rightX - right.rotation.x) * k;
-    right.rotation.z += (rightZ - right.rotation.z) * k;
-    left.rotation.x += (leftX - left.rotation.x) * k;
-    left.rotation.z += (leftZ - left.rotation.z) * k;
-    avatar.body.rotation.x += (pose.lean - avatar.body.rotation.x) * k;
-    if (avatar.bubble && now > avatar.bubbleUntil) {
-      avatar.group.remove(avatar.bubble);
-      avatar.bubble = null;
-    }
-  }
-
   // ---------- Input ----------
   const raycaster = new THREE.Raycaster();
   const pointers = new Map();
@@ -722,21 +762,20 @@ export function createWorld(container, options) {
     const spotHit = raycaster.intersectObjects(pickables, false)[0];
     if (spotHit) {
       standUp();
-      self.target.copy(spotHit.object.userData.spot.stand);
-      self.walkingToSpot = spotHit.object.userData.spot;
+      const spot = spotHit.object.userData.spot;
+      routeTo(spot.stand.x, spot.stand.z, { quietZone: true });
+      return;
+    }
+    if (life.pick(raycaster, self.group.position)) {
       return;
     }
     const groundHit = raycaster.intersectObject(ground, false)[0];
     if (groundHit) {
       standUp();
       const point = groundHit.point;
-      const radius = Math.hypot(point.x, point.z);
-      if (radius > 24) {
-        point.multiplyScalar(24 / radius);
-      }
-      self.target.set(point.x, 0, point.z);
-      self.walkingToSpot = null;
-      tapMarker.position.set(point.x, 0.06, point.z);
+      routeTo(point.x, point.z);
+      const end = self.path.length ? self.path[self.path.length - 1] : point;
+      tapMarker.position.set(end.x, 0.06, end.z);
       tapMarker.material.opacity = 0.9;
     }
   }
@@ -777,6 +816,11 @@ export function createWorld(container, options) {
       drag.x = event.clientX;
       drag.y = event.clientY;
       rig.yaw -= dx * 0.006;
+      if (Math.abs(dx) > 2) {
+        rig.savedYaw = null;
+        rig.savedView = null;
+        rig.cancelled = Boolean(self.clip);
+      }
       rig.pitch = THREE.MathUtils.clamp(rig.pitch + dy * 0.004, 0.12, 1.2);
     }
   };
@@ -842,13 +886,26 @@ export function createWorld(container, options) {
     const distance = toTarget.length();
     if (distance > 0.05) {
       const step = Math.min(distance, speed * delta);
-      position.add(toTarget.normalize().multiplyScalar(step));
+      position.addScaledVector(toTarget.normalize(), step);
       avatar.facing = Math.atan2(toTarget.x, toTarget.z);
-      avatar.body.position.y = Math.abs(Math.sin(elapsed * 9)) * 0.06;
+      avatar.moving = true;
       return true;
     }
-    avatar.body.position.y *= 0.8;
+    avatar.moving = false;
     return false;
+  }
+
+  function followPath(delta) {
+    const position = self.group.position;
+    while (self.path.length && Math.hypot(self.path[0].x - position.x, self.path[0].z - position.z) < 0.06) {
+      self.path.shift();
+    }
+    if (!self.path.length) {
+      self.moving = false;
+      return false;
+    }
+    self.target.set(self.path[0].x, 0, self.path[0].z);
+    return moveAvatar(self, delta);
   }
 
   function turnTowards(avatar, delta) {
@@ -857,8 +914,10 @@ export function createWorld(container, options) {
     avatar.group.rotation.y += difference * Math.min(1, delta * 8);
   }
 
-  function applySitPose(avatar) {
-    avatar.body.scale.y += ((avatar.sitting ? 0.62 : 1) - avatar.body.scale.y) * 0.2;
+  // Raise avatars onto benches/bale while seated, back to the ground when standing.
+  function settleHeight(avatar, delta) {
+    const targetY = avatar.sitting && avatar.seat ? avatar.seat.height : 0;
+    avatar.group.position.y += (targetY - avatar.group.position.y) * Math.min(1, delta * 6);
   }
 
   // Adaptive quality: if the device can't hold ~28 fps, lower resolution, then drop shadows.
@@ -907,8 +966,8 @@ export function createWorld(container, options) {
     const delta = Math.min(clock.getDelta(), 0.05);
     elapsed += delta;
 
+    let keyMoved = false;
     if (keys.size) {
-      standUp();
       const forward = new THREE.Vector3(-Math.sin(rig.yaw), 0, -Math.cos(rig.yaw));
       const right = new THREE.Vector3(-forward.z, 0, forward.x);
       const move = new THREE.Vector3();
@@ -917,21 +976,62 @@ export function createWorld(container, options) {
       if (keys.has('d') || keys.has('arrowright')) move.add(right);
       if (keys.has('a') || keys.has('arrowleft')) move.sub(right);
       if (move.lengthSq() > 0) {
-        self.target.copy(self.group.position).add(move.normalize().multiplyScalar(0.6));
-        self.walkingToSpot = null;
+        standUp();
+        if (self.clip) {
+          stopClip(self);
+        }
+        self.path = [];
+        self.exitPoint = null;
+        self.pendingSit = null;
+        move.normalize();
+        const position = self.group.position;
+        const step = 3.2 * delta;
+        const escaping = !nav.walkable(position.x, position.z);
+        const tryStep = (dx, dz) => {
+          if (escaping || nav.walkable(position.x + dx, position.z + dz)) {
+            position.x += dx;
+            position.z += dz;
+            return true;
+          }
+          return false;
+        };
+        if (!tryStep(move.x * step, move.z * step) && !tryStep(move.x * step, 0)) {
+          tryStep(0, move.z * step);
+        }
+        if (!nav.walkable(position.x + move.x * 0.6, position.z + move.z * 0.6)) {
+          notifyZone(nav.zoneAt(position.x + move.x * 0.8, position.z + move.z * 0.8));
+        }
+        self.facing = Math.atan2(move.x, move.z);
+        self.target.set(position.x, 0, position.z);
+        self.moving = true;
+        keyMoved = true;
       }
     }
 
-    const moving = moveAvatar(self, delta);
-    if (!moving && self.pendingSit) {
+    let moving = keyMoved;
+    if (!keyMoved) {
+      if (self.sitting && self.seat) {
+        self.target.set(self.seat.x, 0, self.seat.z);
+        moving = moveAvatar(self, delta, 1.6);
+        self.facing = self.seat.facing;
+      } else {
+        moving = followPath(delta);
+      }
+    }
+    if (!moving && self.pendingSit && !self.path.length) {
       const spot = self.pendingSit;
       self.pendingSit = null;
-      self.sitting = true;
-      self.facing = Math.atan2(spot.position.x - spot.stand.x, spot.position.z - spot.stand.z) || self.facing;
+      setSitting(self, true, { sitMode: spot.sitMode, seat: spot.seat || null });
+      self.sitSpot = spot;
+      if (spot.seat) {
+        self.facing = spot.seat.facing;
+      } else {
+        faceSpot(self, spot);
+      }
       onSit(spot);
     }
     turnTowards(self, delta);
-    applySitPose(self);
+    settleHeight(self, delta);
 
     // Nearest spot within reach
     let closest = null;
@@ -958,10 +1058,16 @@ export function createWorld(container, options) {
     }
 
     peers.forEach((peer) => {
+      if (peer.sitting && peer.seat) {
+        peer.target.set(peer.seat.x, 0, peer.seat.z);
+      }
       moveAvatar(peer, delta, 3.6);
+      if (peer.sitting && peer.seat) {
+        peer.facing = peer.seat.facing;
+      }
       turnTowards(peer, delta);
-      applySitPose(peer);
-      animatePose(peer, delta, now);
+      settleHeight(peer, delta);
+      animateAvatar(peer, delta, now, elapsed);
     });
     if (self.faceCameraUntil) {
       if (now < self.faceCameraUntil && !moving) {
@@ -971,7 +1077,8 @@ export function createWorld(container, options) {
         self.faceCameraUntil = 0;
       }
     }
-    animatePose(self, delta, now);
+    animateAvatar(self, delta, now, elapsed);
+    life.update(delta, elapsed, [self, ...peers.values()]);
     adaptQuality(now);
 
     spotMarkers.forEach(({ ring, beacon }, index) => {
@@ -1045,8 +1152,8 @@ export function createWorld(container, options) {
 
   function getState() {
     return {
-      x: Math.round(self.target.x * 100) / 100,
-      z: Math.round(self.target.z * 100) / 100,
+      x: Math.round(self.group.position.x * 100) / 100,
+      z: Math.round(self.group.position.z * 100) / 100,
       f: Math.round(self.facing * 100) / 100,
       s: self.sitting ? 1 : 0,
     };
@@ -1063,9 +1170,16 @@ export function createWorld(container, options) {
       const spot = place.spots.find((s) => s.id === spotId);
       if (spot) {
         standUp();
-        self.target.copy(spot.stand);
         if (options.instant) {
+          if (self.clip) {
+            stopClip(self);
+          }
+          self.exitPoint = null;
+          self.path = [];
           self.group.position.set(spot.stand.x, 0, spot.stand.z);
+          self.target.copy(self.group.position);
+        } else {
+          routeTo(spot.stand.x, spot.stand.z, { quietZone: true });
         }
       }
     },
@@ -1076,7 +1190,11 @@ export function createWorld(container, options) {
       if (peers.size >= MAX_RENDERED_PEERS && !info.host) {
         return;
       }
-      const peer = createAvatar(info.name || 'Tamu', info.color || '#9aa3ad', { visitor: info.mode === 'visit', host: Boolean(info.host) });
+      const peer = createAvatar(info.name || 'Tamu', info.color || '#9aa3ad', {
+        visitor: info.mode === 'visit',
+        host: Boolean(info.host),
+        attire: attireFor(sceneId, info.mode === 'visit' ? 'visit' : 'home'),
+      });
       peer.group.position.set(info.x ?? place.spawn.x, 0, info.z ?? place.spawn.z);
       peer.target.copy(peer.group.position);
       scene.add(peer.group);
@@ -1090,10 +1208,19 @@ export function createWorld(container, options) {
       if (typeof state.x === 'number') {
         peer.target.set(state.x, 0, state.z);
       }
-      if (typeof state.f === 'number' && peer.group.position.distanceTo(peer.target) < 0.1) {
+      const planarDistance = Math.hypot(peer.group.position.x - peer.target.x, peer.group.position.z - peer.target.z);
+      if (typeof state.f === 'number' && planarDistance < 0.1) {
         peer.facing = state.f;
       }
-      peer.sitting = Boolean(state.s);
+      const sitting = Boolean(state.s);
+      if (sitting !== peer.sitting) {
+        if (sitting) {
+          const spot = nearestSitSpot(peer.target);
+          setSitting(peer, true, { sitMode: spot ? spot.sitMode : 'pray', seat: spot && spot.seat ? spot.seat : null });
+        } else {
+          setSitting(peer, false);
+        }
+      }
     },
     peerGreet(id, greetingId) {
       const peer = peers.get(id);
@@ -1112,6 +1239,29 @@ export function createWorld(container, options) {
       }
     },
     peerCount: () => peers.size,
+    attire: self.attire,
+    // Diagnostics used by automated checks (no effect on normal use).
+    debug: {
+      nav: () => nav.report(),
+      life: () => ({ ...life.counts(), flying: life.birdsFlying() }),
+      self: () => ({
+        x: self.group.position.x,
+        y: self.group.position.y,
+        z: self.group.position.z,
+        sitting: self.sitting,
+        sitMode: self.sitMode,
+        acting: self.clip ? self.clip.def.prop || 'gesture' : null,
+        rightArm: self.arms[0].rotation.x,
+        lean: self.body.rotation.x,
+        pathLength: self.path.length,
+      }),
+      routeTo: (x, z) => routeTo(x, z).zone?.message || null,
+      walkable: (x, z) => nav.walkable(x, z),
+      zoneCenters: () => nav.zones.map((zone) => (zone.shape === 'circle'
+        ? { x: zone.x, z: zone.z }
+        : { x: (zone.x1 + zone.x2) / 2, z: (zone.z1 + zone.z2) / 2 })),
+      effects: () => effects.length + emitters.length,
+    },
     snapshot() {
       renderer.render(scene, camera);
       return renderer.domElement.toDataURL('image/jpeg', 0.85);

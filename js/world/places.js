@@ -86,8 +86,10 @@ function tree(scale = 1, leaf = '#5f8f55') {
   [[0, 2.6, 0, 1.3], [0.6, 2.2, 0.3, 0.9], [-0.55, 2.3, -0.2, 0.95], [0.1, 3.3, 0.1, 0.8]].forEach(([x, y, z, r]) => {
     const crown = mesh(new THREE.IcosahedronGeometry(r * scale, 0), leaf);
     crown.position.set(x * scale, y * scale, z * scale);
+    crown.userData.noCollide = true;
     group.add(crown);
   });
+  group.userData = { kind: 'tree', scale, leaf };
   return group;
 }
 
@@ -96,6 +98,7 @@ function frangipani(scale = 1) {
   for (let i = 0; i < 8; i++) {
     const flower = sphere(0.09 * scale, i % 2 ? '#fff6e6' : '#f6d6a8', 6);
     flower.position.set((Math.random() - 0.5) * 1.6 * scale, (2.2 + Math.random()) * scale, (Math.random() - 0.5) * 1.6 * scale);
+    flower.userData.noCollide = true;
     group.add(flower);
   }
   return group;
@@ -112,8 +115,10 @@ function pond(radius, color = '#5d8fa6') {
   const rim = mesh(new THREE.TorusGeometry(radius, 0.18, 6, 40), '#8f8a80');
   rim.rotation.x = Math.PI / 2;
   rim.position.y = 0.08;
+  water.userData.water = true;
   const group = new THREE.Group();
   group.add(water, rim);
+  group.userData = { kind: 'pond', radius, noCollide: true, collider: { r: radius + 0.15 } };
   return group;
 }
 
@@ -138,12 +143,14 @@ function klenteng() {
   const red = '#b8322b';
   const roofGreen = '#2f6b5a';
   g.add(at(stoneStep(14, 9), 0, 0.12, -9));
-  const hall = box(11, 3.4, 6.5, '#efe4cf');
-  at(hall, 0, 1.95, -9.5);
-  g.add(hall);
-  for (let i = -2; i <= 2; i++) {
+  // Main hall: open at the front (doors swung open) so the altar can be seen and approached.
+  const hallWall = '#efe4cf';
+  g.add(at(box(11, 3.4, 0.3, hallWall), 0, 1.95, -12.6));
+  [-5.35, 5.35].forEach((x) => g.add(at(box(0.3, 3.4, 6.5, hallWall), x, 1.95, -9.5)));
+  [-3.75, 3.75].forEach((x) => g.add(at(box(3.5, 3.4, 0.3, hallWall), x, 1.95, -6.4)));
+  [-2, -1, 1, 2].forEach((i) => {
     g.add(at(cyl(0.22, 0.22, 3.4, red, 10), i * 2.6, 1.95, -6.1));
-  }
+  });
   const roof = hipRoof(13.5, 8.5, 1.6, roofGreen, '#e0b443');
   at(roof, 0, 3.65, -9.5);
   g.add(roof);
@@ -152,7 +159,7 @@ function klenteng() {
   g.add(roof2);
   const pearl = sphere(0.35, '#e8b84a', 12, { emissive: '#e8b84a', emissiveIntensity: 0.4 });
   g.add(at(pearl, 0, 6.5, -9.5));
-  [-1.2, 1.2].forEach((x) => g.add(at(box(1.6, 2.4, 0.1, red), x, 1.45, -6.2)));
+  [-1, 1].forEach((side) => g.add(at(box(1.6, 2.4, 0.1, red), side * 1.95, 1.45, -7.05, Math.PI / 2)));
   // Altar table inside the doorway
   g.add(at(box(3, 0.9, 1, '#7a2b22'), 0, 0.7, -7.4));
   // Hiolo (incense burner) in the courtyard
@@ -195,6 +202,10 @@ function klenteng() {
       spot('kimcua', 'kimcua', 'Bakar kim cua', [6, 0.9, -2.3], [6, -0.6], { devotional: true, entry: 'khc-ibadah-kertas' }),
       spot('duduk', 'sit', 'Duduk hening', [0, 0.5, 2], [3.5, 2.5], { sitMode: 'pray' }),
     ],
+    restricted: [
+      { shape: 'rect', x1: -1.9, z1: -12.3, x2: 1.9, z2: -6.85, message: 'Meja altar utama: bersembahyang dari depan altar, bukan di baliknya.', ropeSides: (x, z) => z > -12.1 },
+      { shape: 'circle', x: 6, z: -3, r: 1.45, message: 'Tungku kim cua panas. Bakar kertas dari depan tungku saja.' },
+    ],
   };
 }
 
@@ -202,10 +213,14 @@ function klenteng() {
 function vihara() {
   const g = new THREE.Group();
   g.add(at(stoneStep(13, 9, '#d8cfbf'), 0, 0.12, -9));
-  g.add(at(box(10, 3.2, 6, '#f3ead9'), 0, 1.85, -9.5));
-  for (let i = -2; i <= 2; i++) {
+  // Dhammasala: open at the front so the Buddha rupang and the altar are visible.
+  const hallWall = '#f3ead9';
+  g.add(at(box(10, 3.2, 0.3, hallWall), 0, 1.85, -12.35));
+  [-4.85, 4.85].forEach((x) => g.add(at(box(0.3, 3.2, 6, hallWall), x, 1.85, -9.5)));
+  [-3.6, 3.6].forEach((x) => g.add(at(box(2.8, 3.2, 0.3, hallWall), x, 1.85, -6.65)));
+  [-2, -1, 1, 2].forEach((i) => {
     g.add(at(cyl(0.22, 0.22, 3.2, '#c8862f', 10), i * 2.4, 1.85, -6.4));
-  }
+  });
   g.add(at(hipRoof(12.5, 8, 1.5, '#c06a24', '#e8b84a'), 0, 3.45, -9.5));
   g.add(at(hipRoof(7, 4.5, 1.1, '#c06a24', '#e8b84a'), 0, 4.75, -9.5));
   // Seated Buddha (stylised) on a lotus throne inside
@@ -240,8 +255,11 @@ function vihara() {
       spot('altar', 'candle', 'Nyalakan lilin', [0, 1.2, -7.2], [0, -5.2], { devotional: true, entry: 'bud-ibadah-pujabakti', slots: 10 }),
       spot('dupa', 'incense', 'Persembahkan dupa', [0.9, 1.2, -7.2], [1.5, -5.2], { devotional: true, entry: 'bud-ibadah-pujabakti', slots: 9 }),
       spot('kolam', 'lotus', 'Letakkan teratai di kolam', [-6.5, 0.1, -2.5], [-3.6, -1.5], { devotional: false, entry: 'bud-hariraya-waisak' }),
-      spot('bantal', 'sit', 'Duduk bermeditasi', [0, 0.3, 1.2], [0, 1.2], { sitMode: 'meditate', entry: 'bud-ibadah-meditasi' }),
+      spot('bantal', 'sit', 'Duduk bermeditasi', [0, 0.3, 1.2], [0, 1.2], { sitMode: 'meditate', entry: 'bud-ibadah-meditasi', seat: { x: 0, z: 1.2, height: 0.2, cross: true, facing: Math.PI } }),
       spot('lonceng', 'bell', 'Bunyikan lonceng', [4, 2.4, -1.5], [4, 0], { devotional: false }),
+    ],
+    restricted: [
+      { shape: 'rect', x1: -2, z1: -12.1, x2: 2, z2: -6.75, message: 'Altar dan rupang Buddha: beranjali dan berpersembahan dari depan altar.', ropeSides: (x, z) => z > -11.9 },
     ],
   };
 }
@@ -294,6 +312,7 @@ function pura() {
     tip.position.set(2.7, 5.5, 0);
     tip.rotation.z = Math.PI;
     penjor.add(tip);
+    penjor.userData = { noCollide: true, collider: { r: 0.15 } };
     g.add(at(penjor, x, 0, 3.5, x > 0 ? Math.PI : 0));
   });
   g.add(at(frangipani(1.2), -9, 0, 0), at(frangipani(1), 9, 0, 1), at(frangipani(1.1), -3, 0, -12));
@@ -306,8 +325,12 @@ function pura() {
     spots: [
       spot('padmasana', 'canang', 'Haturkan canang sari', [0, 0.85, -7.3], [0, -5.6], { devotional: true, entry: 'hin-ibadah-canang', slots: 12 }),
       spot('dupa', 'incense', 'Nyalakan dupa', [1.2, 0.85, -7.3], [1.6, -5.6], { devotional: true, entry: 'hin-ibadah-canang', slots: 9 }),
-      spot('bale', 'sit', 'Duduk & Tri Sandhya', [-7, 0.6, -6], [-7, -3.8], { sitMode: 'pray', entry: 'hin-ibadah-trisandhya' }),
+      spot('bale', 'sit', 'Duduk & Tri Sandhya', [-7, 0.6, -6], [-7, -3.8], { sitMode: 'pray', entry: 'hin-ibadah-trisandhya', seat: { x: -7, z: -6, height: 0.6, cross: true, facing: Math.atan2(7, -3) } }),
       spot('kulkul', 'bell', 'Bunyikan genta', [7, 1.2, -5], [6, -3.8], { devotional: false }),
+    ],
+    restricted: [
+      { shape: 'rect', x1: -2.4, z1: -11.6, x2: 2.4, z2: -6.7, message: 'Padmasana adalah sthana suci; hanya pemangku yang naik. Haturkan canang dari depan.' },
+      { shape: 'rect', x1: 5.7, z1: -8.3, x2: 8.3, z2: -5.9, message: 'Meru adalah pelinggih suci. Cukup menghormat dari luar tali.' },
     ],
   };
 }
@@ -326,9 +349,10 @@ function masjid() {
   // Arched doorways (dark panels with round top)
   [-3, 0, 3].forEach((x) => {
     g.add(at(box(1.6, 2.2, 0.1, '#4a5a52'), x, 1.35, -6.45));
-    const arch = mesh(new THREE.CylinderGeometry(0.8, 0.8, 0.1, 16, 1, false, 0, Math.PI), '#4a5a52');
+    // Half-disc lying in the wall plane, rounded side up, sitting on top of the door panel.
+    const arch = mesh(new THREE.CylinderGeometry(0.8, 0.8, 0.1, 16, 1, false, Math.PI / 2, Math.PI), '#4a5a52');
     arch.position.set(x, 2.45, -6.45);
-    arch.rotation.set(Math.PI / 2, 0, Math.PI / 2);
+    arch.rotation.set(Math.PI / 2, 0, 0);
     g.add(arch);
   });
   // Minaret
@@ -385,7 +409,8 @@ function gereja() {
   g.add(at(box(2.4, 1, 0.6, '#6a4e3c'), -4.5, 0.5, -2));
   g.add(at(box(0.6, 1.1, 0.5, '#6a4e3c'), 4.5, 0.55, -2.5));
   g.add(at(box(0.8, 0.06, 0.6, '#e9e2d3'), 4.5, 1.15, -2.5));
-  [0, 1.6].forEach((z) => g.add(at(box(3.2, 0.45, 0.6, '#8a6a4e'), 0, 0.23, z)));
+  // Two benches with a walkable aisle between them.
+  [0, 2.0].forEach((z) => g.add(at(box(3.2, 0.45, 0.6, '#8a6a4e'), 0, 0.23, z)));
   g.add(at(tree(1.2, '#5a8a55'), -8, 0, -9), at(tree(1, '#5a8a55'), 8, 0, -10), at(tree(0.8, '#5a8a55'), 7, 0, 2));
   return {
     group: g,
@@ -395,7 +420,7 @@ function gereja() {
     focus: new THREE.Vector3(0, 2.5, -6),
     spots: [
       spot('lilin', 'candle', 'Nyalakan lilin doa', [-4.5, 1.05, -2], [-4.5, 0], { devotional: true, entry: 'pro-ibadah-doa', slots: 12 }),
-      spot('bangku', 'sit', 'Duduk berdoa', [0, 0.45, 0], [0, 0.8], { sitMode: 'pray', entry: 'pro-ibadah-doa' }),
+      spot('bangku', 'sit', 'Duduk berdoa', [0, 0.45, 0], [0, 1.0], { sitMode: 'pray', entry: 'pro-ibadah-doa', seat: { x: 0, z: 0, height: 0.45, facing: Math.PI } }),
       spot('mimbar', 'read', 'Baca ayat hari ini', [4.5, 1.3, -2.5], [4.5, -0.8], { devotional: false, entry: 'pro-kitab-cara-membaca' }),
       spot('lonceng', 'bell', 'Bunyikan lonceng', [0, 6, -5.6], [1.8, -3.5], { devotional: false }),
     ],
@@ -447,8 +472,11 @@ function katedral() {
     spots: [
       spot('lilin-maria', 'candle', 'Nyalakan lilin di Gua Maria', [7.4, 0.95, -2.1], [6, 0], { devotional: true, entry: 'kat-ibadah-rosario', slots: 14 }),
       spot('bunga', 'flowers', 'Persembahkan bunga', [7, 0.4, -2.6], [7.4, -0.6], { devotional: true }),
-      spot('bangku', 'sit', 'Doa rosario', [5.8, 0.45, 2], [5.8, 2.6], { sitMode: 'rosary', entry: 'kat-ibadah-rosario' }),
+      spot('bangku', 'sit', 'Doa rosario', [5.8, 0.45, 2], [5.8, 2.6], { sitMode: 'rosary', entry: 'kat-ibadah-rosario', seat: { x: 5.8, z: 1.5, height: 0.45, facing: Math.PI } }),
       spot('gereja', 'sit', 'Hening di depan gereja', [0, 0.3, -6], [0, -5.5], { sitMode: 'pray', entry: 'kat-ibadah-misa' }),
+    ],
+    restricted: [
+      { shape: 'circle', x: 7.23, z: -3.33, r: 1.25, message: 'Gua Maria: nyalakan lilin dan berdoa dari depan, tanpa masuk ke gua.', rope: false },
     ],
   };
 }
@@ -472,7 +500,7 @@ function alam() {
     spawn: { x: 0, z: 6 },
     focus: new THREE.Vector3(0, 1, -6),
     spots: [
-      spot('bangku', 'sit', 'Duduk & bernapas', [0, 0.6, 0.5], [0, 0.6], { sitMode: 'breathe' }),
+      spot('bangku', 'sit', 'Duduk & bernapas', [0, 0.6, 0.5], [0, 1.4], { sitMode: 'breathe', seat: { x: 0, z: 0.5, height: 0.7, facing: Math.PI } }),
       spot('kolam', 'ripple', 'Lempar kerikil ke kolam', [0, 0.1, -6], [0, -1.6], { devotional: false }),
       spot('pohon', 'sit', 'Bersandar di pohon', [-6, 0.3, -9], [-5, -7.6], { sitMode: 'breathe' }),
     ],
