@@ -4,11 +4,12 @@
 
 import * as THREE from '../../vendor/three.module.min.js';
 import { buildPlace, mat, box, cyl, sphere, cone } from './places.js';
-import { bell, gong, chime, woodblock, crackle } from '../audio.js';
+import { bell, gong, chime, woodblock, crackle, bead, murmur, pageTurn, chant } from '../audio.js';
 import { greetingById } from './greetings.js';
 import { createAvatar, attireFor, animateAvatar, playClip, stopClip, setSitting, textSprite } from './avatar.js';
 import { buildNav, createBarriers } from './nav.js';
 import { createLife } from './life.js';
+import { createHeld, heldItemFor } from './handheld.js';
 
 export function webglAvailable() {
   try {
@@ -99,9 +100,11 @@ export function createWorld(container, options) {
     onSpecial = () => {},
     onQuality = () => {},
     onBlocked = () => {},
+    onHold = () => {},
     quality: requestedQuality = 'auto',
   } = options;
-  const sky = SKIES[time] || SKIES.day;
+  let currentTime = SKIES[time] ? time : 'day';
+  const sky = SKIES[currentTime];
   let qualityName = requestedQuality === 'auto' ? detectQuality() : requestedQuality;
   const quality = { ...(QUALITY[qualityName] || QUALITY.medium) };
 
@@ -129,6 +132,8 @@ export function createWorld(container, options) {
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
+  // Drawn manually: the world first, then (when holding a sacred object) the hands on top.
+  renderer.autoClear = false;
   container.appendChild(renderer.domElement);
   renderer.domElement.className = 'world-canvas';
   renderer.domElement.setAttribute('aria-label', 'Ruang 3D. Ketuk tanah untuk berjalan, ketuk titik bercahaya untuk beraktivitas.');
@@ -140,7 +145,8 @@ export function createWorld(container, options) {
 
   const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 200);
 
-  scene.add(new THREE.HemisphereLight(sky.top, '#8a7b66', sky.hemi));
+  const hemi = new THREE.HemisphereLight(sky.top, '#8a7b66', sky.hemi);
+  scene.add(hemi);
   const sun = new THREE.DirectionalLight(sky.sun, sky.sunIntensity);
   sun.position.set(...sky.sunPos);
   sun.castShadow = quality.shadows;
@@ -166,21 +172,22 @@ export function createWorld(container, options) {
   const nav = buildNav(place);
   scene.add(createBarriers(place));
 
-  if (time === 'night') {
-    const starGeometry = new THREE.BufferGeometry();
-    const starPositions = [];
-    for (let i = 0; i < 500; i++) {
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.random() * Math.PI * 0.42;
-      starPositions.push(Math.sin(phi) * Math.cos(theta) * 120, Math.cos(phi) * 120, Math.sin(phi) * Math.sin(theta) * 120);
-    }
-    starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starPositions, 3));
-    scene.add(new THREE.Points(starGeometry, new THREE.PointsMaterial({ color: '#ffffff', size: 0.9, sizeAttenuation: true, fog: false })));
+  // Stars always exist so the sky can change to night without rebuilding the scene.
+  const starGeometry = new THREE.BufferGeometry();
+  const starPositions = [];
+  for (let i = 0; i < 500; i++) {
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.random() * Math.PI * 0.42;
+    starPositions.push(Math.sin(phi) * Math.cos(theta) * 120, Math.cos(phi) * 120, Math.sin(phi) * Math.sin(theta) * 120);
   }
+  starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starPositions, 3));
+  const stars = new THREE.Points(starGeometry, new THREE.PointsMaterial({ color: '#ffffff', size: 0.9, sizeAttenuation: true, fog: false, transparent: true, opacity: currentTime === 'night' ? 1 : 0 }));
+  stars.visible = currentTime === 'night';
+  scene.add(stars);
 
   // Ambient floating motes (petals by day, fireflies at night)
-  const motes = createParticles(quality.motes, time === 'night' ? '#fff3a8' : '#ffffff', time === 'night' ? 0.22 : 0.12);
-  motes.points.material.opacity = time === 'night' ? 0.9 : 0.5;
+  const motes = createParticles(quality.motes, currentTime === 'night' ? '#fff3a8' : '#ffffff', currentTime === 'night' ? 0.22 : 0.12);
+  motes.points.material.opacity = currentTime === 'night' ? 0.9 : 0.5;
   for (let i = 0; i < motes.count; i++) {
     motes.reset(i, new THREE.Vector3((Math.random() - 0.5) * 30, Math.random() * 6, (Math.random() - 0.5) * 30), new THREE.Vector3(0, 0.05, 0), 1e9);
   }
@@ -219,7 +226,7 @@ export function createWorld(container, options) {
   self.facing = Math.PI;
   scene.add(self.group);
   const peers = new Map();
-  const life = createLife({ scene, place, nav, sceneId, time, quality, addEmitter });
+  const life = createLife({ scene, place, nav, sceneId, time: currentTime, quality, addEmitter });
 
   // ---------- Camera rig ----------
   const rig = { yaw: 0, pitch: 0.42, distance: 10.5, targetDistance: 10.5, savedYaw: null, savedView: null, actionYaw: 0, cancelled: false, ahead: 2.6, roof: 0 };
@@ -271,7 +278,78 @@ export function createWorld(container, options) {
   }
 
   const UP = new THREE.Vector3(0, 1, 0);
+
+  // ---------- First-person view ----------
+  // 'first' = through the avatar's eyes (the avatar itself is hidden), 'third' = the usual follow camera.
+  const view = { mode: 'third', pitch: 0.08, before: null };
+  let held = null; // the sacred object currently in your hands (first person)
+  let chantStop = null;
+  let voiceOn = true;
+  const eye = new THREE.Vector3();
+  // Floating motes: world-sized in third person; in first person they would pass right by the eyes
+  // and become huge screen-filling sprites, so they are drawn as small fixed-pixel dots instead.
+  function styleMotes() {
+    const night = currentTime === 'night';
+    const material = motes.points.material;
+    const first = view.mode === 'first';
+    material.sizeAttenuation = !first;
+    material.size = first ? (night ? 4 : 3) : (night ? 0.22 : 0.12);
+    material.opacity = night ? 0.9 : 0.5;
+    material.color.set(night ? '#fff3a8' : '#ffffff');
+    material.needsUpdate = true;
+  }
+
+  function setView(mode) {
+    view.mode = mode === 'first' ? 'first' : 'third';
+    self.group.visible = view.mode !== 'first';
+    styleMotes();
+    if (view.mode === 'first') {
+      rig.savedYaw = null;
+      rig.savedView = null;
+      // Look the way the avatar is facing.
+      rig.yaw = self.facing + Math.PI;
+      view.pitch = 0.08;
+    }
+    return view.mode;
+  }
+
+  function updateFirstPerson(delta) {
+    self.head.getWorldPosition(eye);
+    eye.y += 0.05;
+    const turnToward = (goal, rate) => {
+      const difference = Math.atan2(Math.sin(goal - rig.yaw), Math.cos(goal - rig.yaw));
+      rig.yaw += difference * Math.min(1, delta * rate);
+    };
+    if (self.clip && self.clipSpot) {
+      // Look at what you are doing (lighting the candle, planting the incense...).
+      turnToward(self.facing + Math.PI, 4);
+      const spotPosition = self.clipSpot.position;
+      const flat = Math.hypot(spotPosition.x - eye.x, spotPosition.z - eye.z);
+      const goalPitch = THREE.MathUtils.clamp(Math.atan2(eye.y - spotPosition.y, Math.max(0.5, flat)), -0.4, 0.9);
+      view.pitch += (goalPitch - view.pitch) * Math.min(1, delta * 3);
+    } else if (self.moving && !self.keyMoved && !self.sitting) {
+      // Walking somewhere you tapped: the view turns with your steps.
+      turnToward(self.facing + Math.PI, 4);
+    } else if (!self.moving && !self.sitting) {
+      // Standing still: your body faces where you look (other visitors see this).
+      self.facing = rig.yaw + Math.PI;
+    }
+    const pitch = view.pitch + (held ? held.lift() * 0.45 : 0);
+    const forward = new THREE.Vector3(
+      -Math.sin(rig.yaw) * Math.cos(pitch),
+      -Math.sin(pitch),
+      -Math.cos(rig.yaw) * Math.cos(pitch),
+    );
+    eye.addScaledVector(new THREE.Vector3(-Math.sin(rig.yaw), 0, -Math.cos(rig.yaw)), 0.14);
+    camera.position.copy(eye);
+    camera.lookAt(eye.clone().add(forward));
+  }
+
   function updateCamera(delta) {
+    if (view.mode === 'first') {
+      updateFirstPerson(delta);
+      return;
+    }
     updateActionCamera(delta);
     rig.distance += (rig.targetDistance - rig.distance) * Math.min(1, delta * 6);
     // Look a little ahead of the avatar so it sits in the lower third and the sacred building stays in view;
@@ -641,6 +719,7 @@ export function createWorld(container, options) {
       }
       if (actor) {
         faceSpot(actor, spot);
+        actor.clipSpot = spot;
         playClip(actor, spot.kind, { onEnd: remote ? null : () => onSpecial(spot) });
       } else if (!remote) {
         onSpecial(spot);
@@ -653,6 +732,7 @@ export function createWorld(container, options) {
     }
     if (actor) {
       faceSpot(actor, spot);
+      actor.clipSpot = spot;
       playClip(actor, spot.kind, { onRelease: () => run(spot) });
     } else {
       run(spot);
@@ -687,6 +767,7 @@ export function createWorld(container, options) {
       stopClip(self);
     }
     self.pendingSit = null;
+    self.pendingPerform = null;
     const origin = self.exitPoint || self.group.position;
     const result = nav.findPath(origin, { x, z });
     self.path = self.exitPoint ? [self.exitPoint.clone(), ...result.path] : result.path;
@@ -820,10 +901,32 @@ export function createWorld(container, options) {
     if (pointers.size === 2) {
       const [a, b] = [...pointers.values()];
       const distance = Math.hypot(a.x - b.x, a.y - b.y);
-      if (pinchStart) {
+      if (pinchStart && view.mode !== 'first') {
         rig.targetDistance = THREE.MathUtils.clamp(rig.targetDistance * (pinchStart / distance), 4, 18);
       }
       pinchStart = distance;
+      return;
+    }
+    if (drag && held) {
+      // Holding a sacred object: sideways drag looks around (or turns the object for guests);
+      // a downward swipe moves the next bead (handled on release).
+      const dx = event.clientX - drag.x;
+      drag.x = event.clientX;
+      drag.y = event.clientY;
+      if (held.state().observe) {
+        held.inspect(dx);
+      } else {
+        rig.yaw -= dx * 0.004;
+      }
+      return;
+    }
+    if (drag && view.mode === 'first') {
+      const dx = event.clientX - drag.x;
+      const dy = event.clientY - drag.y;
+      drag.x = event.clientX;
+      drag.y = event.clientY;
+      rig.yaw -= dx * 0.005;
+      view.pitch = THREE.MathUtils.clamp(view.pitch + dy * 0.004, -0.7, 1.0);
       return;
     }
     if (drag) {
@@ -844,7 +947,12 @@ export function createWorld(container, options) {
     pointers.delete(event.pointerId);
     if (drag && pointers.size === 0) {
       const moved = Math.hypot(event.clientX - drag.startX, event.clientY - drag.startY);
-      if (moved < 8 && performance.now() - drag.time < 450) {
+      const swipeDown = event.clientY - drag.startY;
+      if (held) {
+        if ((moved < 8 && performance.now() - drag.time < 450) || (swipeDown > 35 && Math.abs(swipeDown) > Math.abs(event.clientX - drag.startX))) {
+          holdStep();
+        }
+      } else if (moved < 8 && performance.now() - drag.time < 450) {
         handleTap(event);
       }
     }
@@ -855,9 +963,20 @@ export function createWorld(container, options) {
   };
   const onWheel = (event) => {
     event.preventDefault();
+    if (view.mode === 'first') {
+      return;
+    }
     rig.targetDistance = THREE.MathUtils.clamp(rig.targetDistance + event.deltaY * 0.01, 4, 18);
   };
   const onKeyDown = (event) => {
+    if (held && [' ', 'enter'].includes(event.key.toLowerCase())) {
+      event.preventDefault();
+      holdStep();
+      return;
+    }
+    if (held) {
+      return;
+    }
     if (['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'].includes(event.key.toLowerCase())) {
       keys.add(event.key.toLowerCase());
       event.preventDefault();
@@ -886,6 +1005,176 @@ export function createWorld(container, options) {
   canvas.addEventListener('wheel', onWheel, { passive: false });
   canvas.addEventListener('keydown', onKeyDown);
   canvas.addEventListener('keyup', onKeyUp);
+
+  // ---------- Sky: switch dawn / day / dusk / night with a gentle fade ----------
+  const skyNow = {
+    top: new THREE.Color(sky.top),
+    bottom: new THREE.Color(sky.bottom),
+    fog: new THREE.Color(sky.fog),
+    sun: new THREE.Color(sky.sun),
+    sunIntensity: sky.sunIntensity,
+    hemi: sky.hemi,
+    sunPos: new THREE.Vector3(...sky.sunPos),
+    stars: currentTime === 'night' ? 1 : 0,
+  };
+  let skyFade = null;
+  let skyTextureTimer = 0;
+  function setTime(name) {
+    const target = SKIES[name];
+    if (!target) {
+      return currentTime;
+    }
+    currentTime = name;
+    skyFade = {
+      t: 0,
+      from: {
+        top: skyNow.top.clone(), bottom: skyNow.bottom.clone(), fog: skyNow.fog.clone(), sun: skyNow.sun.clone(),
+        sunIntensity: skyNow.sunIntensity, hemi: skyNow.hemi, sunPos: skyNow.sunPos.clone(), stars: skyNow.stars,
+      },
+      to: {
+        top: new THREE.Color(target.top), bottom: new THREE.Color(target.bottom), fog: new THREE.Color(target.fog), sun: new THREE.Color(target.sun),
+        sunIntensity: target.sunIntensity, hemi: target.hemi, sunPos: new THREE.Vector3(...target.sunPos), stars: name === 'night' ? 1 : 0,
+      },
+    };
+    styleMotes();
+    applyHeldLighting();
+    return currentTime;
+  }
+
+  function updateSky(delta) {
+    if (!skyFade) {
+      return;
+    }
+    skyFade.t = Math.min(1, skyFade.t + delta / 1.6);
+    const k = skyFade.t * skyFade.t * (3 - 2 * skyFade.t);
+    const { from, to } = skyFade;
+    skyNow.top.copy(from.top).lerp(to.top, k);
+    skyNow.bottom.copy(from.bottom).lerp(to.bottom, k);
+    skyNow.fog.copy(from.fog).lerp(to.fog, k);
+    skyNow.sun.copy(from.sun).lerp(to.sun, k);
+    skyNow.sunIntensity = THREE.MathUtils.lerp(from.sunIntensity, to.sunIntensity, k);
+    skyNow.hemi = THREE.MathUtils.lerp(from.hemi, to.hemi, k);
+    skyNow.sunPos.copy(from.sunPos).lerp(to.sunPos, k);
+    skyNow.stars = THREE.MathUtils.lerp(from.stars, to.stars, k);
+    scene.fog.color.copy(skyNow.fog);
+    hemi.color.copy(skyNow.top);
+    hemi.intensity = skyNow.hemi;
+    sun.color.copy(skyNow.sun);
+    sun.intensity = skyNow.sunIntensity;
+    sun.position.copy(skyNow.sunPos);
+    stars.material.opacity = skyNow.stars;
+    stars.visible = skyNow.stars > 0.02;
+    skyTextureTimer -= delta;
+    if (skyTextureTimer <= 0 || skyFade.t >= 1) {
+      skyTextureTimer = 0.08;
+      const previous = scene.background;
+      scene.background = gradientTexture(`#${skyNow.top.getHexString()}`, `#${skyNow.bottom.getHexString()}`);
+      if (previous && previous.dispose) {
+        previous.dispose();
+      }
+    }
+    if (skyFade.t >= 1) {
+      skyFade = null;
+    }
+  }
+
+  // ---------- Sacred object in your hands (first person) ----------
+  function applyHeldLighting() {
+    if (!held) {
+      return;
+    }
+    const lighting = {
+      dawn: { hemiIntensity: 1.2, keyIntensity: 1.4, warm: true },
+      day: { hemiIntensity: 1.3, keyIntensity: 1.6, warm: false },
+      dusk: { hemiIntensity: 1.0, keyIntensity: 1.2, warm: true },
+      night: { hemiIntensity: 0.8, keyIntensity: 0.9, warm: true },
+    };
+    held.setLighting(lighting[currentTime] || lighting.day);
+  }
+
+  function hold({ observe = false } = {}) {
+    const def = heldItemFor(sceneId);
+    if (!def) {
+      return null;
+    }
+    release({ silent: true });
+    if (self.clip) {
+      stopClip(self);
+    }
+    self.path = [];
+    self.pendingPerform = null;
+    view.before = view.mode;
+    setView('first');
+    view.pitch = self.sitting ? 0.2 : 0.12;
+    held = createHeld(def, { observe });
+    held.resize(camera.aspect, camera.fov);
+    applyHeldLighting();
+    if (!observe && def.chant && voiceOn) {
+      chantStop = chant(def.chant);
+    }
+    const state = { ...held.state(), voice: voiceOn };
+    onHold(state);
+    return state;
+  }
+
+  function release({ silent = false } = {}) {
+    if (!held) {
+      return;
+    }
+    if (chantStop) {
+      chantStop();
+      chantStop = null;
+    }
+    held.dispose();
+    held = null;
+    setView(view.before || 'third');
+    view.before = null;
+    if (!silent) {
+      onHold(null);
+    }
+  }
+
+  function playHeldSound(sound, def) {
+    if (sound === 'woodblock') {
+      woodblock();
+    } else if (sound === 'bead') {
+      bead();
+    } else if (sound === 'bell') {
+      bell();
+    } else if (sound === 'chime') {
+      chime();
+    } else if (sound === 'page') {
+      pageTurn();
+    }
+    if (sound && def.murmur && voiceOn) {
+      murmur(def.id === 'rosario' ? 1.6 : 1.0, def.id === 'tasbih' ? 0.04 : 0.05);
+    }
+  }
+
+  function holdStep() {
+    if (!held) {
+      return null;
+    }
+    const sound = held.step();
+    playHeldSound(sound, held.def);
+    if (navigator.vibrate && sound) {
+      navigator.vibrate(8);
+    }
+    const state = { ...held.state(), voice: voiceOn };
+    onHold(state);
+    return state;
+  }
+
+  function setVoice(on) {
+    voiceOn = Boolean(on);
+    if (chantStop && !voiceOn) {
+      chantStop();
+      chantStop = null;
+    } else if (held && voiceOn && !chantStop && held.def.chant && !held.state().observe) {
+      chantStop = chant(held.def.chant);
+    }
+    return voiceOn;
+  }
 
   // ---------- Loop ----------
   const clock = new THREE.Clock();
@@ -987,11 +1276,18 @@ export function createWorld(container, options) {
       const forward = new THREE.Vector3(-Math.sin(rig.yaw), 0, -Math.cos(rig.yaw));
       const right = new THREE.Vector3(-forward.z, 0, forward.x);
       const move = new THREE.Vector3();
+      const firstPerson = view.mode === 'first';
       if (keys.has('w') || keys.has('arrowup')) move.add(forward);
       if (keys.has('s') || keys.has('arrowdown')) move.sub(forward);
-      if (keys.has('d') || keys.has('arrowright')) move.add(right);
-      if (keys.has('a') || keys.has('arrowleft')) move.sub(right);
-      if (move.lengthSq() > 0) {
+      if (firstPerson) {
+        // First person: left/right turn the head instead of side-stepping.
+        if (keys.has('d') || keys.has('arrowright')) rig.yaw -= delta * 1.8;
+        if (keys.has('a') || keys.has('arrowleft')) rig.yaw += delta * 1.8;
+      } else {
+        if (keys.has('d') || keys.has('arrowright')) move.add(right);
+        if (keys.has('a') || keys.has('arrowleft')) move.sub(right);
+      }
+      if (move.lengthSq() > 0 && !held) {
         standUp();
         if (self.clip) {
           stopClip(self);
@@ -999,6 +1295,7 @@ export function createWorld(container, options) {
         self.path = [];
         self.exitPoint = null;
         self.pendingSit = null;
+        self.pendingPerform = null;
         move.normalize();
         const position = self.group.position;
         const step = 3.2 * delta;
@@ -1017,13 +1314,14 @@ export function createWorld(container, options) {
         if (!nav.walkable(position.x + move.x * 0.6, position.z + move.z * 0.6)) {
           notifyZone(nav.zoneAt(position.x + move.x * 0.8, position.z + move.z * 0.8));
         }
-        self.facing = Math.atan2(move.x, move.z);
+        self.facing = firstPerson ? rig.yaw + Math.PI : Math.atan2(move.x, move.z);
         self.target.set(position.x, 0, position.z);
         self.moving = true;
         keyMoved = true;
       }
     }
 
+    self.keyMoved = keyMoved;
     let moving = keyMoved;
     if (!keyMoved) {
       if (self.sitting && self.seat) {
@@ -1045,6 +1343,11 @@ export function createWorld(container, options) {
         faceSpot(self, spot);
       }
       onSit(spot);
+    }
+    if (!moving && self.pendingPerform && !self.path.length) {
+      const spotId = self.pendingPerform;
+      self.pendingPerform = null;
+      perform(spotId);
     }
     turnTowards(self, delta);
     settleHeight(self, delta);
@@ -1131,8 +1434,21 @@ export function createWorld(container, options) {
       return true;
     });
 
+    updateSky(delta);
+    if (held) {
+      held.update(delta, elapsed);
+    }
     updateCamera(delta);
+    renderFrame();
+  }
+
+  function renderFrame() {
+    renderer.clear();
     renderer.render(scene, camera);
+    if (held) {
+      renderer.clearDepth();
+      renderer.render(held.scene, held.camera);
+    }
   }
 
   function resize() {
@@ -1143,6 +1459,9 @@ export function createWorld(container, options) {
     // Portrait phones get a wider lens so the building is not cropped.
     camera.fov = camera.aspect < 0.8 ? 60 : 50;
     camera.updateProjectionMatrix();
+    if (held) {
+      held.resize(camera.aspect, camera.fov);
+    }
   }
   const resizeObserver = new ResizeObserver(resize);
   resizeObserver.observe(container);
@@ -1179,6 +1498,24 @@ export function createWorld(container, options) {
     spots: place.spots,
     perform,
     standUp,
+    setView: (mode) => {
+      if (held) {
+        return view.mode;
+      }
+      return setView(mode);
+    },
+    view: () => view.mode,
+    setTime,
+    time: () => currentTime,
+    heldItem: () => {
+      const def = heldItemFor(sceneId);
+      return def ? { id: def.id, name: def.name, icon: def.icon } : null;
+    },
+    hold,
+    release: () => release(),
+    holdStep,
+    holding: () => (held ? { ...held.state(), voice: voiceOn } : null),
+    setVoice,
     greet: (greetingId) => greet(self, greetingId),
     quality: () => ({ quality: qualityName, pixelRatio, shadows: renderer.shadowMap.enabled }),
     getState,
@@ -1196,6 +1533,9 @@ export function createWorld(container, options) {
           self.target.copy(self.group.position);
         } else {
           routeTo(spot.stand.x, spot.stand.z, { quietZone: true });
+        }
+        if (options.perform) {
+          self.pendingPerform = spot.id;
         }
       }
     },
@@ -1277,12 +1617,16 @@ export function createWorld(container, options) {
         ? { x: zone.x, z: zone.z }
         : { x: (zone.x1 + zone.x2) / 2, z: (zone.z1 + zone.z2) / 2 })),
       effects: () => effects.length + emitters.length,
+      view: () => ({ mode: view.mode, yaw: rig.yaw, pitch: view.pitch, selfVisible: self.group.visible, camera: camera.position.toArray().map((v) => Math.round(v * 100) / 100) }),
+      held: () => (held ? held.debug() : null),
+      sky: () => ({ time: currentTime, fading: Boolean(skyFade), stars: stars.visible, sun: sun.intensity }),
     },
     snapshot() {
-      renderer.render(scene, camera);
+      renderFrame();
       return renderer.domElement.toDataURL('image/jpeg', 0.85);
     },
     destroy() {
+      release({ silent: true });
       running = false;
       cancelAnimationFrame(frame);
       resizeObserver.disconnect();

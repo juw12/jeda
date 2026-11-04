@@ -249,7 +249,7 @@ export function createAvatar(name, color, { visitor = false, host = false, attir
     group.add(halo);
   }
   return {
-    group, body, arms, hands, lower, crossLegs, benchLegs, shadow, label,
+    group, body, head, arms, hands, lower, crossLegs, benchLegs, shadow, label,
     attire: spec.name,
     target: new THREE.Vector3(), sitting: false, sitMode: null, seat: null, facing: 0,
     moving: false, walkPhase: 0, sitBlend: 0,

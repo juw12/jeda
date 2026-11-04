@@ -152,6 +152,170 @@ export function crackle(seconds = 4) {
   }
 }
 
+let cachedNoise = null;
+function sharedNoise(audio) {
+  if (!cachedNoise || cachedNoise.sampleRate !== audio.sampleRate) {
+    cachedNoise = noiseBuffer(audio, 2);
+  }
+  return cachedNoise;
+}
+
+// A quiet, wordless murmur of recitation (zikir pelan, paritta, Salam Maria) under each bead.
+// Band-passed breath noise shaped into soft syllables; no melody, no instrument.
+export function murmur(seconds = 1.1, volume = 0.05) {
+  if (!enabled()) {
+    return;
+  }
+  const audio = ctx();
+  if (!audio) {
+    return;
+  }
+  const now = audio.currentTime;
+  const source = audio.createBufferSource();
+  source.buffer = sharedNoise(audio);
+  const low = audio.createBiquadFilter();
+  low.type = 'bandpass';
+  low.frequency.value = 520;
+  low.Q.value = 1.4;
+  const high = audio.createBiquadFilter();
+  high.type = 'bandpass';
+  high.frequency.value = 1300;
+  high.Q.value = 2.2;
+  const envelope = audio.createGain();
+  envelope.gain.setValueAtTime(0.0001, now);
+  const syllables = Math.max(3, Math.round(seconds * 5));
+  for (let i = 0; i < syllables; i++) {
+    const at = now + (i / syllables) * seconds;
+    const peak = volume * (0.6 + Math.random() * 0.4) * (i === syllables - 1 ? 0.6 : 1);
+    envelope.gain.exponentialRampToValueAtTime(peak, at + 0.05);
+    envelope.gain.exponentialRampToValueAtTime(volume * 0.12, at + (seconds / syllables) * 0.9);
+  }
+  envelope.gain.exponentialRampToValueAtTime(0.0001, now + seconds + 0.15);
+  source.connect(low);
+  source.connect(high);
+  low.connect(envelope);
+  high.connect(envelope);
+  envelope.connect(master);
+  source.start(now, Math.random() * 1.5);
+  source.stop(now + seconds + 0.2);
+}
+
+// Paper page turning.
+export function pageTurn() {
+  if (!enabled()) {
+    return;
+  }
+  const audio = ctx();
+  if (!audio) {
+    return;
+  }
+  const now = audio.currentTime;
+  const source = audio.createBufferSource();
+  source.buffer = sharedNoise(audio);
+  const filter = audio.createBiquadFilter();
+  filter.type = 'highpass';
+  filter.frequency.value = 1800;
+  const envelope = audio.createGain();
+  envelope.gain.setValueAtTime(0.0001, now);
+  envelope.gain.exponentialRampToValueAtTime(0.16, now + 0.05);
+  envelope.gain.exponentialRampToValueAtTime(0.05, now + 0.18);
+  envelope.gain.exponentialRampToValueAtTime(0.12, now + 0.26);
+  envelope.gain.exponentialRampToValueAtTime(0.0001, now + 0.45);
+  source.connect(filter);
+  filter.connect(envelope);
+  envelope.connect(master);
+  source.start(now, Math.random());
+  source.stop(now + 0.5);
+}
+
+// Sustained chant voice. 'hum' = low humming drone (Buddhist chanting under the mala),
+// 'om' = Om that opens on "o" and closes to "m" with each breath (Hindu japa).
+// Returns stop().
+export function chant(type = 'hum') {
+  const audio = ctx();
+  if (!audio || !enabled()) {
+    return () => {};
+  }
+  const output = audio.createGain();
+  output.gain.value = 0;
+  output.connect(master);
+  const pitch = type === 'om' ? 130.8 : 110;
+  const voice = audio.createOscillator();
+  voice.type = 'sawtooth';
+  voice.frequency.value = pitch;
+  const vibrato = audio.createOscillator();
+  const vibratoDepth = audio.createGain();
+  vibrato.frequency.value = 4.6;
+  vibratoDepth.gain.value = 0.6;
+  vibrato.connect(vibratoDepth);
+  vibratoDepth.connect(voice.frequency);
+  // Second, quieter voice a fifth below for warmth.
+  const lowVoice = audio.createOscillator();
+  lowVoice.type = 'sawtooth';
+  lowVoice.frequency.value = pitch * 0.667;
+  const lowLevel = audio.createGain();
+  lowLevel.gain.value = 0.35;
+  lowVoice.connect(lowLevel);
+  const formantOne = audio.createBiquadFilter();
+  formantOne.type = 'bandpass';
+  formantOne.Q.value = 5;
+  const formantTwo = audio.createBiquadFilter();
+  formantTwo.type = 'bandpass';
+  formantTwo.Q.value = 7;
+  const closing = audio.createBiquadFilter();
+  closing.type = 'lowpass';
+  closing.frequency.value = 2400;
+  const breath = audio.createGain();
+  breath.gain.value = 0.0001;
+  [voice, lowLevel].forEach((node) => {
+    node.connect(formantOne);
+    node.connect(formantTwo);
+  });
+  formantOne.connect(closing);
+  formantTwo.connect(closing);
+  closing.connect(breath);
+  breath.connect(output);
+  output.gain.linearRampToValueAtTime(0.5, audio.currentTime + 1.5);
+  voice.start();
+  lowVoice.start();
+  vibrato.start();
+  let timer = null;
+  const cycle = () => {
+    const at = audio.currentTime;
+    const length = type === 'om' ? 5 : 4.2;
+    // Vowel: "o" (Om) or "u" (hum); closes toward "m" by darkening the filter.
+    formantOne.frequency.setValueAtTime(type === 'om' ? 520 : 330, at);
+    formantTwo.frequency.setValueAtTime(type === 'om' ? 880 : 760, at);
+    closing.frequency.setValueAtTime(2400, at);
+    closing.frequency.linearRampToValueAtTime(type === 'om' ? 2200 : 900, at + length * 0.45);
+    closing.frequency.linearRampToValueAtTime(320, at + length * 0.7);
+    breath.gain.cancelScheduledValues(at);
+    breath.gain.setValueAtTime(0.0001, at);
+    breath.gain.exponentialRampToValueAtTime(0.14, at + 0.6);
+    breath.gain.setValueAtTime(0.14, at + length * 0.7);
+    breath.gain.exponentialRampToValueAtTime(0.0001, at + length);
+    timer = setTimeout(cycle, (length + 0.8) * 1000);
+  };
+  cycle();
+  return () => {
+    clearTimeout(timer);
+    const at = audio.currentTime;
+    output.gain.cancelScheduledValues(at);
+    output.gain.setValueAtTime(output.gain.value, at);
+    output.gain.linearRampToValueAtTime(0, at + 0.8);
+    setTimeout(() => {
+      [voice, lowVoice, vibrato].forEach((node) => {
+        try {
+          node.stop();
+        } catch {
+          // already stopped
+        }
+      });
+      output.disconnect();
+    }, 1000);
+  };
+}
+
 // Ambience loops. Returns a stop() function.
 export function ambience(type) {
   const audio = ctx();

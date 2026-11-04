@@ -21,16 +21,19 @@ function sitPanel(spot, faith) {
     case 'dzikir':
       return `<p class="sit-title">Zikir</p><p class="sit-phrase" data-phrase>${DZIKIR[0]}</p>
         <button class="sit-tap" type="button" data-tap aria-label="Hitung">0</button>
-        <p class="small muted">Ketuk untuk menghitung · 33 × 3</p>`;
+        <p class="small muted">Ketuk untuk menghitung · 33 × 3</p>
+        <button class="btn-ghost sit-hold" type="button" data-sit-hold>📿 Pegang tasbih (orang pertama)</button>`;
     case 'rosary':
       return `<p class="sit-title">Rosario</p><p class="sit-phrase" data-phrase>Salam Maria</p>
         <button class="sit-tap" type="button" data-tap aria-label="Hitung butir">0</button>
-        <p class="small muted">Satu peristiwa = 1 Bapa Kami, 10 Salam Maria, 1 Kemuliaan</p>`;
+        <p class="small muted">Satu peristiwa = 1 Bapa Kami, 10 Salam Maria, 1 Kemuliaan</p>
+        <button class="btn-ghost sit-hold" type="button" data-sit-hold>📿 Pegang rosario (orang pertama)</button>`;
     case 'meditate':
     case 'breathe':
       return `<p class="sit-title">${spot.sitMode === 'meditate' ? 'Meditasi' : 'Bernapas'}</p>
         <div class="sit-breath" data-breath></div><p class="sit-phrase" data-phrase>Tarik napas…</p>
-        <p class="small muted">Ikuti lingkaran. Satu menit saja sudah cukup.</p>`;
+        <p class="small muted">Ikuti lingkaran. Satu menit saja sudah cukup.</p>
+        ${spot.sitMode === 'meditate' ? '<button class="btn-ghost sit-hold" type="button" data-sit-hold>📿 Pegang mala (orang pertama)</button>' : ''}`;
     default:
       return `<p class="sit-title">Hening</p><p class="sit-phrase">Diam sejenak di ${esc(faith.spaceName)}.</p>
         <p class="sit-timer" data-timer>00:00</p>`;
@@ -80,6 +83,30 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
       </div>
       ${festiveInfo ? `<div class="stage-banner">${esc(festiveInfo.text)}</div>` : ''}
       <button class="pill immersive-exit" type="button" data-immersive-exit aria-label="Tampilkan tombol lagi">⤡ Tombol</button>
+      <div class="stage-side" role="group" aria-label="Tampilan ruang">
+        <button class="side-btn" type="button" data-view-toggle aria-pressed="false" aria-label="Lihat dari mata sendiri (orang pertama)"><span aria-hidden="true">👁</span><small>1P</small></button>
+        <button class="side-btn" type="button" data-time-toggle aria-label="Ganti waktu: waktu nyata"><span aria-hidden="true">🕰</span><small>Nyata</small></button>
+        <button class="side-btn" type="button" data-hold hidden><span aria-hidden="true" data-hold-icon>📿</span><small data-hold-short></small></button>
+      </div>
+      <div class="hold-hud" data-hold-hud hidden aria-live="polite">
+        <div class="hold-card">
+          <div class="hold-head">
+            <span class="eyebrow" data-hold-name></span>
+            <button class="hold-voice" type="button" data-hold-voice aria-pressed="true">🔈 Lantunan</button>
+          </div>
+          <p class="hold-context" data-hold-context></p>
+          <p class="hold-script" data-hold-script dir="rtl" lang="ar"></p>
+          <p class="hold-label" data-hold-label></p>
+          <p class="hold-count" data-hold-count></p>
+          <p class="hold-note" data-hold-note></p>
+          <a class="hold-link" data-hold-link hidden target="_blank" rel="noopener"></a>
+        </div>
+        <div class="hold-actions">
+          <button class="btn-ghost" type="button" data-hold-close>Selesai</button>
+          <button class="btn" type="button" data-hold-step>Geser butir</button>
+          <button class="btn" type="button" data-hold-finish hidden>Tancapkan di hiolo</button>
+        </div>
+      </div>
       <div class="stage-hint" data-hint>Ketuk tanah untuk berjalan · seret untuk melihat sekeliling</div>
       <div class="stage-bottom">
         <div class="spot-chips" data-chips role="group" aria-label="Pergi ke"></div>
@@ -222,8 +249,12 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
     }
   };
 
+  let currentSitSpot = null;
   function showSit(spot) {
     clearInterval(sitTimer);
+    if (spot) {
+      currentSitSpot = spot;
+    }
     if (!spot) {
       sitSheet.hidden = true;
       return;
@@ -234,6 +265,11 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
       ? `${sitPanel({ ...spot, sitMode: 'pray' }, faith)}<p class="small muted">${spot.sitMode === 'dzikir' ? 'Zikir' : 'Rosario'} adalah doa umat ${esc(faith.short || faith.name)}. Sebagai tamu, duduklah dengan hening.</p>`
       : sitPanel(spot, faith);
     sitSheet.hidden = false;
+    sitBody.querySelector('[data-sit-hold]')?.addEventListener('click', () => {
+      if (world) {
+        world.hold({ observe: mode === 'visit' });
+      }
+    });
     const tap = sitBody.querySelector('[data-tap]');
     const phrase = sitBody.querySelector('[data-phrase]');
     if (tap) {
@@ -327,6 +363,139 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
   };
   main.querySelector('[data-immersive]').addEventListener('click', () => setImmersive(true));
   main.querySelector('[data-immersive-exit]').addEventListener('click', () => setImmersive(false));
+
+  // ---------- First person, time of day, sacred object in hand ----------
+  const viewToggle = main.querySelector('[data-view-toggle]');
+  const timeToggle = main.querySelector('[data-time-toggle]');
+  const holdButton = main.querySelector('[data-hold]');
+  const holdHud = main.querySelector('[data-hold-hud]');
+  const TIMES = [
+    { id: 'auto', icon: '🕰', short: 'Nyata', name: 'Waktu nyata' },
+    { id: 'dawn', icon: '🌅', short: 'Pagi', name: 'Pagi' },
+    { id: 'day', icon: '☀️', short: 'Siang', name: 'Siang' },
+    { id: 'dusk', icon: '🌇', short: 'Senja', name: 'Senja' },
+    { id: 'night', icon: '🌙', short: 'Malam', name: 'Malam' },
+  ];
+  let timeIndex = 0;
+  const renderView = () => {
+    const first = world && world.view() === 'first';
+    viewToggle.setAttribute('aria-pressed', String(first));
+    viewToggle.innerHTML = first
+      ? '<span aria-hidden="true">🧍</span><small>3P</small>'
+      : '<span aria-hidden="true">👁</span><small>1P</small>';
+    viewToggle.setAttribute('aria-label', first ? 'Kembali ke orang ketiga' : 'Lihat dari mata sendiri (orang pertama)');
+  };
+  viewToggle.addEventListener('click', () => {
+    if (!world) {
+      return;
+    }
+    const next = world.view() === 'first' ? 'third' : 'first';
+    world.setView(next);
+    renderView();
+    toast(next === 'first' ? 'Orang pertama: seret untuk melihat, ketuk tanah untuk berjalan' : 'Orang ketiga');
+  });
+  timeToggle.addEventListener('click', () => {
+    if (!world) {
+      return;
+    }
+    timeIndex = (timeIndex + 1) % TIMES.length;
+    const choice = TIMES[timeIndex];
+    world.setTime(choice.id === 'auto' ? timeOfDay() : choice.id);
+    timeToggle.innerHTML = `<span aria-hidden="true">${choice.icon}</span><small>${choice.short}</small>`;
+    timeToggle.setAttribute('aria-label', `Ganti waktu: ${choice.name}`);
+    toast(choice.id === 'auto' ? 'Waktu mengikuti jam perangkatmu' : `Suasana ${choice.name.toLowerCase()}`);
+  });
+
+  const stepLabels = { beads: 'Geser butir', book: 'Balik halaman', incense: 'Soja / pai' };
+  let holdShownIntro = false;
+  function renderHold(state) {
+    renderView();
+    document.body.classList.toggle('holding', Boolean(state));
+    holdHud.hidden = !state;
+    if (!state) {
+      holdShownIntro = false;
+      renderView();
+      return;
+    }
+    const q = (selector) => holdHud.querySelector(selector);
+    q('[data-hold-name]').textContent = `${state.icon} ${state.name}${state.observe ? ' · mode amati' : ''}`;
+    q('[data-hold-context]').textContent = state.context || '';
+    q('[data-hold-script]').textContent = state.script || '';
+    q('[data-hold-label]').textContent = state.observe ? '' : state.label || '';
+    const counted = !state.observe && state.count !== null && state.count !== undefined;
+    q('[data-hold-count]').textContent = counted
+      ? `${state.count} / ${state.total}${state.round ? ` · putaran ${state.round}` : ''}`
+      : '';
+    let note = state.note || '';
+    if (state.observe) {
+      note = `${state.about} Sebagai tamu, kamu bisa mengamatinya dari dekat (seret untuk memutar).`;
+    } else if (!holdShownIntro) {
+      note = state.intro;
+      holdShownIntro = true;
+    } else if (state.done && !note) {
+      note = 'Selesai. Duduklah sejenak dalam hening.';
+    }
+    q('[data-hold-note]').textContent = note;
+    const link = q('[data-hold-link]');
+    if (state.observe && state.entry) {
+      link.hidden = false;
+      link.textContent = 'Pelajari maknanya di Pustaka';
+      link.removeAttribute('target');
+      link.href = `#/entri/${encodeURIComponent(state.entry)}`;
+    } else if (state.link) {
+      link.hidden = false;
+      link.textContent = state.link.label;
+      link.target = '_blank';
+      link.href = state.link.url;
+    } else {
+      link.hidden = true;
+    }
+    const stepButton = q('[data-hold-step]');
+    stepButton.hidden = state.observe || Boolean(state.finishSpot && state.done);
+    stepButton.textContent = stepLabels[state.kind] || 'Lanjut';
+    q('[data-hold-finish]').hidden = !(state.finishSpot && state.done);
+    const voice = q('[data-hold-voice]');
+    voice.hidden = state.observe || !state.hasVoice;
+    voice.setAttribute('aria-pressed', String(state.voice));
+    voice.textContent = state.voice ? '🔈 Lantunan' : '🔇 Hening';
+  }
+  holdButton.addEventListener('click', () => {
+    if (world) {
+      showSit(null);
+      world.hold({ observe: mode === 'visit' });
+    }
+  });
+  holdHud.querySelector('[data-hold-step]').addEventListener('click', () => world && world.holdStep());
+  holdHud.querySelector('[data-hold-close]').addEventListener('click', () => {
+    if (world) {
+      world.release();
+      if (world.debug.self().sitting && currentSitSpot) {
+        showSit(currentSitSpot);
+      }
+    }
+  });
+  holdHud.querySelector('[data-hold-voice]').addEventListener('click', () => {
+    if (world) {
+      world.setVoice(!world.holding().voice);
+      renderHold(world.holding());
+    }
+  });
+  holdHud.querySelector('[data-hold-finish]').addEventListener('click', () => {
+    if (!world) {
+      return;
+    }
+    const spotId = world.holding()?.finishSpot;
+    world.release();
+    if (spotId) {
+      world.walkTo(spotId, { perform: true });
+    }
+  });
+  const onEscape = (event) => {
+    if (event.key === 'Escape' && world && world.holding()) {
+      world.release();
+    }
+  };
+  document.addEventListener('keydown', onEscape);
   const explained = new Set();
   main.querySelectorAll('[data-greet]').forEach((button) => {
     button.addEventListener('click', () => {
@@ -644,7 +813,13 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
       me: { name, color: avatarColor() },
       quality: prefs.get().quality3d || 'auto',
       onNearSpot: describeAction,
-      onSit: showSit,
+      onSit: (spot) => {
+        if (!spot) {
+          currentSitSpot = null;
+        }
+        showSit(spot);
+      },
+      onHold: renderHold,
       onAction: (spot) => {
         if (presence) {
           presence.sendAct(spot.id);
@@ -665,6 +840,13 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
       onBlocked: (message) => toast(message),
     });
     window.__jedaWorld = world;
+    const heldItem = world.heldItem();
+    if (heldItem) {
+      holdButton.hidden = false;
+      main.querySelector('[data-hold-icon]').textContent = heldItem.icon;
+      main.querySelector('[data-hold-short]').textContent = heldItem.name.replace(' 108', '');
+      holdButton.setAttribute('aria-label', `${mode === 'visit' ? 'Amati' : 'Pegang'} ${heldItem.name} (orang pertama)`);
+    }
     if (world.attire) {
       setTimeout(() => toast(`Pakaianmu di ${faith.spaceName}: ${world.attire}`), 900);
     }
@@ -708,6 +890,8 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
     delete document.body.dataset.faith;
     document.body.classList.remove('immersive');
     document.body.classList.remove('in-space');
+    document.body.classList.remove('holding');
+    document.removeEventListener('keydown', onEscape);
   };
 }
 

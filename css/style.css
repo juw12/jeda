@@ -779,3 +779,63 @@ body.immersive .stage-bottom { bottom: calc(14px + env(safe-area-inset-bottom));
   body.in-space .toast.show { transform: translateX(-50%) translateY(0); }
   body.in-space.immersive .toast { top: calc(env(safe-area-inset-top, 0px) + 56px); }
 }
+
+/* v1.5.0: first person, time of day, sacred objects held in your hands */
+.stage-side {
+  position: absolute; right: 10px; top: 38%; z-index: 6;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.side-btn {
+  width: 48px; min-height: 48px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.35);
+  background: rgba(20,18,16,0.5); color: #fff; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
+  font-size: 1.15rem; line-height: 1; cursor: pointer; padding: 4px 2px;
+}
+.side-btn small { font-size: 0.62rem; letter-spacing: 0.02em; opacity: 0.9; }
+.side-btn[aria-pressed="true"] { background: rgba(255,231,168,0.85); color: #2a2016; }
+.side-btn[hidden] { display: none; }
+body.immersive .stage-side, body.holding .stage-side { display: none; }
+
+.hold-hud {
+  position: absolute; inset: 0; z-index: 8; pointer-events: none;
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: calc(env(safe-area-inset-top, 0px) + 10px) 10px calc(env(safe-area-inset-bottom, 0px) + 12px);
+}
+.hold-hud[hidden] { display: none; }
+.hold-card {
+  pointer-events: auto; align-self: center; width: min(440px, 100%);
+  background: rgba(20,18,16,0.62); color: #fff; border-radius: 16px; padding: 10px 14px 12px;
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); text-align: center;
+}
+.hold-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.hold-head .eyebrow { color: #ffe7a8; }
+.hold-voice {
+  border: 1px solid rgba(255,255,255,0.35); background: transparent; color: #fff;
+  border-radius: 999px; padding: 4px 10px; font-size: 0.78rem; cursor: pointer;
+}
+.hold-voice[hidden] { display: none; }
+.hold-context { margin: 6px 0 0; font-size: 0.8rem; opacity: 0.85; }
+.hold-context:empty, .hold-script:empty, .hold-note:empty, .hold-count:empty, .hold-label:empty { display: none; }
+.hold-script { margin: 6px 0 0; font-size: 1.6rem; line-height: 1.4; font-family: 'Amiri', 'Scheherazade New', 'Noto Naskh Arabic', serif; }
+.hold-label { margin: 4px 0 0; font-size: 1.15rem; font-weight: 600; }
+.hold-count { margin: 2px 0 0; font-size: 0.9rem; font-variant-numeric: tabular-nums; color: #ffe7a8; }
+.hold-note { margin: 6px 0 0; font-size: 0.8rem; opacity: 0.85; line-height: 1.4; }
+.hold-link { display: inline-block; margin-top: 6px; font-size: 0.8rem; color: #ffe7a8; }
+.hold-link[hidden] { display: none; }
+.hold-actions { pointer-events: auto; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.hold-actions .btn, .hold-actions .btn-ghost { min-height: 46px; padding: 0 18px; }
+.hold-actions .btn-ghost { background: rgba(20,18,16,0.55); color: #fff; border-color: rgba(255,255,255,0.35); }
+.hold-actions [hidden] { display: none; }
+body.holding .stage-top, body.holding .stage-hint, body.holding .stage-banner, body.holding .stage-bottom,
+body.holding .sit-sheet, body.holding .immersive-exit { display: none !important; }
+.sit-hold { margin-top: 8px; }
+@media (max-width: 600px) {
+  body.holding .topbar, body.holding .tabbar { display: none !important; }
+  .stage-side { right: 8px; top: 34%; gap: 6px; }
+  .side-btn { width: 44px; min-height: 44px; font-size: 1.05rem; border-radius: 12px; }
+  .hold-card { padding: 8px 12px 10px; }
+  .hold-script { font-size: 1.35rem; }
+  .hold-label { font-size: 1.02rem; }
+}
+/* While holding a sacred object, toasts sit just above the action buttons instead of over the card. */
+body.holding .toast { top: auto !important; bottom: calc(env(safe-area-inset-bottom, 0px) + 78px) !important; }
