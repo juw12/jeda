@@ -149,7 +149,6 @@ export function onboarding(main, params, query, { content, navigate }) {
           <span></span>
         </header>
         <div class="ob-deck">
-          <div class="ob-card ob-card-ghost" aria-hidden="true"></div>
           <article class="ob-card enter-${direction > 0 ? 'right' : 'left'}" data-step="${step}">${cardHtml(step)}</article>
         </div>
       </section>`;

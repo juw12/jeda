@@ -1,6 +1,6 @@
 // Offline support: app shell cache-first, content network-first (so reviewed updates arrive quickly).
 
-const VERSION = 'jeda-v1.3.2';
+const VERSION = 'jeda-v1.3.3';
 const SHELL = [
   './',
   'index.html',
@@ -79,7 +79,10 @@ self.addEventListener('fetch', (event) => {
   if (url.pathname.includes('/content/') || /\.(js|css|html|webmanifest)$/.test(url.pathname) || url.pathname.endsWith('/')) {
     // Network first (fresh version on the very first visit), cache only as offline fallback.
     event.respondWith(
-      fetch(event.request)
+      fetch(event.request.url, {
+        cache: 'no-cache',
+        redirect: event.request.mode === 'navigate' ? 'manual' : 'follow',
+      })
         .then((response) => {
           if (response.ok) {
             const copy = response.clone();
