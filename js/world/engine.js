@@ -222,7 +222,7 @@ export function createWorld(container, options) {
   const life = createLife({ scene, place, nav, sceneId, time, quality, addEmitter });
 
   // ---------- Camera rig ----------
-  const rig = { yaw: 0, pitch: 0.42, distance: 10.5, targetDistance: 10.5, savedYaw: null, savedView: null, actionYaw: 0, cancelled: false, ahead: 2.6 };
+  const rig = { yaw: 0, pitch: 0.42, distance: 10.5, targetDistance: 10.5, savedYaw: null, savedView: null, actionYaw: 0, cancelled: false, ahead: 2.6, roof: 0 };
   // Solid scenery that may hide the avatar from the camera (see updateCamera).
   const cameraRay = new THREE.Raycaster();
   const occluders = [];
@@ -270,6 +270,7 @@ export function createWorld(container, options) {
     }
   }
 
+  const UP = new THREE.Vector3(0, 1, 0);
   function updateCamera(delta) {
     updateActionCamera(delta);
     rig.distance += (rig.targetDistance - rig.distance) * Math.min(1, delta * 6);
@@ -278,21 +279,36 @@ export function createWorld(container, options) {
     rig.ahead += ((self.clip ? 0 : 2.6) - rig.ahead) * Math.min(1, delta * 3);
     const ahead = new THREE.Vector3(-Math.sin(rig.yaw), 0, -Math.cos(rig.yaw)).multiplyScalar(rig.ahead);
     const focus = self.group.position.clone().add(new THREE.Vector3(0, 1.5, 0)).add(ahead);
+    const head = self.group.position.clone().add(new THREE.Vector3(0, 1.4, 0));
+    // Under a hall roof, drop the camera lower and closer so the view isn't filled by the roof itself.
+    // This is a temporary blend; the visitor's own zoom and tilt are restored once back in the open.
+    cameraRay.set(head, UP);
+    cameraRay.far = 7;
+    const roofAbove = cameraRay.intersectObjects(occluders, false).length > 0;
+    rig.roof += ((roofAbove ? 1 : 0) - rig.roof) * Math.min(1, delta * 3);
+    const pitch = THREE.MathUtils.lerp(rig.pitch, Math.min(rig.pitch, 0.2), rig.roof);
     const direction = new THREE.Vector3(
-      Math.sin(rig.yaw) * Math.cos(rig.pitch),
-      Math.sin(rig.pitch),
-      Math.cos(rig.yaw) * Math.cos(rig.pitch),
+      Math.sin(rig.yaw) * Math.cos(pitch),
+      Math.sin(pitch),
+      Math.cos(rig.yaw) * Math.cos(pitch),
     );
     // Keep walls, pillars and roofs from coming between the camera and the avatar.
-    let distance = rig.distance;
-    const head = self.group.position.clone().add(new THREE.Vector3(0, 1.4, 0));
+    const distance = THREE.MathUtils.lerp(rig.distance, Math.min(rig.distance, 6.5), rig.roof);
     const wanted = focus.clone().addScaledVector(direction, distance);
-    const toCamera = wanted.clone().sub(head);
-    const reach = toCamera.length();
-    cameraRay.set(head, toCamera.normalize());
-    cameraRay.far = reach;
-    const blocker = cameraRay.intersectObjects(occluders, false)[0];
-    const target = blocker ? head.clone().addScaledVector(toCamera, Math.max(1.6, blocker.distance - 0.35)) : wanted;
+    // Check both the avatar's head and the look-at point (e.g. standing under a hall roof).
+    let target = wanted;
+    let blocker = null;
+    [head, focus].forEach((origin) => {
+      const toCamera = target.clone().sub(origin);
+      const reach = toCamera.length();
+      cameraRay.set(origin, toCamera.normalize());
+      cameraRay.far = reach;
+      const hit = cameraRay.intersectObjects(occluders, false)[0];
+      if (hit) {
+        blocker = hit;
+        target = origin.clone().addScaledVector(toCamera, Math.max(1.6, hit.distance - 0.35));
+      }
+    });
     camera.position.lerp(target, Math.min(1, delta * (blocker ? 9 : 5)));
     camera.lookAt(focus);
     self.label.material.opacity = self.clip ? 0.35 : 1;

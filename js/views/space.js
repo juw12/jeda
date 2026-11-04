@@ -75,9 +75,11 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
               <span class="dot"></span><span data-presence-label>Sendiri</span>
             </button>
             <button class="pill" type="button" data-golive>Siarkan</button>`}
+          <button class="pill icon-pill" type="button" data-immersive aria-pressed="false" aria-label="Sembunyikan tombol agar ruang terlihat penuh" title="Lihat ruang penuh">⤢</button>
         </div>
       </div>
       ${festiveInfo ? `<div class="stage-banner">${esc(festiveInfo.text)}</div>` : ''}
+      <button class="pill immersive-exit" type="button" data-immersive-exit aria-label="Tampilkan tombol lagi">⤡ Tombol</button>
       <div class="stage-hint" data-hint>Ketuk tanah untuk berjalan · seret untuk melihat sekeliling</div>
       <div class="stage-bottom">
         <div class="spot-chips" data-chips role="group" aria-label="Pergi ke"></div>
@@ -93,7 +95,8 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
             <button type="button" data-host="broadcast">Mode siaran</button>
             <button type="button" data-host="end">Akhiri</button>
           </div>` : ''}
-        <div class="greetings" role="group" aria-label="Salam">
+        <button class="pill greet-toggle" type="button" data-greet-toggle aria-expanded="false">Salam ▾</button>
+        <div class="greetings" role="group" aria-label="Salam" data-greetings>
           ${greetings.map((g) => `<button type="button" class="greet" data-greet="${g.id}" title="${esc(g.note)}">${esc(g.label)}</button>`).join('')}
         </div>
       </div>
@@ -309,6 +312,21 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
     }
     showSit(null);
   });
+  // Phones: keep the 3D view clear. Greetings fold away; the ⤢ button hides every control.
+  const greetToggle = main.querySelector('[data-greet-toggle]');
+  const greetRow = main.querySelector('[data-greetings]');
+  greetToggle.addEventListener('click', () => {
+    const open = !greetRow.classList.contains('open');
+    greetRow.classList.toggle('open', open);
+    greetToggle.setAttribute('aria-expanded', String(open));
+    greetToggle.textContent = open ? 'Salam ▴' : 'Salam ▾';
+  });
+  const setImmersive = (on) => {
+    document.body.classList.toggle('immersive', on);
+    main.querySelector('[data-immersive]').setAttribute('aria-pressed', String(on));
+  };
+  main.querySelector('[data-immersive]').addEventListener('click', () => setImmersive(true));
+  main.querySelector('[data-immersive-exit]').addEventListener('click', () => setImmersive(false));
   const explained = new Set();
   main.querySelectorAll('[data-greet]').forEach((button) => {
     button.addEventListener('click', () => {
@@ -317,6 +335,9 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
       }
       const greeting = greetingById(button.dataset.greet);
       world.greet(greeting.id);
+      if (greetRow.classList.contains('open') && window.matchMedia('(max-width: 600px)').matches) {
+        greetToggle.click();
+      }
       if (presence) {
         presence.sendGreet(greeting.id);
       }
@@ -685,6 +706,7 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
     }
     delete window.__jedaWorld;
     delete document.body.dataset.faith;
+    document.body.classList.remove('immersive');
     document.body.classList.remove('in-space');
   };
 }
