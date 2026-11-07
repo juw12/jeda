@@ -1447,6 +1447,7 @@ export function createWorld(container, options) {
     setView('first');
     view.pitch = 0.3;
     held = createMeal(items.map((item) => ({ name: item.dish.name, spec: item.dish.spec, utensil: item.dish.utensil, verb: item.dish.verb })), { table: place.tableStyle || 'wood', note, title });
+    held.prepare?.(renderer);
     held.mealItems = items;
     held.resize(camera.aspect, camera.fov);
     applyHeldLighting();

@@ -182,8 +182,36 @@ function hand() {
 const ease = (x) => x * x * (3 - 2 * x);
 const lerp = THREE.MathUtils.lerp;
 
+// A small warm "room" the food reflects: cream walls, a bright window and a lamp. Without an
+// environment, glass, glaze, broth and clearcoat have nothing to mirror and read as flat or murky.
+const roomEnvironments = new WeakMap();
+function roomEnvironment(renderer) {
+  if (roomEnvironments.has(renderer)) {
+    return roomEnvironments.get(renderer);
+  }
+  const room = new THREE.Scene();
+  const walls = new THREE.Mesh(new THREE.BoxGeometry(6, 4, 6), new THREE.MeshBasicMaterial({ color: '#6b5a48', side: THREE.BackSide }));
+  walls.position.y = 1.4;
+  room.add(walls);
+  const panel = (color, width, height, x, y, z, rotationY = 0) => {
+    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(width, height), new THREE.MeshBasicMaterial({ color, side: THREE.DoubleSide }));
+    mesh.position.set(x, y, z);
+    mesh.rotation.y = rotationY;
+    room.add(mesh);
+  };
+  panel('#fff6e6', 2.2, 1.4, -2.9, 1.6, -0.6, Math.PI / 2);   // window
+  panel('#ffe2b8', 0.9, 0.9, 0.6, 3.3, -0.4, 0);              // lamp above
+  panel('#c9b39a', 6, 1.2, 0, 0.2, -2.9, 0);                  // far wall band
+  const generator = new THREE.PMREMGenerator(renderer);
+  const texture = generator.fromScene(room, 0.04).texture;
+  generator.dispose();
+  roomEnvironments.set(renderer, texture);
+  return texture;
+}
+
 export function createMeal(items, { table = 'wood', note = '', title = '' } = {}) {
   const scene = new THREE.Scene();
+  let ambientFactor = 1;
   const hemi = new THREE.HemisphereLight('#fff1dd', '#4d3a2a', 0.9);
   const key = new THREE.DirectionalLight('#fff0dc', 2.3);
   key.position.set(-0.5, 1.2, -0.2);
@@ -214,9 +242,14 @@ export function createMeal(items, { table = 'wood', note = '', title = '' } = {}
     const [x, z] = layout[index] || [(index - 1) * 0.2, -0.2];
     built.group.position.set(x, 0, z);
     holder.add(built.group);
-    const contact = new THREE.Mesh(new THREE.PlaneGeometry(0.34, 0.34), new THREE.MeshBasicMaterial({ map: shadowTexture, transparent: true, depthWrite: false }));
+    // Contact shadow sized to the dish's own footprint (a glass must not sit in a plate-sized pool).
+    const footprint = new THREE.Box3().setFromObject(built.group).getSize(new THREE.Vector3());
+    const shadowSize = THREE.MathUtils.clamp(Math.max(footprint.x, footprint.z) * 1.45, 0.07, 0.36);
+    const contact = new THREE.Mesh(new THREE.PlaneGeometry(shadowSize, shadowSize), new THREE.MeshBasicMaterial({
+      map: shadowTexture, transparent: true, depthWrite: false, opacity: built.drink ? 0.6 : 1,
+    }));
     contact.rotation.x = -Math.PI / 2;
-    contact.position.set(x + 0.01, 0.0005, z + 0.01);
+    contact.position.set(x + shadowSize * 0.03, 0.0005, z + shadowSize * 0.03);
     holder.add(contact);
     return {
       item,
@@ -339,7 +372,9 @@ export function createMeal(items, { table = 'wood', note = '', title = '' } = {}
       attached: false,
       bitten: false,
       carried: [],
-      origin: portion.objects.map((object) => ({ object, parent: object.parent, matrix: object.matrix.clone() })),
+      returning: [],
+      origin: portion.objects.map((object) => ({ object, parent: object.parent, position: object.position.clone(), quaternion: object.quaternion.clone() })),
+      skewerOrigin: portion.skewer ? { position: portion.skewer.position.clone(), quaternion: portion.skewer.quaternion.clone() } : null,
     };
     if (toolName === 'hand') {
       tools.hand.visible = true;
@@ -504,11 +539,13 @@ export function createMeal(items, { table = 'wood', note = '', title = '' } = {}
       } else {
         const k = ease((t - 0.7) / 0.3);
         if (a.carried.length && a.carriedHome !== true) {
-          // Not finished (a bite out of toast / fritter / bakpao): put it back where it was.
+          // Not finished (a bite out of toast / fritter / bakpao): carry it back down onto the plate,
+          // smaller by the bite, instead of leaving it hanging where the mouth was.
           a.carriedHome = true;
-          a.origin.forEach(({ object, parent }) => {
+          a.origin.forEach(({ object, parent, position, quaternion }) => {
             if (object.visible && parent) {
               parent.attach(object);
+              a.returning.push({ object, fromPosition: object.position.clone(), fromQuaternion: object.quaternion.clone(), toPosition: position, toQuaternion: quaternion });
             }
           });
           a.carried = [];
@@ -517,11 +554,15 @@ export function createMeal(items, { table = 'wood', note = '', title = '' } = {}
           const skewer = a.carriedSkewer;
           a.carriedSkewer = null;
           a.dish.built.group.attach(skewer);
-          if (skewer.userData.done) {
-            skewer.position.set(0.1, 0.012, 0.06 + Math.random() * 0.02);
-            skewer.rotation.set(0, 1.2, 0);
-          }
+          // A finished stick is laid on the plate rim; a half-eaten one goes back where it lay.
+          const toPosition = skewer.userData.done ? new THREE.Vector3(0.1, 0.012, 0.06 + Math.random() * 0.02) : a.skewerOrigin.position;
+          const toQuaternion = skewer.userData.done ? new THREE.Quaternion().setFromEuler(new THREE.Euler(0, 1.2, 0)) : a.skewerOrigin.quaternion;
+          a.returning.push({ object: skewer, fromPosition: skewer.position.clone(), fromQuaternion: skewer.quaternion.clone(), toPosition, toQuaternion });
         }
+        a.returning.forEach((item) => {
+          item.object.position.lerpVectors(item.fromPosition, item.toPosition, k);
+          item.object.quaternion.slerpQuaternions(item.fromQuaternion, item.toQuaternion, k);
+        });
         tool.position.lerpVectors(mouthPoint, a.toolName === 'hand' ? new THREE.Vector3(0.14, 0.06, 0.3) : tool.userData.rest.position, k);
         tool.rotation.x = lerp(0.35, tool.userData.rest.rotation.x, k);
         if (a.toolName === 'hand') {
@@ -535,6 +576,10 @@ export function createMeal(items, { table = 'wood', note = '', title = '' } = {}
       }
     }
     if (t >= 1) {
+      a.returning.forEach((item) => {
+        item.object.position.copy(item.toPosition);
+        item.object.quaternion.copy(item.toQuaternion);
+      });
       if (a.toolName === 'hand') {
         tools.hand.visible = false;
       }
@@ -576,11 +621,24 @@ export function createMeal(items, { table = 'wood', note = '', title = '' } = {}
     def: { id: 'meal', meal: true, name: title, icon: '🍽' },
     step,
     state: describe,
+    // Give the scene its reflection environment (needs the renderer, so the engine calls this once).
+    prepare(renderer) {
+      if (!renderer || scene.environment) {
+        return;
+      }
+      try {
+        scene.environment = roomEnvironment(renderer);
+        ambientFactor = 0.55;
+        hemi.intensity *= ambientFactor;
+      } catch (error) {
+        // Very old GPUs: keep plain lights.
+      }
+    },
     inspect(dx) {
       inspectYaw = THREE.MathUtils.clamp(inspectYaw + dx * 0.004, -0.5, 0.5);
     },
     setLighting({ hemiIntensity = 1.3, keyIntensity = 1.6, warm = false } = {}) {
-      hemi.intensity = hemiIntensity * 0.75;
+      hemi.intensity = hemiIntensity * 0.75 * ambientFactor;
       key.intensity = keyIntensity * 1.35;
       key.color.set(warm ? '#ffd2a0' : '#fff0dc');
     },
