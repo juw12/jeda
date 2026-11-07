@@ -38,6 +38,16 @@ function addressFor(persona) {
   return persona.name.split(' ')[0];
 }
 
+// Who a Pustaka entry belongs to, for cross-faith answers ("Itu dari tradisi umat Buddha ...").
+const PEOPLE = {
+  islam: 'umat Islam',
+  protestan: 'umat Kristen Protestan',
+  katolik: 'umat Katolik',
+  hindu: 'umat Hindu',
+  buddha: 'umat Buddha',
+  khonghucu: 'umat Khonghucu dan tradisi Tionghoa',
+};
+
 export function chatOpening(persona, ctx) {
   const c = CULTURE[ctx.culture] || CULTURE.jawa;
   if (persona.guide) {
@@ -80,7 +90,13 @@ export function chatReply(persona, input, ctx) {
   if (looksLikeQuestion && !smallTalk.includes(intent) && !foodTalk.includes(intent) && ctx.search) {
     const hit = ctx.search(input);
     if (hit) {
-      const lead = persona.guide ? 'Menurut Pustaka Jeda' : `${c.wow}, kalau setahu saya`;
+      const people = hit.foreign ? PEOPLE[hit.foreign] || 'tradisi lain' : null;
+      let lead;
+      if (persona.guide) {
+        lead = people ? `Itu bagian dari tradisi ${people}. Menurut Pustaka Jeda` : 'Menurut Pustaka Jeda';
+      } else {
+        lead = people ? `Itu dari tradisi ${people}, bukan tradisi saya sendiri. Tapi setahu saya` : 'Setahu saya';
+      }
       const tail = persona.guide ? '' : ' Lebih pasti tanya pemandu atau pemuka agama, ya.';
       return { text: `${lead}: ${hit.summary}${tail}`, entry: { id: hit.id, title: hit.title } };
     }

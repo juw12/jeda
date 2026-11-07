@@ -209,8 +209,71 @@ function roomEnvironment(renderer) {
   return texture;
 }
 
+// The room behind the table, out of focus: a warm gradient with soft bokeh lamps, tinted to match the
+// table style. The lower band equals the fog colour so the far table edge melts into it (no hard
+// horizon, and the world scene behind the overlay never shows through).
+const BACKDROPS = {
+  wood: { top: '#3b2a1e', mid: '#7a5638', fog: '#a37b56', lamps: ['#ffd9a0', '#ffc27a', '#fff0d0'] },
+  darkwood: { top: '#2a1512', mid: '#5e2a20', fog: '#7d4632', lamps: ['#ff9a6a', '#ffcf7a', '#ff6f5a'] },
+  marble: { top: '#4a4640', mid: '#8f877b', fog: '#b9b0a2', lamps: ['#fff4e0', '#ffe2b0', '#e8f0ff'] },
+  formica: { top: '#3e3a2c', mid: '#8a7c58', fog: '#b9a77e', lamps: ['#fff6d8', '#d8f0ff', '#ffe0a0'] },
+  bamboo: { top: '#2b3020', mid: '#5f6a3e', fog: '#9c935f', lamps: ['#fff0b8', '#ffd890', '#e0ffd0'] },
+};
+
+function backdropTexture(style) {
+  const palette = BACKDROPS[style] || BACKDROPS.wood;
+  const size = 512;
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const c = canvas.getContext('2d');
+  const gradient = c.createLinearGradient(0, 0, 0, size);
+  gradient.addColorStop(0, palette.top);
+  gradient.addColorStop(0.42, palette.mid);
+  gradient.addColorStop(0.68, palette.fog);
+  gradient.addColorStop(1, palette.fog);
+  c.fillStyle = gradient;
+  c.fillRect(0, 0, size, size);
+  // Seeded positions so every visit to the same kind of kedai looks the same.
+  let seed = style.length * 97 + 13;
+  const random = () => {
+    seed = (seed * 16807) % 2147483647;
+    return seed / 2147483647;
+  };
+  c.globalCompositeOperation = 'lighter';
+  for (let i = 0; i < 22; i++) {
+    const x = random() * size;
+    const y = size * (0.06 + random() * 0.42);
+    const radius = 10 + random() * 26;
+    const color = palette.lamps[i % palette.lamps.length];
+    const glow = c.createRadialGradient(x, y, 0, x, y, radius);
+    glow.addColorStop(0, color);
+    glow.addColorStop(0.55, color + '66');
+    glow.addColorStop(1, color + '00');
+    c.globalAlpha = 0.18 + random() * 0.3;
+    c.fillStyle = glow;
+    c.beginPath();
+    c.arc(x, y, radius, 0, Math.PI * 2);
+    c.fill();
+  }
+  c.globalAlpha = 1;
+  c.globalCompositeOperation = 'source-over';
+  // Vignette keeps attention on the plate.
+  const vignette = c.createRadialGradient(size / 2, size * 0.7, size * 0.2, size / 2, size * 0.6, size * 0.8);
+  vignette.addColorStop(0, 'rgba(0,0,0,0)');
+  vignette.addColorStop(1, 'rgba(0,0,0,0.35)');
+  c.fillStyle = vignette;
+  c.fillRect(0, 0, size, size);
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return { texture, fog: palette.fog };
+}
+
 export function createMeal(items, { table = 'wood', note = '', title = '' } = {}) {
   const scene = new THREE.Scene();
+  const backdrop = backdropTexture(table);
+  scene.background = backdrop.texture;
+  scene.fog = new THREE.Fog(backdrop.fog, 0.98, 1.6);
   let ambientFactor = 1;
   const hemi = new THREE.HemisphereLight('#fff1dd', '#4d3a2a', 0.9);
   const key = new THREE.DirectionalLight('#fff0dc', 2.3);
@@ -237,6 +300,9 @@ export function createMeal(items, { table = 'wood', note = '', title = '' } = {}
 
   // ---------- Lay the table ----------
   const layout = [[0, -0.05], [0.2, -0.13], [-0.2, -0.13], [0.33, 0.0]];
+  // How far the laid table spreads sideways (used to fit narrow screens without over-shrinking a
+  // single plate).
+  let reach = 0.12;
   const dishes = items.map((item, index) => {
     const built = buildDish(item.spec);
     const [x, z] = layout[index] || [(index - 1) * 0.2, -0.2];
@@ -251,6 +317,7 @@ export function createMeal(items, { table = 'wood', note = '', title = '' } = {}
     contact.rotation.x = -Math.PI / 2;
     contact.position.set(x + shadowSize * 0.03, 0.0005, z + shadowSize * 0.03);
     holder.add(contact);
+    reach = Math.max(reach, Math.abs(x) + footprint.x / 2);
     return {
       item,
       built,
@@ -649,7 +716,26 @@ export function createMeal(items, { table = 'wood', note = '', title = '' } = {}
       camera.updateProjectionMatrix();
       // Narrow portrait screens: shrink the spread so the main dish and the drink stay in view.
       const halfWidth = Math.tan(THREE.MathUtils.degToRad(fov / 2)) * aspect * 0.5;
-      holder.scale.setScalar(Math.min(1, halfWidth / 0.27));
+      const spread = THREE.MathUtils.clamp((halfWidth * 0.82) / reach, 0.45, 1);
+      holder.scale.setScalar(spread);
+      // Portrait: the controls sit along the bottom, so tilt the view down a little to lift the
+      // plate into the open upper part of the screen.
+      const portrait = THREE.MathUtils.clamp((0.9 - aspect) / 0.45, 0, 1);
+      camera.position.set(0, 0.36, 0.3);
+      camera.lookAt(0, 0, -0.07 + portrait * 0.1);
+      // Fog ends just before the (scaled) far table edge so it dissolves into the backdrop.
+      const farEdge = Math.hypot(camera.position.y, camera.position.z + 1.3 * spread);
+      scene.fog.far = farEdge * 0.97;
+      scene.fog.near = Math.max(0.62, farEdge * 0.6);
+      // Cover-fit the square backdrop to the screen instead of stretching it.
+      const texture = scene.background;
+      if (aspect < 1) {
+        texture.repeat.set(aspect, 1);
+        texture.offset.set((1 - aspect) / 2, 0);
+      } else {
+        texture.repeat.set(1, 1 / aspect);
+        texture.offset.set(0, 0);
+      }
     },
     update(delta, elapsed) {
       holder.rotation.y += (inspectYaw - holder.rotation.y) * Math.min(1, delta * 6);
@@ -694,6 +780,7 @@ export function createMeal(items, { table = 'wood', note = '', title = '' } = {}
       tool: action ? action.toolName : null,
     }),
     dispose() {
+      backdrop.texture.dispose();
       scene.traverse((object) => {
         if (object.geometry) {
           object.geometry.dispose();

@@ -621,8 +621,12 @@ body.in-space .topbar .brand, body.in-space .topbar .top-link { color: #fff; tex
   display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: rise 0.3s ease;
 }
 .sit-sheet[hidden] { display: none; }
+.sit-sheet.at-table { top: auto; bottom: calc(96px + env(safe-area-inset-bottom)); transform: translateX(-50%); }
+@media (min-width: 900px) {
+  .sit-sheet.at-table { left: auto; right: 76px; bottom: 24px; transform: none; }
+}
 /* While seated, the sit sheet is the focus: hide the walk chips and nearby-spot card it would overlap. */
-.stage:has(> .sit-sheet:not([hidden])) :is(.spot-chips, .action-card, .stage-hint) { visibility: hidden; }
+.stage:has(> .sit-sheet:not([hidden])) :is(.spot-chips, .action-card, .stage-hint, .stage-bottom) { visibility: hidden; }
 .sit-sheet .btn-ghost { background: transparent; color: #1d1a16; border-color: #d9d2c6; }
 .sit-sheet .btn { background: #1d1a16; color: #fff; }
 .sit-title { font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: #6b6157; font-weight: 600; }
@@ -865,7 +869,7 @@ body.holding .toast { top: auto !important; bottom: calc(env(safe-area-inset-bot
 .menu-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .menu-actions .small { margin-right: auto; }
 
-.cook-card { position: absolute; z-index: 9; left: 50%; top: calc(120px + env(safe-area-inset-top)); transform: translateX(-50%);
+.cook-card { position: absolute; z-index: 9; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom)); transform: translateX(-50%);
   width: min(380px, calc(100% - 24px)); padding: 12px 16px; border-radius: 18px; background: rgba(20,18,16,0.7); color: #fff;
   backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: flex; flex-direction: column; gap: 4px; pointer-events: none; }
 .cook-card .eyebrow { color: #f3d79a; }
@@ -873,6 +877,11 @@ body.holding .toast { top: auto !important; bottom: calc(env(safe-area-inset-bot
 .cook-bar { height: 6px; border-radius: 6px; background: rgba(255,255,255,0.2); overflow: hidden; }
 .cook-bar span { display: block; height: 100%; background: linear-gradient(90deg, #ffb35c, #ff7a2a); transition: width 0.6s ease; }
 .cook-card .small { opacity: 0.8; margin: 2px 0 0; }
+/* While the hawker cooks, the stove is the show: the card sits low and the walk chips step aside. */
+.stage:has(> .cook-card:not([hidden])) :is(.stage-bottom, .stage-hint) { visibility: hidden; }
+@media (min-width: 900px) {
+  .cook-card { left: 20px; transform: none; bottom: calc(24px + env(safe-area-inset-bottom)); }
+}
 
 .meal-hud { position: absolute; z-index: 9; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; pointer-events: none;
   padding: 10px 10px calc(env(safe-area-inset-bottom, 0px) + 12px); }
@@ -900,6 +909,15 @@ body.holding .toast { top: auto !important; bottom: calc(env(safe-area-inset-bot
 @media (max-width: 899px) {
   .meal-card { padding: 10px 12px; gap: 6px; }
   .meal-tip { display: none; }
+  /* Phones: one compact row of tools so the card covers less of the plate. */
+  .meal-head { flex-direction: row; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+  .meal-head .eyebrow { font-size: 0.75rem; }
+  .meal-prayer summary { min-height: 34px; padding: 4px 0; }
+  .meal-tools { flex-wrap: nowrap; gap: 6px; }
+  .meal-tools .btn-ghost { padding-left: 12px; padding-right: 12px; white-space: nowrap; min-height: 40px; }
+  .meal-tools .asmr-volume { margin-left: 0; flex: 1 1 auto; min-width: 0; }
+  .meal-tools .asmr-volume input { width: 100%; min-width: 48px; }
+  .meal-tools [data-meal-close] { margin-left: auto; }
 }
 .asmr-volume { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; }
 .asmr-volume input { width: 110px; }
@@ -936,10 +954,10 @@ body.holding .tabbar { display: none; }
 .guide-body .stack, .guide-body .narrow { max-width: none; padding: 0; }
 body.guide-open .stage-bottom, body.guide-open .stage-side { visibility: hidden; }
 body.chatting .greetings, body.chatting .greet-toggle { visibility: hidden; }
+body.chatting .sit-sheet { visibility: hidden; }
 
 @media (max-width: 600px) {
   .area-switch button { padding: 5px 9px; font-size: 0.78rem; min-height: 32px; }
   .npc-chat { left: 10px; right: 10px; width: auto; max-height: 55vh; }
   .guide-sheet { left: 6px; right: 6px; }
-  .cook-card { top: calc(150px + env(safe-area-inset-top)); }
 }

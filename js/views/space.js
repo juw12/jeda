@@ -558,7 +558,13 @@ export function space(main, [faithId, areaParam], query, { content, navigate }, 
         // in a mosque courtyard), fall back to the whole library.
         const local = search(index, question, { faith: faith.pustaka ? faith.id : null, limit: 1 })[0];
         const top = local && local.score >= 1.2 ? local : search(index, question, { faith: null, limit: 1 })[0];
-        return top && top.score >= 1.2 ? { id: top.entry.id, title: top.entry.title, summary: top.entry.summary } : null;
+        if (!top || top.score < 1.2) {
+          return null;
+        }
+        // Tell the speaker when the answer belongs to another tradition, so a host never sounds
+        // as if they are teaching someone else's faith as their own.
+        const foreign = top.entry.faith && top.entry.faith !== faith.id ? top.entry.faith : null;
+        return { id: top.entry.id, title: top.entry.title, summary: top.entry.summary, foreign };
       },
     };
   }
@@ -661,6 +667,8 @@ export function space(main, [faithId, areaParam], query, { content, navigate }, 
       ? `${sitPanel({ ...spot, sitMode: 'pray' }, faith)}<p class="small muted">${spot.sitMode === 'dzikir' ? 'Zikir' : 'Rosario'} adalah doa umat ${esc(faith.short || faith.name)}. Sebagai tamu, duduklah dengan hening.</p>`
       : sitPanel(spot, faith);
     sitSheet.hidden = false;
+    // At a dining table the sheet docks low so the food on the table stays in view.
+    sitSheet.classList.toggle('at-table', spot.sitMode === 'meal');
     if (spot.sitMode === 'meal' && world) {
       const food = world.tableFood();
       if (food.length) {

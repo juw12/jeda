@@ -87,7 +87,7 @@ function diningTable(style, colors) {
 function station(method, colors) {
   const g = new THREE.Group();
   const rig = {};
-  const burner = () => {
+  const burner = (ring = 0.36) => {
     const b = new THREE.Group();
     b.add(at(cyl(0.3, 0.32, 0.12, '#3a3a3e', 18, { metalness: 0.6, roughness: 0.5 }), 0, 0.06, 0));
     const flame = cone(0.2, 0.22, '#ff8a2a', 12, { emissive: '#ff6a10', emissiveIntensity: 2.2, transparent: true, opacity: 0.85 });
@@ -95,6 +95,21 @@ function station(method, colors) {
     flame.castShadow = false;
     b.add(flame);
     rig.flame = flame;
+    // Flame tongues that lick up around the pan's sides at full heat (the burner itself is hidden
+    // under the wok/pot, so without these the fire is invisible from the customer side).
+    const tongues = new THREE.Group();
+    for (let i = 0; i < 9; i++) {
+      const angle = (i / 9) * Math.PI * 2;
+      const tongue = cone(0.05, 0.2, i % 2 ? '#ffb347' : '#ff7a1a', 6, { emissive: i % 2 ? '#ffa030' : '#ff5a10', emissiveIntensity: 2.4, transparent: true, opacity: 0.85 });
+      tongue.position.set(Math.cos(angle) * ring, 0.24, Math.sin(angle) * ring);
+      tongue.rotation.set(Math.sin(angle) * 0.35, 0, -Math.cos(angle) * 0.35);
+      tongue.castShadow = false;
+      tongue.userData.phase = i * 1.7;
+      tongues.add(tongue);
+    }
+    tongues.visible = false;
+    b.add(tongues);
+    rig.tongues = tongues;
     return b;
   };
   switch (method) {
@@ -132,7 +147,7 @@ function station(method, colors) {
       const stove = cyl(0.36, 0.4, 0.2, '#6b4a33', 16);
       stove.position.y = 0.1;
       g.add(stove);
-      g.add(burner());
+      g.add(burner(0.46));
       rig.flame.scale.setScalar(0.7);
       const pot = lathe([[0, 0], [0.32, 0.02], [0.42, 0.2], [0.44, 0.36], [0.42, 0.36], [0.4, 0.21], [0.31, 0.04], [0, 0.03]], '#3a3a3e', 28, { metalness: 0.6, roughness: 0.45, side: THREE.DoubleSide });
       pot.position.y = 0.2;
@@ -179,7 +194,7 @@ function station(method, colors) {
       break;
     }
     case 'steam': {
-      g.add(burner());
+      g.add(burner(0.34));
       rig.flame.scale.setScalar(0.6);
       g.add(at(cyl(0.32, 0.3, 0.22, '#9aa0a6', 20, { metalness: 0.6 }), 0, 0.25, 0));
       for (let i = 0; i < 3; i++) {
@@ -472,7 +487,19 @@ export function buildKedai(faithId) {
       stalls.forEach((stall) => {
         const heat = 0.35 + stall.cooking * 0.9;
         if (stall.rig.flame) {
-          stall.rig.flame.scale.set(heat * (0.9 + Math.random() * 0.2), heat * (0.8 + Math.random() * 0.5), heat * (0.9 + Math.random() * 0.2));
+          // At full heat the flame is wider than the burner and licks up around the wok rim.
+          const spread = heat * (1 + stall.cooking * 0.35);
+          const lift = 0.35 + stall.cooking * 1.5;
+          stall.rig.flame.scale.set(spread * (0.9 + Math.random() * 0.2), lift * (0.8 + Math.random() * 0.5), spread * (0.9 + Math.random() * 0.2));
+        }
+        if (stall.rig.tongues) {
+          stall.rig.tongues.visible = stall.cooking > 0.3;
+          if (stall.rig.tongues.visible) {
+            stall.rig.tongues.children.forEach((tongue) => {
+              const flicker = 0.7 + Math.sin(elapsed * 14 + tongue.userData.phase) * 0.25 + Math.random() * 0.2;
+              tongue.scale.set(1, flicker * (0.6 + stall.cooking * 0.8), 1);
+            });
+          }
         }
         if (stall.rig.wok && stall.def.method === 'wok') {
           stall.rig.wok.rotation.z = stall.cooking ? Math.sin(elapsed * 9) * 0.12 : 0;

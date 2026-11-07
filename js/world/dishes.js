@@ -237,10 +237,21 @@ function cupAndSaucer({ liquid = '#3a2213', crema = false, milk = false } = {}) 
 
 function glass({ liquid = '#b97a43', height = 0.11, radius = 0.032, foam = null, handle = false } = {}) {
   const group = new THREE.Group();
+  // Clear glass: a faint wall (so the drink keeps its colour), a bright rim and two vertical
+  // specular streaks facing the light — that is what makes a glass read as glass at a glance.
   const wall = meshOf(new THREE.CylinderGeometry(radius, radius * 0.86, height, 32, 1, true),
-    food('#ffffff', { rough: 0.02, coat: 1, opacity: 0.22, side: THREE.DoubleSide }), 0, height / 2, 0);
+    food('#ffffff', { rough: 0.02, coat: 1, opacity: 0.1, side: THREE.DoubleSide }), 0, height / 2, 0);
   const base = meshOf(new THREE.CylinderGeometry(radius * 0.86, radius * 0.86, 0.008, 32), food('#ffffff', { rough: 0.05, opacity: 0.4 }), 0, 0.004, 0);
-  group.add(wall, base);
+  const rimRing = meshOf(new THREE.TorusGeometry(radius, 0.0011, 6, 40), food('#ffffff', { rough: 0.02, opacity: 0.7, emissive: '#ffffff' }), 0, height, 0);
+  rimRing.rotation.x = Math.PI / 2;
+  const streak = food('#ffffff', { rough: 0.02, opacity: 0.38, emissive: '#ffffff', side: THREE.DoubleSide });
+  const wide = meshOf(new THREE.CylinderGeometry(radius * 1.004, radius * 0.866, height * 0.84, 6, 1, true, -0.95, 0.24), streak, 0, height * 0.5, 0);
+  const thin = meshOf(new THREE.CylinderGeometry(radius * 1.004, radius * 0.866, height * 0.7, 3, 1, true, 0.55, 0.07), streak, 0, height * 0.46, 0);
+  wall.renderOrder = 2;
+  wide.renderOrder = 3;
+  thin.renderOrder = 3;
+  rimRing.renderOrder = 3;
+  group.add(wall, base, rimRing, wide, thin);
   if (handle) {
     const h = meshOf(new THREE.TorusGeometry(0.022, 0.005, 8, 18, Math.PI), food('#ffffff', { rough: 0.05, opacity: 0.35 }), radius + 0.002, height * 0.55, 0);
     h.rotation.z = -Math.PI / 2;

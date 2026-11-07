@@ -401,9 +401,10 @@ export function createWorld(container, options) {
     if (watch) {
       // Watching the hawker cook your order: look at the stove, from the customer side.
       watch.blend = Math.min(1, watch.blend + delta * 1.5);
-      focus.lerp(watch.target, 0.8 * watch.blend);
-      rig.targetDistance += (Math.min(watch.savedDistance, 4.6) - rig.targetDistance) * Math.min(1, delta * 2);
-      const goalYaw = Math.atan2(self.group.position.x - watch.target.x, self.group.position.z - watch.target.z) + 0.35;
+      // Frame the stove close, swung to one side so your own avatar does not block the wok.
+      focus.lerp(watch.target, 0.92 * watch.blend);
+      rig.targetDistance += (Math.min(watch.savedDistance, 3.4) - rig.targetDistance) * Math.min(1, delta * 2);
+      const goalYaw = Math.atan2(self.group.position.x - watch.target.x, self.group.position.z - watch.target.z) + 0.6;
       rig.yaw += Math.atan2(Math.sin(goalYaw - rig.yaw), Math.cos(goalYaw - rig.yaw)) * Math.min(1, delta * 1.5);
       rig.pitch += (0.32 - rig.pitch) * Math.min(1, delta * 1.5);
     }
@@ -440,6 +441,8 @@ export function createWorld(container, options) {
     camera.position.lerp(target, Math.min(1, delta * (blocker ? 9 : 5)));
     camera.lookAt(focus);
     self.label.material.opacity = self.clip ? 0.35 : 1;
+    // Your own name tag is noise while watching the cook or sitting at a table (the camera is close).
+    self.label.visible = !watch && !self.sitSpot;
   }
 
   // ---------- Effects ----------
@@ -1740,7 +1743,10 @@ export function createWorld(container, options) {
 
   function renderFrame() {
     renderer.clear();
-    renderer.render(scene, camera);
+    // A meal fills the whole screen with its own backdrop: skip drawing the world behind it.
+    if (!held || !held.scene.background) {
+      renderer.render(scene, camera);
+    }
     if (held) {
       renderer.clearDepth();
       renderer.render(held.scene, held.camera);
