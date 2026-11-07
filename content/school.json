@@ -1,0 +1,709 @@
+{
+  "note": "Pelajaran singkat untuk mengenal, bukan untuk menghakimi. Ringkasan ini disusun dari sumber umum dan Pustaka Jeda; untuk pendalaman, bertanyalah kepada pemuka agama masing-masing.",
+  "lessons": [
+    {
+      "id": "islam",
+      "faith": "islam",
+      "title": "Mengenal Islam",
+      "minutes": 4,
+      "sections": [
+        {
+          "h": "Inti ajaran",
+          "p": "Islam berpusat pada tauhid, yaitu keyakinan bahwa Allah itu Esa. Ada enam Rukun Iman: iman kepada Allah, malaikat, kitab-kitab, rasul-rasul, hari akhir, serta qada dan qadar."
+        },
+        {
+          "h": "Lima Rukun Islam",
+          "p": "Syahadat, salat, zakat, puasa di bulan Ramadan, dan haji ke Makkah bagi yang mampu."
+        },
+        {
+          "h": "Kitab suci",
+          "p": "Al-Qur'an diyakini sebagai wahyu Allah kepada Nabi Muhammad. Hadis, yaitu ucapan dan teladan Nabi, menjadi sumber ajaran berikutnya."
+        },
+        {
+          "h": "Ibadah sehari-hari",
+          "p": "Salat wajib lima kali sehari (Subuh, Zuhur, Asar, Magrib, Isya) menghadap kiblat, yaitu Ka'bah di Makkah, setelah berwudu. Masjid dan musala adalah tempat salat berjamaah; laki-laki Muslim salat Jumat bersama setiap pekan."
+        },
+        {
+          "h": "Hari raya",
+          "p": "Idulfitri (1 Syawal) menutup puasa Ramadan; Iduladha (10 Zulhijah) diiringi penyembelihan hewan kurban. Kalender Hijriah mengikuti bulan, sehingga tanggalnya maju sekitar 11 hari tiap tahun Masehi."
+        },
+        {
+          "h": "Saat bertamu",
+          "p": "Salam yang lazim: “Assalamu'alaikum”, dijawab “Wa'alaikumussalam”. Di masjid, berpakaian sopan, lepas alas kaki, dan jangan lewat di depan orang yang sedang salat."
+        }
+      ],
+      "readMore": [
+        "isl-pokok-rukun-iman",
+        "isl-pokok-rukun-islam",
+        "isl-aturan-adab-masjid"
+      ],
+      "quiz": [
+        {
+          "q": "Berapa jumlah Rukun Islam?",
+          "options": [
+            "Empat",
+            "Lima",
+            "Enam"
+          ],
+          "answer": 1,
+          "why": "Syahadat, salat, zakat, puasa Ramadan, dan haji."
+        },
+        {
+          "q": "Apa kitab suci umat Islam?",
+          "options": [
+            "Weda",
+            "Al-Qur'an",
+            "Tipitaka"
+          ],
+          "answer": 1,
+          "why": "Al-Qur'an diyakini sebagai wahyu Allah kepada Nabi Muhammad."
+        },
+        {
+          "q": "Berapa kali salat wajib dalam sehari?",
+          "options": [
+            "Tiga",
+            "Lima",
+            "Tujuh"
+          ],
+          "answer": 1,
+          "why": "Subuh, Zuhur, Asar, Magrib, dan Isya."
+        },
+        {
+          "q": "Hari raya yang menutup bulan puasa Ramadan adalah…",
+          "options": [
+            "Iduladha",
+            "Maulid Nabi",
+            "Idulfitri"
+          ],
+          "answer": 2,
+          "why": "Idulfitri jatuh pada 1 Syawal."
+        },
+        {
+          "q": "Ke mana arah kiblat saat salat?",
+          "options": [
+            "Ka'bah di Makkah",
+            "Masjid Nabawi di Madinah",
+            "Arah matahari terbit"
+          ],
+          "answer": 0,
+          "why": "Kiblat adalah Ka'bah di Masjidil Haram, Makkah."
+        }
+      ]
+    },
+    {
+      "id": "protestan",
+      "faith": "protestan",
+      "title": "Mengenal Kristen Protestan",
+      "minutes": 4,
+      "sections": [
+        {
+          "h": "Inti ajaran",
+          "p": "Umat Kristen percaya kepada Allah Tritunggal: Bapa, Anak (Yesus Kristus), dan Roh Kudus. Keselamatan diyakini sebagai anugerah Allah yang diterima melalui iman kepada Yesus Kristus."
+        },
+        {
+          "h": "Reformasi",
+          "p": "Gereja Protestan lahir dari Reformasi yang dimulai Martin Luther pada 1517. Prinsipnya sering diringkas: hanya Alkitab, hanya anugerah, hanya iman."
+        },
+        {
+          "h": "Kitab suci",
+          "p": "Alkitab Protestan terdiri dari 66 kitab: Perjanjian Lama dan Perjanjian Baru."
+        },
+        {
+          "h": "Ibadah dan sakramen",
+          "p": "Ibadah Minggu berisi pujian, doa, pembacaan Alkitab, khotbah, dan persembahan. Umumnya ada dua sakramen: Baptisan dan Perjamuan Kudus."
+        },
+        {
+          "h": "Hari raya",
+          "p": "Natal (25 Desember), Jumat Agung, Paskah (kebangkitan Yesus), Kenaikan, dan Pentakosta. Banyak gereja juga memperingati Hari Reformasi pada 31 Oktober."
+        },
+        {
+          "h": "Di Indonesia",
+          "p": "Ada banyak sinode, misalnya HKBP, GPIB, GKJ, dan GMIM; sebagian besar bergabung dalam Persekutuan Gereja-gereja di Indonesia (PGI). Salam yang lazim: “Salam sejahtera” atau “Shalom”."
+        }
+      ],
+      "readMore": [
+        "pro-pokok-iman",
+        "pro-pokok-sakramen",
+        "pro-ibadah-minggu"
+      ],
+      "quiz": [
+        {
+          "q": "Umumnya ada berapa sakramen di gereja Protestan?",
+          "options": [
+            "Dua",
+            "Lima",
+            "Tujuh"
+          ],
+          "answer": 0,
+          "why": "Baptisan dan Perjamuan Kudus."
+        },
+        {
+          "q": "Siapa tokoh yang memulai Reformasi pada 1517?",
+          "options": [
+            "Yohanes Calvin",
+            "Martin Luther",
+            "Paus Leo X"
+          ],
+          "answer": 1,
+          "why": "Martin Luther menempelkan 95 dalilnya di Wittenberg pada 1517."
+        },
+        {
+          "q": "Berapa jumlah kitab dalam Alkitab Protestan?",
+          "options": [
+            "66",
+            "73",
+            "114"
+          ],
+          "answer": 0,
+          "why": "39 kitab Perjanjian Lama dan 27 kitab Perjanjian Baru."
+        },
+        {
+          "q": "Hari raya yang merayakan kebangkitan Yesus adalah…",
+          "options": [
+            "Natal",
+            "Pentakosta",
+            "Paskah"
+          ],
+          "answer": 2,
+          "why": "Paskah merayakan kebangkitan Yesus."
+        },
+        {
+          "q": "Ibadah utama mingguan biasanya diadakan hari…",
+          "options": [
+            "Jumat",
+            "Sabtu",
+            "Minggu"
+          ],
+          "answer": 2,
+          "why": "Hari Minggu diperingati sebagai hari kebangkitan."
+        }
+      ]
+    },
+    {
+      "id": "katolik",
+      "faith": "katolik",
+      "title": "Mengenal Katolik",
+      "minutes": 4,
+      "sections": [
+        {
+          "h": "Inti ajaran",
+          "p": "Umat Katolik percaya kepada Allah Tritunggal dan kepada Yesus Kristus sebagai Putra Allah. Gereja Katolik dipimpin Paus di Roma bersama para uskup, penerus para rasul."
+        },
+        {
+          "h": "Sumber ajaran",
+          "p": "Alkitab Katolik berisi 73 kitab (termasuk kitab Deuterokanonika), dibaca bersama Tradisi Suci dan ajaran resmi Gereja (Magisterium)."
+        },
+        {
+          "h": "Tujuh sakramen",
+          "p": "Baptis, Krisma, Ekaristi, Tobat, Pengurapan Orang Sakit, Imamat, dan Perkawinan."
+        },
+        {
+          "h": "Ibadah",
+          "p": "Misa (Ekaristi) adalah puncak ibadah. Doa Rosario mengajak merenungkan peristiwa hidup Yesus bersama Bunda Maria."
+        },
+        {
+          "h": "Hari raya dan masa liturgi",
+          "p": "Masa Prapaskah 40 hari dimulai dengan Rabu Abu, memuncak pada Trihari Suci dan Paskah. Natal dirayakan 25 Desember."
+        },
+        {
+          "h": "Di Indonesia",
+          "p": "Para uskup Indonesia tergabung dalam Konferensi Waligereja Indonesia (KWI). Salam yang lazim: “Salam damai Kristus” atau “Berkah Dalem”."
+        }
+      ],
+      "readMore": [
+        "kat-pokok-sakramen",
+        "kat-ibadah-misa",
+        "kat-ibadah-rosario"
+      ],
+      "quiz": [
+        {
+          "q": "Berapa jumlah sakramen dalam Gereja Katolik?",
+          "options": [
+            "Dua",
+            "Lima",
+            "Tujuh"
+          ],
+          "answer": 2,
+          "why": "Baptis, Krisma, Ekaristi, Tobat, Pengurapan Orang Sakit, Imamat, Perkawinan."
+        },
+        {
+          "q": "Siapa pemimpin Gereja Katolik sedunia?",
+          "options": [
+            "Paus",
+            "Patriark",
+            "Ketua sinode"
+          ],
+          "answer": 0,
+          "why": "Paus adalah Uskup Roma."
+        },
+        {
+          "q": "Alkitab Katolik berisi berapa kitab?",
+          "options": [
+            "66",
+            "73",
+            "81"
+          ],
+          "answer": 1,
+          "why": "Termasuk tujuh kitab Deuterokanonika."
+        },
+        {
+          "q": "Masa Prapaskah dimulai dengan…",
+          "options": [
+            "Minggu Palma",
+            "Rabu Abu",
+            "Kamis Putih"
+          ],
+          "answer": 1,
+          "why": "Rabu Abu membuka 40 hari Prapaskah."
+        },
+        {
+          "q": "Doa dengan untaian manik untuk merenungkan hidup Yesus bersama Maria disebut…",
+          "options": [
+            "Rosario",
+            "Tasbih",
+            "Mala"
+          ],
+          "answer": 0,
+          "why": "Rosario terdiri dari peristiwa-peristiwa yang direnungkan."
+        }
+      ]
+    },
+    {
+      "id": "hindu",
+      "faith": "hindu",
+      "title": "Mengenal Hindu",
+      "minutes": 4,
+      "sections": [
+        {
+          "h": "Panca Sradha",
+          "p": "Lima keyakinan dasar: percaya kepada Brahman (Sang Hyang Widhi Wasa), Atman, Karmaphala (hukum sebab-akibat perbuatan), Punarbhawa (kelahiran kembali), dan Moksa (kebebasan abadi)."
+        },
+        {
+          "h": "Kitab suci",
+          "p": "Weda adalah kitab suci tertua. Bhagavad Gita, bagian dari Mahabharata, banyak dibaca sebagai tuntunan hidup."
+        },
+        {
+          "h": "Tri Hita Karana",
+          "p": "Tiga sebab kebahagiaan: harmoni dengan Tuhan (parahyangan), dengan sesama (pawongan), dan dengan alam (palemahan)."
+        },
+        {
+          "h": "Ibadah",
+          "p": "Puja Trisandhya dilantunkan tiga kali sehari. Canang sari dipersembahkan sebagai rasa syukur. Pura adalah tempat ibadah umat Hindu."
+        },
+        {
+          "h": "Hari raya",
+          "p": "Nyepi (Tahun Baru Saka) dirayakan dengan hening lewat Catur Brata Penyepian. Galungan merayakan kemenangan dharma atas adharma; Kuningan jatuh sepuluh hari kemudian."
+        },
+        {
+          "h": "Di Indonesia",
+          "p": "Majelis umat Hindu adalah Parisada Hindu Dharma Indonesia (PHDI). Salam yang lazim: “Om Swastiastu”, ditutup “Om Shanti Shanti Shanti Om”."
+        }
+      ],
+      "readMore": [
+        "hin-pokok-panca-sradha",
+        "hin-pokok-tri-hita-karana",
+        "hin-hariraya-nyepi"
+      ],
+      "quiz": [
+        {
+          "q": "Hari raya Tahun Baru Saka yang dirayakan dengan hening adalah…",
+          "options": [
+            "Galungan",
+            "Nyepi",
+            "Kuningan"
+          ],
+          "answer": 1,
+          "why": "Saat Nyepi umat menjalankan Catur Brata Penyepian."
+        },
+        {
+          "q": "Sebutan Tuhan Yang Maha Esa dalam Hindu di Indonesia adalah…",
+          "options": [
+            "Sang Hyang Widhi Wasa",
+            "Tian",
+            "Adi Buddha"
+          ],
+          "answer": 0,
+          "why": "Sang Hyang Widhi Wasa."
+        },
+        {
+          "q": "Puja Trisandhya dilakukan berapa kali sehari?",
+          "options": [
+            "Sekali",
+            "Tiga kali",
+            "Lima kali"
+          ],
+          "answer": 1,
+          "why": "Pagi, siang, dan sore."
+        },
+        {
+          "q": "Tri Hita Karana: harmoni dengan Tuhan, sesama, dan…",
+          "options": [
+            "harta",
+            "alam",
+            "pemerintah"
+          ],
+          "answer": 1,
+          "why": "Palemahan: harmoni dengan alam."
+        },
+        {
+          "q": "Kitab suci tertua dalam Hindu adalah…",
+          "options": [
+            "Weda",
+            "Tipitaka",
+            "Si Shu"
+          ],
+          "answer": 0,
+          "why": "Weda (Rg, Sama, Yajur, Atharwa)."
+        }
+      ]
+    },
+    {
+      "id": "buddha",
+      "faith": "buddha",
+      "title": "Mengenal Buddha",
+      "minutes": 4,
+      "sections": [
+        {
+          "h": "Empat Kebenaran Mulia",
+          "p": "Ada penderitaan (dukkha), ada sebabnya (keinginan/tanha), penderitaan bisa berakhir (nibbana), dan ada jalan untuk mengakhirinya: Jalan Mulia Berunsur Delapan."
+        },
+        {
+          "h": "Tiga Permata",
+          "p": "Umat Buddha berlindung kepada Buddha (guru), Dhamma (ajaran), dan Sangha (komunitas para bhikkhu dan bhikkhuni)."
+        },
+        {
+          "h": "Kitab suci",
+          "p": "Tipitaka (bahasa Pali) atau Tripitaka (Sanskerta) terdiri dari tiga keranjang: Vinaya, Sutta, dan Abhidhamma."
+        },
+        {
+          "h": "Pancasila Buddhis",
+          "p": "Lima latihan moral: menghindari membunuh, mencuri, perilaku asusila, berbohong, dan mabuk-mabukan."
+        },
+        {
+          "h": "Ibadah dan hari raya",
+          "p": "Puja bakti di vihara, membaca paritta, dan meditasi. Waisak memperingati kelahiran, pencerahan, dan parinibbana Buddha Gotama."
+        },
+        {
+          "h": "Di Indonesia",
+          "p": "Ada aliran Theravada, Mahayana, dan Tantrayana. Salam yang lazim: “Namo Buddhaya”."
+        }
+      ],
+      "readMore": [
+        "bud-pokok-empat-kebenaran",
+        "bud-pokok-tisarana-pancasila",
+        "bud-hariraya-waisak"
+      ],
+      "quiz": [
+        {
+          "q": "Hari raya yang memperingati kelahiran, pencerahan, dan wafat Buddha adalah…",
+          "options": [
+            "Kathina",
+            "Waisak",
+            "Asadha"
+          ],
+          "answer": 1,
+          "why": "Tiga peristiwa agung diperingati saat Waisak."
+        },
+        {
+          "q": "Tiga Permata: Buddha, Dhamma, dan…",
+          "options": [
+            "Sangha",
+            "Sutta",
+            "Stupa"
+          ],
+          "answer": 0,
+          "why": "Sangha, komunitas para bhikkhu dan bhikkhuni."
+        },
+        {
+          "q": "Apa kitab suci agama Buddha?",
+          "options": [
+            "Weda",
+            "Tipitaka",
+            "Injil"
+          ],
+          "answer": 1,
+          "why": "Tipitaka/Tripitaka: tiga keranjang ajaran."
+        },
+        {
+          "q": "Jalan untuk mengakhiri penderitaan disebut Jalan Mulia Berunsur…",
+          "options": [
+            "Lima",
+            "Delapan",
+            "Sepuluh"
+          ],
+          "answer": 1,
+          "why": "Pandangan benar sampai konsentrasi benar."
+        },
+        {
+          "q": "Pancasila Buddhis berisi…",
+          "options": [
+            "lima latihan moral",
+            "lima dasar negara",
+            "lima waktu ibadah"
+          ],
+          "answer": 0,
+          "why": "Lima sila sebagai latihan moral sehari-hari."
+        }
+      ]
+    },
+    {
+      "id": "khonghucu",
+      "faith": "khonghucu",
+      "title": "Mengenal Khonghucu",
+      "minutes": 4,
+      "sections": [
+        {
+          "h": "Nabi dan iman",
+          "p": "Ajaran Khonghucu berakar pada Nabi Kongzi (551–479 SM). Umat beriman kepada Tian, Tuhan Yang Maha Esa, sebagaimana dirumuskan dalam Delapan Pengakuan Iman."
+        },
+        {
+          "h": "Lima kebajikan (Wu Chang)",
+          "p": "Ren (cinta kasih), Yi (kebenaran), Li (kesusilaan), Zhi (kebijaksanaan), dan Xin (dapat dipercaya)."
+        },
+        {
+          "h": "Kitab suci",
+          "p": "Si Shu (Kitab Yang Empat: Daxue, Zhongyong, Lunyu, Mengzi) dan Wu Jing (Kitab Yang Lima). Xiao Jing mengajarkan bakti."
+        },
+        {
+          "h": "Bakti dan ibadah",
+          "p": "Bakti (xiao) kepada orang tua dan leluhur sangat penting. Umat bersembahyang di litang atau klenteng dengan dupa (hio)."
+        },
+        {
+          "h": "Hari raya",
+          "p": "Tahun Baru Imlek, Cap Go Meh (hari ke-15), Ceng Beng/Qingming untuk ziarah makam leluhur, dan hari lahir Nabi Kongzi."
+        },
+        {
+          "h": "Di Indonesia",
+          "p": "Majelis Tinggi Agama Khonghucu Indonesia (MATAKIN). Presiden Abdurrahman Wahid mencabut Inpres 14/1967 pada tahun 2000, sehingga perayaan budaya Tionghoa kembali bebas. Salam yang lazim: “Salam kebajikan”."
+        }
+      ],
+      "readMore": [
+        "khc-pokok-delapan-keimanan",
+        "khc-pokok-wuchang",
+        "khc-hariraya-imlek"
+      ],
+      "quiz": [
+        {
+          "q": "Lima kebajikan utama dalam ajaran Khonghucu disebut…",
+          "options": [
+            "Wu Chang",
+            "Wu Jing",
+            "Si Shu"
+          ],
+          "answer": 0,
+          "why": "Ren, Yi, Li, Zhi, Xin."
+        },
+        {
+          "q": "Kebajikan Ren berarti…",
+          "options": [
+            "cinta kasih",
+            "keberanian",
+            "kekayaan"
+          ],
+          "answer": 0,
+          "why": "Ren adalah cinta kasih atau kemanusiaan."
+        },
+        {
+          "q": "Tradisi ziarah membersihkan makam leluhur disebut…",
+          "options": [
+            "Cap Go Meh",
+            "Ceng Beng (Qingming)",
+            "Peh Cun"
+          ],
+          "answer": 1,
+          "why": "Ceng Beng/Qingming."
+        },
+        {
+          "q": "Majelis tertinggi agama Khonghucu di Indonesia adalah…",
+          "options": [
+            "MATAKIN",
+            "PHDI",
+            "KWI"
+          ],
+          "answer": 0,
+          "why": "Majelis Tinggi Agama Khonghucu Indonesia."
+        },
+        {
+          "q": "Siapa presiden yang mencabut Inpres 14/1967 pada tahun 2000?",
+          "options": [
+            "Soeharto",
+            "Abdurrahman Wahid",
+            "Joko Widodo"
+          ],
+          "answer": 1,
+          "why": "Gus Dur memulihkan kebebasan perayaan budaya Tionghoa."
+        }
+      ]
+    },
+    {
+      "id": "kepercayaan",
+      "faith": "alam",
+      "title": "Penghayat Kepercayaan & kearifan lokal",
+      "minutes": 4,
+      "sections": [
+        {
+          "h": "Diakui negara",
+          "p": "Selain enam agama, Indonesia mengakui Penghayat Kepercayaan terhadap Tuhan Yang Maha Esa. Putusan Mahkamah Konstitusi No. 97/PUU-XIV/2016 (dibacakan November 2017) membolehkan kolom “Kepercayaan terhadap Tuhan Yang Maha Esa” di KTP dan KK."
+        },
+        {
+          "h": "Beragam di Nusantara",
+          "p": "Contohnya Sunda Wiwitan (antara lain masyarakat Baduy dan Cigugur), Parmalim (Batak), Marapu (Sumba), Aluk Todolo (Toraja), serta berbagai aliran kebatinan di Jawa."
+        },
+        {
+          "h": "Nilai bersama",
+          "p": "Hidup selaras dengan alam, menghormati leluhur, menjaga adat, dan bergotong royong."
+        },
+        {
+          "h": "Organisasi",
+          "p": "Majelis Luhur Kepercayaan Terhadap Tuhan Yang Maha Esa Indonesia (MLKI) menaungi banyak kelompok penghayat."
+        },
+        {
+          "h": "Saat berkunjung",
+          "p": "Minta izin kepada tetua adat, ikuti aturan setempat (misalnya larangan memotret di Baduy Dalam), dan jaga alam sekitar."
+        },
+        {
+          "h": "Ruang Alam di Jeda",
+          "p": "Ruang Alam juga terbuka untuk siapa pun yang ingin hening tanpa ritual agama tertentu."
+        }
+      ],
+      "readMore": [],
+      "quiz": [
+        {
+          "q": "Putusan MK tahun 2017 membolehkan kolom agama di KTP diisi…",
+          "options": [
+            "“Kepercayaan terhadap Tuhan Yang Maha Esa”",
+            "dikosongkan selamanya",
+            "“Lainnya”"
+          ],
+          "answer": 0,
+          "why": "Putusan No. 97/PUU-XIV/2016."
+        },
+        {
+          "q": "Parmalim adalah kepercayaan dari masyarakat…",
+          "options": [
+            "Batak",
+            "Sumba",
+            "Dayak"
+          ],
+          "answer": 0,
+          "why": "Parmalim berkembang di Sumatera Utara."
+        },
+        {
+          "q": "Marapu adalah kepercayaan leluhur di…",
+          "options": [
+            "Sumba",
+            "Bali",
+            "Aceh"
+          ],
+          "answer": 0,
+          "why": "Marapu dihayati masyarakat Sumba, NTT."
+        },
+        {
+          "q": "Sunda Wiwitan dihayati antara lain oleh masyarakat…",
+          "options": [
+            "Baduy",
+            "Asmat",
+            "Bugis"
+          ],
+          "answer": 0,
+          "why": "Juga komunitas di Cigugur, Kuningan."
+        },
+        {
+          "q": "Saat berkunjung ke kampung adat, sebaiknya…",
+          "options": [
+            "minta izin tetua dan ikuti aturan adat",
+            "memotret semua orang dengan bebas",
+            "masuk rumah adat sesukanya"
+          ],
+          "answer": 0,
+          "why": "Hormati aturan dan tuan rumah."
+        }
+      ]
+    },
+    {
+      "id": "lintas",
+      "faith": "lintas",
+      "title": "Etika lintas iman sehari-hari",
+      "minutes": 3,
+      "sections": [
+        {
+          "h": "Bhinneka Tunggal Ika",
+          "p": "Negara melayani enam agama: Islam, Kristen Protestan, Katolik, Hindu, Buddha, dan Khonghucu, serta menghormati para Penghayat Kepercayaan."
+        },
+        {
+          "h": "Salam",
+          "p": "Salam yang netral selalu aman, misalnya “Selamat pagi”. Salam khas tiap tradisi: Assalamu'alaikum (Islam), Salam sejahtera/Shalom (Kristen), Om Swastiastu (Hindu), Namo Buddhaya (Buddha), Salam kebajikan (Khonghucu)."
+        },
+        {
+          "h": "Makanan",
+          "p": "Tanyakan pantangan teman: makanan halal bagi Muslim, vegetarian bagi sebagian umat Buddha, dan banyak umat Hindu tidak makan daging sapi."
+        },
+        {
+          "h": "Rumah ibadah",
+          "p": "Berpakaian sopan, lepas alas kaki jika diminta, jangan memotret orang yang sedang beribadah tanpa izin, dan ikuti arahan pengurus."
+        },
+        {
+          "h": "Hari raya",
+          "p": "Mengucapkan selamat hari raya kepada teman adalah tanda hormat. Ada juga yang memilih tidak mengucapkannya karena keyakinan; hargai pilihan itu."
+        }
+      ],
+      "readMore": [
+        "lin-rumah-ibadah",
+        "lin-makanan",
+        "lin-hari-raya"
+      ],
+      "quiz": [
+        {
+          "q": "Semboyan persatuan dalam keberagaman Indonesia adalah…",
+          "options": [
+            "Bhinneka Tunggal Ika",
+            "Tut Wuri Handayani",
+            "Jalesveva Jayamahe"
+          ],
+          "answer": 0,
+          "why": "Berbeda-beda tetapi tetap satu."
+        },
+        {
+          "q": "Salam “Om Swastiastu” berasal dari tradisi…",
+          "options": [
+            "Hindu",
+            "Buddha",
+            "Katolik"
+          ],
+          "answer": 0,
+          "why": "Om Swastiastu adalah salam umat Hindu."
+        },
+        {
+          "q": "Salam “Namo Buddhaya” digunakan oleh umat…",
+          "options": [
+            "Khonghucu",
+            "Buddha",
+            "Protestan"
+          ],
+          "answer": 1,
+          "why": "Namo Buddhaya: terpujilah Buddha."
+        },
+        {
+          "q": "Saat menjamu teman Muslim, sebaiknya memastikan makanannya…",
+          "options": [
+            "halal",
+            "pedas",
+            "mahal"
+          ],
+          "answer": 0,
+          "why": "Makanan halal sesuai syariat Islam."
+        },
+        {
+          "q": "Berapa agama yang dilayani secara resmi oleh negara Indonesia?",
+          "options": [
+            "Lima",
+            "Enam",
+            "Tujuh"
+          ],
+          "answer": 1,
+          "why": "Islam, Protestan, Katolik, Hindu, Buddha, Khonghucu."
+        }
+      ]
+    }
+  ]
+}

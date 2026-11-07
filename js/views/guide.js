@@ -7,6 +7,7 @@ import { pustaka, entry, searchView, scripture, kamus } from './pustaka.js';
 import { tanya } from './tanya.js';
 import { planner, places, calendarView, archive } from './tools.js';
 import { journal, greetingCard, memorialView } from './extras.js';
+import { sekolah } from './journey.js';
 
 export const GUIDES = {
   pustaka: { title: 'Pustaka', icon: '❒', note: 'Ajaran, kitab, ibadah, hari raya, siklus hidup', view: pustaka },
@@ -22,6 +23,8 @@ export const GUIDES = {
   peringatan: { title: 'Peringatan arwah', icon: '🕯', note: 'Hari ke-7/49/100, tahlilan, ki-jit, haul', view: memorialView },
   syukur: { title: 'Jurnal syukur', icon: '✎', note: 'Catatan syukur pribadi', view: journal },
   kartu: { title: 'Kartu ucapan', icon: '✉', note: 'Kartu hari raya untuk teman beda iman', view: greetingCard },
+  sekolah: { title: 'Sekolah lintas iman', icon: '🎓', note: 'Pelajaran singkat & kuis tentang setiap iman', view: sekolah },
+  wisata: { title: 'Wisata iman', icon: '🧭', note: '7 keajaiban iman Nusantara dalam 3D', link: '#/wisata' },
   kunjungi: { title: 'Ruang iman lain', icon: '⛩', note: 'Kunjungi & kenali dalam mode amati', link: '#/kunjungi' },
 };
 
@@ -32,6 +35,7 @@ export const GUIDE_PLACES = {
   kalender: 'Papan panduan di tempat ibadah',
   upacara: 'Papan panduan di tempat ibadah',
   kamus: 'Papan panduan di tempat ibadah',
+  sekolah: 'Papan panduan di tempat ibadah',
   ibadah: 'Papan panduan di tempat ibadah',
   arsip: 'Rak keluarga di rumah',
   peringatan: 'Rak keluarga di rumah',

@@ -1,6 +1,6 @@
 // Offline support: app shell cache-first, content network-first (so reviewed updates arrive quickly).
 
-const VERSION = 'jeda-v1.6.3';
+const VERSION = 'jeda-v1.7.0';
 const SHELL = [
   './',
   'index.html',
@@ -49,6 +49,10 @@ const SHELL = [
   'js/world/chat.js',
   'js/views/guide.js',
   'js/views/live.js',
+  'js/views/journey.js',
+  'js/karma.js',
+  'js/wonders-data.js',
+  'js/world/wonders.js',
   'vendor/three.module.min.js',
   'vendor/trystero-nostr.js',
   'vendor/qrcode-generator.js',
@@ -68,6 +72,7 @@ const SHELL = [
   'content/permissions.json',
   'content/reviewers.json',
   'content/scriptures.json',
+  'content/school.json',
 ];
 
 self.addEventListener('install', (event) => {

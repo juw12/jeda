@@ -7,6 +7,7 @@ import * as THREE from '../../vendor/three.module.min.js';
 import { mat, box, cyl, sphere, cone, at, lathe, hipRoof, gableRoof, lantern, tree, frangipani, spot, mesh } from './places.js';
 import { KEDAI, HOME, TEMPLE_PEOPLE, FAITH_SCENE, dishById, priceLabel } from './cuisine.js';
 import { buildParcel } from './dishes.js';
+import { karma } from '../karma.js';
 
 // ---------- Shared bits ----------
 function signBoard(text, sub = '', { width = 3.2, height = 0.7, background = '#7a1f1a', color = '#f6e7b8', border = '#e0b443' } = {}) {
@@ -897,6 +898,7 @@ export function buildKedai(faithId) {
   // People: the hawkers, diners at the tables (some chatting in pairs), and passers-by.
   const npcs = [];
   stalls.forEach((stall) => npcs.push({ id: `penjual-${stall.id}`, role: 'vendor', persona: { ...stall.def.vendor, job: `penjual di ${stall.def.name}` }, stallId: stall.id, x: stall.vendorAt.x, z: stall.vendorAt.z, facing: 0, culture: def.culture }));
+  npcs.push(beggarNpc(1, -2.5, 10.1, Math.PI / 2, def.culture));
   const dinerSeats = [
     { table: tables[0], side: -1 }, { table: tables[4], side: -1 }, { table: tables[4], side: 1 }, { table: tables[5], side: 1 }, { table: tables[3], side: 1 },
   ];
@@ -1327,6 +1329,21 @@ export function buildRumah(faithId) {
     g.add(noCollide(at(box(10.4, 0.02, 10.2, '#9db884', { roughness: 1 }), side * 6.6, 0.012, 4.3)));
   });
   villageRing(g, def.style === 'bali' ? 'bali' : 'rumah');
+  // Wish tree (Pohon Harapan): every ribbon wish bought with kindness points hangs here.
+  const wishTree = tree(1.15, '#5a8f52');
+  const ribbons = (karma().wishes || []).filter((wish) => wish.id === 'pita').slice(0, 24);
+  const ribbonColors = ['#e85d5d', '#f2c14e', '#5fa8d3', '#9b7fd1', '#f28fb1', '#ffffff'];
+  ribbons.forEach((wish, i) => {
+    const angle = i * 2.4;
+    const r = 0.7 + (i % 3) * 0.25;
+    const ribbon = box(0.07, 0.42, 0.015, ribbonColors[i % ribbonColors.length]);
+    ribbon.position.set(Math.cos(angle) * r, 1.95 + (i % 4) * 0.12, Math.sin(angle) * r);
+    ribbon.rotation.y = angle;
+    ribbon.userData.noCollide = true;
+    wishTree.add(ribbon);
+  });
+  g.add(at(wishTree, -8.4, 0, 5.2));
+  spots.push(spot('pohon-harapan', 'read', 'Pohon Harapan', [-8.4, 1.6, 5.2], [-7.0, 5.6], { devotional: false, wishTree: true, short: 'Pohon Harapan' }));
 
   const npcs = [
     { id: 'juru-masak', role: 'vendor', persona: { ...def.kitchen.vendor, job: 'memasak untuk keluarga' }, stallId: def.kitchen.id, x: kitchen.vendorAt.x, z: kitchen.vendorAt.z, facing: Math.PI, culture: def.culture, family: true },
@@ -1359,6 +1376,18 @@ export function buildRumah(faithId) {
   };
 }
 
+
+// A person asking for alms near the entrance. Tapping them opens the giving sheet (Bank Kebaikan).
+const BEGGARS = [
+  { name: 'Pak Darto', attire: { name: '', top: '#8a7d6b', bottom: '#5a5048', head: 'gray' }, from: 'Klaten', job: 'dulu buruh bangunan', family: 'cucu dua di kampung', hobby: 'mendengar radio', lines: { hello: 'Permisi, Nak… ada sedikit rezeki?' } },
+  { name: 'Mbah Sumi', attire: { name: '', top: '#7a6a5a', bottom: '#4a4038', head: 'bun' }, from: 'Gunungkidul', job: 'dulu penjual sayur', family: 'tinggal sendiri', hobby: 'menyanyi tembang', lines: { hello: 'Nak, kalau ada lebih, Mbah terima kasih sekali…' } },
+];
+
+function beggarNpc(index, x, z, facing, culture) {
+  const persona = BEGGARS[index % BEGGARS.length];
+  return { id: 'pengemis', role: 'beggar', persona, culture, x, z, facing, seat: { x, z, height: 0.02, facing, cross: true } };
+}
+
 // ---------- Added to every sacred place ----------
 export function addTempleAnnex(place, faithId) {
   const people = TEMPLE_PEOPLE[faithId] || TEMPLE_PEOPLE.alam;
@@ -1373,13 +1402,16 @@ export function addTempleAnnex(place, faithId) {
   panel.position.set(0, 1.55, 0.08);
   board.add(panel);
   g.add(at(board, -7.2, 0, 7.8));
+  g.add(at(signpost('🧭 Wisata iman'), 7.2, 0, 7.8));
+  place.spots.push(spot('ke-wisata', 'travel', 'Wisata: 7 keajaiban iman', [7.2, 1.6, 7.8], [7.2, 6.6], { to: 'wisata', radius: 1.6, short: 'Wisata' }));
   place.spots.push(spot('papan-panduan', 'guide', 'Papan panduan', [-7.2, 1.5, 7.8], [-7.2, 6.6], { guides: ['pustaka', 'kalender', 'upacara', 'kamus', 'ibadah', 'kunjungi'], short: 'Papan panduan' }));
   place.npcs = [
     { id: 'pemandu', role: 'guide', persona: { ...people.guide, guide: true }, culture: people.culture, x: -5.6, z: 7.6, facing: Math.PI / 4 },
+    beggarNpc(0, 2.5, 9.9, -Math.PI / 2, people.culture),
     ...people.visitors.map((persona, i) => ({ id: `umat-${i}`, role: 'worshipper', persona, culture: people.culture, x: 3 + i * 1.5, z: 5 - i })),
   ];
   place.culture = people.culture;
   return place;
 }
 
-export { buildParcel, mesh };
+export { buildParcel, mesh, signpost, signBoard, noCollide, villageRing };

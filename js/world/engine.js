@@ -14,6 +14,7 @@ import { createLife } from './life.js';
 import { createHeld, heldItemFor } from './handheld.js';
 import { buildKedai, buildRumah, addTempleAnnex, buildParcel } from './venues.js';
 import { createNpcs } from './npc.js';
+import { buildWonder } from './wonders.js';
 import { createMeal } from './meal.js';
 import { buildDish } from './dishes.js';
 
@@ -174,12 +175,38 @@ export function createWorld(container, options) {
   sun.shadow.bias = -0.0005;
   scene.add(sun);
 
+  // Wonder scenes are large monuments: keep them readable at dusk and night with a warm
+  // floodlight rig (as the real sites are lit after dark) and push the fog further out.
+  const isWonder = sceneId.startsWith('wisata-');
+  const FLOOD_LEVELS = { dawn: 0.2, day: 0, dusk: 0.45, night: 1.0 };
+  let floodFill = null;
+  let floodKey = null;
+  if (isWonder) {
+    scene.fog.near = 45;
+    scene.fog.far = 130;
+    floodFill = new THREE.HemisphereLight('#ffe2b0', '#4a3a2a', 0);
+    floodKey = new THREE.DirectionalLight('#ffd7a0', 0);
+    floodKey.position.set(4, 7, 24);
+    scene.add(floodFill, floodKey);
+  }
+  function applyFloodlight() {
+    if (!floodFill) {
+      return;
+    }
+    const level = FLOOD_LEVELS[currentTime] || 0;
+    floodFill.intensity = 0.9 * level;
+    floodKey.intensity = 1.1 * level;
+  }
+  applyFloodlight();
+
   // Sacred place (with signposts, guide board and people added), the food place, or the home.
   let place;
   if (sceneId.startsWith('kedai-')) {
     place = buildKedai(sceneId.slice(6));
   } else if (sceneId.startsWith('rumah-')) {
     place = buildRumah(sceneId.slice(6));
+  } else if (sceneId.startsWith('wisata-')) {
+    place = buildWonder(sceneId.slice(7));
   } else {
     place = buildPlace(sceneId);
     if (faithId) {
@@ -280,8 +307,17 @@ export function createWorld(container, options) {
   // Solid scenery that may hide the avatar from the camera (see updateCamera).
   const cameraRay = new THREE.Raycaster();
   const occluders = [];
+  // Thin props (signposts) can opt out with userData.cameraPass so they never snap the camera in.
+  const passesCamera = (object) => {
+    for (let node = object; node; node = node.parent) {
+      if (node.userData.cameraPass) {
+        return true;
+      }
+    }
+    return false;
+  };
   place.group.traverse((object) => {
-    if (object.isMesh && !object.userData.noCollide && !(object.parent && object.parent.userData.noCollide)) {
+    if (object.isMesh && !object.userData.noCollide && !(object.parent && object.parent.userData.noCollide) && !passesCamera(object)) {
       occluders.push(object);
     }
   });
@@ -1140,6 +1176,7 @@ export function createWorld(container, options) {
     };
     styleMotes();
     applyHeldLighting();
+    applyFloodlight();
     return currentTime;
   }
 
@@ -1837,6 +1874,12 @@ export function createWorld(container, options) {
   resize();
   // Start behind the avatar looking at the main building.
   rig.yaw = Math.atan2(place.spawn.x - place.focus.x, place.spawn.z - place.focus.z);
+  // A place may ask for its own opening framing (e.g. tall monuments).
+  if (place.view) {
+    rig.pitch = place.view.pitch ?? rig.pitch;
+    rig.distance = place.view.distance ?? rig.distance;
+    rig.targetDistance = rig.distance;
+  }
   self.facing = rig.yaw + Math.PI;
   self.group.rotation.y = self.facing;
   updateCamera(1);
@@ -1881,6 +1924,86 @@ export function createWorld(container, options) {
       return def ? { id: def.id, name: def.name, icon: def.icon } : null;
     },
     hold,
+    // Floating counter above your head ("📿 33/99"), shown for every interaction.
+    headCount(text) {
+      if (self.headCount) {
+        self.group.remove(self.headCount);
+        self.headCount.material.map?.dispose();
+        self.headCount.material.dispose();
+      }
+      const sprite = textSprite(text, { background: 'rgba(255,248,232,0.94)', color: '#2a2016', size: 40 });
+      sprite.position.set(0, self.sitting ? 2.25 : 2.7, 0);
+      sprite.renderOrder = 10;
+      self.group.add(sprite);
+      self.headCount = sprite;
+      clearTimeout(self.headCountTimer);
+      self.headCountTimer = setTimeout(() => {
+        if (self.headCount === sprite) {
+          self.group.remove(sprite);
+          sprite.material.map?.dispose();
+          sprite.material.dispose();
+          self.headCount = null;
+        }
+      }, 2600);
+    },
+    // Wish effects bought with kindness points.
+    celebrate(effect) {
+      const p = self.group.position;
+      const around = (dx, dy, dz) => new THREE.Vector3(p.x + dx, dy, p.z + dz);
+      if (effect === 'lanterns') {
+        [[-1.5, -1], [1.5, -1.2], [0, -2.4], [-2.6, 0.8], [2.6, 0.6]].forEach(([dx, dz], i) => {
+          setTimeout(() => addEmitter(around(dx, 0.8, dz), { color: '#ffb347', size: 0.55, rate: 1.4, life: 12, rise: 0.75, spread: 0.5, duration: 6, count: 10 }), i * 400);
+        });
+        chime();
+      } else if (effect === 'petals') {
+        [[-2, -2], [2, -2], [0, 0], [-2, 2], [2, 2]].forEach(([dx, dz]) => {
+          addEmitter(around(dx, 7, dz), { color: '#f6b4c6', size: 0.22, rate: 9, life: 9, rise: -0.75, spread: 2.6, duration: 9, count: 80 });
+        });
+        chime();
+      } else if (effect === 'fireflies') {
+        [[-1.5, -1.5], [1.5, -1.5], [0, 1.5]].forEach(([dx, dz]) => {
+          addEmitter(around(dx, 0.9, dz), { color: '#fff3a8', size: 0.2, rate: 6, life: 7, rise: 0.12, spread: 2.2, duration: 16, count: 50 });
+        });
+        chime();
+      } else if (effect === 'ribbon') {
+        addEmitter(around(0, 1.4, 0), { color: '#ffd166', size: 0.25, rate: 20, life: 2.4, rise: 0.9, spread: 1.4, duration: 1.4, count: 40 });
+        chime();
+      } else if (effect === 'treat') {
+        npcs.list.forEach((npc, i) => {
+          setTimeout(() => {
+            npcs.say(npc, npc.role === 'vendor' ? 'Teh hangat untuk semua, ya!' : 'Terima kasih tehnya!', 3600);
+            npcs.gesture(npc);
+          }, 300 + i * 450);
+        });
+        addEmitter(around(0, 1.2, -1), { color: '#f4f1ea', size: 0.3, rate: 10, life: 2.6, rise: 0.5, spread: 1.6, duration: 4, count: 40 });
+        chime();
+      }
+    },
+    // The person asking for alms reacts to what you do: give coins, share food, decline kindly, or shoo away.
+    alms(kind) {
+      const npc = npcs.list.find((n) => n.role === 'beggar');
+      if (!npc) {
+        return false;
+      }
+      const lines = {
+        coins: ['Terima kasih, Nak. Semoga rezekimu lancar.', 'Matur nuwun… semoga sehat selalu.'],
+        food: ['Wah, makanan… terima kasih banyak, Nak!', 'Alhamdulillah, bisa makan siang. Terima kasih.'],
+        polite: ['Iya, Nak, tidak apa-apa. Hati-hati di jalan.'],
+        shoo: ['…Maaf, Nak. Saya pindah sedikit.'],
+      }[kind] || ['Terima kasih.'];
+      npcs.say(npc, lines[Math.floor(Math.random() * lines.length)], 4200);
+      if ((kind === 'coins' || kind === 'food') && npc.avatar.bowl) {
+        const coin = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.01, 10), new THREE.MeshStandardMaterial({ color: kind === 'food' ? '#e9d7a8' : '#d8b14a', metalness: kind === 'food' ? 0 : 0.7, roughness: 0.35 }));
+        const count = npc.avatar.bowl.children.length;
+        coin.position.set((Math.random() - 0.5) * 0.12, 0.02 + Math.min(count, 12) * 0.006, (Math.random() - 0.5) * 0.12);
+        npc.avatar.bowl.add(coin);
+        addEmitter(npc.avatar.group.position.clone().add(new THREE.Vector3(0, 0.6, 0)), { color: '#ffe7a8', size: 0.18, rate: 24, life: 1.2, rise: 0.9, spread: 0.6, duration: 0.6, count: 18 });
+        chime();
+      }
+      npcs.gesture(npc);
+      return true;
+    },
+    npcRole: (id) => npcs.byId(id)?.role || null,
     release: () => release(),
     holdStep,
     holding: () => (held ? { ...held.state(), voice: voiceOn } : null),

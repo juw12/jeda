@@ -15,6 +15,8 @@ import { setAsmrGain } from '../audio.js';
 import { search } from '../search.js';
 import { getIndex } from './pustaka.js';
 import { createGuideSheet } from './guide.js';
+import { act, karma, balance, spend, addWish, onKarma, WISHES, KARMA_NOTE } from '../karma.js';
+import { wonderById } from '../wonders-data.js';
 
 const AREAS = [
   { id: 'ibadah', icon: '⛩', label: 'Ibadah' },
@@ -22,9 +24,10 @@ const AREAS = [
   { id: 'rumah', icon: '🏠', label: 'Rumah' },
 ];
 const AREA_GUIDES = {
-  ibadah: ['pustaka', 'tanya', 'kalender', 'upacara', 'kamus', 'ibadah', 'kunjungi'],
+  ibadah: ['pustaka', 'sekolah', 'tanya', 'kalender', 'upacara', 'kamus', 'ibadah', 'wisata', 'kunjungi'],
   kedai: ['pustaka', 'kalender', 'kamus', 'tanya'],
   rumah: ['peringatan', 'arsip', 'syukur', 'kartu', 'pustaka', 'kalender'],
+  wisata: ['sekolah', 'pustaka', 'kamus', 'kalender', 'ibadah'],
 };
 // Food you carry (e.g. takeaway) survives moving between the sacred place, the food place and home.
 const CARRY_KEY = 'jeda:v1:carry';
@@ -77,7 +80,7 @@ function sitPanel(spot, faith) {
   }
 }
 
-export function space(main, [faithId, areaParam], query, { content, navigate }, extra = {}) {
+export function space(main, [faithId, areaParam, wonderParam], query, { content, navigate }, extra = {}) {
   const faith = faithById(content, faithId);
   if (!faith) {
     navigate('#/kunjungi');
@@ -88,11 +91,12 @@ export function space(main, [faithId, areaParam], query, { content, navigate }, 
   const mode = live && live.mode ? live.mode : (!userPrefs.faith || userPrefs.faith === faith.id || faith.id === 'alam' ? 'home' : 'visit');
   const greetings = greetingsFor(faith.id, mode);
   // Three places per faith: the sacred place, the food place nearby, and a home.
-  const area = !live && ['kedai', 'rumah'].includes(areaParam) ? areaParam : 'ibadah';
+  const wonder = !live && areaParam === 'wisata' ? wonderById(wonderParam) : null;
+  const area = wonder ? 'wisata' : !live && ['kedai', 'rumah'].includes(areaParam) ? areaParam : 'ibadah';
   const kedai = KEDAI[faith.id] || KEDAI.alam;
   const home = HOME[faith.id] || HOME.alam;
-  const areaTitle = area === 'kedai' ? kedai.name : area === 'rumah' ? home.name : faith.spaceName;
-  const sceneId = area === 'ibadah' ? faith.scene : `${area}-${faith.id}`;
+  const areaTitle = wonder ? wonder.name : area === 'kedai' ? kedai.name : area === 'rumah' ? home.name : faith.spaceName;
+  const sceneId = wonder ? `wisata-${wonder.id}` : area === 'ibadah' ? faith.scene : `${area}-${faith.id}`;
   document.body.dataset.faith = faith.id;
   document.body.classList.add('in-space');
 
@@ -110,9 +114,9 @@ export function space(main, [faithId, areaParam], query, { content, navigate }, 
       <div class="stage-world" data-world></div>
       <div class="stage-top">
         <div class="stage-title">
-          <span class="eyebrow">${area === 'kedai' ? 'Kedai makan' : area === 'rumah' ? 'Rumah' : mode === 'visit' ? 'Kunjungi & kenali' : 'Ruangmu'}</span>
+          <span class="eyebrow">${wonder ? `Wisata iman · ${esc(wonder.region)}` : area === 'kedai' ? 'Kedai makan' : area === 'rumah' ? 'Rumah' : mode === 'visit' ? 'Kunjungi & kenali' : 'Ruangmu'}</span>
           <h1>${esc(areaTitle)}</h1>
-          ${live ? '' : `<nav class="area-switch" aria-label="Pindah tempat">${AREAS.map((a) => `<button type="button" data-area="${a.id}" class="${a.id === area ? 'on' : ''}" ${a.id === area ? 'aria-current="page"' : ''}><span aria-hidden="true">${a.icon}</span>${a.label}</button>`).join('')}</nav>`}
+          ${live ? '' : wonder ? `<nav class="area-switch" aria-label="Pindah tempat"><button type="button" data-area="wisata"><span aria-hidden="true">🧭</span>Semua wisata</button><button type="button" data-area="ibadah"><span aria-hidden="true">${esc(faith.icon || '⛩')}</span>${esc(faith.spaceName)}</button></nav>` : `<nav class="area-switch" aria-label="Pindah tempat">${AREAS.map((a) => `<button type="button" data-area="${a.id}" class="${a.id === area ? 'on' : ''}" ${a.id === area ? 'aria-current="page"' : ''}><span aria-hidden="true">${a.icon}</span>${a.label}</button>`).join('')}</nav>`}
         </div>
         <div class="stage-pills">
           ${live ? `
@@ -122,6 +126,7 @@ export function space(main, [faithId, areaParam], query, { content, navigate }, 
               <span class="dot"></span><span data-presence-label>Sendiri</span>
             </button>
             <button class="pill" type="button" data-golive>Siarkan</button>`}
+          <button class="pill karma-pill" type="button" data-karma aria-label="Bank Kebaikan: saldo poin kebaikan"><span aria-hidden="true">✦</span><span data-karma-balance>${balance()}</span></button>
           <button class="pill icon-pill" type="button" data-immersive aria-pressed="false" aria-label="Sembunyikan tombol agar ruang terlihat penuh" title="Lihat ruang penuh">⤢</button>
         </div>
       </div>
@@ -150,6 +155,17 @@ export function space(main, [faithId, areaParam], query, { content, navigate }, 
           <button class="btn-ghost" type="button" data-hold-close>Selesai</button>
           <button class="btn" type="button" data-hold-step>Geser butir</button>
           <button class="btn" type="button" data-hold-finish hidden>Tancapkan di hiolo</button>
+        </div>
+      </div>
+      <div class="count-hud" data-count-hud aria-live="polite" hidden></div>
+      <div class="karma-float" data-karma-float aria-hidden="true"></div>
+      <div class="sheet-panel" data-panel hidden role="dialog" aria-modal="false" aria-labelledby="panel-title">
+        <div class="panel-card">
+          <header class="panel-head">
+            <div><span class="eyebrow" data-panel-kicker></span><h2 class="h3" id="panel-title" data-panel-title></h2></div>
+            <button class="chat-close" type="button" data-panel-close aria-label="Tutup">✕</button>
+          </header>
+          <div class="panel-body" data-panel-body></div>
         </div>
       </div>
       <div class="stage-hint" data-hint>Ketuk tanah untuk berjalan · seret untuk melihat sekeliling</div>
@@ -261,6 +277,16 @@ export function space(main, [faithId, areaParam], query, { content, navigate }, 
           ${home.altar ? `<p class="small muted">${esc(home.altar)}</p>` : ''}
           <p class="small muted">Di rumah: berdoa di altar/tempat ibadah keluarga, minta masakan di dapur, makan bungkusan dari kedai di meja makan, dan buka rak keluarga (peringatan arwah, arsip, jurnal syukur) serta kotak surat (kartu ucapan).</p>
         </div>` : ''}
+      ${wonder ? `
+        <div class="card soft wonder-card">
+          <span class="eyebrow">${esc(wonder.region)} · ${esc(wonder.built)}</span>
+          <h2 class="h3">${esc(wonder.name)}</h2>
+          <p>${esc(wonder.blurb)}</p>
+          <ul>${wonder.facts.map((fact) => `<li>${esc(fact)}</li>`).join('')}</ul>
+          <h3 class="h3">Etika berkunjung</h3>
+          <ul>${wonder.etiquette.map((rule) => `<li>${esc(rule)}</li>`).join('')}</ul>
+          <a class="btn-ghost" href="#/wisata">← Semua tujuan wisata</a>
+        </div>` : ''}
       ${area === 'ibadah' ? `
       <h2 class="h3 section-title">Alat & panduan</h2>
       <div class="ritual-grid">
@@ -336,10 +362,205 @@ export function space(main, [faithId, areaParam], query, { content, navigate }, 
   const guideSheet = createGuideSheet(stage, { content, navigate });
   main.querySelector('[data-guides]').addEventListener('click', () => guideSheet.open(AREA_GUIDES[area], 'Panduan'));
   const openEntry = (entryId) => guideSheet.open(`#/entri/${encodeURIComponent(entryId)}`);
+
+  // ---------- Counting every interaction + Bank Kebaikan (kindness points) ----------
+  const countHud = main.querySelector('[data-count-hud]');
+  const karmaFloat = main.querySelector('[data-karma-float]');
+  const karmaBalance = main.querySelector('[data-karma-balance]');
+  const panel = main.querySelector('[data-panel]');
+  const panelBody = main.querySelector('[data-panel-body]');
+  let countTimerHud = null;
+  function showCount(text) {
+    if (world) {
+      world.headCount(text);
+    }
+    countHud.textContent = text;
+    countHud.hidden = false;
+    countHud.classList.remove('pop');
+    void countHud.offsetWidth;
+    countHud.classList.add('pop');
+    clearTimeout(countTimerHud);
+    countTimerHud = setTimeout(() => {
+      countHud.hidden = true;
+    }, 2200);
+  }
+  function floatKarma(delta) {
+    if (!delta) {
+      return;
+    }
+    karmaFloat.textContent = `${delta > 0 ? '+' : '−'}${Math.abs(delta)} kebaikan`;
+    karmaFloat.className = `karma-float show ${delta > 0 ? 'good' : 'bad'}`;
+    setTimeout(() => {
+      karmaFloat.className = 'karma-float';
+    }, 1600);
+  }
+  // Count an interaction: number above your head, today's tally, and points when it is a deed.
+  function deed(id, { label, icon = '✦', points = 0, cap = 5, text = null } = {}) {
+    const result = act(id, { label, icon, points, cap });
+    showCount(text || `${icon} ${label} ×${result.count}`);
+    floatKarma(result.delta);
+    return result;
+  }
+  cleanups.push(onKarma(({ balance: value }) => {
+    karmaBalance.textContent = String(value);
+  }));
+
+  function openPanel(kicker, title, html) {
+    main.querySelector('[data-panel-kicker]').textContent = kicker;
+    main.querySelector('[data-panel-title]').textContent = title;
+    panelBody.innerHTML = html;
+    panel.hidden = false;
+    document.body.classList.add('panel-open');
+  }
+  function closePanel() {
+    panel.hidden = true;
+    document.body.classList.remove('panel-open');
+  }
+  main.querySelector('[data-panel-close]').addEventListener('click', closePanel);
+
+  function renderKarmaPanel() {
+    const state = karma();
+    const recent = state.ledger.slice(0, 4);
+    openPanel('Bank Kebaikan', `Saldo ✦ ${state.balance}`, `
+      <p class="small muted">${esc(KARMA_NOTE)}</p>
+      <h3 class="panel-sub">Wujudkan harapan</h3>
+      <div class="wish-list">${WISHES.map((wish) => `
+        <button class="wish" type="button" data-wish="${wish.id}" ${state.balance < wish.cost ? 'disabled' : ''}>
+          <span class="wish-icon" aria-hidden="true">${wish.icon}</span>
+          <span class="wish-text"><strong>${esc(wish.name)}</strong><small>${esc(wish.desc)}</small></span>
+          <span class="wish-cost">✦ ${wish.cost}</span>
+        </button>`).join('')}</div>
+      <h3 class="panel-sub">Catatan terakhir</h3>
+      <ul class="ledger">${recent.map((row) => `<li><span>${esc(row.label)}</span><span class="${row.delta >= 0 ? 'plus' : 'minus'}">${row.delta >= 0 ? '+' : '−'}${Math.abs(row.delta)}</span></li>`).join('')}</ul>
+      <a class="btn-ghost" href="#/karma">Buka Bank Kebaikan lengkap</a>`);
+    panelBody.querySelectorAll('[data-wish]').forEach((button) => {
+      button.addEventListener('click', () => makeWish(WISHES.find((wish) => wish.id === button.dataset.wish)));
+    });
+  }
+  function makeWish(wish) {
+    if (!wish) {
+      return;
+    }
+    if (wish.tree) {
+      openPanel('Pita harapan', wish.name, `
+        <form class="stack" data-wish-form>
+          <label class="field"><span>Harapanmu</span><input name="text" maxlength="80" required placeholder="Semoga ibu cepat sembuh…" autocomplete="off"></label>
+          <p class="small muted">Pita ini digantung di Pohon Harapan di rumah. Tersimpan hanya di perangkatmu.</p>
+          <button class="btn" type="submit">Gantungkan (✦ ${wish.cost})</button>
+        </form>`);
+      panelBody.querySelector('[data-wish-form]').addEventListener('submit', (event) => {
+        event.preventDefault();
+        const text = event.target.elements.text.value.trim();
+        if (!text || !spend(wish.cost, `${wish.name}: ${text}`)) {
+          toast('Saldo kebaikan belum cukup.');
+          return;
+        }
+        addWish({ id: wish.id, text });
+        world?.celebrate(wish.effect);
+        closePanel();
+        toast('Pita harapanmu tergantung di Pohon Harapan. Semoga terwujud, dan semoga kamu juga melangkah untuk mewujudkannya.');
+      });
+      return;
+    }
+    if (!spend(wish.cost, wish.name)) {
+      toast('Saldo kebaikan belum cukup. Berbuat baik dulu, ya.');
+      return;
+    }
+    addWish({ id: wish.id, text: wish.name });
+    closePanel();
+    if (world) {
+      world.celebrate(wish.effect);
+    }
+    toast(`${wish.icon} ${wish.name} terwujud.`);
+  }
+  main.querySelector('[data-karma]').addEventListener('click', renderKarmaPanel);
+
+  // Someone asking for alms: give, share, greet kindly, decline politely, or shoo them away.
+  const ALMS = [
+    { id: 'coins', icon: '🪙', label: 'Beri uang receh', points: 3, cap: 3, kind: 'coins', note: 'Sedekah kecil, diberikan dengan sopan.' },
+    { id: 'food', icon: '🍱', label: 'Belikan makanan', points: 5, cap: 2, kind: 'food', note: 'Sering kali makanan lebih tepat sasaran daripada uang.' },
+    { id: 'greet', icon: '🙏', label: 'Sapa & doakan', points: 1, cap: 3, kind: 'polite', note: 'Menyapa dengan hormat juga kebaikan.' },
+    { id: 'decline', icon: '🤝', label: 'Tolak dengan sopan', points: 0, cap: 0, kind: 'polite', note: 'Tidak apa-apa menolak, asal dengan ramah.' },
+    { id: 'shoo', icon: '✋', label: 'Usir', points: -5, cap: 5, kind: 'shoo', note: 'Merendahkan orang lain mengurangi kebaikanmu.' },
+  ];
+  function openAlms(npcId) {
+    const info = world ? world.npcInfo(npcId) : null;
+    const name = info ? info.persona.name : 'Bapak/Ibu';
+    openPanel('Di dekat pintu masuk', name, `
+      <p>${esc(name)} duduk dengan mangkuk kecil di depannya. Apa yang ingin kamu lakukan?</p>
+      <div class="alms-list">${ALMS.map((option) => `
+        <button class="alms ${option.points < 0 ? 'bad' : ''}" type="button" data-alms="${option.id}">
+          <span aria-hidden="true">${option.icon}</span>
+          <span><strong>${esc(option.label)}</strong><small>${esc(option.note)}</small></span>
+          <span class="alms-pts">${option.points > 0 ? `+${option.points}` : option.points < 0 ? `−${-option.points}` : '0'}</span>
+        </button>`).join('')}</div>
+      <p class="small muted">Di dunia nyata, salurkan bantuan lewat lembaga resmi (zakat, diakonia, dana punia, dana paramita) atau langsung dengan bijak.</p>`);
+    panelBody.querySelectorAll('[data-alms]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const option = ALMS.find((o) => o.id === button.dataset.alms);
+        world?.alms(option.kind);
+        deed(`sedekah-${option.id}`, { label: option.label, icon: option.icon, points: option.points, cap: option.cap || 1 });
+        closePanel();
+      });
+    });
+  }
+
+  function openWonderInfo() {
+    if (!wonder) {
+      return;
+    }
+    deed(`wisata-baca-${wonder.id}`, { label: `Belajar tentang ${wonder.name}`, icon: '📖', points: 2, cap: 1 });
+    openPanel(`${wonder.icon} ${wonder.region}`, wonder.name, `
+      <p class="panel-lead">${esc(wonder.blurb)}</p>
+      <p class="small muted">${esc(wonder.built)}</p>
+      <h3 class="panel-sub">Fakta</h3>
+      <ul>${wonder.facts.map((fact) => `<li>${esc(fact)}</li>`).join('')}</ul>
+      <h3 class="panel-sub">Etika berkunjung</h3>
+      <ul>${wonder.etiquette.map((rule) => `<li>${esc(rule)}</li>`).join('')}</ul>
+      ${wonder.entry ? `<button class="btn-ghost" type="button" data-wonder-entry>Pelajari lebih lanjut di Pustaka</button>` : ''}`);
+    panelBody.querySelector('[data-wonder-entry]')?.addEventListener('click', () => {
+      closePanel();
+      openEntry(wonder.entry);
+    });
+  }
+
+  const KIND_ICON = { incense: '🔥', candle: '🕯', lotus: '🪷', canang: '🌼', water: '💧', wash: '🫧', flowers: '💐', ripple: '🪨', bell: '🔔', read: '📖', ciamsi: '🎋' };
+  function countSpot(spot) {
+    const devotional = Boolean(spot.devotional);
+    deed(`aksi-${sceneId}-${spot.id}`, {
+      label: spot.short || spot.label,
+      icon: KIND_ICON[spot.kind] || '✦',
+      points: devotional && mode === 'home' ? 2 : 1,
+      cap: 5,
+    });
+  }
+  // Repeatedly forcing your way into a roped-off sacred area is a (small) bad deed.
+  const blockedTimes = [];
+  function onBlockedZone(message) {
+    toast(message);
+    const now = Date.now();
+    blockedTimes.push(now);
+    while (blockedTimes.length && now - blockedTimes[0] > 60000) {
+      blockedTimes.shift();
+    }
+    if (blockedTimes.length >= 3) {
+      blockedTimes.length = 0;
+      deed('masuk-zona-suci', { label: 'Memaksa masuk area suci', icon: '🚫', points: -1, cap: 3 });
+    }
+  }
+  const RUDE = /\b(bodoh|goblok|tolol|anjing|bangsat|brengsek|kampret|babi|idiot|stupid|bego|sialan)\b/i;
   main.querySelectorAll('[data-area]').forEach((button) => {
     button.addEventListener('click', () => travel(button.dataset.area));
   });
   function travel(to) {
+    if (to === 'wisata') {
+      navigate('#/wisata');
+      return;
+    }
+    if (to.startsWith('wisata:')) {
+      navigate(`#/wisata/${to.slice(7)}`);
+      return;
+    }
     if (to === area) {
       return;
     }
@@ -419,6 +640,7 @@ export function space(main, [faithId, areaParam], query, { content, navigate }, 
       return;
     }
     menuSheet.hidden = true;
+    deed('pesan-makanan', { label: `Pesan ${dish.name}`, icon: '🍜', points: 0 });
     renderCook(stall, dish, { index: -1, total: 1, label: 'Pesanan diterima' });
   }
 
@@ -604,6 +826,7 @@ export function space(main, [faithId, areaParam], query, { content, navigate }, 
     }
     chatting = { id: npcId, info, ctx: chatContext(info) };
     world.npcTalking(npcId, true);
+    deed('ngobrol', { label: `Ngobrol dengan ${info.persona.name}`, icon: '💬', points: 1, cap: 3 });
     main.querySelector('[data-chat-name]').textContent = info.persona.name;
     main.querySelector('[data-chat-role]').textContent = info.persona.job || '';
     main.querySelector('[data-chat-dot]').style.background = (info.persona.attire && info.persona.attire.top) || '#999';
@@ -622,6 +845,10 @@ export function space(main, [faithId, areaParam], query, { content, navigate }, 
     }
     const current = chatting;
     addChatLine('me', text);
+    if (RUDE.test(text)) {
+      deed('kata-kasar', { label: 'Berkata kasar', icon: '⚠️', points: -3, cap: 3 });
+      toast('Kata-kata kasar mengurangi kebaikanmu. Yuk, bicara dengan hormat.');
+    }
     world.say(text);
     const reply = chatReply(current.info.persona, text, current.ctx);
     setTimeout(() => {
@@ -683,6 +910,7 @@ export function space(main, [faithId, areaParam], query, { content, navigate }, 
         eatButton.addEventListener('click', () => {
           prayed = false;
           sitSheet.hidden = true;
+          deed('makan-bersama', { label: 'Makan dengan syukur', icon: '🍽', points: 1, cap: 2 });
           world.eat({ note: prayer.tip, title: food.map((d) => d.name).join(' & ') });
         });
         sitBody.append(prayerNote, eatButton);
@@ -701,6 +929,14 @@ export function space(main, [faithId, areaParam], query, { content, navigate }, 
         count += 1;
         tap.textContent = String(count);
         bead();
+        const isDzikir = spot.sitMode === 'dzikir';
+        deed(isDzikir ? 'zikir' : 'rosario', {
+          label: isDzikir ? 'Zikir' : 'Rosario',
+          icon: '📿',
+          points: count % 33 === 0 ? 1 : 0,
+          cap: 3,
+          text: `📿 ${count}${isDzikir ? ' / 99' : ''}`,
+        });
         if (spot.sitMode === 'dzikir') {
           phrase.textContent = DZIKIR[Math.min(2, Math.floor((count - 1) / 33))];
           if (count === 99) {
@@ -832,6 +1068,8 @@ export function space(main, [faithId, areaParam], query, { content, navigate }, 
 
   const stepLabels = { beads: 'Geser butir', book: 'Balik halaman', incense: 'Soja / pai' };
   let holdShownIntro = false;
+  let lastHoldCount = null;
+  let lastHoldDone = false;
   function renderHold(state) {
     if (state && state.meal) {
       holdHud.hidden = true;
@@ -846,6 +1084,8 @@ export function space(main, [faithId, areaParam], query, { content, navigate }, 
     holdHud.hidden = !state;
     if (!state) {
       holdShownIntro = false;
+      lastHoldCount = null;
+      lastHoldDone = false;
       renderView();
       return;
     }
@@ -855,6 +1095,19 @@ export function space(main, [faithId, areaParam], query, { content, navigate }, 
     q('[data-hold-script]').textContent = state.script || '';
     q('[data-hold-label]').textContent = state.observe ? '' : state.label || '';
     const counted = !state.observe && state.count !== null && state.count !== undefined;
+    if (counted && state.count !== lastHoldCount) {
+      if (lastHoldCount !== null && state.count > 0) {
+        deed(`pegang-${state.name}`, {
+          label: state.name,
+          icon: state.icon,
+          points: state.done && !lastHoldDone ? 2 : 0,
+          cap: 3,
+          text: `${state.icon} ${state.count} / ${state.total}${state.round ? ` · putaran ${state.round}` : ''}`,
+        });
+      }
+      lastHoldCount = state.count;
+      lastHoldDone = Boolean(state.done);
+    }
     q('[data-hold-count]').textContent = counted
       ? `${state.count} / ${state.total}${state.round ? ` · putaran ${state.round}` : ''}`
       : '';
@@ -936,6 +1189,7 @@ export function space(main, [faithId, areaParam], query, { content, navigate }, 
       }
       const greeting = greetingById(button.dataset.greet);
       world.greet(greeting.id);
+      deed(`salam-${greeting.id}`, { label: greeting.label, icon: '🙏', points: 1, cap: 3 });
       if (greetRow.classList.contains('open') && window.matchMedia('(max-width: 600px)').matches) {
         greetToggle.click();
       }
@@ -1245,7 +1499,7 @@ export function space(main, [faithId, areaParam], query, { content, navigate }, 
       onStall: openMenu,
       onGuide: (spot) => guideSheet.open(spot.guides || AREA_GUIDES[area], spot.label),
       onTravel: (spot) => travel(spot.to),
-      onNpc: (id) => openChat(id),
+      onNpc: (id) => (world && world.npcRole(id) === 'beggar' ? openAlms(id) : openChat(id)),
       onCarry: saveCarry,
       time,
       mode,
@@ -1260,6 +1514,7 @@ export function space(main, [faithId, areaParam], query, { content, navigate }, 
       },
       onHold: renderHold,
       onAction: (spot) => {
+        countSpot(spot);
         if (presence) {
           presence.sendAct(spot.id);
         }
@@ -1270,15 +1525,38 @@ export function space(main, [faithId, areaParam], query, { content, navigate }, 
         }
       },
       onSpecial: (spot) => {
+        if (spot.wonderInfo) {
+          openWonderInfo();
+          return;
+        }
+        if (spot.wishTree) {
+          const ribbons = karma().wishes.filter((wish) => wish.id === 'pita');
+          openPanel('Rumah', 'Pohon Harapan', `
+            ${ribbons.length ? `<ul class="ribbon-list">${ribbons.map((wish) => `<li>🎗 ${esc(wish.text)}</li>`).join('')}</ul>` : '<p>Belum ada pita. Tulis harapan pertamamu.</p>'}
+            <button class="btn" type="button" data-new-ribbon>Gantungkan pita baru (✦ ${WISHES.find((wish) => wish.id === 'pita').cost})</button>
+            <p class="small muted">${esc(KARMA_NOTE)}</p>`);
+          panelBody.querySelector('[data-new-ribbon]').addEventListener('click', () => makeWish(WISHES.find((wish) => wish.id === 'pita')));
+          return;
+        }
+        countSpot(spot);
         if (spot.kind === 'ciamsi') {
           scrollToTool('ciamsi');
         } else if (spot.entry) {
           openEntry(spot.entry);
         }
       },
-      onBlocked: (message) => toast(message),
+      onBlocked: onBlockedZone,
     });
     window.__jedaWorld = world;
+    try {
+      const pendingWish = sessionStorage.getItem('jeda:v1:pendingWish');
+      if (pendingWish) {
+        sessionStorage.removeItem('jeda:v1:pendingWish');
+        setTimeout(() => world && world.celebrate(pendingWish), 1600);
+      }
+    } catch {
+      // storage unavailable
+    }
     const heldItem = world.heldItem();
     if (heldItem) {
       holdButton.hidden = false;
@@ -1288,6 +1566,9 @@ export function space(main, [faithId, areaParam], query, { content, navigate }, 
     }
     if (world.attire && area === 'ibadah') {
       setTimeout(() => toast(`Pakaianmu di ${faith.spaceName}: ${world.attire}`), 900);
+    } else if (wonder) {
+      setTimeout(() => toast(`Selamat datang di ${wonder.name}. Ketuk papan informasi atau pemandu untuk belajar.`), 900);
+      deed(`wisata-tiba-${wonder.id}`, { label: `Berkunjung ke ${wonder.name}`, icon: wonder.icon, points: 0 });
     } else if (area === 'kedai') {
       setTimeout(() => toast('Dekati kios untuk pesan. Ketuk orang untuk mengobrol.'), 900);
     } else if (area === 'rumah' && world.carrying().length) {

@@ -6,7 +6,7 @@ import * as THREE from '../../vendor/three.module.min.js';
 import { createAvatar, animateAvatar, playClip, stopClip, setSitting, speechBubble } from './avatar.js';
 import { METHODS } from './cuisine.js';
 
-const ROLE_LABEL = { vendor: 'penjual', guide: 'pemandu', diner: '', walker: '', worshipper: '', sitter: '' };
+const ROLE_LABEL = { vendor: 'penjual', guide: 'pemandu', diner: '', walker: '', worshipper: '', sitter: '', beggar: '' };
 const DEVOTIONAL_KINDS = new Set(['incense', 'candle', 'canang', 'flowers', 'lotus', 'water']);
 
 function pick(list) {
@@ -38,6 +38,13 @@ export function createNpcs({ scene, place, nav, fx, quality = 'medium' }) {
     };
     hit.userData.npc = npc;
     pickables.push(hit);
+    if (def.role === 'beggar') {
+      // Alms bowl on the ground in front of them; it fills up a little each time you give.
+      const bowl = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.11, 0.09, 12, 1, true), new THREE.MeshStandardMaterial({ color: '#8a7a62', roughness: 0.8, side: THREE.DoubleSide }));
+      bowl.position.set(0, 0.05, 0.55);
+      avatar.group.add(bowl);
+      avatar.bowl = bowl;
+    }
     if (def.seat) {
       avatar.group.position.set(def.seat.x, def.seat.height, def.seat.z);
       setSitting(avatar, true, { sitMode: def.role === 'diner' ? 'meal' : 'rest', seat: def.seat });

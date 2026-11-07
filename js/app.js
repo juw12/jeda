@@ -15,6 +15,8 @@ import { review } from './views/review.js';
 import { journal, greetingCard, memorialView } from './views/extras.js';
 import { onboarding } from './views/onboarding.js';
 import { liveView, joinView } from './views/live.js';
+import { sekolah, karmaView, wisata } from './views/journey.js';
+import { balance, onKarma } from './karma.js';
 
 const ROUTES = {
   '': core.home,
@@ -42,6 +44,9 @@ const ROUTES = {
   syukur: journal,
   kartu: greetingCard,
   peringatan: memorialView,
+  sekolah,
+  karma: karmaView,
+  wisata,
 };
 
 let content = null;
@@ -62,6 +67,7 @@ function renderChrome(routeName) {
   document.getElementById('topbar').innerHTML = `
     <a class="brand" href="#/"><span class="brand-mark" aria-hidden="true">‖</span>${esc(CONFIG.appName)}</a>
     <span class="top-actions">
+      <a class="karma-chip top-karma" href="#/karma" aria-label="Bank Kebaikan, saldo ${balance()}"><span aria-hidden="true">✦</span><span data-top-balance>${balance()}</span></a>
       <button class="pause-button" type="button" data-pause>${t('pause.button')}</button>
       <a class="top-link" href="#/cari" aria-label="Cari">⌕</a>
     </span>`;
@@ -72,11 +78,15 @@ function renderChrome(routeName) {
   const tabs = [
     ['', '#/', t('tab.home'), '◎'],
     ['ruang', spaceHref, t('tab.space'), '⛩'],
+    ['sekolah', '#/sekolah', 'Sekolah', '🎓'],
+    ['wisata', '#/wisata', 'Wisata', '🧭'],
     ['lainnya', '#/lainnya', t('tab.more'), '≡'],
   ];
   const groups = {
     ruang: ['ruang', 'kunjungi'],
-    lainnya: ['lainnya', 'pustaka', 'entri', 'cari', 'kitab', 'kamus', 'tanya', 'upacara', 'ibadah', 'kalender', 'arsip', 'dukung', 'tentang', 'pengaturan', 'tinjau', 'syukur', 'kartu', 'peringatan'],
+    sekolah: ['sekolah'],
+    wisata: ['wisata'],
+    lainnya: ['lainnya', 'karma', 'pustaka', 'entri', 'cari', 'kitab', 'kamus', 'tanya', 'upacara', 'ibadah', 'kalender', 'arsip', 'dukung', 'tentang', 'pengaturan', 'tinjau', 'syukur', 'kartu', 'peringatan'],
   };
   const isActive = (id) => id === routeName || (groups[id] || []).includes(routeName);
   const showTabs = Boolean(p.faith) || routeName !== '';
@@ -155,6 +165,13 @@ async function start() {
   navigator.serviceWorker.register('sw.js').then((registration) => registration.update()).catch((error) => console.warn('SW', error));
   }
 }
+
+onKarma(({ balance: value }) => {
+  const el = document.querySelector('[data-top-balance]');
+  if (el) {
+    el.textContent = String(value);
+  }
+});
 
 window.addEventListener('error', (event) => {
   document.documentElement.dataset.error = event.message;

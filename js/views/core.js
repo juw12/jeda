@@ -135,6 +135,12 @@ export function home(main, params, query, ctx) {
         <a href="#/ruang/${faith.id}?panduan=pustaka"><span>📚</span>Panduan</a>
       </nav>
 
+      <div class="journey-row" role="group" aria-label="Belajar, berbuat baik, berwisata">
+        <a class="journey-tile" href="#/sekolah"><span class="journey-icon" aria-hidden="true">🎓</span><strong>Sekolah</strong><small>Kenali setiap iman, lalu kuis</small></a>
+        <a class="journey-tile" href="#/karma"><span class="journey-icon" aria-hidden="true">✦</span><strong>Bank Kebaikan</strong><small>Saldo, hitungan, harapan</small></a>
+        <a class="journey-tile" href="#/wisata"><span class="journey-icon" aria-hidden="true">🧭</span><strong>Wisata iman</strong><small>Borobudur, Istiqlal, Katedral…</small></a>
+      </div>
+
       <a class="live-join-row" href="#/gabung">
         <span class="live-dot" aria-hidden="true"></span>
         <span><strong>Gabung Ruang Live</strong><small>Punya kode dari siaran TikTok/IG? Masuk di sini</small></span>
@@ -327,6 +333,9 @@ export function more(main) {
     [`#/ruang/${faithId}/kedai`, '🍜 Kedai makan', 'Pesan, lihat dimasak, makan (ASMR) atau bungkus'],
   ];
   const links = [
+    ['#/sekolah', 'Sekolah lintas iman', 'Pelajaran singkat & kuis tentang setiap iman'],
+    ['#/karma', 'Bank Kebaikan', 'Saldo poin kebaikan, hitungan kegiatan, harapan'],
+    ['#/wisata', 'Wisata 7 keajaiban iman', 'Borobudur, Prambanan, Istiqlal, Katedral, dan lainnya dalam 3D'],
     ['#/kunjungi', 'Kunjungi & Kenali', 'Ruang iman lain dalam mode amati'],
     ['#/gabung', 'Gabung Ruang Live', 'Masukkan kode dari siaran'],
     ['#/dukung', 'Dukung Jeda', 'Bantu biaya server dan pengembangan'],

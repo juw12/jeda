@@ -4,22 +4,133 @@ import { prefs } from './store.js';
 
 let context = null;
 let master = null;
+let silentElement = null;
+
+// iOS Safari: (1) an AudioContext stays "suspended" until resume() runs inside a touch/click handler,
+// (2) Web Audio follows the ring/silent switch unless the page also plays an HTML media element, and
+// (3) the context becomes "interrupted" after calls, Siri or app switches. unlockAudio() fixes all three.
+function createContext() {
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContextClass) {
+    return null;
+  }
+  try {
+    // Tell iOS 17+ this is media playback, so the silent switch does not mute it.
+    if (navigator.audioSession) {
+      navigator.audioSession.type = 'playback';
+    }
+  } catch {
+    // older Safari: ignored
+  }
+  context = new AudioContextClass();
+  master = context.createGain();
+  master.gain.value = 0.8;
+  master.connect(context.destination);
+  context.onstatechange = () => {
+    document.documentElement.dataset.audio = context.state;
+  };
+  return context;
+}
 
 function ctx() {
-  if (!context) {
-    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContextClass) {
-      return null;
-    }
-    context = new AudioContextClass();
-    master = context.createGain();
-    master.gain.value = 0.8;
-    master.connect(context.destination);
+  if (!context && !createContext()) {
+    return null;
   }
-  if (context.state === 'suspended') {
-    context.resume();
+  if (context.state !== 'running') {
+    context.resume().catch(() => {});
   }
   return context;
+}
+
+// A short silent WAV built in memory (no file needed). Playing it through an <audio> element switches
+// iOS to the "playback" audio session so Web Audio is heard even with the silent switch on.
+function silentWavUrl() {
+  const sampleRate = 8000;
+  const samples = 800;
+  const buffer = new ArrayBuffer(44 + samples);
+  const view = new DataView(buffer);
+  const writeText = (offset, text) => {
+    for (let i = 0; i < text.length; i++) {
+      view.setUint8(offset + i, text.charCodeAt(i));
+    }
+  };
+  writeText(0, 'RIFF');
+  view.setUint32(4, 36 + samples, true);
+  writeText(8, 'WAVE');
+  writeText(12, 'fmt ');
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, 1, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate, true);
+  view.setUint16(32, 1, true);
+  view.setUint16(34, 8, true);
+  writeText(36, 'data');
+  view.setUint32(40, samples, true);
+  for (let i = 0; i < samples; i++) {
+    view.setUint8(44 + i, 128);
+  }
+  return URL.createObjectURL(new Blob([buffer], { type: 'audio/wav' }));
+}
+
+export function unlockAudio() {
+  if (!enabled()) {
+    return;
+  }
+  const audio = ctx();
+  if (!audio) {
+    return;
+  }
+  // A one-sample buffer started inside the gesture is what finally unlocks older iOS versions.
+  try {
+    const source = audio.createBufferSource();
+    source.buffer = audio.createBuffer(1, 1, 22050);
+    source.connect(audio.destination);
+    source.start(0);
+  } catch {
+    // ignore
+  }
+  const isApple = /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent) && 'ontouchend' in document;
+  if (isApple && !navigator.audioSession) {
+    try {
+      if (!silentElement) {
+        silentElement = document.createElement('audio');
+        silentElement.setAttribute('playsinline', '');
+        silentElement.setAttribute('x-webkit-airplay', 'deny');
+        silentElement.preload = 'auto';
+        silentElement.loop = true;
+        silentElement.src = silentWavUrl();
+      }
+      silentElement.play().catch(() => {});
+    } catch {
+      // ignore
+    }
+  }
+}
+
+export function audioState() {
+  return context ? context.state : 'none';
+}
+
+if (typeof document !== 'undefined') {
+  const onGesture = () => {
+    unlockAudio();
+  };
+  // Capture phase so the unlock runs before any handler can stop propagation. touchend + click are
+  // the events iOS accepts as "user activation"; pointerdown alone is not enough on older iOS.
+  ['touchend', 'click', 'keydown', 'pointerup'].forEach((type) => {
+    document.addEventListener(type, onGesture, { capture: true, passive: true });
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      if (context && context.state !== 'running') {
+        context.resume().catch(() => {});
+      }
+    } else if (silentElement) {
+      // Do not keep a silent media session alive (and lock-screen controls) while the app is hidden.
+      silentElement.pause();
+    }
+  });
 }
 
 function enabled() {
