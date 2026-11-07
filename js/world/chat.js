@@ -74,7 +74,10 @@ export function chatReply(persona, input, ctx) {
   // Faith/ritual questions: answer from the Pustaka, with a link to read more.
   const looksLikeQuestion = QUESTION.test(text) || text.split(' ').length > 4;
   const smallTalk = ['greet', 'howareyou', 'name', 'origin', 'family', 'work', 'hobby', 'weather', 'thanks', 'bye', 'price', 'compliment', 'joke', 'sad'];
-  if (looksLikeQuestion && !smallTalk.includes(intent) && ctx.search) {
+  // Food questions are answered as food talk ("what's tasty?" must not turn into a scripture lookup).
+  // Diet rules (halal, vegetarian) go to the Pustaka only when asking a guide, not a cook.
+  const foodTalk = ['recommend', 'how', ...(persona.guide ? [] : ['halal'])];
+  if (looksLikeQuestion && !smallTalk.includes(intent) && !foodTalk.includes(intent) && ctx.search) {
     const hit = ctx.search(input);
     if (hit) {
       const lead = persona.guide ? 'Menurut Pustaka Jeda' : `${c.wow}, kalau setahu saya`;
@@ -106,7 +109,10 @@ export function chatReply(persona, input, ctx) {
       }
       return { text: ctx.kedaiTip ? `Kalau saya, ${ctx.kedaiTip}. Enak sekali.` : 'Semua enak, tergantung selera kamu.' };
     case 'how':
-      return { text: persona.lines && persona.lines.cook ? `${pick(persona.lines.cook)} ${ctx.methodAbout || ''}` : 'Wah, saya cuma tukang makan, bukan tukang masak, hahaha.' };
+      if (persona.lines && persona.lines.cook) {
+        return { text: `${pick(persona.lines.cook)} ${ctx.methodAbout || ''}`.trim() };
+      }
+      return { text: ctx.methodAbout ? `Setahu saya begini: ${ctx.methodAbout}` : 'Wah, saya cuma tukang makan, bukan tukang masak, hahaha.' };
     case 'halal':
       return { text: ctx.foodNote || 'Kalau ada pantangan makanan, tanyakan langsung ke penjualnya, ya. Mereka biasanya terbuka.' };
     case 'price':

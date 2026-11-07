@@ -554,8 +554,10 @@ export function space(main, [faithId, areaParam], query, { content, navigate }, 
       nextHoliday,
       ritualHint: (faith.rituals[0] || {}).title ? faith.rituals[0].title.toLowerCase() : 'berdoa',
       search: (question) => {
-        const results = search(index, question, { faith: faith.pustaka ? faith.id : null, limit: 1 });
-        const top = results[0];
+        // Prefer this faith's entries; if the question is about another tradition (e.g. Waisak asked
+        // in a mosque courtyard), fall back to the whole library.
+        const local = search(index, question, { faith: faith.pustaka ? faith.id : null, limit: 1 })[0];
+        const top = local && local.score >= 1.2 ? local : search(index, question, { faith: null, limit: 1 })[0];
         return top && top.score >= 1.2 ? { id: top.entry.id, title: top.entry.title, summary: top.entry.summary } : null;
       },
     };
