@@ -13,14 +13,14 @@ export function mat(color, options = {}) {
   return materialCache.get(key);
 }
 
-function mesh(geometry, color, options) {
+export function mesh(geometry, color, options) {
   const m = new THREE.Mesh(geometry, mat(color, options));
   m.castShadow = true;
   m.receiveShadow = true;
   return m;
 }
 
-function at(object, x, y, z, rotationY = 0) {
+export function at(object, x, y, z, rotationY = 0) {
   object.position.set(x, y, z);
   object.rotation.y = rotationY;
   return object;
@@ -31,12 +31,12 @@ export const cyl = (rt, rb, h, color, seg = 16, options) => mesh(new THREE.Cylin
 export const sphere = (r, color, seg = 16, options) => mesh(new THREE.SphereGeometry(r, seg, Math.max(8, seg / 2)), color, options);
 export const cone = (r, h, color, seg = 16, options) => mesh(new THREE.ConeGeometry(r, h, seg), color, options);
 
-function lathe(points, color, seg = 20, options) {
+export function lathe(points, color, seg = 20, options) {
   return mesh(new THREE.LatheGeometry(points.map(([x, y]) => new THREE.Vector2(x, y)), seg), color, options);
 }
 
 // Hip roof with slightly upturned corner tips (Chinese / Javanese temple style).
-function hipRoof(width, depth, height, color, tipColor) {
+export function hipRoof(width, depth, height, color, tipColor) {
   const group = new THREE.Group();
   const roof = cyl(0.05, 1, height, color, 4);
   roof.rotation.y = Math.PI / 4;
@@ -55,7 +55,7 @@ function hipRoof(width, depth, height, color, tipColor) {
   return group;
 }
 
-function gableRoof(width, depth, height, color) {
+export function gableRoof(width, depth, height, color) {
   const shape = new THREE.Shape();
   shape.moveTo(-width / 2, 0);
   shape.lineTo(width / 2, 0);
@@ -66,7 +66,7 @@ function gableRoof(width, depth, height, color) {
   return mesh(geometry, color);
 }
 
-function lantern(color = '#d8352a') {
+export function lantern(color = '#d8352a') {
   const group = new THREE.Group();
   const body = sphere(0.32, color, 12, { emissive: color, emissiveIntensity: 0.55 });
   body.scale.y = 1.25;
@@ -78,7 +78,7 @@ function lantern(color = '#d8352a') {
   return group;
 }
 
-function tree(scale = 1, leaf = '#5f8f55') {
+export function tree(scale = 1, leaf = '#5f8f55') {
   const group = new THREE.Group();
   const trunk = cyl(0.18 * scale, 0.26 * scale, 2.2 * scale, '#6b4a33', 7);
   trunk.position.y = 1.1 * scale;
@@ -93,7 +93,7 @@ function tree(scale = 1, leaf = '#5f8f55') {
   return group;
 }
 
-function frangipani(scale = 1) {
+export function frangipani(scale = 1) {
   const group = tree(scale * 0.8, '#6f9a5c');
   for (let i = 0; i < 8; i++) {
     const flower = sphere(0.09 * scale, i % 2 ? '#fff6e6' : '#f6d6a8', 6);
@@ -104,7 +104,7 @@ function frangipani(scale = 1) {
   return group;
 }
 
-function pond(radius, color = '#5d8fa6') {
+export function pond(radius, color = '#5d8fa6') {
   const water = new THREE.Mesh(
     new THREE.CircleGeometry(radius, 40),
     new THREE.MeshStandardMaterial({ color, roughness: 0.15, metalness: 0.2, transparent: true, opacity: 0.88 }),
@@ -122,18 +122,18 @@ function pond(radius, color = '#5d8fa6') {
   return group;
 }
 
-function stoneStep(width, depth, color = '#b9b1a3') {
+export function stoneStep(width, depth, color = '#b9b1a3') {
   return box(width, 0.25, depth, color);
 }
 
-function bell(color = '#b4893e') {
+export function bell(color = '#b4893e') {
   const group = new THREE.Group();
   const body = lathe([[0, 0], [0.42, 0], [0.38, 0.12], [0.3, 0.55], [0.2, 0.75], [0, 0.8]], color, 18, { metalness: 0.5, roughness: 0.4 });
   group.add(body);
   return group;
 }
 
-function spot(id, kind, label, position, stand, extra = {}) {
+export function spot(id, kind, label, position, stand, extra = {}) {
   return { id, kind, label, position: new THREE.Vector3(...position), stand: new THREE.Vector3(stand[0], 0, stand[1]), radius: 2.2, ...extra };
 }
 

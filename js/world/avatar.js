@@ -35,6 +35,59 @@ export function textSprite(text, { color = '#ffffff', background = 'rgba(20,18,1
   return sprite;
 }
 
+// Multi-line floating speech bubble (NPC small talk, chat replies). Anchored at its bottom (the tail).
+export function speechBubble(text, { background = 'rgba(255,252,244,0.96)', color = '#2a2016', size = 34, maxChars = 28, maxLines = 4 } = {}) {
+  const words = String(text).split(/\s+/).filter(Boolean);
+  const lines = [];
+  let line = '';
+  words.forEach((word) => {
+    const next = line ? `${line} ${word}` : word;
+    if (next.length > maxChars && line) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = next;
+    }
+  });
+  if (line) {
+    lines.push(line);
+  }
+  if (lines.length > maxLines) {
+    lines.length = maxLines;
+    lines[maxLines - 1] = `${lines[maxLines - 1].replace(/[.,!?…]*$/, '')}…`;
+  }
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+  const font = `600 ${size}px system-ui, "Segoe UI", sans-serif`;
+  context.font = font;
+  const lineHeight = Math.round(size * 1.25);
+  const width = Math.ceil(Math.max(...lines.map((l) => context.measureText(l).width), 40)) + 40;
+  const tail = 16;
+  canvas.width = width;
+  canvas.height = lines.length * lineHeight + 26 + tail;
+  context.font = font;
+  context.fillStyle = background;
+  context.beginPath();
+  context.roundRect(0, 0, width, canvas.height - tail, 22);
+  context.fill();
+  context.beginPath();
+  context.moveTo(width / 2 - 12, canvas.height - tail - 1);
+  context.lineTo(width / 2, canvas.height);
+  context.lineTo(width / 2 + 12, canvas.height - tail - 1);
+  context.fill();
+  context.fillStyle = color;
+  context.textBaseline = 'top';
+  lines.forEach((l, i) => context.fillText(l, 20, 14 + i * lineHeight));
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, depthWrite: false, transparent: true }));
+  const scale = 0.0042;
+  sprite.scale.set(width * scale, canvas.height * scale, 1);
+  sprite.center.set(0.5, 0);
+  sprite.renderOrder = 5;
+  return sprite;
+}
+
 // Arm angles per gesture: [rightX, rightZ, leftX, leftZ].
 // x < 0 raises an arm forward/up; z < 0 (right arm) or z > 0 (left arm) brings it across the body.
 export const POSES = {
@@ -76,7 +129,13 @@ const GUEST_ATTIRE = {
   pura: { name: 'Kamen & selendang tamu', top: '#f7f4ec', bottom: 'accent', sash: { style: 'waist', color: '#e2b33c' }, head: 'hair' },
 };
 
+// Everyday clothes at the food court and at home (no ritual dress needed there).
+const CASUAL = { name: 'Pakaian santai', top: 'accent', bottom: '#4b4f58', head: 'hair' };
+
 export function attireFor(sceneId, mode) {
+  if (/^(kedai|rumah)-/.test(sceneId)) {
+    return CASUAL;
+  }
   if (mode === 'visit') {
     return GUEST_ATTIRE[sceneId] || GUEST_ATTIRE.default;
   }
@@ -108,6 +167,41 @@ function buildHead(spec, headColor) {
     const flap = box(0.3, 0.16, 0.04, headColor);
     flap.position.set(0, 1.68, -0.2);
     parts.push(flap);
+  }
+  if (spec.head === 'hijab') {
+    // Covers hair, ears and neck; the face stays open.
+    const cover = new THREE.Mesh(
+      new THREE.SphereGeometry(0.245, 18, 12, Math.PI / 2 + 0.95, Math.PI * 2 - 1.9),
+      mat(headColor, { roughness: 0.85, side: THREE.DoubleSide }),
+    );
+    cover.position.set(0, 1.53, -0.01);
+    const drape = cyl(0.21, 0.34, 0.32, headColor, 18);
+    drape.position.y = 1.3;
+    parts.push(cover, drape);
+  }
+  if (spec.head === 'bun') {
+    const hair = new THREE.Mesh(new THREE.SphereGeometry(0.235, 16, 10, 0, Math.PI * 2, 0, Math.PI * 0.55), mat(HAIR, { roughness: 0.9 }));
+    hair.position.y = 1.53;
+    hair.rotation.x = -0.3;
+    const bun = sphere(0.09, HAIR, 10);
+    bun.position.set(0, 1.62, -0.2);
+    parts.push(hair, bun);
+  }
+  if (spec.head === 'cap') {
+    const hair = new THREE.Mesh(new THREE.SphereGeometry(0.235, 16, 10, 0, Math.PI * 2, 0, Math.PI * 0.55), mat(HAIR, { roughness: 0.9 }));
+    hair.position.y = 1.53;
+    hair.rotation.x = -0.3;
+    const crown = cyl(0.2, 0.22, 0.12, headColor, 16);
+    crown.position.y = 1.7;
+    const brim = box(0.22, 0.02, 0.16, headColor);
+    brim.position.set(0, 1.65, 0.22);
+    parts.push(hair, crown, brim);
+  }
+  if (spec.head === 'gray') {
+    const hair = new THREE.Mesh(new THREE.SphereGeometry(0.235, 16, 10, 0, Math.PI * 2, 0, Math.PI * 0.5), mat('#bdb6ad', { roughness: 0.9 }));
+    hair.position.y = 1.53;
+    hair.rotation.x = -0.3;
+    parts.push(hair);
   }
   if (spec.head === 'caping') {
     parts.push(atY(cone(0.46, 0.26, headColor, 20), 1.8));
@@ -171,6 +265,12 @@ export function createAvatar(name, color, { visitor = false, host = false, attir
     shawl.rotation.x = Math.PI / 2;
     shawl.position.y = 1.3;
     body.add(shawl);
+  }
+  if (spec.apron) {
+    const apron = box(0.48, 0.78, 0.03, spec.apron);
+    apron.position.set(0, 0.62, 0.33);
+    apron.rotation.x = -0.05;
+    body.add(apron);
   }
   if (spec.collar) {
     const collar = new THREE.Mesh(new THREE.TorusGeometry(0.15, 0.04, 6, 16), mat(spec.collar));
@@ -345,6 +445,78 @@ function makeProp(kind) {
       group.rotation.x = -0.35;
       return { object: group, anchor: 'chest' };
     }
+    // ---- Kitchen & table props (hawkers, family cooks, diners) ----
+    case 'spatula': {
+      group.add(atPos(cyl(0.012, 0.012, 0.32, '#5a3b26', 6), 0, -0.12, 0));
+      group.add(atPos(box(0.09, 0.006, 0.08, '#9aa0a6', { metalness: 0.7, roughness: 0.35 }), 0, -0.3, 0.02));
+      return { object: group, anchor: 'right' };
+    }
+    case 'ladle': {
+      group.add(atPos(cyl(0.01, 0.01, 0.4, '#8f949a', 6, { metalness: 0.7, roughness: 0.35 }), 0, -0.16, 0));
+      const bowl = new THREE.Mesh(new THREE.SphereGeometry(0.05, 12, 8, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), mat('#9aa0a6', { metalness: 0.7, roughness: 0.35, side: THREE.DoubleSide }));
+      bowl.position.y = -0.37;
+      group.add(bowl);
+      return { object: group, anchor: 'right' };
+    }
+    case 'fan': {
+      group.add(atPos(cyl(0.008, 0.008, 0.14, '#7a5a32', 5), 0, -0.06, 0));
+      group.add(atPos(box(0.2, 0.18, 0.008, '#c9a46a'), 0, -0.22, 0));
+      return { object: group, anchor: 'right' };
+    }
+    case 'tongs': {
+      [-0.012, 0.012].forEach((x) => group.add(atPos(box(0.008, 0.26, 0.012, '#8f949a', { metalness: 0.7 }), x, -0.12, 0)));
+      return { object: group, anchor: 'left' };
+    }
+    case 'cleaver': {
+      group.add(atPos(cyl(0.014, 0.014, 0.1, '#3a2a20', 6), 0, -0.04, 0));
+      group.add(atPos(box(0.008, 0.16, 0.09, '#b9bec4', { metalness: 0.8, roughness: 0.25 }), 0, -0.17, 0.03));
+      return { object: group, anchor: 'right' };
+    }
+    case 'kettle': {
+      const pot = sphere(0.08, '#c8ccd0', 14, { metalness: 0.75, roughness: 0.3 });
+      pot.scale.y = 1.15;
+      group.add(atPos(pot, 0, -0.12, 0.04));
+      const spout = cone(0.018, 0.14, '#c8ccd0', 8, { metalness: 0.75, roughness: 0.3 });
+      spout.rotation.x = 1.9;
+      group.add(atPos(spout, 0, -0.16, 0.14));
+      return { object: group, anchor: 'right' };
+    }
+    case 'cup': {
+      group.add(atPos(cyl(0.045, 0.038, 0.11, '#e9e2d4', 12), 0, -0.07, 0.03));
+      return { object: group, anchor: 'left' };
+    }
+    case 'cloth': {
+      group.add(atPos(box(0.12, 0.03, 0.1, '#f1efe8'), 0, -0.04, 0.02));
+      return { object: group, anchor: 'right' };
+    }
+    case 'chopsticks': {
+      [-0.01, 0.01].forEach((x) => group.add(atPos(cyl(0.004, 0.006, 0.24, '#c49a5a', 5), x, -0.1, 0.02)));
+      return { object: group, anchor: 'right' };
+    }
+    case 'spoon': {
+      group.add(atPos(cyl(0.006, 0.006, 0.16, '#c8ccd0', 5, { metalness: 0.7 }), 0, -0.08, 0.02));
+      group.add(atPos(sphere(0.022, '#c8ccd0', 8, { metalness: 0.7 }), 0, -0.17, 0.02));
+      return { object: group, anchor: 'right' };
+    }
+    case 'servetray': {
+      group.add(box(0.38, 0.02, 0.28, '#7a5236'));
+      const plate = cyl(0.12, 0.09, 0.025, '#f4f1ea', 18);
+      plate.position.y = 0.022;
+      const food = sphere(0.075, '#c98b4a', 10);
+      food.scale.y = 0.45;
+      food.position.y = 0.045;
+      group.add(plate, food);
+      group.position.set(0, 0.98, 0.46);
+      return { object: group, anchor: 'chest' };
+    }
+    case 'bag': {
+      const bag = box(0.2, 0.22, 0.13, '#f2f2ee', { transparent: true, opacity: 0.86 });
+      bag.position.y = -0.17;
+      group.add(bag);
+      [-0.05, 0.05].forEach((x) => group.add(atPos(box(0.014, 0.08, 0.01, '#f2f2ee'), x, -0.04, 0)));
+      group.add(atPos(box(0.14, 0.1, 0.08, '#6b8f4e'), 0, -0.19, 0));
+      return { object: group, anchor: 'right' };
+    }
     case 'tasbih':
     case 'rosary': {
       const beads = new THREE.Mesh(new THREE.TorusGeometry(0.07, 0.014, 6, 18), mat(kind === 'rosary' ? '#8a6a4e' : '#3d5a4c'));
@@ -362,12 +534,17 @@ function makeProp(kind) {
 }
 
 function attachProp(avatar, kind) {
+  if (Array.isArray(kind)) {
+    return kind.map((one) => attachProp(avatar, one)).filter(Boolean);
+  }
   const prop = makeProp(kind);
   if (!prop) {
     return null;
   }
   if (prop.anchor === 'right') {
     avatar.hands[0].add(prop.object);
+  } else if (prop.anchor === 'left') {
+    avatar.hands[1].add(prop.object);
   } else {
     avatar.body.add(prop.object);
   }
@@ -375,8 +552,24 @@ function attachProp(avatar, kind) {
 }
 
 function detach(object) {
+  if (Array.isArray(object)) {
+    object.forEach(detach);
+    return;
+  }
   if (object && object.parent) {
     object.parent.remove(object);
+  }
+}
+
+// Carry something while walking: a tray with your order, or a takeaway bag.
+export function setCarry(avatar, kind) {
+  detach(avatar.carryProp);
+  avatar.carryProp = null;
+  avatar.carryKind = kind || null;
+  if (kind === 'tray') {
+    avatar.carryProp = attachProp(avatar, 'servetray');
+  } else if (kind === 'bag') {
+    avatar.carryProp = attachProp(avatar, 'bag');
   }
 }
 
@@ -447,6 +640,81 @@ export const CLIPS = {
     prop: 'ciamsi', end: 2.4,
     frames: [k(0, REST), k(0.4, CHEST, 0.2, 0, { shake: 1 }), k(2.0, CHEST, 0.2, 0, { shake: 1 }), k(2.4, REST)],
   },
+  // ---- Cooking (looping while the hawker works) ----
+  // Stir-fry: spatula scraping and tossing in the wok, left hand on the wok handle.
+  wok: {
+    prop: 'spatula', loop: true, end: 0.9,
+    frames: [k(0, [-1.15, -0.35, -0.95, 0.15], 0.1), k(0.22, [-0.8, -0.1, -1.1, 0.24], 0.13), k(0.45, [-1.3, -0.45, -0.82, 0.1], 0.1),
+      k(0.67, [-0.92, -0.18, -1.12, 0.24], 0.13), k(0.9, [-1.15, -0.35, -0.95, 0.15], 0.1)],
+  },
+  // Slow stirring of a big pot or kuali with a ladle.
+  stir: {
+    prop: 'ladle', loop: true, end: 1.6,
+    frames: [k(0, [-1.0, -0.4, -0.55, 0.1], 0.16), k(0.4, [-0.8, -0.1, -0.55, 0.1], 0.18), k(0.8, [-1.1, 0.1, -0.55, 0.1], 0.16),
+      k(1.2, [-1.3, -0.3, -0.55, 0.1], 0.14), k(1.6, [-1.0, -0.4, -0.55, 0.1], 0.16)],
+  },
+  // Fanning the charcoal with a bamboo fan, tongs in the other hand.
+  fan: {
+    prop: ['fan', 'tongs'], loop: true, end: 0.36,
+    frames: [k(0, [-1.0, 0.3, -0.95, 0.25], 0.12), k(0.18, [-1.45, 0.05, -0.95, 0.25], 0.12), k(0.36, [-1.0, 0.3, -0.95, 0.25], 0.12)],
+  },
+  // Pour from a height ("tarik") to cool and froth the drink.
+  pour: {
+    prop: ['kettle', 'cup'], loop: true, end: 2.4,
+    frames: [k(0, [-1.3, -0.3, -1.0, 0.3]), k(0.8, [-2.7, -0.2, -0.7, 0.25], -0.04), k(1.4, [-2.7, -0.2, -0.7, 0.25], -0.04),
+      k(2.0, [-1.3, -0.3, -1.0, 0.3]), k(2.4, [-1.3, -0.3, -1.0, 0.3])],
+  },
+  // Cleaver on the chopping block.
+  chop: {
+    prop: 'cleaver', loop: true, end: 0.5,
+    frames: [k(0, [-1.65, -0.2, -0.9, 0.3], 0.18), k(0.18, [-0.95, -0.2, -0.9, 0.3], 0.22), k(0.5, [-1.65, -0.2, -0.9, 0.3], 0.18)],
+  },
+  // Lift the steamer lid, check, put it back.
+  steam: {
+    loop: true, end: 2.2,
+    frames: [k(0, [-1.0, -0.3, -1.0, 0.3], 0.1), k(0.6, [-1.7, -0.3, -1.7, 0.3], 0.02), k(1.4, [-1.7, -0.3, -1.7, 0.3], 0.02), k(2.2, [-1.0, -0.3, -1.0, 0.3], 0.1)],
+  },
+  // Lowering food into hot oil with tongs.
+  fry: {
+    prop: 'spatula', loop: true, end: 1.4,
+    frames: [k(0, [-1.2, -0.2, -0.6, 0.15], 0.12), k(0.5, [-0.85, -0.2, -0.6, 0.15], 0.2), k(1.0, [-1.3, -0.25, -0.6, 0.15], 0.12), k(1.4, [-1.2, -0.2, -0.6, 0.15], 0.12)],
+  },
+  // Spread dough / batter on a flat griddle.
+  griddle: {
+    prop: 'spatula', loop: true, end: 1.2,
+    frames: [k(0, [-0.95, -0.5, -0.9, 0.3], 0.2), k(0.4, [-0.95, 0.1, -0.9, 0.3], 0.2), k(0.8, [-1.1, -0.2, -0.9, 0.3], 0.22), k(1.2, [-0.95, -0.5, -0.9, 0.3], 0.2)],
+  },
+  // Hand the plate over the counter.
+  serve: {
+    prop: 'servetray', release: 0.75, end: 1.3,
+    frames: [k(0, REST), k(0.45, [-1.2, -0.35, -1.2, 0.35], 0.12), k(0.75, [-1.0, -0.35, -1.0, 0.35], 0.2), k(1.3, REST)],
+  },
+  wipe: {
+    prop: 'cloth', loop: true, end: 1.4,
+    frames: [k(0, [-0.9, -0.3, 0, -0.12], 0.2), k(0.35, [-0.9, 0.15, 0, -0.12], 0.2), k(0.7, [-1.05, -0.1, 0, -0.12], 0.22), k(1.05, [-0.85, -0.45, 0, -0.12], 0.2), k(1.4, [-0.9, -0.3, 0, -0.12], 0.2)],
+  },
+  // ---- Diners ----
+  eat: {
+    prop: 'spoon', loop: true, end: 3.2,
+    frames: [k(0, [-0.75, -0.3, -0.7, 0.3], 0.12), k(0.8, [-0.8, -0.3, -0.7, 0.3], 0.16), k(1.25, [-2.0, -0.6, -0.7, 0.3], 0.05),
+      k(1.6, [-2.0, -0.6, -0.7, 0.3], 0.05), k(2.1, [-0.75, -0.3, -0.7, 0.3], 0.12), k(3.2, [-0.75, -0.3, -0.7, 0.3], 0.12)],
+  },
+  eatsticks: {
+    prop: 'chopsticks', loop: true, end: 3.0,
+    frames: [k(0, [-0.8, -0.3, -0.9, 0.35], 0.14), k(0.7, [-0.85, -0.3, -0.95, 0.35], 0.2), k(1.15, [-1.95, -0.55, -1.2, 0.4], 0.08),
+      k(1.5, [-1.95, -0.55, -1.2, 0.4], 0.08), k(2.0, [-0.8, -0.3, -0.9, 0.35], 0.14), k(3.0, [-0.8, -0.3, -0.9, 0.35], 0.14)],
+  },
+  // Chatting: small open-hand gestures.
+  talk: {
+    loop: true, end: 2.6,
+    frames: [k(0, [-0.35, 0.15, -0.3, -0.12]), k(0.6, [-0.75, 0.3, -0.3, -0.12], 0.03), k(1.2, [-0.45, 0.1, -0.6, -0.3]), k(1.9, [-0.7, 0.25, -0.55, -0.25], 0.02), k(2.6, [-0.35, 0.15, -0.3, -0.12])],
+  },
+  // Wash the hands (before eating with the hand, at the tap or kobokan).
+  wash: {
+    release: 0.3, end: 2.4,
+    frames: [k(0, REST), k(0.4, [-0.95, -0.55, -0.95, 0.55], 0.25, 0.1), k(0.9, [-1.05, -0.45, -0.95, 0.65], 0.25, 0.1),
+      k(1.4, [-0.95, -0.65, -1.05, 0.45], 0.25, 0.1), k(1.9, [-1.0, -0.5, -1.0, 0.55], 0.25, 0.1), k(2.4, REST)],
+  },
   read: {
     prop: 'book', end: 2.4,
     frames: [k(0, REST), k(0.5, [-1.1, -0.45, -1.1, 0.45], 0.15), k(2.0, [-1.1, -0.45, -1.1, 0.45], 0.18), k(2.4, REST)],
@@ -460,6 +728,8 @@ const SIT_POSES = {
   dzikir: { arms: [-0.6, -0.35, -0.5, 0.25], lean: 0.08, prop: 'tasbih', fingers: true },
   rosary: { arms: [-0.85, -0.6, -0.85, 0.6], lean: 0.1, prop: 'rosary', fingers: true },
   breathe: { arms: [-0.45, -0.2, -0.45, 0.2], lean: 0, breathe: true },
+  meal: { arms: [-0.75, -0.35, -0.75, 0.35], lean: 0.1 },
+  rest: { arms: [-0.35, -0.2, -0.35, 0.2], lean: 0 },
 };
 
 export function playClip(avatar, kind, { onRelease, onEnd } = {}) {
@@ -563,10 +833,14 @@ export function animateAvatar(avatar, delta, now, elapsed) {
       }
     }
     if (clip.time >= clip.def.end) {
-      avatar.clip = null;
-      detach(clip.prop);
-      if (clip.onEnd) {
-        clip.onEnd();
+      if (clip.def.loop) {
+        clip.time %= clip.def.end;
+      } else {
+        avatar.clip = null;
+        detach(clip.prop);
+        if (clip.onEnd) {
+          clip.onEnd();
+        }
       }
     }
   } else if (avatar.sitting) {
@@ -602,6 +876,12 @@ export function animateAvatar(avatar, delta, now, elapsed) {
       arms[0] = swing;
       arms[2] = -swing;
       bob = Math.abs(Math.sin(avatar.walkPhase)) * 0.05;
+    }
+    if (avatar.carryKind === 'tray' && avatar.pose === 'rest') {
+      arms = [-0.95, -0.42, -0.95, 0.42];
+    } else if (avatar.carryKind === 'bag' && avatar.pose === 'rest') {
+      arms[0] = -0.12 + Math.sin(avatar.walkPhase) * 0.08;
+      arms[1] = 0.12;
     }
   }
   if (!avatar.sitting || !(SIT_POSES[avatar.sitMode] || {}).breathe) {

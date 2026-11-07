@@ -9,6 +9,39 @@ import { holyDays, matchesFaith, festiveHoliday } from '../calendar.js';
 import { mountRitual } from './rituals.js';
 import { bead, bell as bellSound } from '../audio.js';
 import { greetingsFor, greetingById } from '../world/greetings.js';
+import { KEDAI, HOME, METHODS, MEAL_PRAYER, dishById, priceLabel } from '../world/cuisine.js';
+import { chatReply, chatOpening, chatSuggestions } from '../world/chat.js';
+import { setAsmrGain } from '../audio.js';
+import { search } from '../search.js';
+import { getIndex } from './pustaka.js';
+import { createGuideSheet } from './guide.js';
+
+const AREAS = [
+  { id: 'ibadah', icon: '⛩', label: 'Ibadah' },
+  { id: 'kedai', icon: '🍜', label: 'Kedai' },
+  { id: 'rumah', icon: '🏠', label: 'Rumah' },
+];
+const AREA_GUIDES = {
+  ibadah: ['pustaka', 'tanya', 'kalender', 'upacara', 'kamus', 'ibadah', 'kunjungi'],
+  kedai: ['pustaka', 'kalender', 'kamus', 'tanya'],
+  rumah: ['peringatan', 'arsip', 'syukur', 'kartu', 'pustaka', 'kalender'],
+};
+// Food you carry (e.g. takeaway) survives moving between the sacred place, the food place and home.
+const CARRY_KEY = 'jeda:v1:carry';
+function loadCarry() {
+  try {
+    return JSON.parse(sessionStorage.getItem(CARRY_KEY) || '[]').map((item) => dishById(item.dishId)).filter(Boolean).map((dish) => ({ dish }));
+  } catch {
+    return [];
+  }
+}
+function saveCarry(list) {
+  try {
+    sessionStorage.setItem(CARRY_KEY, JSON.stringify(list));
+  } catch {
+    // storage unavailable: food is simply not carried over
+  }
+}
 const DZIKIR = ['Subhanallah', 'Alhamdulillah', 'Allahu Akbar'];
 
 export function avatarColor() {
@@ -34,13 +67,17 @@ function sitPanel(spot, faith) {
         <div class="sit-breath" data-breath></div><p class="sit-phrase" data-phrase>Tarik napas…</p>
         <p class="small muted">Ikuti lingkaran. Satu menit saja sudah cukup.</p>
         ${spot.sitMode === 'meditate' ? '<button class="btn-ghost sit-hold" type="button" data-sit-hold>📿 Pegang mala (orang pertama)</button>' : ''}`;
+    case 'meal':
+      return `<p class="sit-title">Duduk di meja</p><p class="sit-phrase" data-meal-hint>Pesan di kios, lalu bawa ke meja ini untuk makan.</p>`;
+    case 'rest':
+      return `<p class="sit-title">Bersantai</p><p class="sit-phrase">Duduk sebentar, lihat orang lalu-lalang.</p>`;
     default:
       return `<p class="sit-title">Hening</p><p class="sit-phrase">Diam sejenak di ${esc(faith.spaceName)}.</p>
         <p class="sit-timer" data-timer>00:00</p>`;
   }
 }
 
-export function space(main, [faithId], query, { content, navigate }, extra = {}) {
+export function space(main, [faithId, areaParam], query, { content, navigate }, extra = {}) {
   const faith = faithById(content, faithId);
   if (!faith) {
     navigate('#/kunjungi');
@@ -50,6 +87,12 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
   const live = extra.live || null; // { code, host, secret?, mode }
   const mode = live && live.mode ? live.mode : (!userPrefs.faith || userPrefs.faith === faith.id || faith.id === 'alam' ? 'home' : 'visit');
   const greetings = greetingsFor(faith.id, mode);
+  // Three places per faith: the sacred place, the food place nearby, and a home.
+  const area = !live && ['kedai', 'rumah'].includes(areaParam) ? areaParam : 'ibadah';
+  const kedai = KEDAI[faith.id] || KEDAI.alam;
+  const home = HOME[faith.id] || HOME.alam;
+  const areaTitle = area === 'kedai' ? kedai.name : area === 'rumah' ? home.name : faith.spaceName;
+  const sceneId = area === 'ibadah' ? faith.scene : `${area}-${faith.id}`;
   document.body.dataset.faith = faith.id;
   document.body.classList.add('in-space');
 
@@ -67,8 +110,9 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
       <div class="stage-world" data-world></div>
       <div class="stage-top">
         <div class="stage-title">
-          <span class="eyebrow">${mode === 'visit' ? 'Kunjungi & kenali' : 'Ruangmu'}</span>
-          <h1>${esc(faith.spaceName)}</h1>
+          <span class="eyebrow">${area === 'kedai' ? 'Kedai makan' : area === 'rumah' ? 'Rumah' : mode === 'visit' ? 'Kunjungi & kenali' : 'Ruangmu'}</span>
+          <h1>${esc(areaTitle)}</h1>
+          ${live ? '' : `<nav class="area-switch" aria-label="Pindah tempat">${AREAS.map((a) => `<button type="button" data-area="${a.id}" class="${a.id === area ? 'on' : ''}" ${a.id === area ? 'aria-current="page"' : ''}><span aria-hidden="true">${a.icon}</span>${a.label}</button>`).join('')}</nav>`}
         </div>
         <div class="stage-pills">
           ${live ? `
@@ -86,6 +130,7 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
       <div class="stage-side" role="group" aria-label="Tampilan ruang">
         <button class="side-btn" type="button" data-view-toggle aria-pressed="false" aria-label="Lihat dari mata sendiri (orang pertama)"><span aria-hidden="true">👁</span><small>1P</small></button>
         <button class="side-btn" type="button" data-time-toggle aria-label="Ganti waktu: waktu nyata"><span aria-hidden="true">🕰</span><small>Nyata</small></button>
+        <button class="side-btn" type="button" data-guides aria-label="Panduan: pustaka, kalender, upacara…"><span aria-hidden="true">📚</span><small>Panduan</small></button>
         <button class="side-btn" type="button" data-hold hidden><span aria-hidden="true" data-hold-icon>📿</span><small data-hold-short></small></button>
       </div>
       <div class="hold-hud" data-hold-hud hidden aria-live="polite">
@@ -167,6 +212,22 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
         <div class="sit-body" data-sit-body></div>
         <button class="btn-ghost" type="button" data-stand>Selesai</button>
       </div>
+      <div class="menu-sheet" data-menu hidden></div>
+      <div class="cook-card" data-cook hidden></div>
+      <div class="meal-hud" data-meal hidden></div>
+      <div class="npc-chat" data-chat hidden>
+        <div class="chat-head">
+          <span class="chat-dot" data-chat-dot aria-hidden="true"></span>
+          <div><strong data-chat-name></strong><small data-chat-role></small></div>
+          <button class="chat-close" type="button" data-chat-close aria-label="Tutup obrolan">✕</button>
+        </div>
+        <div class="chat-log" data-chat-log aria-live="polite"></div>
+        <div class="chat-chips" data-chat-chips></div>
+        <form class="chat-input" data-chat-form>
+          <input name="msg" maxlength="200" autocomplete="off" placeholder="Tulis pesan…" aria-label="Pesan">
+          <button class="btn" type="submit">Kirim</button>
+        </form>
+      </div>
     </section>
 
     <section class="stack space-below">
@@ -180,6 +241,27 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
           <ul>${(faith.visitTips || []).map((tip) => `<li>${esc(tip)}</li>`).join('')}</ul>
           <p class="small muted">Di ruang iman lain, ritual ibadah ditampilkan untuk dipelajari, tidak dilakukan.</p>
         </div>` : ''}
+      ${area === 'kedai' ? `
+        <div class="card soft">
+          <h2 class="h3">${esc(kedai.name)}</h2>
+          <p>${esc(kedai.intro)}</p>
+          <ul>${kedai.notes.map((note) => `<li>${esc(note)}</li>`).join('')}</ul>
+          <p class="small muted">Dekati kios, pesan, lalu lihat penjualnya memasak langsung. Makan di meja (orang pertama, dengan suara ASMR) atau bungkus untuk dibawa pulang. Harga hanya suasana: semuanya gratis.</p>
+        </div>
+        <div class="ritual-grid">${kedai.stalls.map((stall) => `
+          <article class="card">
+            <h3 class="h3">${esc(stall.name)}</h3>
+            <p class="small muted">${esc(stall.vendor.name)} · ${esc(METHODS[stall.method].label)}</p>
+            <ul class="clean-list">${stall.dishes.map((id) => dishById(id)).filter(Boolean).map((dish) => `<li><span>${esc(dish.name)}</span><span class="muted small">${priceLabel(dish.price)}</span></li>`).join('')}</ul>
+          </article>`).join('')}</div>` : ''}
+      ${area === 'rumah' ? `
+        <div class="card soft">
+          <h2 class="h3">${esc(home.name)}</h2>
+          <p>${esc(home.intro)}</p>
+          ${home.altar ? `<p class="small muted">${esc(home.altar)}</p>` : ''}
+          <p class="small muted">Di rumah: berdoa di altar/tempat ibadah keluarga, minta masakan di dapur, makan bungkusan dari kedai di meja makan, dan buka rak keluarga (peringatan arwah, arsip, jurnal syukur) serta kotak surat (kartu ucapan).</p>
+        </div>` : ''}
+      ${area === 'ibadah' ? `
       <h2 class="h3 section-title">Alat & panduan</h2>
       <div class="ritual-grid">
         ${faith.rituals.map((ritual, index) => {
@@ -199,7 +281,7 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
               </details>` : ''}
           </article>`;
   }).join('')}
-      </div>
+      </div>` : ''}
       ${upcoming.length ? `
         <div class="card soft">
           <h2 class="h3">Hari suci mendatang</h2>
@@ -249,6 +331,318 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
     }
   };
 
+
+  // ---------- Guides inside the 3D space (library, calendar, ceremonies, family tools...) ----------
+  const guideSheet = createGuideSheet(stage, { content, navigate });
+  main.querySelector('[data-guides]').addEventListener('click', () => guideSheet.open(AREA_GUIDES[area], 'Panduan'));
+  const openEntry = (entryId) => guideSheet.open(`#/entri/${encodeURIComponent(entryId)}`);
+  main.querySelectorAll('[data-area]').forEach((button) => {
+    button.addEventListener('click', () => travel(button.dataset.area));
+  });
+  function travel(to) {
+    if (to === area) {
+      return;
+    }
+    navigate(`#/ruang/${faith.id}${to === 'ibadah' ? '' : `/${to}`}`);
+  }
+
+  // ---------- Food: menu, live cooking, eating ----------
+  const menuSheet = main.querySelector('[data-menu]');
+  const cookCard = main.querySelector('[data-cook]');
+  const mealHud = main.querySelector('[data-meal]');
+  const myFaith = prefs.get().faith || 'alam';
+  const prayer = MEAL_PRAYER[myFaith] || MEAL_PRAYER.alam;
+
+  function openMenu(spot) {
+    if (!world) {
+      return;
+    }
+    const stall = world.stalls().find((s) => s.id === spot.stallId);
+    if (!stall) {
+      return;
+    }
+    const def = stall.def;
+    const method = METHODS[def.method] || METHODS.stir;
+    const dishes = def.dishes.map((id) => dishById(id)).filter(Boolean);
+    menuSheet.innerHTML = `
+      <div class="menu-card">
+        <header>
+          <span class="eyebrow">${stall.home ? 'Dapur rumah' : 'Kios'} · ${esc(def.vendor.name)}</span>
+          <h2 class="h3">${esc(def.name)}</h2>
+          <p class="small muted">${esc(method.label)}. ${esc(method.about)}</p>
+        </header>
+        <ul class="menu-list-food">${dishes.map((dish) => `
+          <li>
+            <div><strong>${esc(dish.name)}</strong><span class="small muted">${esc(dish.desc)}</span>
+              ${(dish.tags || []).map((tag) => `<span class="badge">${esc(tag)}</span>`).join(' ')}
+              ${dish.note ? `<span class="small">${esc(dish.note)}</span>` : ''}</div>
+            <div class="menu-actions">
+              <span class="small muted">${priceLabel(dish.price)}</span>
+              <button class="btn" type="button" data-order="${esc(dish.id)}">${stall.home ? 'Minta' : 'Makan di sini'}</button>
+              ${stall.home ? '' : `<button class="btn-ghost" type="button" data-order="${esc(dish.id)}" data-takeaway="1">Bungkus</button>`}
+            </div>
+          </li>`).join('')}</ul>
+        <p class="small muted">${stall.home ? 'Masakan rumah, dibuat dengan sayang.' : 'Harga hanya suasana: semua gratis di Jeda.'}</p>
+        <button class="btn-ghost" type="button" data-menu-close>Tutup</button>
+      </div>`;
+    menuSheet.hidden = false;
+    menuSheet.querySelector('[data-menu-close]').addEventListener('click', () => {
+      menuSheet.hidden = true;
+    });
+    menuSheet.querySelectorAll('[data-order]').forEach((button) => {
+      button.addEventListener('click', () => placeOrder(stall, dishById(button.dataset.order), Boolean(button.dataset.takeaway)));
+    });
+  }
+
+  function placeOrder(stall, dish, takeaway) {
+    if (!world || !dish) {
+      return;
+    }
+    const ok = world.order(stall.id, dish, {
+      takeaway,
+      onStep: (step) => renderCook(stall, dish, step),
+      onReady: ({ dish: ready, takeaway: bagged }) => {
+        cookCard.hidden = true;
+        if (bagged) {
+          toast(`${ready.name} dibungkus. Bawa pulang dan makan di meja makan rumah, atau duduk di meja sini.`);
+          return;
+        }
+        const table = world.spots.find((s) => s.sitMode === 'meal');
+        toast(`${ready.name} siap. Membawa ke meja…`);
+        if (table) {
+          world.walkTo(table.id, { perform: true, instant: Boolean(prefs.get().reducedMotion) });
+        }
+      },
+    });
+    if (!ok) {
+      toast('Penjualnya sedang memasak pesanan lain. Tunggu sebentar, ya.');
+      return;
+    }
+    menuSheet.hidden = true;
+    renderCook(stall, dish, { index: -1, total: 1, label: 'Pesanan diterima' });
+  }
+
+  function renderCook(stall, dish, step) {
+    const method = METHODS[dish.method || stall.def.method] || METHODS.stir;
+    const progress = Math.round(((step.index + 1) / Math.max(1, step.total)) * 100);
+    cookCard.innerHTML = `
+      <span class="eyebrow">Dimasak langsung · ${esc(stall.def.vendor.name)}</span>
+      <strong>${esc(dish.name)}</strong>
+      <p class="cook-step">${esc(step.label)}</p>
+      <div class="cook-bar"><span style="width:${Math.max(6, progress)}%"></span></div>
+      <p class="small">${esc(method.about)}</p>`;
+    cookCard.hidden = false;
+  }
+
+  let autoTimer = null;
+  let prayed = false;
+  function stopAuto() {
+    clearInterval(autoTimer);
+    autoTimer = null;
+  }
+  function renderMeal(state) {
+    if (!state || !state.meal) {
+      mealHud.hidden = true;
+      stopAuto();
+      return;
+    }
+    mealHud.hidden = false;
+    const items = state.items;
+    const done = state.done;
+    mealHud.innerHTML = `
+      <div class="meal-card">
+        <div class="meal-head">
+          <span class="eyebrow">Makan · orang pertama</span>
+          <strong>${esc(state.name)}</strong>
+        </div>
+        ${!prayed && !done ? `<details class="meal-prayer"><summary>🙏 ${esc(prayer.title)}</summary><p>${esc(prayer.text)}</p>${prayer.tip ? `<p class="small">${esc(prayer.tip)}</p>` : ''}</details>` : ''}
+        ${done ? `<p class="meal-done">Habis! ${esc(prayer.after)}</p>` : '<p class="small meal-tip">Ketuk layar atau tombol untuk satu suapan. Pakai earphone untuk suara ASMR terbaik.</p>'}
+        <div class="meal-bites">${items.map((item, index) => `
+          <button class="btn${item.left <= 0 ? ' done' : ''}" type="button" data-bite="${index}" ${item.left <= 0 ? 'disabled' : ''}>${esc(item.verb)} ${esc(item.name.toLowerCase())} <small>${Math.max(0, item.left)}</small></button>`).join('')}</div>
+        <div class="meal-tools">
+          <button class="btn-ghost" type="button" data-auto aria-pressed="${autoTimer ? 'true' : 'false'}">${autoTimer ? '⏸ Berhenti otomatis' : '▶ Makan otomatis'}</button>
+          <label class="asmr-volume">🔊<input type="range" min="0" max="2" step="0.1" value="${asmrLevel}" data-asmr aria-label="Volume ASMR"></label>
+          <button class="btn-ghost" type="button" data-meal-close>${done ? 'Selesai' : 'Sudahan'}</button>
+        </div>
+      </div>`;
+    mealHud.querySelector('.meal-prayer')?.addEventListener('toggle', () => {
+      prayed = true;
+      bellSound();
+    });
+    mealHud.querySelectorAll('[data-bite]').forEach((button) => {
+      button.addEventListener('click', () => world && world.holdStep(Number(button.dataset.bite)));
+    });
+    mealHud.querySelector('[data-auto]').addEventListener('click', () => {
+      if (autoTimer) {
+        stopAuto();
+      } else {
+        // Hands-free: one bite every few seconds, alternating with sips of the drink.
+        let turn = 0;
+        autoTimer = setInterval(() => {
+          const current = world && world.holding();
+          if (!current || !current.meal || current.done) {
+            stopAuto();
+            if (current) {
+              renderMeal(current);
+            }
+            return;
+          }
+          const open = current.items.map((item, index) => ({ item, index })).filter(({ item }) => item.left > 0);
+          const food = open.filter(({ item }) => !item.drink);
+          const choice = turn % 4 === 3 && open.some(({ item }) => item.drink) ? open.find(({ item }) => item.drink) : (food[0] || open[0]);
+          turn += 1;
+          world.holdStep(choice.index);
+        }, 3400);
+      }
+      renderMeal(world.holding());
+    });
+    mealHud.querySelector('[data-asmr]').addEventListener('input', (event) => {
+      asmrLevel = Number(event.target.value);
+      setAsmrGain(asmrLevel);
+    });
+    mealHud.querySelector('[data-meal-close]').addEventListener('click', () => {
+      stopAuto();
+      if (world) {
+        world.release();
+      }
+      if (currentSitSpot) {
+        showSit(currentSitSpot);
+      }
+    });
+  }
+  let asmrLevel = 1;
+  const mealRefresh = setInterval(() => {
+    if (world && !mealHud.hidden) {
+      const current = world.holding();
+      if (current && current.meal) {
+        // Counts change when a bite reaches the mouth, after the tap.
+        mealHud.querySelectorAll('[data-bite]').forEach((button, index) => {
+          const item = current.items[index];
+          if (item) {
+            button.querySelector('small').textContent = String(Math.max(0, item.left));
+            button.disabled = item.left <= 0;
+          }
+        });
+        if (current.done && !mealHud.querySelector('.meal-done')) {
+          stopAuto();
+          renderMeal(current);
+        }
+      }
+    }
+  }, 400);
+
+  // ---------- Small talk with people (NPCs) ----------
+  const chatPanel = main.querySelector('[data-chat]');
+  const chatLog = main.querySelector('[data-chat-log]');
+  const chatChips = main.querySelector('[data-chat-chips]');
+  let chatting = null;
+  const nextHoliday = upcoming[0] ? `${upcoming[0].name} (${relativeDays(upcoming[0].date)})` : null;
+  function chatContext(info) {
+    const stall = info.stallId && world ? world.stalls().find((s) => s.id === info.stallId) : null;
+    const index = getIndex(content);
+    return {
+      culture: info.culture,
+      userName: name,
+      greeting: (greetingsFor(faith.id, 'home')[0] || {}).say,
+      placeName: areaTitle,
+      placeAbout: area === 'kedai' ? kedai.intro : area === 'rumah' ? home.intro : `${faith.spaceName}. ${faith.greeting}`,
+      timeWord: { pagi: 'pagi', siang: 'siang', sore: 'sore', malam: 'malam' }[timeOfDay()] || 'hari',
+      menu: stall ? stall.def.dishes.map((id) => (dishById(id) || {}).name).filter(Boolean) : null,
+      methodAbout: stall ? (METHODS[stall.def.method] || {}).about : '',
+      foodNote: kedai.notes.join(' '),
+      kedaiTip: (dishById(kedai.stalls[0].dishes[0]) || {}).name,
+      nextHoliday,
+      ritualHint: (faith.rituals[0] || {}).title ? faith.rituals[0].title.toLowerCase() : 'berdoa',
+      search: (question) => {
+        const results = search(index, question, { faith: faith.pustaka ? faith.id : null, limit: 1 });
+        const top = results[0];
+        return top && top.score >= 1.2 ? { id: top.entry.id, title: top.entry.title, summary: top.entry.summary } : null;
+      },
+    };
+  }
+  function addChatLine(who, text, extra = {}) {
+    const line = document.createElement('div');
+    line.className = `chat-line ${who}`;
+    line.innerHTML = `<p>${esc(text)}</p>`;
+    if (extra.entry) {
+      const link = document.createElement('button');
+      link.type = 'button';
+      link.className = 'chat-link';
+      link.textContent = `📖 Baca: ${extra.entry.title}`;
+      link.addEventListener('click', () => openEntry(extra.entry.id));
+      line.appendChild(link);
+    }
+    if (extra.guide) {
+      const link = document.createElement('button');
+      link.type = 'button';
+      link.className = 'chat-link';
+      link.textContent = '📚 Buka panduan';
+      link.addEventListener('click', () => guideSheet.open(AREA_GUIDES[area], 'Panduan'));
+      line.appendChild(link);
+    }
+    chatLog.appendChild(line);
+    chatLog.scrollTop = chatLog.scrollHeight;
+  }
+  function openChat(npcId) {
+    if (!world) {
+      return;
+    }
+    const info = world.npcInfo(npcId);
+    if (!info) {
+      return;
+    }
+    if (chatting && chatting.id !== npcId) {
+      world.npcTalking(chatting.id, false);
+    }
+    chatting = { id: npcId, info, ctx: chatContext(info) };
+    world.npcTalking(npcId, true);
+    main.querySelector('[data-chat-name]').textContent = info.persona.name;
+    main.querySelector('[data-chat-role]').textContent = info.persona.job || '';
+    main.querySelector('[data-chat-dot]').style.background = (info.persona.attire && info.persona.attire.top) || '#999';
+    chatLog.innerHTML = '';
+    const opening = chatOpening(info.persona, chatting.ctx);
+    addChatLine('npc', opening);
+    world.npcSay(npcId, opening);
+    chatChips.innerHTML = chatSuggestions(info.persona, chatting.ctx).map((text) => `<button type="button" class="chip" data-say="${esc(text)}">${esc(text)}</button>`).join('');
+    chatChips.querySelectorAll('[data-say]').forEach((chip) => chip.addEventListener('click', () => sendChat(chip.dataset.say)));
+    chatPanel.hidden = false;
+    document.body.classList.add('chatting');
+  }
+  function sendChat(text) {
+    if (!chatting || !text.trim()) {
+      return;
+    }
+    const current = chatting;
+    addChatLine('me', text);
+    world.say(text);
+    const reply = chatReply(current.info.persona, text, current.ctx);
+    setTimeout(() => {
+      if (chatting !== current) {
+        return;
+      }
+      addChatLine('npc', reply.text, reply);
+      world.npcSay(current.id, reply.text);
+      if (reply.end) {
+        setTimeout(closeChat, 1800);
+      }
+    }, 650);
+  }
+  function closeChat() {
+    if (chatting && world) {
+      world.npcTalking(chatting.id, false);
+    }
+    chatting = null;
+    chatPanel.hidden = true;
+    document.body.classList.remove('chatting');
+  }
+  main.querySelector('[data-chat-close]').addEventListener('click', closeChat);
+  main.querySelector('[data-chat-form]').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const input = event.target.elements.msg;
+    sendChat(input.value);
+    input.value = '';
+  });
+
   let currentSitSpot = null;
   function showSit(spot) {
     clearInterval(sitTimer);
@@ -265,6 +659,25 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
       ? `${sitPanel({ ...spot, sitMode: 'pray' }, faith)}<p class="small muted">${spot.sitMode === 'dzikir' ? 'Zikir' : 'Rosario'} adalah doa umat ${esc(faith.short || faith.name)}. Sebagai tamu, duduklah dengan hening.</p>`
       : sitPanel(spot, faith);
     sitSheet.hidden = false;
+    if (spot.sitMode === 'meal' && world) {
+      const food = world.tableFood();
+      if (food.length) {
+        sitBody.querySelector('[data-meal-hint]').textContent = `Di meja: ${food.map((d) => d.name).join(', ')}.`;
+        const prayerNote = document.createElement('p');
+        prayerNote.className = 'small muted';
+        prayerNote.textContent = `${prayer.title}: ${prayer.text}`;
+        const eatButton = document.createElement('button');
+        eatButton.className = 'btn';
+        eatButton.type = 'button';
+        eatButton.textContent = '🍽 Mulai makan';
+        eatButton.addEventListener('click', () => {
+          prayed = false;
+          sitSheet.hidden = true;
+          world.eat({ note: prayer.tip, title: food.map((d) => d.name).join(' & ') });
+        });
+        sitBody.append(prayerNote, eatButton);
+      }
+    }
     sitBody.querySelector('[data-sit-hold]')?.addEventListener('click', () => {
       if (world) {
         world.hold({ observe: mode === 'visit' });
@@ -325,9 +738,10 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
     currentSpot = spot;
     actionCard.hidden = false;
     const learnOnly = mode === 'visit' && spot.devotional;
-    actionKind.textContent = learnOnly ? 'Mode amati' : 'Di dekatmu';
+    const verbs = { stall: 'Lihat menu', guide: 'Buka', travel: 'Pergi', sit: 'Duduk' };
+    actionKind.textContent = learnOnly ? 'Mode amati' : spot.kind === 'travel' ? 'Pindah tempat' : 'Di dekatmu';
     actionLabel.textContent = learnOnly ? `${spot.label} (untuk umat ${faith.short || faith.name})` : spot.label;
-    actionGo.textContent = learnOnly ? 'Pelajari' : spot.kind === 'sit' ? 'Duduk' : 'Lakukan';
+    actionGo.textContent = learnOnly ? 'Pelajari' : verbs[spot.kind] || 'Lakukan';
   }
 
   actionGo.addEventListener('click', () => {
@@ -336,7 +750,7 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
     }
     if (mode === 'visit' && currentSpot.devotional) {
       if (currentSpot.entry) {
-        location.hash = `#/entri/${currentSpot.entry}`;
+        openEntry(currentSpot.entry);
       }
       return;
     }
@@ -409,6 +823,14 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
   const stepLabels = { beads: 'Geser butir', book: 'Balik halaman', incense: 'Soja / pai' };
   let holdShownIntro = false;
   function renderHold(state) {
+    if (state && state.meal) {
+      holdHud.hidden = true;
+      document.body.classList.add('holding');
+      renderView();
+      renderMeal(state);
+      return;
+    }
+    renderMeal(null);
     renderView();
     document.body.classList.toggle('holding', Boolean(state));
     holdHud.hidden = !state;
@@ -561,7 +983,7 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
     }
     try {
       presenceLabel.textContent = 'Menghubungkan…';
-      let rooms = `ruang-${faith.id}`;
+      let rooms = `ruang-${faith.id}${area === 'ibadah' ? '' : `-${area}`}`;
       const profile = { name, color: avatarColor(), mode };
       if (live) {
         const { shardRooms, viewerShard } = await import('../world/live.js');
@@ -807,7 +1229,14 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
       return;
     }
     world = createWorld(worldBox, {
-      sceneId: faith.scene,
+      sceneId,
+      faithId: faith.id,
+      carry: loadCarry(),
+      onStall: openMenu,
+      onGuide: (spot) => guideSheet.open(spot.guides || AREA_GUIDES[area], spot.label),
+      onTravel: (spot) => travel(spot.to),
+      onNpc: (id) => openChat(id),
+      onCarry: saveCarry,
       time,
       mode,
       me: { name, color: avatarColor() },
@@ -834,7 +1263,7 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
         if (spot.kind === 'ciamsi') {
           scrollToTool('ciamsi');
         } else if (spot.entry) {
-          location.hash = `#/entri/${spot.entry}`;
+          openEntry(spot.entry);
         }
       },
       onBlocked: (message) => toast(message),
@@ -847,11 +1276,18 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
       main.querySelector('[data-hold-short]').textContent = heldItem.name.replace(' 108', '');
       holdButton.setAttribute('aria-label', `${mode === 'visit' ? 'Amati' : 'Pegang'} ${heldItem.name} (orang pertama)`);
     }
-    if (world.attire) {
+    if (world.attire && area === 'ibadah') {
       setTimeout(() => toast(`Pakaianmu di ${faith.spaceName}: ${world.attire}`), 900);
+    } else if (area === 'kedai') {
+      setTimeout(() => toast('Dekati kios untuk pesan. Ketuk orang untuk mengobrol.'), 900);
+    } else if (area === 'rumah' && world.carrying().length) {
+      setTimeout(() => toast('Bungkusanmu ikut pulang. Duduk di meja makan untuk membukanya.'), 900);
+    }
+    if (query.get('panduan')) {
+      guideSheet.open(query.get('panduan'));
     }
     const chips = main.querySelector('[data-chips]');
-    chips.innerHTML = world.spots.map((spot) => `<button type="button" class="chip" data-chip="${esc(spot.id)}">${esc(spot.short || spot.label)}</button>`).join('');
+    chips.innerHTML = world.spots.filter((spot) => spot.kind !== 'travel').map((spot) => `<button type="button" class="chip" data-chip="${esc(spot.id)}">${esc(spot.short || spot.label)}</button>`).join('');
     chips.querySelectorAll('[data-chip]').forEach((chip) => {
       chip.addEventListener('click', () => {
         showSit(null);
@@ -872,13 +1308,18 @@ export function space(main, [faithId], query, { content, navigate }, extra = {})
     worldBox.innerHTML = `${sceneSvg(faith.scene, time, faith.spaceName, festiveInfo ? festiveInfo.decor : null)}
       <div class="flat-note">
         <strong>3D belum aktif di browser ini</strong>
-        <span>Buka di Chrome/Safari terbaru, atau nyalakan "akselerasi perangkat keras" (Chrome: Setelan → Sistem). Kegiatan, salam, dan Ruang Live tetap bisa dipakai di bawah.</span>
+        <span>Buka di Chrome/Safari terbaru, atau nyalakan "akselerasi perangkat keras" (Chrome: Setelan → Sistem). Kegiatan, salam, panduan (📚), dan Ruang Live tetap bisa dipakai.</span>
       </div>`;
     stage.classList.add('flat');
   }
 
   return () => {
     cleanups.forEach((fn) => fn && fn());
+    stopAuto();
+    clearInterval(mealRefresh);
+    closeChat();
+    guideSheet.destroy();
+    document.body.classList.remove('guide-open');
     clearInterval(sitTimer);
     clearInterval(silenceTimer);
     clearInterval(countTimer);

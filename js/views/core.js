@@ -130,9 +130,9 @@ export function home(main, params, query, ctx) {
 
       <nav class="quick4" aria-label="Pintasan">
         <button type="button" data-home-pause><span>‖</span>Ambil jeda</button>
-        <a href="#/pustaka/${faith.pustaka ? faith.id : ''}"><span>❒</span>Pustaka</a>
-        <a href="#/tanya"><span>?</span>Tanya</a>
-        <a href="#/kalender"><span>◷</span>Kalender</a>
+        <a href="#/ruang/${faith.id}/kedai"><span>🍜</span>Kedai</a>
+        <a href="#/ruang/${faith.id}/rumah"><span>🏠</span>Rumah</a>
+        <a href="#/ruang/${faith.id}?panduan=pustaka"><span>📚</span>Panduan</a>
       </nav>
 
       <a class="live-join-row" href="#/gabung">
@@ -312,17 +312,23 @@ export function visitList(main, params, query, { content }) {
 }
 
 export function more(main) {
+  const faithId = prefs.get().faith || 'alam';
+  // Guides that moved into the 3D spaces: each opens right where it lives in the world.
+  const inWorld = [
+    [`#/ruang/${faithId}?panduan=pustaka`, '📚 Pustaka & Tanya', 'Papan panduan & pemandu di tempat ibadah'],
+    [`#/ruang/${faithId}?panduan=kalender`, '◷ Kalender hari suci', 'Papan panduan di tempat ibadah'],
+    [`#/ruang/${faithId}?panduan=upacara`, '☑ Panduan upacara', 'Papan panduan di tempat ibadah'],
+    [`#/ruang/${faithId}?panduan=kamus`, 'Aa Kamus istilah', 'Papan panduan di tempat ibadah'],
+    [`#/ruang/${faithId}?panduan=ibadah`, '⌂ Rumah ibadah nyata', 'Papan panduan di tempat ibadah'],
+    [`#/ruang/${faithId}/rumah?panduan=peringatan`, '🕯 Peringatan arwah', 'Rak keluarga di rumah'],
+    [`#/ruang/${faithId}/rumah?panduan=arsip`, '🎙 Arsip keluarga', 'Rak keluarga di rumah'],
+    [`#/ruang/${faithId}/rumah?panduan=syukur`, '✎ Jurnal syukur', 'Rak keluarga di rumah'],
+    [`#/ruang/${faithId}/rumah?panduan=kartu`, '✉ Kartu ucapan', 'Kotak surat di rumah'],
+    [`#/ruang/${faithId}/kedai`, '🍜 Kedai makan', 'Pesan, lihat dimasak, makan (ASMR) atau bungkus'],
+  ];
   const links = [
-    ['#/kalender', 'Kalender Hari Suci', 'Imlek, Hijriah, Pawukon, liturgi'],
-    ['#/upacara', 'Panduan Upacara', 'Daftar persiapan dan urutan acara'],
-    ['#/ibadah', 'Rumah Ibadah', 'Tempat ibadah nyata dan donasi langsung'],
-    ['#/arsip', 'Arsip Tradisi Keluarga', 'Catatan dan rekaman suara, tersimpan di perangkat'],
-    ['#/peringatan', 'Peringatan Arwah', 'Hari ke-7/49/100, tahlilan, ki-jit, haul — tersimpan di perangkat'],
-    ['#/syukur', 'Jurnal Syukur', 'Catatan syukur pribadi, tanpa target'],
-    ['#/kartu', 'Kartu Ucapan', 'Buat kartu hari raya untuk teman berbeda iman'],
     ['#/kunjungi', 'Kunjungi & Kenali', 'Ruang iman lain dalam mode amati'],
-    ['#/pustaka/lintas', 'Etiket Lintas Iman', 'Cara hormat menghadiri acara iman lain'],
-    ['#/kamus', 'Kamus Istilah', 'Arti istilah dari setiap agama'],
+    ['#/gabung', 'Gabung Ruang Live', 'Masukkan kode dari siaran'],
     ['#/dukung', 'Dukung Jeda', 'Bantu biaya server dan pengembangan'],
     ['#/tentang', 'Tentang & Prinsip', 'Privasi, sumber, status tinjauan'],
     ['#/tinjau', 'Tinjau Pustaka (reviewer)', 'Untuk pemuka agama: setujui atau koreksi entri'],
@@ -331,6 +337,12 @@ export function more(main) {
   main.innerHTML = `
     <section class="stack narrow">
       <h1 class="h2">${t('more.title')}</h1>
+      <h2 class="h3">Sekarang di dalam Ruang 3D</h2>
+      <p class="small muted">Pustaka, Tanya, kalender, panduan upacara, dan alat keluarga kini ada di dalam ruang 3D. Ketuk untuk langsung ke tempatnya.</p>
+      <ul class="menu-list">
+        ${inWorld.map(([href, title, desc]) => `<li><a href="${href}"><strong>${title}</strong><span class="small muted">${desc}</span></a></li>`).join('')}
+      </ul>
+      <h2 class="h3">Lainnya</h2>
       <ul class="menu-list">
         ${links.map(([href, title, desc]) => `<li><a href="${href}"><strong>${title}</strong><span class="small muted">${desc}</span></a></li>`).join('')}
       </ul>

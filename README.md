@@ -60,6 +60,12 @@ Terinspirasi oleh "Sansa" (산사), kuil virtual dari Korea. Dibuat oleh [juw12]
 |---|---|
 | **Mulai** | Pertanyaan awal satu kartu per layar: suasana hati, jalan iman, aliran, dialek keluarga, nama tamu & warna jubah, sendiri atau bersama |
 | **Ruang 3D** | 7 tempat 3D yang bisa dijelajahi (WebGL, three.js): jalan dengan ketuk/WASD atau chip "Pergi ke", lalu lakukan kegiatan di tempatnya — tancapkan hio, gantung lampion, bakar kim cua, nyalakan lilin/dupa, letakkan teratai, haturkan canang (warna Nawa Sanga), berwudu, bunyikan lonceng/genta, duduk berzikir 33×3, rosario, meditasi, napas. Jatuh kembali ke gambar 2D bila WebGL tidak ada |
+| **Kedai per iman** (v1.6) | Tiap ruang punya tempat makan khas: Pujasera Pecinan (Khonghucu), Kopitiam & Kedai Vegetarian (Buddha), RM Padang & Warung Halal (Islam), Warung Bali (Hindu), Lapo & Kedai Kopi Batak/Manado (Protestan), Kedai Flores (Katolik), Angkringan (Alam). Penjual memasak langsung dengan cara tradisional (wajan & api, arang & kipas, kukusan bambu, tarik teh, ulek, griddle) — bisa ditonton dari dekat. Pesan dari menu → **Makan di sini** (duduk di meja) atau **Bungkus** (dibawa, bisa dimakan di rumah) |
+| **Makan ASMR** (v1.6) | Sudut pandang orang pertama di meja: hidangan prosedural seukuran asli (butir nasi, mi, kuah berminyak, uap), sumpit/sendok/tangan sesuai hidangan, animasi suapan, kuah berkurang, suara ASMR sintetis (kriuk, seruput, kunyah, denting) dengan pengatur volume. Doa sebelum makan sesuai iman pengguna |
+| **Rumah per iman** (v1.6) | Rumah keluarga dengan altar khas: meja abu + altar Tian, cetiya, musala + keran wudu, merajan + saiban, salib + Alkitab, altar rumah + Bunda Maria, pondok tanaman. Dapur, meja makan, rak keluarga & kotak surat |
+| **Warga (NPC)** (v1.6) | Penjual, pengunjung, pejalan, umat, dan pemandu yang hidup tanpa internet: saling mengobrol dengan gelembung teks, menyapa saat didekati. Ketuk warga untuk obrolan ringan; pertanyaan tentang iman dijawab dari Pustaka dengan tautan sumber |
+| **Panduan di dalam 3D** (v1.6) | Pustaka, Tanya, Kalender, Upacara, Kamus, Ibadah, Kunjungi (papan panduan di halaman tempat ibadah) serta Arsip, Peringatan, Syukur, Kartu (rak keluarga & kotak surat di rumah) dibuka sebagai panel di dalam ruang 3D. Tab Pustaka & Tanya dihapus; navigasi kini Beranda · Ruang · Lainnya |
+| **Orang pertama & ketiga** | Semua area (tempat ibadah, kedai, rumah, dan makan) bisa dijelajahi dalam tampilan orang pertama maupun ketiga |
 | **Salam khas tiap iman** | Bukan emoji: avatar memperagakan sikapnya dan mengucapkan salamnya — soja + Wei De Dong Tian / Xian You Yi De / Shanzai, cakupang tangan + Om Swastyastu, anjali + Namo Buddhaya / Sadhu, Assalamu'alaikum + tangan di dada, Syalom / Haleluya, Berkah Dalem / tanda salib. Tamu memakai salam netral (Salam hormat, Terima kasih, Salam damai) |
 | **Hadir bersama** | Opsional: lihat dan sapa pengunjung lain di ruang yang sama secara langsung (peer-to-peer WebRTC, sinyal lewat relay Nostr publik, tanpa server Jeda, tanpa akun). Gerak, kegiatan, dan salam tersinkron. Tamu dari iman lain hanya mengamati ritual ibadah |
 | **Ruang Live** | Untuk siaran TikTok/IG/YouTube: ketuk **Siarkan** di ruang → dapat kode 7 huruf (mis. K7QX2MA), tautan, dan QR. Penonton membuka tautan atau `juw12.github.io/jeda` → **Gabung** → ketik kode, isi satu kartu, langsung masuk 3D. Pemandu terverifikasi (kode diturunkan dari SHA-256 rahasia di perangkat pemandu), bisa memulai **Hening 1 menit** serentak, **Ajak ke sini**, **Mode siaran** (kode + QR besar di layar), dan **Akhiri**. Penonton dibagi ke 6 kelompok koneksi agar kuat untuk banyak orang; pemandu terlihat oleh semua |
@@ -118,6 +124,13 @@ content/glossary.json                 Kamus Istilah
 js/views/onboarding.js                kartu pertanyaan awal (#/mulai)
 js/world/engine.js                    mesin dunia 3D (kamera, avatar, efek, partikel)
 js/world/places.js                    model low-poly 7 tempat + titik kegiatan
+js/world/venues.js                    kedai & rumah per iman, papan panduan di halaman tempat ibadah
+js/world/cuisine.js                   data kedai, penjual, menu, cara memasak, doa makan, warga
+js/world/dishes.js                    hidangan prosedural seukuran asli (PBR)
+js/world/meal.js                      tampilan makan orang pertama + suapan ASMR
+js/world/npc.js                       warga offline: jalan, memasak, mengobrol, gelembung teks
+js/world/chat.js                      obrolan ringan dengan warga (berbasis maksud, mengutip Pustaka)
+js/views/guide.js                     panel panduan di dalam ruang 3D
 js/world/presence.js                  hadir bersama (Trystero/Nostr, peer-to-peer, multi-room shard)
 js/world/greetings.js                 salam & sikap tubuh per iman
 js/world/live.js                      kode Ruang Live, verifikasi pemandu, shard, QR

@@ -431,6 +431,301 @@ export function ambience(type) {
   };
 }
 
+
+// ---------- Food & kitchen sounds (ASMR) ----------
+// All synthesised from filtered noise and short partials: crunch, chew, slurp, sip, sizzle, pour...
+// Real recordings would sound better; these are designed to be close, light, and work offline.
+
+let asmrGain = 1;
+export function setAsmrGain(value) {
+  asmrGain = Math.max(0, Math.min(2, Number(value) || 0));
+}
+
+// Call from a user gesture so looping kitchen sounds can start on phones.
+export function wakeAudio() {
+  if (enabled()) {
+    ctx();
+  }
+}
+
+function noiseBurst(audio, destination, { at, duration, type = 'bandpass', frequency = 1000, q = 1, gain = 0.1, attack = 0.004, sweepTo = null }) {
+  const source = audio.createBufferSource();
+  source.buffer = sharedNoise(audio);
+  const filter = audio.createBiquadFilter();
+  filter.type = type;
+  filter.frequency.setValueAtTime(frequency, at);
+  if (sweepTo) {
+    filter.frequency.exponentialRampToValueAtTime(sweepTo, at + duration);
+  }
+  filter.Q.value = q;
+  const envelope = audio.createGain();
+  envelope.gain.setValueAtTime(0.0001, at);
+  envelope.gain.exponentialRampToValueAtTime(Math.max(0.0002, gain), at + attack);
+  envelope.gain.exponentialRampToValueAtTime(0.0001, at + duration);
+  source.connect(filter);
+  filter.connect(envelope);
+  envelope.connect(destination);
+  source.start(at, Math.random() * 1.5);
+  source.stop(at + duration + 0.05);
+}
+
+function tone(audio, destination, { at, frequency, to = null, duration, gain, type = 'sine' }) {
+  const oscillator = audio.createOscillator();
+  oscillator.type = type;
+  oscillator.frequency.setValueAtTime(frequency, at);
+  if (to) {
+    oscillator.frequency.exponentialRampToValueAtTime(to, at + duration);
+  }
+  const envelope = audio.createGain();
+  envelope.gain.setValueAtTime(0.0001, at);
+  envelope.gain.exponentialRampToValueAtTime(Math.max(0.0002, gain), at + 0.008);
+  envelope.gain.exponentialRampToValueAtTime(0.0001, at + duration);
+  oscillator.connect(envelope);
+  envelope.connect(destination);
+  oscillator.start(at);
+  oscillator.stop(at + duration + 0.05);
+}
+
+// One-shot food/kitchen sound. kind: crunch | crisp | chew | softchew | slurp | sip | ahh | gulp | clink |
+// chop | pour | wok | fan | bag | tear | crackle | sizzle | plate
+export function asmr(kind, { volume = 1, delay = 0 } = {}) {
+  if (!enabled()) {
+    return;
+  }
+  const audio = ctx();
+  if (!audio) {
+    return;
+  }
+  const out = audio.createGain();
+  out.gain.value = volume * asmrGain;
+  out.connect(master);
+  const now = audio.currentTime + delay;
+  const r = () => Math.random();
+  switch (kind) {
+    case 'crunch':
+    case 'crisp': {
+      // Brittle fracture: a cluster of very short bright clicks plus a dull body thump.
+      const bursts = kind === 'crunch' ? 9 : 6;
+      for (let i = 0; i < bursts; i++) {
+        const at = now + i * (0.018 + r() * 0.03);
+        noiseBurst(audio, out, { at, duration: 0.012 + r() * 0.03, type: 'highpass', frequency: 2200 + r() * 3200, q: 0.8, gain: 0.08 + r() * 0.14 });
+      }
+      noiseBurst(audio, out, { at: now, duration: 0.09, type: 'lowpass', frequency: 420, q: 0.7, gain: 0.12 });
+      // Follow-up chews with crumbs.
+      for (let c = 1; c <= 4; c++) {
+        const at = now + 0.35 + c * 0.42;
+        for (let i = 0; i < 4; i++) {
+          noiseBurst(audio, out, { at: at + i * 0.02, duration: 0.015 + r() * 0.02, type: 'highpass', frequency: 1800 + r() * 2500, gain: (0.05 + r() * 0.05) / c });
+        }
+        noiseBurst(audio, out, { at, duration: 0.12, type: 'lowpass', frequency: 300, gain: 0.05 });
+      }
+      break;
+    }
+    case 'chew':
+    case 'softchew': {
+      // Mouth closed, soft and wet: low muffled pulses with tiny saliva clicks.
+      const chews = kind === 'chew' ? 6 : 5;
+      for (let c = 0; c < chews; c++) {
+        const at = now + 0.15 + c * (0.36 + r() * 0.08);
+        noiseBurst(audio, out, { at, duration: 0.16, type: 'lowpass', frequency: kind === 'chew' ? 520 : 380, q: 0.9, gain: 0.07 + r() * 0.03, attack: 0.03 });
+        noiseBurst(audio, out, { at: at + 0.05 + r() * 0.05, duration: 0.01, type: 'bandpass', frequency: 2800 + r() * 1500, q: 9, gain: 0.05 + r() * 0.04 });
+        if (r() < 0.5) {
+          noiseBurst(audio, out, { at: at + 0.11, duration: 0.008, type: 'bandpass', frequency: 4200, q: 10, gain: 0.03 });
+        }
+      }
+      tone(audio, out, { at: now + 0.2 + chews * 0.4, frequency: 160, to: 90, duration: 0.12, gain: 0.05 });
+      break;
+    }
+    case 'slurp': {
+      // Air and noodles sucked in: band of noise rising in pitch with turbulence.
+      const length = 0.55 + r() * 0.2;
+      const steps = 10;
+      for (let i = 0; i < steps; i++) {
+        const at = now + (i / steps) * length;
+        const f = 500 + (i / steps) * 1800;
+        noiseBurst(audio, out, { at, duration: length / steps + 0.04, type: 'bandpass', frequency: f, q: 2.5, gain: 0.08 + r() * 0.06, attack: 0.01, sweepTo: f * 1.25 });
+      }
+      for (let i = 0; i < 4; i++) {
+        noiseBurst(audio, out, { at: now + r() * length, duration: 0.01, type: 'bandpass', frequency: 3500, q: 8, gain: 0.05 });
+      }
+      break;
+    }
+    case 'sip': {
+      noiseBurst(audio, out, { at: now, duration: 0.28, type: 'bandpass', frequency: 1400, q: 3, gain: 0.07, attack: 0.04, sweepTo: 2300 });
+      tone(audio, out, { at: now + 0.42, frequency: 150, to: 80, duration: 0.14, gain: 0.09 });
+      noiseBurst(audio, out, { at: now + 0.44, duration: 0.06, type: 'lowpass', frequency: 260, gain: 0.07 });
+      // Soft exhale after a hot drink.
+      noiseBurst(audio, out, { at: now + 0.8, duration: 0.65, type: 'bandpass', frequency: 850, q: 1.2, gain: 0.05, attack: 0.12, sweepTo: 600 });
+      break;
+    }
+    case 'gulp': {
+      tone(audio, out, { at: now, frequency: 170, to: 80, duration: 0.14, gain: 0.1 });
+      noiseBurst(audio, out, { at: now, duration: 0.07, type: 'lowpass', frequency: 300, gain: 0.08 });
+      break;
+    }
+    case 'clink': {
+      [[2650, 0.07, 0.3], [6100, 0.03, 0.12], [9400, 0.015, 0.07]].forEach(([f, g, d]) => tone(audio, out, { at: now, frequency: f, duration: d, gain: g }));
+      break;
+    }
+    case 'chop': {
+      noiseBurst(audio, out, { at: now, duration: 0.05, type: 'lowpass', frequency: 240, gain: 0.22 });
+      tone(audio, out, { at: now, frequency: 420, to: 300, duration: 0.07, gain: 0.08, type: 'triangle' });
+      noiseBurst(audio, out, { at: now + 0.005, duration: 0.02, type: 'highpass', frequency: 3500, gain: 0.05 });
+      break;
+    }
+    case 'pour': {
+      // A stream filling a glass: resonant band climbing as the glass fills.
+      const length = 1.6;
+      for (let i = 0; i < 16; i++) {
+        const at = now + (i / 16) * length;
+        noiseBurst(audio, out, { at, duration: 0.16, type: 'bandpass', frequency: 650 + i * 70 + r() * 80, q: 6, gain: 0.07 + r() * 0.04, attack: 0.02 });
+      }
+      noiseBurst(audio, out, { at: now, duration: length, type: 'highpass', frequency: 3000, gain: 0.02, attack: 0.2 });
+      break;
+    }
+    case 'wok': {
+      [[310, 0.12, 0.5], [847, 0.06, 0.3], [1590, 0.03, 0.18]].forEach(([f, g, d]) => tone(audio, out, { at: now, frequency: f, duration: d, gain: g, type: 'triangle' }));
+      noiseBurst(audio, out, { at: now, duration: 0.4, type: 'highpass', frequency: 2500, gain: 0.1, attack: 0.01 });
+      break;
+    }
+    case 'fan': {
+      noiseBurst(audio, out, { at: now, duration: 0.14, type: 'lowpass', frequency: 500, gain: 0.08, attack: 0.03 });
+      break;
+    }
+    case 'bag': {
+      for (let i = 0; i < 26; i++) {
+        noiseBurst(audio, out, { at: now + r() * 0.7, duration: 0.01 + r() * 0.02, type: 'highpass', frequency: 3000 + r() * 4000, gain: 0.03 + r() * 0.05 });
+      }
+      break;
+    }
+    case 'tear': {
+      noiseBurst(audio, out, { at: now, duration: 0.22, type: 'bandpass', frequency: 1200, q: 1.5, gain: 0.07, sweepTo: 600 });
+      break;
+    }
+    case 'plate': {
+      tone(audio, out, { at: now, frequency: 1850, duration: 0.18, gain: 0.05 });
+      noiseBurst(audio, out, { at: now, duration: 0.05, type: 'lowpass', frequency: 400, gain: 0.08 });
+      break;
+    }
+    case 'sizzle': {
+      noiseBurst(audio, out, { at: now, duration: 1.2, type: 'highpass', frequency: 3200, gain: 0.16, attack: 0.02 });
+      for (let i = 0; i < 18; i++) {
+        noiseBurst(audio, out, { at: now + r() * 1.1, duration: 0.008, type: 'highpass', frequency: 4000, gain: 0.08 + r() * 0.08 });
+      }
+      break;
+    }
+    case 'crackle': {
+      for (let i = 0; i < 10; i++) {
+        noiseBurst(audio, out, { at: now + r() * 0.8, duration: 0.01, type: 'bandpass', frequency: 900 + r() * 2500, q: 3, gain: 0.06 + r() * 0.06 });
+      }
+      break;
+    }
+    default:
+      break;
+  }
+  setTimeout(() => out.disconnect(), (delay + 4) * 1000);
+}
+
+// Continuous kitchen / room sounds with a volume knob (set from distance to the stall).
+// type: sizzle | fry | simmer | charcoal | steam | crowd
+export function loopSound(type) {
+  const audio = enabled() ? ctx() : null;
+  if (!audio) {
+    return { setVolume() {}, stop() {} };
+  }
+  const output = audio.createGain();
+  output.gain.value = 0;
+  output.connect(master);
+  const nodes = [];
+  let level = 0;
+  const bed = (filterType, frequency, q, gain) => {
+    const source = audio.createBufferSource();
+    source.buffer = sharedNoise(audio);
+    source.loop = true;
+    const filter = audio.createBiquadFilter();
+    filter.type = filterType;
+    filter.frequency.value = frequency;
+    filter.Q.value = q;
+    const g = audio.createGain();
+    g.gain.value = gain;
+    source.connect(filter);
+    filter.connect(g);
+    g.connect(output);
+    source.start(0, Math.random() * 1.5);
+    nodes.push(source);
+    return g;
+  };
+  const beds = {
+    sizzle: () => bed('highpass', 3400, 0.7, 0.35),
+    fry: () => {
+      bed('highpass', 2600, 0.6, 0.28);
+      bed('bandpass', 1500, 1.2, 0.12);
+    },
+    simmer: () => bed('lowpass', 260, 0.7, 0.18),
+    charcoal: () => bed('lowpass', 180, 0.7, 0.25),
+    steam: () => bed('highpass', 5200, 0.5, 0.18),
+    crowd: () => {
+      const voices = [bed('bandpass', 320, 1.6, 0.25), bed('bandpass', 720, 1.8, 0.2), bed('bandpass', 1450, 2.2, 0.1)];
+      voices.forEach((g, i) => {
+        const lfo = audio.createOscillator();
+        const depth = audio.createGain();
+        lfo.frequency.value = 0.13 + i * 0.07;
+        depth.gain.value = g.gain.value * 0.6;
+        lfo.connect(depth);
+        depth.connect(g.gain);
+        lfo.start();
+        nodes.push(lfo);
+      });
+    },
+  };
+  (beds[type] || beds.sizzle)();
+  // Random events on top of the bed: oil pops, bubbles, embers, cutlery.
+  let timer = null;
+  const events = () => {
+    const at = audio.currentTime;
+    if (level > 0.02) {
+      if (type === 'sizzle' || type === 'fry') {
+        for (let i = 0; i < 3; i++) {
+          noiseBurst(audio, output, { at: at + Math.random() * 0.2, duration: 0.008, type: 'highpass', frequency: 3500 + Math.random() * 3000, gain: 0.25 * Math.random() });
+        }
+      } else if (type === 'simmer') {
+        tone(audio, output, { at, frequency: 260 + Math.random() * 200, to: 120, duration: 0.07, gain: 0.12 * Math.random() });
+      } else if (type === 'charcoal') {
+        noiseBurst(audio, output, { at, duration: 0.01, type: 'bandpass', frequency: 1000 + Math.random() * 2500, q: 3, gain: 0.25 * Math.random() });
+      } else if (type === 'crowd' && Math.random() < 0.25) {
+        tone(audio, output, { at, frequency: 2300 + Math.random() * 2000, duration: 0.2, gain: 0.05 });
+      }
+    }
+    const pause = type === 'crowd' ? 700 + Math.random() * 2200 : type === 'simmer' ? 120 + Math.random() * 380 : 60 + Math.random() * 260;
+    timer = setTimeout(events, pause);
+  };
+  events();
+  return {
+    setVolume(value) {
+      const next = Math.max(0, Math.min(1.5, value)) * asmrGain;
+      if (Math.abs(next - level) < 0.01) {
+        return;
+      }
+      level = next;
+      output.gain.setTargetAtTime(level, audio.currentTime, 0.15);
+    },
+    stop() {
+      clearTimeout(timer);
+      output.gain.setTargetAtTime(0, audio.currentTime, 0.2);
+      setTimeout(() => {
+        nodes.forEach((node) => {
+          try {
+            node.stop();
+          } catch {
+            // already stopped
+          }
+        });
+        output.disconnect();
+      }, 900);
+    },
+  };
+}
+
 export const AMBIENCE_LABELS = {
   rain: 'Hujan',
   wind: 'Angin',

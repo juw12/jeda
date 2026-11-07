@@ -4,12 +4,19 @@
 
 import * as THREE from '../../vendor/three.module.min.js';
 import { buildPlace, mat, box, cyl, sphere, cone } from './places.js';
-import { bell, gong, chime, woodblock, crackle, bead, murmur, pageTurn, chant } from '../audio.js';
+import { bell, gong, chime, woodblock, crackle, bead, murmur, pageTurn, chant, asmr, loopSound, wakeAudio } from '../audio.js';
 import { greetingById } from './greetings.js';
-import { createAvatar, attireFor, animateAvatar, playClip, stopClip, setSitting, textSprite } from './avatar.js';
+import { createAvatar, attireFor, animateAvatar, playClip, stopClip, setSitting, textSprite, setCarry, speechBubble } from './avatar.js';
 import { buildNav, createBarriers } from './nav.js';
 import { createLife } from './life.js';
 import { createHeld, heldItemFor } from './handheld.js';
+import { buildKedai, buildRumah, addTempleAnnex, buildParcel } from './venues.js';
+import { createNpcs } from './npc.js';
+import { createMeal } from './meal.js';
+import { buildDish } from './dishes.js';
+
+// Looping kitchen sound for each cooking method (volume follows your distance to the stall).
+const STALL_SOUND = { wok: 'sizzle', griddle: 'sizzle', fry: 'fry', stir: 'simmer', steam: 'steam', grill: 'charcoal', smoke: 'charcoal', toast: 'charcoal' };
 
 export function webglAvailable() {
   try {
@@ -101,6 +108,13 @@ export function createWorld(container, options) {
     onQuality = () => {},
     onBlocked = () => {},
     onHold = () => {},
+    onStall = () => {},
+    onGuide = () => {},
+    onTravel = () => {},
+    onNpc = () => {},
+    onCarry = () => {},
+    faithId = null,
+    carry: initialCarry = [],
     quality: requestedQuality = 'auto',
   } = options;
   let currentTime = SKIES[time] ? time : 'day';
@@ -158,7 +172,19 @@ export function createWorld(container, options) {
   sun.shadow.bias = -0.0005;
   scene.add(sun);
 
-  const place = buildPlace(sceneId);
+  // Sacred place (with signposts, guide board and people added), the food place, or the home.
+  let place;
+  if (sceneId.startsWith('kedai-')) {
+    place = buildKedai(sceneId.slice(6));
+  } else if (sceneId.startsWith('rumah-')) {
+    place = buildRumah(sceneId.slice(6));
+  } else {
+    place = buildPlace(sceneId);
+    if (faithId) {
+      addTempleAnnex(place, faithId);
+    }
+  }
+  const ritualScene = place.heldScene || sceneId;
   const ground = new THREE.Mesh(new THREE.CircleGeometry(45, 64), mat(place.ground, { roughness: 1 }));
   ground.rotation.x = -Math.PI / 2;
   ground.receiveShadow = true;
@@ -227,7 +253,22 @@ export function createWorld(container, options) {
   scene.add(self.group);
   const peers = new Map();
   const life = createLife({ scene, place, nav, sceneId, time: currentTime, quality, addEmitter });
+  const npcs = createNpcs({
+    scene, place, nav, quality: qualityName,
+    fx: {
+      stallFx: (stall, kind, seconds) => stallFx(stall, kind, seconds),
+      perform: (spotId, avatar) => perform(spotId, { remote: true, by: avatar }),
+    },
+  });
+  const npcAvatars = npcs.list.map((npc) => npc.avatar);
 
+  let watch = null;
+  function endWatch() {
+    if (watch) {
+      rig.targetDistance = watch.savedDistance;
+      watch = null;
+    }
+  }
   // ---------- Camera rig ----------
   const rig = { yaw: 0, pitch: 0.42, distance: 10.5, targetDistance: 10.5, savedYaw: null, savedView: null, actionYaw: 0, cancelled: false, ahead: 2.6, roof: 0 };
   // Solid scenery that may hide the avatar from the camera (see updateCamera).
@@ -357,6 +398,15 @@ export function createWorld(container, options) {
     rig.ahead += ((self.clip ? 0 : 2.6) - rig.ahead) * Math.min(1, delta * 3);
     const ahead = new THREE.Vector3(-Math.sin(rig.yaw), 0, -Math.cos(rig.yaw)).multiplyScalar(rig.ahead);
     const focus = self.group.position.clone().add(new THREE.Vector3(0, 1.5, 0)).add(ahead);
+    if (watch) {
+      // Watching the hawker cook your order: look at the stove, from the customer side.
+      watch.blend = Math.min(1, watch.blend + delta * 1.5);
+      focus.lerp(watch.target, 0.8 * watch.blend);
+      rig.targetDistance += (Math.min(watch.savedDistance, 4.6) - rig.targetDistance) * Math.min(1, delta * 2);
+      const goalYaw = Math.atan2(self.group.position.x - watch.target.x, self.group.position.z - watch.target.z) + 0.35;
+      rig.yaw += Math.atan2(Math.sin(goalYaw - rig.yaw), Math.cos(goalYaw - rig.yaw)) * Math.min(1, delta * 1.5);
+      rig.pitch += (0.32 - rig.pitch) * Math.min(1, delta * 1.5);
+    }
     const head = self.group.position.clone().add(new THREE.Vector3(0, 1.4, 0));
     // Under a hall roof, drop the camera lower and closer so the view isn't filled by the roof itself.
     // This is a temporary blend; the visitor's own zoom and tilt are restored once back in the open.
@@ -631,6 +681,10 @@ export function createWorld(container, options) {
       addEmitter(spot.position.clone(), { color: '#bfe3f2', size: 0.12, rate: 40, life: 0.9, rise: -0.6, spread: 0.9, duration: 4 });
       chime();
     },
+    wash(spot) {
+      addEmitter(spot.position.clone(), { color: '#bfe3f2', size: 0.1, rate: 40, life: 0.8, rise: -0.7, spread: 0.3, duration: 2.2 });
+      asmr('pour', { volume: 0.6 });
+    },
     flowers(spot) {
       const bouquet = new THREE.Group();
       for (let i = 0; i < 7; i++) {
@@ -701,6 +755,19 @@ export function createWorld(container, options) {
     if (spot.kind === 'sit') {
       if (!remote) {
         sitAt(spot);
+      }
+      return true;
+    }
+    if (spot.kind === 'stall' || spot.kind === 'guide' || spot.kind === 'travel') {
+      if (!remote) {
+        faceSpot(self, spot);
+        if (spot.kind === 'stall') {
+          onStall(spot);
+        } else if (spot.kind === 'guide') {
+          onGuide(spot);
+        } else {
+          onTravel(spot);
+        }
       }
       return true;
     }
@@ -856,6 +923,11 @@ export function createWorld(container, options) {
 
   function handleTap(event) {
     raycaster.setFromCamera(toNdc(event), camera);
+    const npcHit = npcs.pick(raycaster);
+    if (npcHit) {
+      onNpc(npcHit.id, npcHit.persona, npcHit.role);
+      return;
+    }
     const spotHit = raycaster.intersectObjects(pickables, false)[0];
     if (spotHit) {
       standUp();
@@ -883,6 +955,7 @@ export function createWorld(container, options) {
 
   const canvas = renderer.domElement;
   const onPointerDown = (event) => {
+    wakeAudio();
     canvas.setPointerCapture(event.pointerId);
     pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
     if (pointers.size === 1) {
@@ -935,6 +1008,9 @@ export function createWorld(container, options) {
       drag.x = event.clientX;
       drag.y = event.clientY;
       rig.yaw -= dx * 0.006;
+      if (Math.abs(dx) > 6) {
+        endWatch();
+      }
       if (Math.abs(dx) > 2) {
         rig.savedYaw = null;
         rig.savedView = null;
@@ -1093,7 +1169,7 @@ export function createWorld(container, options) {
   }
 
   function hold({ observe = false } = {}) {
-    const def = heldItemFor(sceneId);
+    const def = heldItemFor(ritualScene);
     if (!def) {
       return null;
     }
@@ -1125,6 +1201,14 @@ export function createWorld(container, options) {
       chantStop();
       chantStop = null;
     }
+    if (held.def.meal && held.mealItems) {
+      const eaten = held.state().items;
+      held.mealItems.forEach((item, i) => {
+        if (eaten[i] && eaten[i].left <= 0) {
+          finishTableItem(item);
+        }
+      });
+    }
     held.dispose();
     held = null;
     setView(view.before || 'third');
@@ -1151,12 +1235,14 @@ export function createWorld(container, options) {
     }
   }
 
-  function holdStep() {
+  function holdStep(index) {
     if (!held) {
       return null;
     }
-    const sound = held.step();
-    playHeldSound(sound, held.def);
+    const sound = held.step(index);
+    if (!held.def.meal) {
+      playHeldSound(sound, held.def);
+    }
     if (navigator.vibrate && sound) {
       navigator.vibrate(8);
     }
@@ -1174,6 +1260,199 @@ export function createWorld(container, options) {
       chantStop = chant(held.def.chant);
     }
     return voiceOn;
+  }
+
+
+  // ---------- Food: order at a stall, watch it cooked, carry it, eat at a table (or take it away) ----------
+  let carrying = [];
+  const tableItems = new Map();
+  const timers = [];
+  const later = (fn, ms) => {
+    timers.push(setTimeout(fn, ms));
+  };
+
+  function setCarrying(list) {
+    carrying = list;
+    setCarry(self, !list.length ? null : list.every((item) => item.takeaway) ? 'bag' : 'tray');
+    onCarry(carrying.map((item) => ({ dishId: item.dish.id, takeaway: item.takeaway })));
+  }
+
+  function nearVolume(point) {
+    const distance = Math.hypot(self.group.position.x - point.x, self.group.position.z - point.z);
+    return Math.max(0, 1 - distance / 14) ** 1.5;
+  }
+
+  // Visual + sound effects at a stove for one cooking step.
+  function stallFx(stall, kind, seconds = 2) {
+    const at = stall.stove.clone();
+    const volume = 0.25 + nearVolume(at) * 0.9;
+    const up = (y) => at.clone().add(new THREE.Vector3(0, y, 0));
+    switch (kind) {
+      case 'heat':
+        addEmitter(up(0.1), { color: '#d9d4cc', size: 0.3, rate: 8, life: 1.8, rise: 0.6, spread: 0.2, duration: seconds, count: 20 });
+        break;
+      case 'sizzle':
+        asmr('sizzle', { volume });
+        addEmitter(up(0.15), { color: '#f4f1ea', size: 0.35, rate: 22, life: 1.4, rise: 0.8, spread: 0.35, duration: 1.2, count: 30 });
+        break;
+      case 'flare': {
+        addEmitter(up(0.05), { color: '#ff8a2a', size: 0.32, rate: 42, life: 0.5, rise: 1.7, spread: 0.55, duration: seconds, count: 40 });
+        addEmitter(up(0.3), { color: '#e9e4dc', size: 0.4, rate: 14, life: 2, rise: 0.8, spread: 0.3, duration: seconds, count: 30 });
+        const light = addFlameLight(up(0.4), '#ff8a3a', 3.2, 5);
+        const token = light.userData.token;
+        for (let t = 0; t < seconds * 1000; t += 850) {
+          later(() => asmr('wok', { volume: volume * 0.8 }), t);
+        }
+        later(() => {
+          if (light.userData.token === token) {
+            releaseLight(light);
+          }
+        }, seconds * 1000);
+        break;
+      }
+      case 'simmer':
+      case 'steam':
+        addEmitter(up(0.15), { color: '#f2efe8', size: 0.38, rate: 14, life: 2.6, rise: 0.45, spread: 0.3, duration: seconds, count: 36 });
+        break;
+      case 'steamBurst':
+        addEmitter(up(0.35), { color: '#ffffff', size: 0.55, rate: 46, life: 2.2, rise: 0.9, spread: 0.6, duration: 1.4, count: 60 });
+        asmr('sizzle', { volume: volume * 0.4 });
+        break;
+      case 'smoke':
+        addEmitter(up(0.05), { color: '#bdb6ab', size: 0.5, rate: 18, life: 3, rise: 0.7, spread: 0.45, duration: seconds, count: 50 });
+        break;
+      case 'embers':
+        addEmitter(up(0.02), { color: '#ff7a2a', size: 0.12, rate: 30, life: 1.0, rise: 1.4, spread: 0.6, duration: seconds, count: 40 });
+        addEmitter(up(0.1), { color: '#c9c2b6', size: 0.55, rate: 16, life: 3, rise: 0.8, spread: 0.5, duration: seconds, count: 45 });
+        for (let t = 0; t < seconds * 1000; t += 360) {
+          later(() => asmr('fan', { volume: volume * 0.7 }), t);
+        }
+        later(() => asmr('crackle', { volume }), 300);
+        break;
+      case 'pour':
+        asmr('pour', { volume });
+        addEmitter(up(0.55).add(new THREE.Vector3(0.25, 0, 0)), { color: '#8a5a2a', size: 0.06, rate: 50, life: 0.45, rise: -1.4, spread: 0.02, duration: Math.min(1.6, seconds), count: 30 });
+        break;
+      case 'chop':
+        for (let t = 0; t < seconds * 1000; t += 250) {
+          later(() => asmr('chop', { volume: volume * 0.8 }), t);
+        }
+        break;
+      case 'fry':
+        asmr('sizzle', { volume });
+        addEmitter(up(0.2), { color: '#ffffff', size: 0.25, rate: 18, life: 1.2, rise: 0.6, spread: 0.3, duration: seconds, count: 30 });
+        break;
+      case 'plate':
+        asmr('plate', { volume });
+        break;
+      default:
+        break;
+    }
+  }
+
+  function order(stallId, dish, { takeaway = false, onStep = () => {}, onReady = () => {} } = {}) {
+    const stall = (place.stalls || []).find((s) => s.id === stallId);
+    if (!stall || npcs.busy(stallId)) {
+      return false;
+    }
+    const stallSpot = place.spots.find((s) => s.id === stall.spotId);
+    if (stallSpot && self.group.position.distanceTo(stallSpot.stand) > 1.4 && !self.sitting) {
+      routeTo(stallSpot.stand.x, stallSpot.stand.z, { quietZone: true });
+    }
+    let shown = null;
+    const started = npcs.cook(stallId, dish, {
+      takeaway,
+      onStep,
+      onServe: () => {
+        shown = takeaway ? buildParcel(dish.parcel || 'paper') : buildDish(dish.spec).group;
+        shown.position.copy(stall.counter);
+        shown.scale.setScalar(1.3);
+        scene.add(shown);
+      },
+      onDone: () => {
+        later(() => {
+          if (shown) {
+            scene.remove(shown);
+          }
+          endWatch();
+          if (takeaway) {
+            asmr('bag');
+          }
+          setCarrying([...carrying, { dish, takeaway }]);
+          onReady({ dish, takeaway });
+        }, 900);
+      },
+    });
+    if (!started) {
+      return false;
+    }
+    if (view.mode !== 'first') {
+      watch = { target: stall.stove.clone().add(new THREE.Vector3(0, -0.2, 0)), blend: 0, savedDistance: rig.targetDistance };
+    }
+    return true;
+  }
+
+  function serveToTable(spot) {
+    if (!carrying.length || !spot.table) {
+      return;
+    }
+    const list = tableItems.get(spot.id) || [];
+    const seat = new THREE.Vector3(spot.seat.x, 0, spot.seat.z);
+    const center = new THREE.Vector3(spot.table.x, 0, spot.table.z);
+    const toward = center.clone().sub(seat);
+    const reach = toward.length();
+    toward.normalize();
+    const sideways = new THREE.Vector3(-toward.z, 0, toward.x);
+    carrying.forEach((item) => {
+      const index = list.length;
+      const built = buildDish(item.dish.spec);
+      const position = seat.clone().addScaledVector(toward, Math.max(0.35, reach - 0.3)).addScaledVector(sideways, (index % 3 - 1) * 0.24 + (index ? 0.05 : 0));
+      built.group.position.set(position.x, spot.table.top + 0.005, position.z);
+      built.group.rotation.y = Math.atan2(-toward.x, -toward.z);
+      scene.add(built.group);
+      list.push({ dish: item.dish, group: built.group, finished: false });
+    });
+    tableItems.set(spot.id, list);
+    if (carrying.some((item) => item.takeaway)) {
+      asmr('bag');
+    }
+    later(() => asmr('plate'), 250);
+    setCarrying([]);
+  }
+
+  function finishTableItem(item) {
+    if (item.finished) {
+      return;
+    }
+    item.finished = true;
+    const position = item.group.position.clone();
+    scene.remove(item.group);
+    const empty = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.1, 0.02, 24), mat('#f4f1ea', { roughness: 0.3, flatShading: false }));
+    empty.position.copy(position).add(new THREE.Vector3(0, 0.01, 0));
+    scene.add(empty);
+  }
+
+  function eat({ note = '', title = '' } = {}) {
+    const spotId = self.sitSpot ? self.sitSpot.id : null;
+    const items = (tableItems.get(spotId) || []).filter((item) => !item.finished);
+    if (!items.length) {
+      return null;
+    }
+    release({ silent: true });
+    if (self.clip) {
+      stopClip(self);
+    }
+    self.path = [];
+    view.before = view.mode;
+    setView('first');
+    view.pitch = 0.3;
+    held = createMeal(items.map((item) => ({ name: item.dish.name, spec: item.dish.spec, utensil: item.dish.utensil, verb: item.dish.verb })), { table: place.tableStyle || 'wood', note, title });
+    held.mealItems = items;
+    held.resize(camera.aspect, camera.fov);
+    applyHeldLighting();
+    const state = { ...held.state(), voice: voiceOn };
+    onHold(state);
+    return state;
   }
 
   // ---------- Loop ----------
@@ -1337,6 +1616,9 @@ export function createWorld(container, options) {
       self.pendingSit = null;
       setSitting(self, true, { sitMode: spot.sitMode, seat: spot.seat || null });
       self.sitSpot = spot;
+      if (spot.sitMode === 'meal' && carrying.length) {
+        serveToTable(spot);
+      }
       if (spot.seat) {
         self.facing = spot.seat.facing;
       } else {
@@ -1397,7 +1679,20 @@ export function createWorld(container, options) {
       }
     }
     animateAvatar(self, delta, now, elapsed);
-    life.update(delta, elapsed, [self, ...peers.values()]);
+    npcs.update(delta, now, elapsed, self);
+    if (place.update) {
+      place.update(delta, elapsed);
+    }
+    soundTimer -= delta;
+    if (soundTimer <= 0) {
+      soundTimer = 0.12;
+      const muffle = held ? (held.def.meal ? 0.55 : 0.3) : 1;
+      stallLoops.forEach(({ stall, loop }) => loop.setVolume((0.12 + stall.cooking * 0.9) * nearVolume(stall.stove) * muffle));
+      if (crowdLoop) {
+        crowdLoop.setVolume(0.32 * muffle);
+      }
+    }
+    life.update(delta, elapsed, [self, ...peers.values(), ...npcAvatars]);
     adaptQuality(now);
 
     spotMarkers.forEach(({ ring, beacon }, index) => {
@@ -1463,6 +1758,15 @@ export function createWorld(container, options) {
       held.resize(camera.aspect, camera.fov);
     }
   }
+  // Kitchens are always a little alive: steam and smoke, sizzling, a murmuring crowd.
+  (place.emitters || []).forEach(({ at: origin, opts }) => addEmitter(origin, opts));
+  const stallLoops = (place.stalls || []).filter((stall) => STALL_SOUND[stall.def.method]).map((stall) => ({ stall, loop: loopSound(STALL_SOUND[stall.def.method]) }));
+  const crowdLoop = place.ambient === 'crowd' ? loopSound('crowd') : null;
+  let soundTimer = 0;
+  if (initialCarry && initialCarry.length) {
+    setCarrying(initialCarry.map((item) => ({ dish: item.dish, takeaway: true })));
+  }
+
   const resizeObserver = new ResizeObserver(resize);
   resizeObserver.observe(container);
   resize();
@@ -1508,7 +1812,7 @@ export function createWorld(container, options) {
     setTime,
     time: () => currentTime,
     heldItem: () => {
-      const def = heldItemFor(sceneId);
+      const def = heldItemFor(ritualScene);
       return def ? { id: def.id, name: def.name, icon: def.icon } : null;
     },
     hold,
@@ -1517,6 +1821,39 @@ export function createWorld(container, options) {
     holding: () => (held ? { ...held.state(), voice: voiceOn } : null),
     setVoice,
     greet: (greetingId) => greet(self, greetingId),
+    // Food
+    stalls: () => (place.stalls || []).map((stall) => ({ id: stall.id, spotId: stall.spotId, def: stall.def, home: Boolean(stall.home) })),
+    order,
+    vendorBusy: (stallId) => npcs.busy(stallId),
+    carrying: () => carrying.map((item) => ({ dish: item.dish, takeaway: item.takeaway })),
+    tableFood: () => ((self.sitSpot && tableItems.get(self.sitSpot.id)) || []).filter((item) => !item.finished).map((item) => item.dish),
+    eat,
+    sitSpot: () => (self.sitSpot ? self.sitSpot.id : null),
+    placeInfo: () => ({ culture: place.culture || null, tableStyle: place.tableStyle || 'wood', hasStalls: Boolean(place.stalls && place.stalls.length) }),
+    // People
+    npcSay: (id, text) => {
+      const npc = npcs.byId(id);
+      if (npc) {
+        npcs.say(npc, text, Math.max(3500, text.length * 70));
+        npcs.gesture(npc);
+      }
+    },
+    npcTalking: (id, on) => {
+      const npc = npcs.byId(id);
+      if (npc) {
+        npcs.setTalking(npc, on);
+        if (on && !self.sitting) {
+          faceSpot(self, { position: npc.avatar.group.position });
+        }
+      }
+    },
+    npcInfo: (id) => {
+      const npc = npcs.byId(id);
+      return npc ? { id: npc.id, role: npc.role, persona: npc.persona, culture: npc.culture, stallId: npc.def.stallId || null } : null;
+    },
+    say: (text) => {
+      npcs.say(self, text, Math.max(3000, text.length * 60));
+    },
     quality: () => ({ quality: qualityName, pixelRatio, shadows: renderer.shadowMap.enabled }),
     getState,
     walkTo(spotId, options = {}) {
@@ -1620,6 +1957,16 @@ export function createWorld(container, options) {
       view: () => ({ mode: view.mode, yaw: rig.yaw, pitch: view.pitch, selfVisible: self.group.visible, camera: camera.position.toArray().map((v) => Math.round(v * 100) / 100) }),
       held: () => (held ? held.debug() : null),
       sky: () => ({ time: currentTime, fading: Boolean(skyFade), stars: stars.visible, sun: sun.intensity }),
+      npcs: () => npcs.list.map((npc) => ({ id: npc.id, role: npc.role, x: Math.round(npc.avatar.group.position.x * 10) / 10, z: Math.round(npc.avatar.group.position.z * 10) / 10, cooking: Boolean(npc.cooking), talking: npc.talking, bubble: Boolean(npc.avatar.bubble) })),
+      food: () => ({ carrying: carrying.length, table: self.sitSpot ? (tableItems.get(self.sitSpot.id) || []).length : 0, watch: Boolean(watch) }),
+      place: () => ({ spots: place.spots.map((s) => s.id), stalls: (place.stalls || []).map((s) => s.id) }),
+      tapNpc: (id) => {
+        const npc = npcs.byId(id);
+        if (npc) {
+          onNpc(npc.id, npc.persona, npc.role);
+        }
+        return Boolean(npc);
+      },
     },
     snapshot() {
       renderFrame();
@@ -1627,6 +1974,12 @@ export function createWorld(container, options) {
     },
     destroy() {
       release({ silent: true });
+      timers.forEach(clearTimeout);
+      stallLoops.forEach(({ loop }) => loop.stop());
+      if (crowdLoop) {
+        crowdLoop.stop();
+      }
+      npcs.dispose();
       running = false;
       cancelAnimationFrame(frame);
       resizeObserver.disconnect();

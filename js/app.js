@@ -67,17 +67,16 @@ function renderChrome(routeName) {
     </span>`;
   document.querySelector('[data-pause]').addEventListener('click', openPause);
   const spaceHref = faith ? `#/ruang/${faith.id}` : '#/kunjungi';
+  // Pustaka, Tanya and the other guides now live inside the 3D spaces (guide board, the guide you can
+  // talk to, the family shelf at home), so the tab bar only needs Home, the 3D space and More.
   const tabs = [
     ['', '#/', t('tab.home'), '◎'],
     ['ruang', spaceHref, t('tab.space'), '⛩'],
-    ['pustaka', '#/pustaka', t('tab.library'), '❒'],
-    ['tanya', '#/tanya', t('tab.ask'), '?'],
     ['lainnya', '#/lainnya', t('tab.more'), '≡'],
   ];
   const groups = {
     ruang: ['ruang', 'kunjungi'],
-    pustaka: ['pustaka', 'entri', 'cari', 'kitab', 'kamus'],
-    lainnya: ['lainnya', 'upacara', 'ibadah', 'kalender', 'arsip', 'dukung', 'tentang', 'pengaturan', 'tinjau'],
+    lainnya: ['lainnya', 'pustaka', 'entri', 'cari', 'kitab', 'kamus', 'tanya', 'upacara', 'ibadah', 'kalender', 'arsip', 'dukung', 'tentang', 'pengaturan', 'tinjau', 'syukur', 'kartu', 'peringatan'],
   };
   const isActive = (id) => id === routeName || (groups[id] || []).includes(routeName);
   const showTabs = Boolean(p.faith) || routeName !== '';

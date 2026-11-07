@@ -1,6 +1,6 @@
 // Offline support: app shell cache-first, content network-first (so reviewed updates arrive quickly).
 
-const VERSION = 'jeda-v1.5.0';
+const VERSION = 'jeda-v1.6.0';
 const SHELL = [
   './',
   'index.html',
@@ -41,6 +41,13 @@ const SHELL = [
   'js/world/nav.js',
   'js/world/life.js',
   'js/world/handheld.js',
+  'js/world/cuisine.js',
+  'js/world/dishes.js',
+  'js/world/meal.js',
+  'js/world/venues.js',
+  'js/world/npc.js',
+  'js/world/chat.js',
+  'js/views/guide.js',
   'js/views/live.js',
   'vendor/three.module.min.js',
   'vendor/trystero-nostr.js',
