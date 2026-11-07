@@ -21,8 +21,9 @@ export const METHODS = {
     label: 'Kuali besar diaduk perlahan',
     about: 'Kuah atau bumbu dimasak lama di kuali/periuk besar dan terus diaduk agar tidak gosong.',
     steps: [
-      { label: 'Mengaduk isi kuali', clip: 'stir', seconds: 3.2, fx: 'simmer' },
-      { label: 'Mengambil dengan sendok sayur', clip: 'stir', seconds: 2.2, fx: 'steam' },
+      { label: 'Mengaduk isi kuali', clip: 'stir', seconds: 4.2, fx: 'simmer' },
+      { label: 'Kuah meletup pelan, bumbu meresap', clip: 'stir', seconds: 3.4, fx: 'simmer' },
+      { label: 'Mengambil dengan sendok sayur', clip: 'stir', seconds: 2.4, fx: 'steam' },
       { label: 'Disajikan', clip: 'serve', seconds: 1.3, fx: 'plate' },
     ],
   },

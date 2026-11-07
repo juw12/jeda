@@ -562,6 +562,7 @@ function side(name, rand) {
       sauce.position.y = 0.01;
       g.add(sauce);
       g.userData.keep = true;
+      g.userData.depleteTarget = sauce;
       return [g];
     }
     case 'lawar':
@@ -689,6 +690,7 @@ function ricePlate(spec) {
   group.add(rice.group);
   const rand = seeded(17);
   const sideObjects = [];
+  const keptObjects = [];
   const sides = spec.sides || [];
   sides.forEach((name, i) => {
     const angle = -0.4 + (i / Math.max(1, sides.length)) * Math.PI * 1.25;
@@ -699,13 +701,15 @@ function ricePlate(spec) {
       group.add(object);
       if (!object.userData.keep) {
         sideObjects.push(object);
+      } else {
+        keptObjects.push(object);
       }
     });
   });
   // Each bite: one sector of rice plus (when there is some left) a piece of a side dish.
   const portions = rice.parts.map((part, i) => ({ objects: [part, ...(sideObjects[i] ? [sideObjects[i]] : [])], sound: 'chew', pick: spec.hand ? 'hand' : 'scoop' }));
   sideObjects.slice(rice.parts.length).forEach((object) => portions.push({ objects: [object], sound: 'chew', pick: spec.hand ? 'hand' : 'scoop' }));
-  return { group, portions, hot: true, steam: new THREE.Vector3(-0.03, 0.06, 0.01), riceBase: rice.base, riceTotal: rice.parts.length };
+  return { group, portions, hot: true, steam: new THREE.Vector3(-0.03, 0.06, 0.01), riceBase: rice.base, riceTotal: rice.parts.length, deplete: keptObjects };
 }
 
 function skewerPlate(spec) {

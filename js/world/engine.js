@@ -8,6 +8,8 @@ import { bell, gong, chime, woodblock, crackle, bead, murmur, pageTurn, chant, a
 import { greetingById } from './greetings.js';
 import { createAvatar, attireFor, animateAvatar, playClip, stopClip, setSitting, textSprite, setCarry, speechBubble } from './avatar.js';
 import { buildNav, createBarriers } from './nav.js';
+
+const labelProbe = new THREE.Vector3();
 import { createLife } from './life.js';
 import { createHeld, heldItemFor } from './handheld.js';
 import { buildKedai, buildRumah, addTempleAnnex, buildParcel } from './venues.js';
@@ -263,9 +265,13 @@ export function createWorld(container, options) {
   const npcAvatars = npcs.list.map((npc) => npc.avatar);
 
   let watch = null;
+  let debugCamera = null;
   function endWatch() {
     if (watch) {
       rig.targetDistance = watch.savedDistance;
+      if (watch.vendor) {
+        watch.vendor.label.visible = true;
+      }
       watch = null;
     }
   }
@@ -438,6 +444,23 @@ export function createWorld(container, options) {
         target = origin.clone().addScaledVector(toCamera, Math.max(1.6, hit.distance - 0.35));
       }
     });
+    if (debugCamera) {
+      // Inspection camera for automated visual checks (set via debug.lookFrom; never used in normal play).
+      camera.position.copy(debugCamera.from);
+      camera.lookAt(debugCamera.to);
+      return;
+    }
+    if (watch && watch.shot) {
+      // Cooking close-up: a fixed three-quarter shot from above the counter, so you look down into the
+      // wok or pot (food, flames) and see the cook's arms and utensil from the side.
+      const k = Math.min(1, delta * 2.2);
+      watch.look = watch.look || focus.clone();
+      camera.position.lerp(watch.shot.from, k);
+      watch.look.lerp(watch.shot.to, k);
+      camera.lookAt(watch.look);
+      self.label.visible = false;
+      return;
+    }
     camera.position.lerp(target, Math.min(1, delta * (blocker ? 9 : 5)));
     camera.lookAt(focus);
     self.label.material.opacity = self.clip ? 0.35 : 1;
@@ -1390,7 +1413,29 @@ export function createWorld(container, options) {
       return false;
     }
     if (view.mode !== 'first') {
-      watch = { target: stall.stove.clone().add(new THREE.Vector3(0, -0.2, 0)), blend: 0, savedDistance: rig.targetDistance };
+      // Customer side = from the cook toward the stove; the shot sits forward, up and to the side of it.
+      const toCustomer = new THREE.Vector3(stall.stove.x - stall.vendorAt.x, 0, stall.stove.z - stall.vendorAt.z);
+      if (toCustomer.lengthSq() < 1e-4) {
+        toCustomer.set(0, 0, 1);
+      }
+      toCustomer.normalize();
+      const sideways = new THREE.Vector3(toCustomer.z, 0, -toCustomer.x);
+      const portrait = camera.aspect < 0.8;
+      // Portrait: pull back and swing wider to the side so the cook stands beside the pot (not hidden
+      // behind it), looking a little higher so both stay above the cook card on the lower third.
+      const from = stall.stove.clone()
+        .addScaledVector(toCustomer, portrait ? 2.7 : 1.75)
+        .addScaledVector(sideways, portrait ? 1.45 : 1.25)
+        .add(new THREE.Vector3(0, portrait ? 1.05 : 0.95, 0));
+      const to = stall.stove.clone()
+        .addScaledVector(toCustomer, portrait ? -0.45 : -0.35)
+        .add(new THREE.Vector3(0, portrait ? 0.2 : 0.16, 0));
+      const vendorNpc = npcs.list.find((npc) => npc.role === 'vendor' && npc.def && npc.def.stallId === stall.id);
+      const vendor = vendorNpc ? vendorNpc.avatar : null;
+      if (vendor) {
+        vendor.label.visible = false;
+      }
+      watch = { target: stall.stove.clone().add(new THREE.Vector3(0, -0.2, 0)), blend: 0, savedDistance: rig.targetDistance, shot: { from, to }, vendor };
     }
     return true;
   }
@@ -1684,6 +1729,16 @@ export function createWorld(container, options) {
     }
     animateAvatar(self, delta, now, elapsed);
     npcs.update(delta, now, elapsed, self);
+    // Name tags fade out when the camera is right next to someone, so a tag never fills the screen.
+    [self, ...npcs.list.map((npc) => npc.avatar)].forEach((avatar) => {
+      const label = avatar && avatar.label;
+      if (label && label.material) {
+        label.getWorldPosition(labelProbe);
+        const distance = labelProbe.distanceTo(camera.position);
+        label.material.transparent = true;
+        label.material.opacity = Math.min(1, Math.max(0, (distance - 2.2) / 2.0));
+      }
+    });
     if (place.update) {
       place.update(delta, elapsed);
     }
@@ -1699,7 +1754,10 @@ export function createWorld(container, options) {
     life.update(delta, elapsed, [self, ...peers.values(), ...npcAvatars]);
     adaptQuality(now);
 
-    spotMarkers.forEach(({ ring, beacon }, index) => {
+    spotMarkers.forEach(({ ring, beacon, spot }, index) => {
+      // Once you are at a spot (ordering, watching the cook, seated) its floating marker is just clutter.
+      const here = Math.hypot(self.group.position.x - spot.stand.x, self.group.position.z - spot.stand.z) < 2.4;
+      beacon.visible = !watch && !here;
       const pulse = 0.5 + Math.sin(elapsed * 2 + index) * 0.25;
       ring.material.opacity = pulse;
       beacon.position.y += Math.sin(elapsed * 2 + index) * 0.003;
@@ -1961,12 +2019,18 @@ export function createWorld(container, options) {
         ? { x: zone.x, z: zone.z }
         : { x: (zone.x1 + zone.x2) / 2, z: (zone.z1 + zone.z2) / 2 })),
       effects: () => effects.length + emitters.length,
+      renderInfo: () => ({ calls: renderer.info.render.calls, triangles: renderer.info.render.triangles, geometries: renderer.info.memory.geometries, textures: renderer.info.memory.textures, programs: renderer.info.programs ? renderer.info.programs.length : 0 }),
       view: () => ({ mode: view.mode, yaw: rig.yaw, pitch: view.pitch, selfVisible: self.group.visible, camera: camera.position.toArray().map((v) => Math.round(v * 100) / 100) }),
       held: () => (held ? held.debug() : null),
       sky: () => ({ time: currentTime, fading: Boolean(skyFade), stars: stars.visible, sun: sun.intensity }),
       npcs: () => npcs.list.map((npc) => ({ id: npc.id, role: npc.role, x: Math.round(npc.avatar.group.position.x * 10) / 10, z: Math.round(npc.avatar.group.position.z * 10) / 10, cooking: Boolean(npc.cooking), talking: npc.talking, bubble: Boolean(npc.avatar.bubble) })),
       food: () => ({ carrying: carrying.length, table: self.sitSpot ? (tableItems.get(self.sitSpot.id) || []).length : 0, watch: Boolean(watch) }),
       place: () => ({ spots: place.spots.map((s) => s.id), stalls: (place.stalls || []).map((s) => s.id) }),
+      lookFrom: (from, to) => {
+        debugCamera = from ? { from: new THREE.Vector3(...from), to: new THREE.Vector3(...to) } : null;
+        return Boolean(debugCamera);
+      },
+      stallPositions: () => (place.stalls || []).map((s) => ({ id: s.id, stove: s.stove.toArray().map((v) => Math.round(v * 100) / 100), method: s.def.method })),
       tapNpc: (id) => {
         const npc = npcs.byId(id);
         if (npc) {

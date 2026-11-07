@@ -462,7 +462,7 @@ export function space(main, [faithId, areaParam], query, { content, navigate }, 
         <div class="meal-tools">
           <button class="btn-ghost" type="button" data-auto aria-pressed="${autoTimer ? 'true' : 'false'}">${autoTimer ? '⏸ Berhenti otomatis' : '▶ Makan otomatis'}</button>
           <label class="asmr-volume">🔊<input type="range" min="0" max="2" step="0.1" value="${asmrLevel}" data-asmr aria-label="Volume ASMR"></label>
-          <button class="btn-ghost" type="button" data-meal-close>${done ? 'Selesai' : 'Sudahan'}</button>
+          <button class="btn-ghost" type="button" data-meal-close>${done ? 'Selesai' : 'Cukup dulu'}</button>
         </div>
       </div>`;
     mealHud.querySelector('.meal-prayer')?.addEventListener('toggle', () => {

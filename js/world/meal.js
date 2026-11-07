@@ -166,9 +166,14 @@ function hand() {
   thumb.position.set(-0.008, 0, -0.016);
   thumbPivot.add(thumb);
   group.add(thumbPivot);
-  const sleeve = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.034, 0.12, 14), material('#c9b79c', { roughness: 0.9 }));
+  // Wrist and a short batik-blue shirt cuff, so the arm reads as a sleeve rather than a pale pillar.
+  const wrist = new THREE.Mesh(new THREE.CylinderGeometry(0.024, 0.027, 0.05, 14), skin);
+  wrist.rotation.x = Math.PI / 2;
+  wrist.position.set(0, 0.013, 0.11);
+  group.add(wrist);
+  const sleeve = new THREE.Mesh(new THREE.CylinderGeometry(0.031, 0.034, 0.05, 14), material('#2f4a6a', { roughness: 0.9 }));
   sleeve.rotation.x = Math.PI / 2;
-  sleeve.position.set(0, 0.014, 0.15);
+  sleeve.position.set(0, 0.014, 0.155);
   group.add(sleeve);
   group.userData.curl = (amount) => {
     fingers.forEach((pivot) => {
@@ -353,6 +358,8 @@ export function createMeal(items, { table = 'wood', note = '', title = '' } = {}
   }
   tools.hand = hand();
   tools.hand.visible = false;
+  // The right hand comes in from the right, so the forearm never covers the middle of the plate.
+  tools.hand.rotation.y = -0.55;
   holder.add(tools.hand);
   Object.values(tools).forEach((tool) => {
     tool.userData.rest = { position: tool.position.clone(), rotation: tool.rotation.clone() };
@@ -445,8 +452,9 @@ export function createMeal(items, { table = 'wood', note = '', title = '' } = {}
     };
     if (toolName === 'hand') {
       tools.hand.visible = true;
-      tools.hand.position.set(0.12, 0.08, 0.22);
-      tools.hand.rotation.set(0, 0, 0);
+      // Enter low from the right and keep the forearm angled away, so the sleeve never fills the view.
+      tools.hand.position.set(0.2, 0.05, 0.16);
+      tools.hand.rotation.copy(tools.hand.userData.rest.rotation);
       action.start = tools.hand.position.clone();
       action.startRotation = tools.hand.rotation.clone();
     }
@@ -510,6 +518,16 @@ export function createMeal(items, { table = 'wood', note = '', title = '' } = {}
     dish.left.shift();
     dish.bitesInPortion = 0;
     dish.eaten += 1;
+    // Sauces and sambal that are eaten along with everything else shrink as the plate empties.
+    if (dish.built.deplete && dish.built.deplete.length) {
+      const fraction = dish.left.length / dish.built.portions.length;
+      dish.built.deplete.forEach((object) => {
+        const target = object.userData.depleteTarget || object;
+        target.userData.fullScale = target.userData.fullScale || target.scale.clone();
+        target.scale.copy(target.userData.fullScale).multiplyScalar(0.3 + 0.7 * fraction);
+        target.visible = fraction > 0;
+      });
+    }
     if (dish.built.riceBase) {
       const base = dish.built.riceBase;
       base.userData.baseY = base.userData.baseY ?? base.scale.y;
@@ -630,7 +648,7 @@ export function createMeal(items, { table = 'wood', note = '', title = '' } = {}
           item.object.position.lerpVectors(item.fromPosition, item.toPosition, k);
           item.object.quaternion.slerpQuaternions(item.fromQuaternion, item.toQuaternion, k);
         });
-        tool.position.lerpVectors(mouthPoint, a.toolName === 'hand' ? new THREE.Vector3(0.14, 0.06, 0.3) : tool.userData.rest.position, k);
+        tool.position.lerpVectors(mouthPoint, a.toolName === 'hand' ? new THREE.Vector3(0.2, 0.05, 0.16) : tool.userData.rest.position, k);
         tool.rotation.x = lerp(0.35, tool.userData.rest.rotation.x, k);
         if (a.toolName === 'hand') {
           tool.userData.curl(0.8 * (1 - k));

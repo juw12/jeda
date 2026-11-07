@@ -5,7 +5,7 @@
 
 import * as THREE from '../../vendor/three.module.min.js';
 import { mat, box, cyl, sphere, cone, at, lathe, hipRoof, gableRoof, lantern, tree, frangipani, spot, mesh } from './places.js';
-import { KEDAI, HOME, TEMPLE_PEOPLE, FAITH_SCENE } from './cuisine.js';
+import { KEDAI, HOME, TEMPLE_PEOPLE, FAITH_SCENE, dishById, priceLabel } from './cuisine.js';
 import { buildParcel } from './dishes.js';
 
 // ---------- Shared bits ----------
@@ -127,7 +127,7 @@ function station(method, colors) {
         g.add(dough);
         rig.food = dough;
       } else {
-        const wok = lathe([[0, 0], [0.18, 0.01], [0.34, 0.1], [0.4, 0.2], [0.38, 0.2], [0.32, 0.11], [0.17, 0.02], [0, 0.015]], '#2c2c30', 28, { metalness: 0.75, roughness: 0.35, side: THREE.DoubleSide });
+        const wok = lathe([[0, 0], [0.18, 0.01], [0.34, 0.1], [0.4, 0.2], [0.38, 0.2], [0.32, 0.11], [0.17, 0.02], [0, 0.015]], '#5b5e64', 28, { metalness: 0.35, roughness: 0.45, side: THREE.DoubleSide });
         wok.position.y = 0.18;
         g.add(wok);
         rig.wok = wok;
@@ -140,6 +140,19 @@ function station(method, colors) {
         food.position.y = 0.26;
         g.add(food);
         rig.food = food;
+        // Pieces that fly up out of the wok with every toss (noodles, greens, chilli, egg).
+        const bits = new THREE.Group();
+        const bitColors = method === 'fry' ? ['#e0b04a', '#c98a2a', '#f2d16b'] : ['#d9a64a', '#4f8a3a', '#c0392b', '#f2d16b', '#b5763a'];
+        for (let i = 0; i < 9; i++) {
+          const bit = box(0.07, 0.025, 0.035, bitColors[i % bitColors.length], { roughness: 0.6 });
+          bit.castShadow = false;
+          bit.userData.phase = i / 9;
+          bit.userData.angle = i * 2.4;
+          bits.add(bit);
+        }
+        bits.visible = false;
+        g.add(bits);
+        rig.bits = bits;
       }
       break;
     }
@@ -149,13 +162,23 @@ function station(method, colors) {
       g.add(stove);
       g.add(burner(0.46));
       rig.flame.scale.setScalar(0.7);
-      const pot = lathe([[0, 0], [0.32, 0.02], [0.42, 0.2], [0.44, 0.36], [0.42, 0.36], [0.4, 0.21], [0.31, 0.04], [0, 0.03]], '#3a3a3e', 28, { metalness: 0.6, roughness: 0.45, side: THREE.DoubleSide });
+      const pot = lathe([[0, 0], [0.32, 0.02], [0.42, 0.2], [0.44, 0.36], [0.42, 0.36], [0.4, 0.21], [0.31, 0.04], [0, 0.03]], '#62656b', 28, { metalness: 0.3, roughness: 0.5, side: THREE.DoubleSide });
       pot.position.y = 0.2;
       g.add(pot);
       const stew = cyl(0.39, 0.39, 0.02, colors.stew || '#6a3518', 24, { roughness: 0.2 });
       stew.position.y = 0.52;
       g.add(stew);
       rig.food = stew;
+      const bubbles = new THREE.Group();
+      for (let i = 0; i < 7; i++) {
+        const bubble = sphere(0.035, colors.stew || '#6a3518', 8, { roughness: 0.15 });
+        bubble.position.set(Math.cos(i * 2.2) * 0.22 * ((i % 3) / 2 + 0.3), 0.535, Math.sin(i * 2.2) * 0.22 * ((i % 3) / 2 + 0.3));
+        bubble.castShadow = false;
+        bubble.userData.phase = i * 0.37;
+        bubbles.add(bubble);
+      }
+      g.add(bubbles);
+      rig.bubbles = bubbles;
       break;
     }
     case 'grill':
@@ -345,12 +368,454 @@ function kedaiDecor(g, style, s) {
   }
 }
 
+// ---------- Food court surroundings: floor, walls, menus, lamps, the street outside ----------
+// Deterministic pseudo-random numbers so every visit builds the same street.
+function seeded(seed) {
+  let state = seed >>> 0;
+  return () => {
+    state = (state * 1664525 + 1013904223) >>> 0;
+    return state / 4294967296;
+  };
+}
+
+function shade(color, factor) {
+  return `#${new THREE.Color(color).multiplyScalar(factor).getHexString()}`;
+}
+
+const FLOOR_PATTERN = {
+  pecinan: { kind: 'checker', a: '#eadfc8', b: '#b5523b', n: 4 },
+  kopitiam: { kind: 'checker', a: '#f1ece0', b: '#3d3d42', n: 8 },
+  padang: { kind: 'grid', a: '#ebe2d1', b: '#bfb39c', n: 4 },
+  bali: { kind: 'stone', a: '#c1b394', b: '#8d8068', n: 5 },
+  lapo: { kind: 'planks', a: '#7a5638', b: '#4a3322', n: 8 },
+  flores: { kind: 'planks', a: '#8f6d4a', b: '#5a4026', n: 8 },
+  angkringan: { kind: 'brick', a: '#a8644a', b: '#d1c3a8', n: 8 },
+};
+
+function patternTexture(pattern, repeatX, repeatY) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 256;
+  canvas.height = 256;
+  const c = canvas.getContext('2d');
+  const random = seeded(7);
+  c.fillStyle = pattern.a;
+  c.fillRect(0, 0, 256, 256);
+  const cell = 256 / pattern.n;
+  if (pattern.kind === 'checker') {
+    c.fillStyle = pattern.b;
+    for (let i = 0; i < pattern.n; i++) {
+      for (let j = 0; j < pattern.n; j++) {
+        if ((i + j) % 2) {
+          c.fillRect(i * cell, j * cell, cell, cell);
+        }
+      }
+    }
+  } else if (pattern.kind === 'grid') {
+    c.fillStyle = pattern.b;
+    for (let i = 0; i <= pattern.n; i++) {
+      c.fillRect(i * cell - 2, 0, 4, 256);
+      c.fillRect(0, i * cell - 2, 256, 4);
+    }
+  } else if (pattern.kind === 'planks') {
+    for (let row = 0; row < pattern.n; row++) {
+      c.fillStyle = shade(pattern.a, 0.88 + random() * 0.24);
+      c.fillRect(0, row * cell, 256, cell);
+      c.fillStyle = pattern.b;
+      c.fillRect(0, row * cell, 256, 2);
+      const joint = (row % 2) * 128 + random() * 40;
+      c.fillRect(joint % 256, row * cell, 3, cell);
+    }
+  } else if (pattern.kind === 'brick') {
+    c.fillStyle = pattern.b;
+    c.fillRect(0, 0, 256, 256);
+    for (let row = 0; row < pattern.n; row++) {
+      for (let col = -1; col < 4; col++) {
+        c.fillStyle = shade(pattern.a, 0.85 + random() * 0.3);
+        c.fillRect(col * 64 + (row % 2) * 32 + 2, row * cell + 2, 60, cell - 4);
+      }
+    }
+  } else if (pattern.kind === 'stone') {
+    c.fillStyle = pattern.b;
+    c.fillRect(0, 0, 256, 256);
+    for (let row = 0; row < pattern.n; row++) {
+      let x = -random() * 30;
+      while (x < 256) {
+        const w = 30 + random() * 40;
+        c.fillStyle = shade(pattern.a, 0.85 + random() * 0.3);
+        c.fillRect(x + 2, row * cell + 2, w - 4, cell - 4);
+        x += w;
+      }
+    }
+  }
+  // Light speckle so large surfaces don't look like flat plastic.
+  for (let i = 0; i < 900; i++) {
+    c.fillStyle = random() > 0.5 ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
+    c.fillRect(random() * 256, random() * 256, 2, 2);
+  }
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(repeatX, repeatY);
+  return texture;
+}
+
+function floorSlab(style, s) {
+  const pattern = FLOOR_PATTERN[style] || FLOOR_PATTERN.angkringan;
+  const material = new THREE.MeshStandardMaterial({ map: patternTexture(pattern, 10.5, 7), roughness: pattern.kind === 'checker' || pattern.kind === 'grid' ? 0.45 : 0.8 });
+  const slab = new THREE.Mesh(new THREE.BoxGeometry(21, 0.05, 14), [mat(s.floor), mat(s.floor), material, mat(s.floor), mat(s.floor), mat(s.floor)]);
+  slab.receiveShadow = true;
+  slab.position.set(0, 0.025, -3.5);
+  return slab;
+}
+
+// The glass case on each counter: plates of today's food (Padang: the famous stacked-plate window).
+const CASE_FOOD = ['#6b3418', '#e3a23a', '#3f7a33', '#c8341f', '#f2d16b', '#b5763a'];
+function displayCase(g, style, cx, cz, index) {
+  const padang = style === 'padang';
+  const height = padang ? 0.85 : 0.5;
+  const glass = box(1.3, height, 0.55, '#e6f3f6', { transparent: true, opacity: 0.22, roughness: 0.05 });
+  glass.position.set(cx, 1.06 + height / 2, cz);
+  glass.castShadow = false;
+  g.add(noCollide(glass));
+  g.add(noCollide(at(box(1.34, 0.03, 0.58, '#d9d4c8', { metalness: 0.3 }), cx, 1.06 + height, cz)));
+  const plate = (x, y, z, color) => {
+    g.add(noCollide(at(cyl(0.12, 0.09, 0.025, '#f7f5ef', 16, { roughness: 0.3 }), x, y, z)));
+    const mound = sphere(0.085, color, 10, { roughness: 0.55 });
+    mound.scale.y = 0.5;
+    mound.position.set(x, y + 0.03, z);
+    g.add(noCollide(mound));
+  };
+  if (padang) {
+    // Rows of plates stacked into a pyramid behind the glass.
+    [4, 3, 2].forEach((count, tier) => {
+      for (let i = 0; i < count; i++) {
+        const x = cx + (i - (count - 1) / 2) * 0.28;
+        plate(x, 1.1 + tier * 0.22, cz + 0.05 - tier * 0.06, CASE_FOOD[(i + tier * 2 + index) % CASE_FOOD.length]);
+      }
+    });
+  } else {
+    for (let i = 0; i < 5; i++) {
+      plate(cx - 0.42 + (i % 3) * 0.42, 1.1 + Math.floor(i / 3) * 0.22, cz + (i < 3 ? 0.08 : -0.08), CASE_FOOD[(i + index) % CASE_FOOD.length]);
+    }
+  }
+}
+
+function canvasBoard(width, height, draw) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 512;
+  canvas.height = Math.round(512 * (height / width));
+  draw(canvas.getContext('2d'), canvas.width, canvas.height);
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  const board = new THREE.Mesh(new THREE.PlaneGeometry(width, height), new THREE.MeshStandardMaterial({ map: texture, roughness: 0.8 }));
+  board.userData.noCollide = true;
+  return board;
+}
+
+// Menu board on the wall behind the cook: dish names and prices.
+function menuBoard(stallDef, sign) {
+  const dishes = (stallDef.dishes || []).map((id) => dishById(id)).filter(Boolean);
+  return canvasBoard(2.5, 0.95, (c, w, h) => {
+    c.fillStyle = '#26302b';
+    c.fillRect(0, 0, w, h);
+    c.strokeStyle = sign[2];
+    c.lineWidth = 8;
+    c.strokeRect(4, 4, w - 8, h - 8);
+    c.fillStyle = '#f3ead9';
+    c.font = '700 30px system-ui, "Segoe UI", sans-serif';
+    c.textAlign = 'center';
+    c.fillText('MENU', w / 2, 40);
+    c.font = '600 24px system-ui, "Segoe UI", sans-serif';
+    dishes.slice(0, 4).forEach((dish, i) => {
+      const y = 78 + i * 34;
+      c.textAlign = 'left';
+      c.fillText(dish.name.slice(0, 24), 24, y);
+      c.textAlign = 'right';
+      c.fillText(dish.price ? priceLabel(dish.price) : '-', w - 24, y);
+    });
+  });
+}
+
+const STREET_NAMES = {
+  pecinan: ['TOKO OBAT 德生堂', 'TOKO EMAS 金城', 'KUE BULAN 福興', 'TOKO KAIN 和成', 'TEH 香茗', 'BAKPIA 信'],
+  kopitiam: ['TOKO BUKU', 'APOTEK', 'KELONTONG', 'TOKO SEPATU', 'PENJAHIT', 'FOTO STUDIO'],
+  padang: ['TOKO KAIN', 'KONVEKSI', 'TOKO EMAS', 'FOTOKOPI', 'BENGKEL', 'KELONTONG'],
+  lapo: ['TOKO ULOS', 'KEDAI KOPI', 'BENGKEL', 'APOTEK', 'TOKO BUKU', 'KELONTONG'],
+};
+const STREET_COLORS = ['#e8dcc4', '#d9c39a', '#c9d6cf', '#e6c9b5', '#f0e6d2', '#cfd8e0', '#e3d2a8'];
+
+// Shophouse (ruko) front: shop sign and shutter below, two floors of windows above.
+function facadeTexture(name, body, accent, random) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 256;
+  canvas.height = 384;
+  const c = canvas.getContext('2d');
+  c.fillStyle = body;
+  c.fillRect(0, 0, 256, 384);
+  c.fillStyle = shade(body, 0.8);
+  c.fillRect(0, 0, 256, 14);
+  // Upper floors.
+  for (let floor = 0; floor < 2; floor++) {
+    for (let col = 0; col < 3; col++) {
+      const x = 22 + col * 78;
+      const y = 34 + floor * 92;
+      c.fillStyle = shade(body, 0.7);
+      c.fillRect(x - 4, y - 4, 60, 70);
+      c.fillStyle = random() > 0.3 ? '#3b4650' : '#f2d99a';
+      c.fillRect(x, y, 52, 62);
+      c.fillStyle = shade(body, 0.95);
+      c.fillRect(x + 24, y, 4, 62);
+    }
+  }
+  // Shop sign band.
+  c.fillStyle = accent;
+  c.fillRect(8, 222, 240, 44);
+  c.fillStyle = '#ffffff';
+  c.font = '700 22px system-ui, "Noto Sans SC", "Segoe UI", sans-serif';
+  c.textAlign = 'center';
+  c.textBaseline = 'middle';
+  c.fillText(name, 128, 245);
+  // Shopfront: half-open rolling shutter over a lit interior.
+  c.fillStyle = '#e9cf98';
+  c.fillRect(16, 276, 224, 108);
+  c.fillStyle = '#9aa0a6';
+  c.fillRect(16, 276, 224, 46 + random() * 30);
+  c.fillStyle = 'rgba(0,0,0,0.18)';
+  for (let y = 278; y < 320; y += 6) {
+    c.fillRect(16, y, 224, 2);
+  }
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return texture;
+}
+
+function streetRing(g, style) {
+  const random = seeded(style.length * 97 + 13);
+  const names = STREET_NAMES[style];
+  const accents = style === 'pecinan' ? ['#b8322b', '#8a2a22', '#c9572f'] : ['#1f6a3a', '#2f4a6a', '#b8322b', '#6b4a33'];
+  const textures = names.map((name, i) => facadeTexture(name, STREET_COLORS[(i * 3) % STREET_COLORS.length], accents[i % accents.length], random));
+  const radius = 25;
+  let angle = 0;
+  let i = 0;
+  while (angle < Math.PI * 2 - 0.15) {
+    const width = 5.5 + random() * 2;
+    const height = 6 + random() * 3;
+    const step = width / radius;
+    const a = angle + step / 2;
+    const body = STREET_COLORS[i % STREET_COLORS.length];
+    const front = new THREE.MeshStandardMaterial({ map: textures[i % textures.length], roughness: 0.85 });
+    const plain = mat(shade(body, 0.85));
+    const building = new THREE.Mesh(new THREE.BoxGeometry(width - 0.15, height, 4), [plain, plain, mat(shade(body, 0.6)), plain, plain, front]);
+    building.position.set(Math.sin(a) * radius, height / 2, Math.cos(a) * radius);
+    building.rotation.y = a;
+    building.userData.noCollide = true;
+    g.add(building);
+    if (style === 'pecinan' && i % 2 === 0) {
+      const l = lantern('#d8352a');
+      l.position.set(Math.sin(a) * (radius - 2.3), 2.6, Math.cos(a) * (radius - 2.3));
+      noCollide(l);
+      g.add(l);
+    }
+    angle += step;
+    i++;
+  }
+}
+
+function villageRing(g, style) {
+  const random = seeded(style.length * 31 + 5);
+  const greens = ['#4f8a4f', '#5f8f55', '#3f7a45', '#6a9a5a'];
+  for (let i = 0; i < 26; i++) {
+    const a = (i / 26) * Math.PI * 2 + random() * 0.1;
+    const r = 23 + random() * 6;
+    const t = style === 'bali' && i % 4 === 0 ? frangipani(1.1 + random() * 0.4) : tree(1.1 + random() * 0.8, greens[i % greens.length]);
+    t.position.set(Math.sin(a) * r, 0, Math.cos(a) * r);
+    noCollide(t);
+    g.add(t);
+  }
+  // A few village houses between the trees.
+  const roofColor = style === 'bali' ? '#3a332c' : style === 'flores' ? '#7a6a48' : '#a5512f';
+  [-0.6, -0.25, 0.25, 0.6, Math.PI - 0.5, Math.PI + 0.5].forEach((offset, i) => {
+    const a = Math.PI + offset;
+    const house = new THREE.Group();
+    house.add(at(box(4.2, 2.6, 3.4, i % 2 ? '#e7dcc4' : '#d9c7a0'), 0, 1.3, 0));
+    house.add(at(box(0.9, 1.7, 0.05, '#6b4a33'), 0, 0.85, 1.72));
+    house.add(at(hipRoof(4.8, 4, 1.4, roofColor, null), 0, 2.6, 0));
+    house.position.set(Math.sin(a) * 26, 0, Math.cos(a) * 26);
+    house.rotation.y = a + Math.PI;
+    noCollide(house);
+    g.add(house);
+  });
+}
+
+function kedaiSurroundings(g, def, s, emitters) {
+  const style = def.style;
+  const urban = ['pecinan', 'kopitiam', 'padang', 'lapo'].includes(style);
+  // Side walls (full height in town, waist-high in the open-air styles) with a darker dado band.
+  const dado = shade(s.back, 0.78);
+  [-1, 1].forEach((side) => {
+    const height = urban ? 3.6 : 1.0;
+    g.add(at(box(0.25, height, 7.8, s.back), side * 10.55, height / 2, -6.5));
+    g.add(noCollide(at(box(0.03, Math.min(1.0, height), 7.8, dado), side * 10.41, Math.min(1.0, height) / 2, -6.5)));
+  });
+  g.add(noCollide(at(box(21, 1.0, 0.03, dado), 0, 0.5, -10.26)));
+  // Menus and a shelf of jars behind each cook.
+  const xs = [-6.2, 0, 6.2];
+  def.stalls.forEach((stallDef, index) => {
+    const x = xs[index];
+    const menu = menuBoard(stallDef, s.sign);
+    menu.position.set(x + 0.45, 2.3, -10.25);
+    g.add(menu);
+    g.add(noCollide(at(box(1.3, 0.04, 0.26, '#6b4a33'), x - 1.05, 1.62, -10.14)));
+    for (let j = 0; j < 4; j++) {
+      const jar = cyl(0.07, 0.07, 0.2 + (j % 2) * 0.06, ['#c8341f', '#e3a23a', '#f3ead9', '#3f7a33'][(j + index) % 4], 10, { roughness: 0.4 });
+      jar.position.set(x - 1.5 + j * 0.3, 1.74 + (j % 2) * 0.03, -10.14);
+      g.add(noCollide(jar));
+    }
+    if (style === 'padang' || style === 'angkringan') {
+      // Blek kerupuk: the square crackers tin on the counter.
+      const tin = new THREE.Group();
+      tin.add(at(box(0.26, 0.36, 0.26, '#d9d4c8', { metalness: 0.3, roughness: 0.4 }), 0, 0.18, 0));
+      tin.add(at(box(0.2, 0.2, 0.012, '#f3e6b0', { transparent: true, opacity: 0.85 }), 0, 0.2, 0.135));
+      tin.add(at(box(0.27, 0.03, 0.27, '#c8341f'), 0, 0.37, 0));
+      tin.position.set(x - 1.6, 1.06, -7.15);
+      g.add(noCollide(tin));
+    }
+    if (style === 'bali') {
+      // Canang sari on the counter corner.
+      const canang = new THREE.Group();
+      canang.add(at(box(0.18, 0.03, 0.18, '#7fae4a'), 0, 0.015, 0));
+      ['#f2d16b', '#c8341f', '#f7f4ec', '#8a3aa8'].forEach((color, k) => canang.add(at(sphere(0.03, color, 6), (k % 2 - 0.5) * 0.08, 0.05, (Math.floor(k / 2) - 0.5) * 0.08)));
+      canang.position.set(x - 1.6, 1.07, -7.05);
+      g.add(noCollide(canang));
+    }
+  });
+  // Warm pendant lamps over the tables, and one warm light over the stalls.
+  if (style !== 'angkringan') {
+    [[-3.6, -2.8], [3.6, -2.8], [-3.6, 1.0], [3.6, 1.0], [-7.8, -1.0], [7.8, -1.0]].forEach(([x, z]) => {
+      const lamp = new THREE.Group();
+      lamp.add(at(cyl(0.008, 0.008, 0.9, '#2a2a2a', 4), 0, 3.15, 0));
+      lamp.add(at(cone(0.22, 0.2, style === 'pecinan' ? '#b8322b' : '#3f5a4a', 16, { side: THREE.DoubleSide }), 0, 2.62, 0));
+      const bulb = sphere(0.07, '#fff1c9', 8, { emissive: '#ffd98a', emissiveIntensity: 2.2 });
+      bulb.position.y = 2.5;
+      bulb.castShadow = false;
+      lamp.add(bulb);
+      lamp.position.set(x, 0, z);
+      noCollide(lamp);
+      g.add(lamp);
+    });
+  }
+  const warm = new THREE.PointLight('#ffcf8a', 14, 16, 1.4);
+  warm.position.set(0, 3.2, -6.0);
+  g.add(warm);
+
+  // Style anchors.
+  if (style === 'pecinan') {
+    // Small altar to Tian and the ancestors between two stalls: tablet, censer, incense, candles, oranges.
+    const altar = new THREE.Group();
+    altar.add(at(box(0.95, 0.85, 0.45, '#8a1f1a'), 0, 0.425, 0));
+    altar.add(at(box(1.0, 0.04, 0.5, '#d8a63a'), 0, 0.87, 0));
+    const tablet = signBoard('天', '', { width: 0.3, height: 0.5, background: '#b8322b', color: '#f3d36b', border: '#f3d36b' });
+    tablet.position.set(0, 1.18, -0.14);
+    altar.add(tablet);
+    altar.add(at(cyl(0.1, 0.08, 0.12, '#b8913f', 14, { metalness: 0.5, roughness: 0.4 }), 0, 0.95, 0.08));
+    [-0.03, 0, 0.03].forEach((dx) => {
+      altar.add(at(cyl(0.005, 0.005, 0.26, '#b8322b', 4), dx, 1.13, 0.08));
+      const tip = sphere(0.009, '#ff7a2a', 4, { emissive: '#ff5a10', emissiveIntensity: 2 });
+      tip.position.set(dx, 1.26, 0.08);
+      altar.add(tip);
+    });
+    [-0.34, 0.34].forEach((dx) => {
+      altar.add(at(cyl(0.035, 0.035, 0.22, '#c8341f', 8), dx, 1.0, 0.05));
+      const flame = cone(0.02, 0.05, '#ffb347', 6, { emissive: '#ff9a2a', emissiveIntensity: 2 });
+      flame.position.set(dx, 1.14, 0.05);
+      altar.add(flame);
+    });
+    for (let k = 0; k < 5; k++) {
+      altar.add(at(sphere(0.045, '#f08a1a', 8), 0.2 + (k % 3) * 0.06 - 0.06, 0.93 + Math.floor(k / 3) * 0.06, 0.12));
+    }
+    altar.position.set(-3.1, 0, -10.0);
+    noCollide(altar);
+    g.add(altar);
+    emitters.push({ at: new THREE.Vector3(-3.1, 1.3, -9.92), opts: { color: '#d9d4cc', size: 0.12, rate: 2, life: 3, rise: 0.25, spread: 0.05, duration: 1e9, count: 10 } });
+    const fu = signBoard('福', '', { width: 0.6, height: 0.6, background: '#c8241f', color: '#f3d36b', border: '#f3d36b' });
+    fu.position.set(3.1, 2.3, -10.25);
+    fu.rotation.z = Math.PI / 4;
+    g.add(fu);
+  } else if (style === 'kopitiam') {
+    const clock = new THREE.Group();
+    clock.add(at(cyl(0.3, 0.3, 0.05, '#5a3b26', 24), 0, 0, 0));
+    clock.add(at(cyl(0.26, 0.26, 0.055, '#f6f1e4', 24), 0, 0, 0));
+    clock.add(at(box(0.02, 0.18, 0.06, '#1f1f22'), 0, 0.07, 0));
+    clock.rotation.x = Math.PI / 2;
+    clock.position.set(-3.1, 2.6, -10.22);
+    noCollide(clock);
+    g.add(clock);
+    [[2.75, 2.3, '#c9a46a'], [3.45, 2.1, '#8aa0a8']].forEach(([fx, fy, color]) => {
+      g.add(noCollide(at(box(0.55, 0.7, 0.04, '#3a2a1a'), fx, fy, -10.24)));
+      g.add(noCollide(at(box(0.45, 0.6, 0.045, color), fx, fy, -10.23)));
+    });
+  } else if (style === 'bali') {
+    // Pelinggih (small shrine) in the corner of the yard.
+    const shrine = new THREE.Group();
+    shrine.add(at(box(0.9, 0.5, 0.9, '#8d8068'), 0, 0.25, 0));
+    shrine.add(at(box(0.35, 1.2, 0.35, '#b5a585'), 0, 1.1, 0));
+    shrine.add(at(box(0.7, 0.5, 0.7, '#9a7a4a'), 0, 1.95, 0));
+    shrine.add(at(hipRoof(0.95, 0.95, 0.6, '#2a2622', null), 0, 2.2, 0));
+    shrine.add(at(box(0.5, 0.3, 0.02, '#f7f4ec'), 0, 1.0, 0.18));
+    shrine.add(at(box(0.5, 0.3, 0.021, '#1f1f22'), 0, 0.85, 0.181));
+    shrine.position.set(-9.6, 0, -9.4);
+    g.add(shrine);
+  } else if (style === 'lapo') {
+    [-3.1, 3.1].forEach((x) => {
+      g.add(noCollide(at(box(0.7, 1.6, 0.03, '#7a1f1a'), x, 2.0, -10.24)));
+      for (let k = 0; k < 7; k++) {
+        g.add(noCollide(at(box(0.7, 0.05, 0.035, k % 2 ? '#f3ead9' : '#1f1a18'), x, 1.35 + k * 0.2, -10.23)));
+      }
+    });
+  } else if (style === 'flores') {
+    [-3.1, 3.1].forEach((x) => {
+      const sack = new THREE.Group();
+      sack.add(at(cyl(0.25, 0.3, 0.7, '#c9b48a', 10), 0, 0.35, 0));
+      sack.add(at(cyl(0.2, 0.25, 0.6, '#b9a47a', 10), 0.45, 0.3, 0.1));
+      sack.position.set(x, 0, -9.9);
+      g.add(sack);
+    });
+  } else if (style === 'angkringan') {
+    // The gerobak: a wooden cart with a tarp, kettles on the charcoal brazier, rice packets.
+    const cart = new THREE.Group();
+    cart.add(at(box(1.8, 0.8, 0.8, '#8a5a32'), 0, 0.7, 0));
+    cart.add(at(box(1.9, 0.05, 0.9, '#a8743e'), 0, 1.12, 0));
+    [-0.7, 0.7].forEach((dx) => {
+      const wheel = cyl(0.3, 0.3, 0.06, '#3a2a1a', 14);
+      wheel.rotation.x = Math.PI / 2;
+      wheel.position.set(dx, 0.3, 0.45);
+      cart.add(wheel);
+      cart.add(at(cyl(0.025, 0.025, 1.3, '#6b4a33', 5), dx, 1.75, -0.35));
+      cart.add(at(cyl(0.025, 0.025, 1.3, '#6b4a33', 5), dx, 1.75, 0.35));
+    });
+    cart.add(at(box(2.0, 0.04, 1.0, '#c9572f'), 0, 2.42, 0));
+    [-0.5, -0.1, 0.3].forEach((dx) => cart.add(at(sphere(0.12, '#c8ccd0', 10, { metalness: 0.4 }), dx, 1.27, -0.2)));
+    for (let k = 0; k < 6; k++) {
+      cart.add(at(box(0.12, 0.05, 0.09, '#e9dcc0'), 0.35 + (k % 3) * 0.15, 1.17, 0.15 + Math.floor(k / 3) * 0.12));
+    }
+    cart.position.set(-8.4, 0, 4.4);
+    cart.rotation.y = 0.3;
+    g.add(cart);
+  }
+  if (urban) {
+    streetRing(g, style);
+  } else {
+    villageRing(g, style);
+  }
+}
+
 export function buildKedai(faithId) {
   const def = KEDAI[faithId] || KEDAI.alam;
   const s = KEDAI_STYLE[def.style] || KEDAI_STYLE.angkringan;
   const g = new THREE.Group();
   // Floor slab and a roof on columns (roofs are above head height, so they never block walking).
-  g.add(at(box(21, 0.05, 14, s.floor, { roughness: 0.6 }), 0, 0.025, -3.5));
+  g.add(floorSlab(def.style, s));
   const roof = box(21.5, 0.18, 13, s.roof);
   roof.position.set(0, 3.7, -4);
   g.add(roof);
@@ -370,6 +835,7 @@ export function buildKedai(faithId) {
   const stalls = [];
   const spots = [];
   const emitters = [];
+  kedaiSurroundings(g, def, s, emitters);
   const xs = [-6.2, 0, 6.2];
   def.stalls.forEach((stallDef, index) => {
     const x = xs[index];
@@ -382,16 +848,7 @@ export function buildKedai(faithId) {
     board.position.set(x, 2.9, -7.0);
     g.add(board);
     // Glass display case with today's food on the right of the counter.
-    const glass = box(1.3, 0.5, 0.55, '#dfeff3', { transparent: true, opacity: 0.3, roughness: 0.05 });
-    glass.position.set(x + 0.95, 1.31, -7.3);
-    glass.castShadow = false;
-    g.add(noCollide(glass));
-    for (let i = 0; i < 5; i++) {
-      const bowlFood = sphere(0.13, ['#4a2311', '#e0a234', '#2f6a2b', '#c0311b', '#b07a3a'][(i + index) % 5], 10);
-      bowlFood.scale.y = 0.45;
-      bowlFood.position.set(x + 0.5 + (i % 3) * 0.42, 1.14 + Math.floor(i / 3) * 0.24, -7.3);
-      g.add(noCollide(bowlFood));
-    }
+    displayCase(g, def.style, x + 0.95, -7.3, index);
     const { group: stove, rig } = station(stallDef.method, { stew: index === 1 ? '#5a3519' : '#6a3518' });
     stove.position.set(x - 0.95, 1.06, -7.45);
     g.add(stove);
@@ -481,7 +938,7 @@ export function buildKedai(faithId) {
     ambient: 'crowd',
     restricted: stalls.map((stall) => {
       const x = xs[stall.index];
-      return { shape: 'rect', x1: x - 1.8, z1: -10.2, x2: x + 1.8, z2: -7.62, message: 'Dapur kios: pesan dari depan etalase, ya.' };
+      return { shape: 'rect', x1: x - 1.8, z1: -10.2, x2: x + 1.8, z2: -7.62, rope: false, message: 'Dapur kios: pesan dari depan etalase, ya.' };
     }),
     update(delta, elapsed) {
       stalls.forEach((stall) => {
@@ -507,6 +964,24 @@ export function buildKedai(faithId) {
           if (stall.rig.food) {
             stall.rig.food.position.y = 0.26 + (stall.cooking ? Math.abs(Math.sin(elapsed * 9 + 0.6)) * 0.12 : 0);
           }
+        }
+        if (stall.rig.bits) {
+          stall.rig.bits.visible = stall.cooking > 0.3;
+          if (stall.rig.bits.visible) {
+            stall.rig.bits.children.forEach((bit) => {
+              const t = (elapsed * 1.5 + bit.userData.phase) % 1;
+              const r = 0.08 + t * 0.12;
+              bit.position.set(Math.cos(bit.userData.angle) * r, 0.3 + 4 * t * (1 - t) * 0.42, Math.sin(bit.userData.angle) * r);
+              bit.rotation.set(t * 9 + bit.userData.angle, t * 5, 0);
+            });
+          }
+        }
+        if (stall.rig.bubbles) {
+          stall.rig.bubbles.children.forEach((bubble) => {
+            const t = (elapsed * (0.6 + stall.cooking * 1.2) + bubble.userData.phase) % 1;
+            bubble.scale.setScalar(0.3 + t * (0.6 + stall.cooking * 0.8));
+            bubble.visible = t < 0.85;
+          });
         }
         if (stall.rig.coals) {
           stall.rig.coals.children.forEach((coal, i) => {
@@ -695,6 +1170,68 @@ const HOME_STYLE = {
   pondok: { wall: '#b98d5a', floor: '#a8835a', roof: '#6a5a3a', trim: '#5a3a24', ground: '#a9bf8d' },
 };
 
+const HOME_FLOOR = {
+  tionghoa: { kind: 'checker', a: '#e3d4b8', b: '#b98a5e', n: 6 },
+  cetiya: { kind: 'planks', a: '#b58a5e', b: '#7a5636', n: 8 },
+  musala: { kind: 'grid', a: '#e6dcc8', b: '#c4b69c', n: 5 },
+  bali: { kind: 'stone', a: '#c9b996', b: '#91846b', n: 5 },
+  kristen: { kind: 'planks', a: '#a98258', b: '#6e4f33', n: 8 },
+  katolik: { kind: 'planks', a: '#a37c55', b: '#6a4b30', n: 8 },
+  pondok: { kind: 'planks', a: '#9c7650', b: '#5f4229', n: 7 },
+};
+
+// Lived-in touches for the family house: patterned floor, windows with daylight, family photos,
+// a rug in the sitting area, a pendant lamp over the dining table, plants and a warm room light.
+function homeDecor(g, style, s, tableAt) {
+  const pattern = HOME_FLOOR[style] || HOME_FLOOR.pondok;
+  const floorMaterial = new THREE.MeshStandardMaterial({ map: patternTexture(pattern, 7, 4.6), roughness: 0.6 });
+  const floor = new THREE.Mesh(new THREE.BoxGeometry(13.7, 0.02, 9.0), floorMaterial);
+  floor.position.set(0, 0.15, -6);
+  floor.receiveShadow = true;
+  g.add(noCollide(floor));
+  // Skirting / dado line along the walls.
+  g.add(noCollide(at(box(13.7, 0.12, 0.03, s.trim), 0, 0.95, -10.38)));
+  [-6.83, 6.83].forEach((x) => g.add(noCollide(at(box(0.03, 0.12, 9.0, s.trim), x, 0.95, -6))));
+  // Windows on both side walls: frame + bright pane so the room reads as indoors with daylight.
+  const addWindow = (x, z) => {
+    const w = new THREE.Group();
+    w.add(at(box(0.05, 1.15, 1.35, s.trim), 0, 0, 0));
+    w.add(at(box(0.06, 0.98, 1.18, '#dcebf2', { emissive: '#cfe6f0', emissiveIntensity: 0.55, roughness: 0.2 }), 0, 0, 0));
+    w.add(at(box(0.07, 0.98, 0.04, s.trim), 0, 0, 0));
+    w.add(at(box(0.07, 0.04, 1.18, s.trim), 0, 0, 0));
+    w.add(at(box(0.18, 0.05, 1.45, s.trim), x < 0 ? 0.08 : -0.08, -0.6, 0));
+    g.add(noCollide(at(w, x, 1.75, z)));
+  };
+  addWindow(-6.83, -8.6);
+  addWindow(-6.83, -3.4);
+  addWindow(6.83, -6.4);
+  // Family photos on the back wall (left of the altar).
+  [[-5.4, 2.05, 0.55, 0.42], [-4.6, 1.85, 0.42, 0.55], [-3.75, 2.1, 0.5, 0.38]].forEach(([x, y, w, h], i) => {
+    g.add(noCollide(at(box(w + 0.08, h + 0.08, 0.04, '#5a3a24'), x, y, -10.37)));
+    g.add(noCollide(at(box(w, h, 0.045, ['#d8c3a0', '#b7c4cf', '#cdb8a6'][i]), x, y, -10.36)));
+  });
+  // Wall clock.
+  g.add(noCollide(at(cyl(0.22, 0.22, 0.04, '#f6f2ea', 20), 2.4, 2.35, -10.37).rotateX(Math.PI / 2)));
+  // Rug in the sitting area.
+  g.add(noCollide(at(box(3.4, 0.015, 2.0, s.trim, { roughness: 1 }), -3.6, 0.17, -2.9)));
+  g.add(noCollide(at(box(3.0, 0.017, 1.6, '#e9dcc0', { roughness: 1 }), -3.6, 0.172, -2.9)));
+  // Pendant lamp over the dining table.
+  // Flush ceiling lamp over the dining table (kept high so it never blocks the view across the table).
+  g.add(noCollide(at(cyl(0.3, 0.34, 0.06, '#f4ead6', 20, { emissive: '#ffd49a', emissiveIntensity: 0.6 }), tableAt.x, 2.85, tableAt.z)));
+  const lamp = new THREE.PointLight('#ffd49a', 6, 7, 1.6);
+  lamp.position.set(tableAt.x, 2.35, tableAt.z);
+  g.add(lamp);
+  const room = new THREE.PointLight('#ffe2b8', 8, 13, 1.5);
+  room.position.set(-1.5, 2.6, -6.5);
+  g.add(room);
+  // Potted plants by the open front.
+  [[-6.2, -2.3], [6.2, -2.3]].forEach(([x, z]) => {
+    g.add(at(cyl(0.2, 0.15, 0.36, '#a85a3a', 12), x, 0.32, z));
+    g.add(at(sphere(0.34, '#4f8a4f', 8), x, 0.78, z));
+    g.add(at(sphere(0.24, '#5f9a5a', 8), x + 0.12, 1.02, z - 0.06));
+  });
+}
+
 export function buildRumah(faithId) {
   const def = HOME[faithId] || HOME.alam;
   const s = HOME_STYLE[def.style] || HOME_STYLE.pondok;
@@ -729,6 +1266,7 @@ export function buildRumah(faithId) {
     tableGroup.add(at(chair, x, 0, z));
   });
   g.add(at(tableGroup, tableAt.x, 0.14, tableAt.z));
+  homeDecor(g, def.style, s, tableAt);
   spots.push(spot('meja-makan', 'sit', 'Meja makan', [tableAt.x, 0.9, tableAt.z], [tableAt.x, -2.9], {
     sitMode: 'meal', short: 'Meja makan', table: { x: tableAt.x, z: tableAt.z, top: 0.92 },
     seat: { x: tableAt.x, z: tableAt.z + 0.75, height: 0.6, facing: Math.PI },
@@ -784,6 +1322,11 @@ export function buildRumah(faithId) {
     g.add(at(box(1.4, 0.8, 0.08, s.trim), x, 0.4, 9.6));
   }
   g.add(at(tree(1.1, '#4f7d4a'), -10.5, 0, 0), at(tree(1.0, '#5f8f55'), 10.5, 0, -2));
+  // Front garden lawns either side of the path, and neighbours' houses and trees beyond the fence.
+  [-1, 1].forEach((side) => {
+    g.add(noCollide(at(box(10.4, 0.02, 10.2, '#9db884', { roughness: 1 }), side * 6.6, 0.012, 4.3)));
+  });
+  villageRing(g, def.style === 'bali' ? 'bali' : 'rumah');
 
   const npcs = [
     { id: 'juru-masak', role: 'vendor', persona: { ...def.kitchen.vendor, job: 'memasak untuk keluarga' }, stallId: def.kitchen.id, x: kitchen.vendorAt.x, z: kitchen.vendorAt.z, facing: Math.PI, culture: def.culture, family: true },
@@ -806,7 +1349,7 @@ export function buildRumah(faithId) {
     culture: def.culture,
     tableStyle: def.table,
     heldScene: FAITH_SCENE[faithId] || 'alam',
-    restricted: [{ shape: 'rect', x1: 3.2, z1: -10.4, x2: 6.6, z2: -9.3, message: 'Dapur sedang dipakai memasak. Minta dari depan, ya.' }],
+    restricted: [{ shape: 'rect', x1: 3.2, z1: -10.4, x2: 6.6, z2: -9.3, rope: false, message: 'Dapur sedang dipakai memasak. Minta dari depan, ya.' }],
     update(delta, elapsed) {
       if (rig.flame) {
         const heat = 0.3 + kitchen.cooking * 0.7;

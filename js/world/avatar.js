@@ -242,6 +242,14 @@ export function createAvatar(name, color, { visitor = false, host = false, attir
   head.position.y = 1.52;
   head.castShadow = true;
   body.add(torso, lower, head, ...buildHead(spec, headColor));
+  // Everyone is a little different: a stable height / build per name so a crowd isn't clones.
+  let seed = 0;
+  for (const ch of String(name || '')) {
+    seed = (seed * 31 + ch.charCodeAt(0)) >>> 0;
+  }
+  const stature = 0.95 + ((seed % 97) / 97) * 0.09;
+  const build = 0.93 + (((seed >>> 7) % 89) / 89) * 0.16;
+  body.scale.set(build, stature, build);
 
   if (spec.sash && spec.sash.style === 'diagonal') {
     // Upper robe draped from the left shoulder to the right hip.
@@ -447,14 +455,15 @@ function makeProp(kind) {
     }
     // ---- Kitchen & table props (hawkers, family cooks, diners) ----
     case 'spatula': {
-      group.add(atPos(cyl(0.012, 0.012, 0.32, '#5a3b26', 6), 0, -0.12, 0));
-      group.add(atPos(box(0.09, 0.006, 0.08, '#9aa0a6', { metalness: 0.7, roughness: 0.35 }), 0, -0.3, 0.02));
+      // Long-handled wok spatula (sutil): big enough to read from the customer side.
+      group.add(atPos(cyl(0.016, 0.016, 0.46, '#6b4426', 6), 0, -0.17, 0));
+      group.add(atPos(box(0.13, 0.008, 0.12, '#d4d8dc', { metalness: 0.25, roughness: 0.3 }), 0, -0.43, 0.03));
       return { object: group, anchor: 'right' };
     }
     case 'ladle': {
-      group.add(atPos(cyl(0.01, 0.01, 0.4, '#8f949a', 6, { metalness: 0.7, roughness: 0.35 }), 0, -0.16, 0));
-      const bowl = new THREE.Mesh(new THREE.SphereGeometry(0.05, 12, 8, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), mat('#9aa0a6', { metalness: 0.7, roughness: 0.35, side: THREE.DoubleSide }));
-      bowl.position.y = -0.37;
+      group.add(atPos(cyl(0.014, 0.014, 0.52, '#c4c8cc', 6, { metalness: 0.25, roughness: 0.3 }), 0, -0.22, 0));
+      const bowl = new THREE.Mesh(new THREE.SphereGeometry(0.075, 12, 8, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), mat('#d4d8dc', { metalness: 0.25, roughness: 0.3, side: THREE.DoubleSide }));
+      bowl.position.y = -0.5;
       group.add(bowl);
       return { object: group, anchor: 'right' };
     }
@@ -643,15 +652,15 @@ export const CLIPS = {
   // ---- Cooking (looping while the hawker works) ----
   // Stir-fry: spatula scraping and tossing in the wok, left hand on the wok handle.
   wok: {
-    prop: 'spatula', loop: true, end: 0.9,
-    frames: [k(0, [-1.15, -0.35, -0.95, 0.15], 0.1), k(0.22, [-0.8, -0.1, -1.1, 0.24], 0.13), k(0.45, [-1.3, -0.45, -0.82, 0.1], 0.1),
-      k(0.67, [-0.92, -0.18, -1.12, 0.24], 0.13), k(0.9, [-1.15, -0.35, -0.95, 0.15], 0.1)],
+    prop: 'spatula', loop: true, end: 1.0,
+    frames: [k(0, [-1.0, -0.35, -0.95, 0.15], 0.12), k(0.2, [-1.85, -0.1, -1.25, 0.28], 0.02), k(0.42, [-0.72, -0.5, -0.85, 0.1], 0.18),
+      k(0.6, [-1.55, -0.15, -1.2, 0.26], 0.05), k(0.8, [-0.8, -0.3, -0.9, 0.12], 0.16), k(1.0, [-1.0, -0.35, -0.95, 0.15], 0.12)],
   },
   // Slow stirring of a big pot or kuali with a ladle.
   stir: {
     prop: 'ladle', loop: true, end: 1.6,
-    frames: [k(0, [-1.0, -0.4, -0.55, 0.1], 0.16), k(0.4, [-0.8, -0.1, -0.55, 0.1], 0.18), k(0.8, [-1.1, 0.1, -0.55, 0.1], 0.16),
-      k(1.2, [-1.3, -0.3, -0.55, 0.1], 0.14), k(1.6, [-1.0, -0.4, -0.55, 0.1], 0.16)],
+    frames: [k(0, [-0.85, -0.55, -0.55, 0.1], 0.2), k(0.4, [-0.7, 0.05, -0.55, 0.1], 0.22), k(0.8, [-1.35, 0.2, -0.55, 0.1], 0.12),
+      k(1.2, [-1.6, -0.35, -0.55, 0.1], 0.08), k(1.6, [-0.85, -0.55, -0.55, 0.1], 0.2)],
   },
   // Fanning the charcoal with a bamboo fan, tongs in the other hand.
   fan: {
