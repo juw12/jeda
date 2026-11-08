@@ -6,7 +6,7 @@ import * as THREE from '../../vendor/three.module.min.js';
 import { buildPlace, mat, box, cyl, sphere, cone } from './places.js';
 import { bell, gong, chime, woodblock, crackle, bead, murmur, pageTurn, chant, asmr, loopSound, wakeAudio } from '../audio.js';
 import { greetingById } from './greetings.js';
-import { createAvatar, attireFor, animateAvatar, playClip, stopClip, setSitting, textSprite, setCarry, speechBubble } from './avatar.js';
+import { createAvatar, attireFor, animateAvatar, playClip, stopClip, setSitting, textSprite, setCarry, speechBubble, keepOnScreen } from './avatar.js';
 import { buildNav, createBarriers } from './nav.js';
 
 const labelProbe = new THREE.Vector3();
@@ -955,6 +955,7 @@ export function createWorld(container, options) {
     }
     avatar.bubble = textSprite(greeting.say, { background: 'rgba(255,248,232,0.94)', color: '#2a2016', size: 40 });
     avatar.bubble.position.y = 2.6;
+    keepOnScreen(avatar.bubble);
     avatar.group.add(avatar.bubble);
     const now = performance.now();
     avatar.bubbleUntil = now + 3600;
@@ -1952,6 +1953,7 @@ export function createWorld(container, options) {
       const sprite = textSprite(text, { background: 'rgba(255,248,232,0.94)', color: '#2a2016', size: 40 });
       sprite.position.set(0, self.sitting ? 2.25 : 2.7, 0);
       sprite.renderOrder = 10;
+      keepOnScreen(sprite);
       self.group.add(sprite);
       self.headCount = sprite;
       clearTimeout(self.headCountTimer);

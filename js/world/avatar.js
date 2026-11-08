@@ -35,6 +35,56 @@ export function textSprite(text, { color = '#ffffff', background = 'rgba(20,18,1
   return sprite;
 }
 
+// Keep a floating tag fully on screen. Near the left/right edge of the view the tag slides sideways
+// along its own row (via sprite.center) instead of being cut off; its edge never leaves the head.
+// Assumes matrixAutoUpdate (the default), so matrixWorld is recomputed before every render.
+const _tagView = new THREE.Vector3();
+const _tagScale = new THREE.Vector3();
+export function keepOnScreen(sprite, margin = 0.03) {
+  const baseX = sprite.center.x;
+  sprite.onBeforeRender = (renderer, scene, camera) => {
+    sprite.center.x = baseX;
+    if (!camera.isPerspectiveCamera) {
+      return;
+    }
+    _tagView.setFromMatrixPosition(sprite.matrixWorld).applyMatrix4(camera.matrixWorldInverse);
+    const depth = -_tagView.z;
+    if (depth < 0.05) {
+      return;
+    }
+    const p = camera.projectionMatrix.elements;
+    _tagScale.setFromMatrixScale(sprite.matrixWorld);
+    let half = (_tagScale.x * p[0]) / (2 * depth);
+    if (half <= 0) {
+      return;
+    }
+    const x = (p[0] * _tagView.x + p[8] * _tagView.z) / depth;
+    const limit = 1 - margin;
+    // A tag wider than the whole view (long names on a narrow phone) is shrunk to fit for this frame;
+    // matrixWorld is rebuilt every frame, so the change never accumulates.
+    if (half > limit) {
+      const fit = limit / half;
+      const m = sprite.matrixWorld.elements;
+      for (const i of [0, 1, 2, 4, 5, 6]) {
+        m[i] *= fit;
+      }
+      half = limit;
+    }
+    const left = x - half * 2 * baseX;
+    const right = x + half * 2 * (1 - baseX);
+    let shift = 0;
+    if (right > limit) {
+      shift = right - limit;
+    } else if (left < -limit) {
+      shift = left + limit;
+    }
+    if (shift !== 0) {
+      sprite.center.x = Math.min(1, Math.max(0, baseX + shift / (2 * half)));
+    }
+  };
+  return sprite;
+}
+
 // Multi-line floating speech bubble (NPC small talk, chat replies). Anchored at its bottom (the tail).
 export function speechBubble(text, { background = 'rgba(255,252,244,0.96)', color = '#2a2016', size = 34, maxChars = 28, maxLines = 4 } = {}) {
   const words = String(text).split(/\s+/).filter(Boolean);
@@ -85,7 +135,7 @@ export function speechBubble(text, { background = 'rgba(255,252,244,0.96)', colo
   sprite.scale.set(width * scale, canvas.height * scale, 1);
   sprite.center.set(0.5, 0);
   sprite.renderOrder = 5;
-  return sprite;
+  return keepOnScreen(sprite);
 }
 
 // Arm angles per gesture: [rightX, rightZ, leftX, leftZ].
@@ -349,6 +399,7 @@ export function createAvatar(name, color, { visitor = false, host = false, attir
   const labelText = host ? `${name} · pemandu` : visitor ? `${name} · tamu` : name;
   const label = textSprite(labelText, host ? { background: 'rgba(120,80,10,0.8)' } : undefined);
   label.position.y = 2.05;
+  keepOnScreen(label);
   group.add(body, crossLegs, benchLegs, shadow, label);
   if (host) {
     const halo = new THREE.Mesh(new THREE.RingGeometry(0.5, 0.62, 32), new THREE.MeshBasicMaterial({ color: '#f3c84b', transparent: true, opacity: 0.85, depthWrite: false, side: THREE.DoubleSide }));
