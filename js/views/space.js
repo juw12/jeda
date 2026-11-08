@@ -1636,7 +1636,11 @@ export function space(main, [faithId, areaParam, wonderParam], query, { content,
         world.walkTo(chip.dataset.chip, { instant: Boolean(prefs.get().reducedMotion) });
       });
     });
-    setTimeout(() => main.querySelector('[data-hint]')?.classList.add('fade'), 6000);
+    const hint = main.querySelector('[data-hint]');
+    const fadeHint = () => hint?.classList.add('fade');
+    setTimeout(fadeHint, 6000);
+    main.querySelector('.stage')?.addEventListener('pointerdown', fadeHint, { once: true });
+    window.addEventListener('keydown', fadeHint, { once: true });
     if (live || (prefs.get().presence === 'together' && prefs.get().presenceAcknowledged)) {
       startPresence();
     }

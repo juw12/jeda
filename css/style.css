@@ -1240,3 +1240,53 @@ body.in-space .topbar .pause-button {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
 }
 body.in-space .topbar .top-karma span:first-child {color: #f3c84b;}
+
+/* ---------- v1.7.2: legible glass (dimmed backdrop), 24px+ targets, hint that never covers controls ---------- */
+/* The backdrop is dimmed before the tint, so white labels stay >= 4.5:1 even over a white wall or bright sky. */
+.stage {
+  --glass: rgba(20, 18, 16, 0.32);
+  --glass-strong: rgba(20, 18, 16, 0.5);
+  --glass-dim: 0.6;
+  --glass-filter: blur(8px) brightness(0.6) saturate(1.1);
+}
+.stage-pills .pill:not(.live-pill),
+.greet-toggle,
+.immersive-exit,
+.side-btn,
+.spot-chips .chip:not(.on),
+.greetings,
+.area-switch,
+body.in-space .topbar .top-karma,
+body.in-space .topbar .pause-button {
+  background: var(--glass, rgba(20, 18, 16, 0.32)); border-color: rgba(255, 255, 255, 0.24);
+  backdrop-filter: blur(8px) brightness(0.6) saturate(1.1); -webkit-backdrop-filter: blur(8px) brightness(0.6) saturate(1.1);
+}
+body.in-space .topbar .top-karma,
+body.in-space .topbar .pause-button {background: rgba(20, 18, 16, 0.32);}
+
+/* Every stage control is at least 26px tall; the full-view toggle is a square, not a sliver. */
+.stage-pills .pill:not(.live-pill), .greet-toggle, .immersive-exit {min-height: 26px;}
+.stage-pills .icon-pill {min-width: 28px; min-height: 28px; justify-content: center; padding: 2px 6px; font-size: 0.9rem;}
+
+/* Side rail: full opacity (contrast) and labels you can actually read. */
+.side-btn {opacity: 1; width: 40px; min-height: 40px;}
+.side-btn small {font-size: 0.58rem; font-weight: 600; letter-spacing: 0;}
+
+/* Area switch: unselected tabs read clearly on bright domes/skies. */
+.area-switch button:not(.on) {color: #fff; font-weight: 600;}
+
+/* Tab bar inside a space: same glass family, a little firmer because it is navigation. */
+body.in-space .tabbar {
+  background: rgba(20, 18, 16, 0.58); border-color: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(12px) brightness(0.6); -webkit-backdrop-filter: blur(12px) brightness(0.6);
+}
+
+/* First-run hint: glass like the rest, fades on first touch/key, and on phones sits above the chips, clear of the top controls. */
+.stage-hint {
+  background: rgba(20, 18, 16, 0.5); border: 1px solid rgba(255, 255, 255, 0.2); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(8px) brightness(0.6); -webkit-backdrop-filter: blur(8px) brightness(0.6);
+}
+.stage-hint.fade {transition: opacity 0.6s;}
+@media (max-width: 640px) {
+  .stage-hint {top: auto; bottom: calc(146px + env(safe-area-inset-bottom)); max-width: 78%; line-height: 1.35;}
+}
