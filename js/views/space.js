@@ -132,6 +132,7 @@ export function space(main, [faithId, areaParam, wonderParam], query, { content,
       </div>
       ${festiveInfo ? `<div class="stage-banner">${esc(festiveInfo.text)}</div>` : ''}
       <button class="pill immersive-exit" type="button" data-immersive-exit aria-label="Tampilkan tombol lagi">⤡ Tombol</button>
+      <div class="joystick" data-joystick role="application" aria-label="Joystick: geser untuk berjalan"><span class="joystick-knob" data-joystick-knob></span></div>
       <div class="stage-side" role="group" aria-label="Tampilan ruang">
         <button class="side-btn" type="button" data-view-toggle aria-pressed="false" aria-label="Lihat dari mata sendiri (orang pertama)"><span aria-hidden="true">👁</span><small>1P</small></button>
         <button class="side-btn" type="button" data-time-toggle aria-label="Ganti waktu: waktu nyata"><span aria-hidden="true">🕰</span><small>Nyata</small></button>
@@ -1548,6 +1549,56 @@ export function space(main, [faithId, areaParam, wonderParam], query, { content,
       onBlocked: onBlockedZone,
     });
     window.__jedaWorld = world;
+    // Translucent on-screen joystick (touch screens): drag the knob to walk, release to stop.
+    const joystick = main.querySelector('[data-joystick]');
+    const knob = main.querySelector('[data-joystick-knob]');
+    if (joystick && knob) {
+      let activePointer = null;
+      const release = () => {
+        activePointer = null;
+        joystick.classList.remove('active');
+        knob.style.transform = '';
+        if (world) {
+          world.setMoveInput(0, 0);
+        }
+      };
+      const steer = (event) => {
+        const box = joystick.getBoundingClientRect();
+        const radius = box.width / 2;
+        let dx = event.clientX - (box.left + radius);
+        let dy = event.clientY - (box.top + radius);
+        const distance = Math.hypot(dx, dy);
+        if (distance > radius) {
+          dx = (dx / distance) * radius;
+          dy = (dy / distance) * radius;
+        }
+        knob.style.transform = `translate(${dx}px, ${dy}px)`;
+        if (world) {
+          world.setMoveInput(dx / radius, -dy / radius);
+        }
+      };
+      joystick.addEventListener('pointerdown', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        activePointer = event.pointerId;
+        joystick.setPointerCapture(event.pointerId);
+        joystick.classList.add('active');
+        steer(event);
+      });
+      joystick.addEventListener('pointermove', (event) => {
+        if (event.pointerId === activePointer) {
+          event.stopPropagation();
+          steer(event);
+        }
+      });
+      ['pointerup', 'pointercancel', 'lostpointercapture'].forEach((type) => {
+        joystick.addEventListener(type, (event) => {
+          if (event.pointerId === activePointer) {
+            release();
+          }
+        });
+      });
+    }
     try {
       const pendingWish = sessionStorage.getItem('jeda:v1:pendingWish');
       if (pendingWish) {

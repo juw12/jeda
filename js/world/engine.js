@@ -977,6 +977,8 @@ export function createWorld(container, options) {
   let drag = null;
   let pinchStart = 0;
   const keys = new Set();
+  // Analog move input from the on-screen joystick: x = right, y = forward, each in [-1, 1].
+  const stick = { x: 0, y: 0 };
 
   function toNdc(event) {
     const rect = renderer.domElement.getBoundingClientRect();
@@ -1637,7 +1639,7 @@ export function createWorld(container, options) {
     elapsed += delta;
 
     let keyMoved = false;
-    if (keys.size) {
+    if (keys.size || stick.x || stick.y) {
       const forward = new THREE.Vector3(-Math.sin(rig.yaw), 0, -Math.cos(rig.yaw));
       const right = new THREE.Vector3(-forward.z, 0, forward.x);
       const move = new THREE.Vector3();
@@ -1652,6 +1654,14 @@ export function createWorld(container, options) {
         if (keys.has('d') || keys.has('arrowright')) move.add(right);
         if (keys.has('a') || keys.has('arrowleft')) move.sub(right);
       }
+      if (stick.x || stick.y) {
+        move.addScaledVector(forward, stick.y);
+        if (firstPerson) {
+          rig.yaw -= delta * 1.8 * stick.x;
+        } else {
+          move.addScaledVector(right, stick.x);
+        }
+      }
       if (move.lengthSq() > 0 && !held) {
         standUp();
         if (self.clip) {
@@ -1663,7 +1673,9 @@ export function createWorld(container, options) {
         self.pendingPerform = null;
         move.normalize();
         const position = self.group.position;
-        const step = 3.2 * delta;
+        // A light push on the joystick walks slowly; keys and a full push walk at full pace.
+        const push = keys.size ? 1 : Math.min(1, Math.hypot(stick.x, stick.y) * 1.25);
+        const step = 3.2 * delta * push;
         const escaping = !nav.walkable(position.x, position.z);
         const tryStep = (dx, dz) => {
           if (escaping || nav.walkable(position.x + dx, position.z + dz)) {
@@ -1910,6 +1922,12 @@ export function createWorld(container, options) {
     spots: place.spots,
     perform,
     standUp,
+    // On-screen joystick: x = right, y = forward, both clamped to [-1, 1]; (0, 0) stops.
+    setMoveInput(x, y) {
+      const clamp = (v) => Math.max(-1, Math.min(1, Number(v) || 0));
+      stick.x = Math.abs(x) < 0.12 ? 0 : clamp(x);
+      stick.y = Math.abs(y) < 0.12 ? 0 : clamp(y);
+    },
     setView: (mode) => {
       if (held) {
         return view.mode;
