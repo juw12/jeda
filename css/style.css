@@ -1524,3 +1524,10 @@ body.in-space .topbar .top-link {
 
 /* v1.7.13: the one-row phone top from v1.7.12 is rolled back - the council had already rejected it (2-0-3, crammed).
    Kept: selected chips / open ⋯ on the shared glass, held-object line icon, 28px air above the tab bar. */
+
+/* v1.7.15: on desktop the 3D stage fills the window like it does on phones. At 82vh the cream page
+   (greeting + ritual cards) showed as a bright strip under the scene, harsh at night; it now starts
+   just below the fold and is reached by scrolling, the same as on a phone. */
+@media (min-width: 900px) {
+  .stage { height: 100vh; height: 100dvh; }
+}
