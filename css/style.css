@@ -1290,3 +1290,90 @@ body.in-space .tabbar {
 @media (max-width: 640px) {
   .stage-hint {top: auto; bottom: calc(146px + env(safe-area-inset-bottom)); max-width: 78%; line-height: 1.35;}
 }
+
+/* Round 2: one karma balance in a space (the stage pill opens the in-scene bank), titles that hold on bright sky,
+   and a scrollable chip row that fades at the edge instead of looking clipped. */
+body.in-space:has(.stage-pills .karma-pill) .topbar .top-karma {display: none;}
+.stage-title h1, body.in-space .topbar .brand {text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 0 16px rgba(0, 0, 0, 0.35);}
+@media (max-width: 640px) {
+  .spot-chips {
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
+    padding-right: 24px;
+  }
+}
+
+/* Round 3: one bottom row on phones (Salam sits in front of the chips instead of on its own line),
+   a little air above the tab bar, and a joystick that is easier to find. */
+@media (max-width: 640px) {
+  .stage-bottom {flex-flow: row wrap; align-items: center; gap: 6px; bottom: calc(56px + 20px + env(safe-area-inset-bottom));}
+  .stage-bottom > .greet-toggle {order: 0; flex: none; align-self: center; min-height: 30px; padding: 3px 10px; font-size: 0.72rem;}
+  .stage-bottom > .spot-chips {order: 1; flex: 1 1 0; min-width: 0;}
+  .stage-bottom > .action-card,
+  .stage-bottom > .live-bar,
+  .stage-bottom > .greetings {order: 2; flex-basis: 100%;}
+  .stage-hint {bottom: calc(118px + env(safe-area-inset-bottom));}
+}
+.joystick {opacity: 0.62;}
+
+/* v1.7.3: a quieter HUD. Salam folds away on every screen and sits in the chip row, the joystick wears the same glass,
+   and the phone title is a touch smaller so the scene keeps the top of the screen. */
+.greet-toggle {display: inline-flex;}
+.greetings {display: none;}
+.greetings.open {display: flex;}
+@media (min-width: 641px) {
+  .stage-bottom {flex-flow: row wrap; justify-content: center; align-items: center; gap: 8px;}
+  .stage-bottom > .greet-toggle {order: 0; align-self: center; min-height: 30px; padding: 3px 12px; font-size: 0.78rem;}
+  .stage-bottom > .spot-chips {order: 1; max-width: min(760px, calc(100% - 110px));}
+  .stage-bottom > .action-card,
+  .stage-bottom > .live-bar,
+  .stage-bottom > .greetings {order: 2; flex-basis: 100%; justify-content: center;}
+  .stage-bottom > .greetings {flex-basis: auto; max-width: 100%;}
+}
+@media (max-width: 640px) {
+  .stage-title h1 {font-size: 1.08rem; line-height: 1.2;}
+}
+.joystick {
+  background: rgba(20, 18, 16, 0.26); border: 1px solid rgba(255, 255, 255, 0.24);
+  backdrop-filter: blur(8px) brightness(0.7); -webkit-backdrop-filter: blur(8px) brightness(0.7);
+}
+.joystick-knob {background: rgba(255, 255, 255, 0.55); border-color: rgba(255, 255, 255, 0.75);}
+
+/* v1.7.3 r5: one quiet glass system on phones. Karma lives in the top bar (one balance, one row of stage pills),
+   titles sit on the same glass as every control, the chip row fades clearly so it reads as scrollable,
+   and the side-rail captions are a little larger. */
+.stage-title h1 {
+  display: inline; padding: 1px 10px; border-radius: 12px; line-height: 1.5;
+  background: var(--glass, rgba(20, 18, 16, 0.32));
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+  backdrop-filter: blur(8px) brightness(0.6); -webkit-backdrop-filter: blur(8px) brightness(0.6);
+}
+body.in-space .topbar .brand {
+  padding: 2px 10px; border-radius: 999px; background: var(--glass, rgba(20, 18, 16, 0.32));
+  backdrop-filter: blur(8px) brightness(0.6); -webkit-backdrop-filter: blur(8px) brightness(0.6);
+}
+.side-btn small {font-size: 0.62rem;}
+@media (max-width: 640px) {
+  body.in-space:has(.stage-pills .karma-pill) .topbar .top-karma {display: inline-flex; min-height: 28px;}
+  .stage-pills .karma-pill {display: none;}
+  .stage-pills {flex-wrap: nowrap;}
+  .stage-title h1 {font-size: 1.02rem;}
+  .spot-chips {
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 56px), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 56px), transparent);
+    padding-right: 48px;
+  }
+}
+@media (max-width: 640px) {
+  .stage-top {flex-wrap: wrap; row-gap: 6px;}
+  .stage-title {display: contents;}
+  .stage-title h1 {order: 0; flex: 1 1 0; min-width: 0; align-self: flex-start;}
+  .stage-top > .stage-pills {order: 1; flex: none;}
+  .stage-title .area-switch {order: 2; flex-basis: 100%; width: max-content; max-width: 100%; margin-top: 0; justify-self: start;}
+}
+@media (max-width: 640px) {
+  .stage-top {row-gap: 3px;}
+  .stage-top::after {content: ''; order: 1; flex-basis: 100%; height: 0;}
+  .stage-title h1 {flex: 0 1 auto; margin-right: auto; border-radius: 10px; line-height: 1.35; padding: 2px 10px;}
+  .stage-title .area-switch {flex: 0 0 auto; flex-basis: auto; width: auto;}
+}
