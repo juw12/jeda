@@ -1684,7 +1684,7 @@ export function space(main, [faithId, areaParam, wonderParam], query, { content,
     });
     const hint = main.querySelector('[data-hint]');
     const fadeHint = () => hint?.classList.add('fade');
-    setTimeout(fadeHint, 6000);
+    setTimeout(fadeHint, 4500);
     main.querySelector('.stage')?.addEventListener('pointerdown', fadeHint, { once: true });
     window.addEventListener('keydown', fadeHint, { once: true });
     // v1.7.8: name tags fade where a HUD control covers them, and the chip row shows a › cue when it scrolls.
@@ -1730,15 +1730,45 @@ export function space(main, [faithId, areaParam, wonderParam], query, { content,
     chipsMore.setAttribute('aria-label', 'Geser untuk melihat tempat lain');
     chipsMore.innerHTML = '<span aria-hidden="true">›</span>';
     chips.after(chipsMore);
+    const phoneQuery = window.matchMedia('(max-width: 640px)');
     const updateChipsMore = () => {
       const more = chips.scrollWidth - chips.clientWidth - chips.scrollLeft > 8;
       chipsMore.hidden = !more;
       chips.classList.toggle('at-end', !more);
     };
-    chipsMore.addEventListener('click', () => chips.scrollBy({ left: chips.clientWidth * 0.7, behavior: 'smooth' }));
-    chips.addEventListener('scroll', updateChipsMore, { passive: true });
-    window.addEventListener('resize', updateChipsMore);
-    requestAnimationFrame(updateChipsMore);
+    // Phones: end the strip on the last whole chip, so no label is ever cut mid-word.
+    const fitChips = () => {
+      chips.style.flex = '';
+      // Measure with the › in place, so the fitted strip and the button share one row.
+      chipsMore.hidden = chips.scrollWidth - chips.clientWidth <= 8;
+      if (phoneQuery.matches && chips.scrollWidth - chips.clientWidth > 8) {
+        const stripLeft = chips.getBoundingClientRect().left;
+        const room = chips.clientWidth - 2;
+        let fit = 0;
+        for (const chip of chips.children) {
+          const box = chip.getBoundingClientRect();
+          const right = box.right - stripLeft;
+          if (box.left - stripLeft >= -1 && right <= room) fit = Math.max(fit, right);
+        }
+        if (fit > 0) chips.style.flex = `0 0 ${Math.ceil(fit + 2)}px`;
+      }
+      updateChipsMore();
+    };
+    let fitTimer = 0;
+    chipsMore.addEventListener('click', () => {
+      const stripBox = chips.getBoundingClientRect();
+      const next = [...chips.children].find((chip) => chip.getBoundingClientRect().right > stripBox.right + 1);
+      const offset = next ? next.getBoundingClientRect().left - stripBox.left - 2 : chips.clientWidth * 0.7;
+      chips.scrollBy({ left: offset, behavior: 'smooth' });
+    });
+    chips.addEventListener('scroll', () => {
+      updateChipsMore();
+      clearTimeout(fitTimer);
+      fitTimer = setTimeout(fitChips, 160);
+    }, { passive: true });
+    window.addEventListener('resize', fitChips);
+    new MutationObserver(fitChips).observe(chips, { childList: true });
+    requestAnimationFrame(fitChips);
     if (live || (prefs.get().presence === 'together' && prefs.get().presenceAcknowledged)) {
       startPresence();
     }
