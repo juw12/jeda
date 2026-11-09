@@ -40,10 +40,21 @@ export function textSprite(text, { color = '#ffffff', background = 'rgba(20,18,1
 // Assumes matrixAutoUpdate (the default), so matrixWorld is recomputed before every render.
 const _tagView = new THREE.Vector3();
 const _tagScale = new THREE.Vector3();
+// v1.7.8: screen areas covered by HUD controls (joystick, side rail, chip row, top bar), in NDC
+// {left, right, bottom, top}. A tag that would sit under one of them fades instead of colliding.
+let hudZones = [];
+export function setHudZones(zones) {
+  hudZones = Array.isArray(zones) ? zones : [];
+}
+const HUD_FADE = 0.15;
 export function keepOnScreen(sprite, margin = 0.03) {
   const baseX = sprite.center.x;
+  const baseOpacity = sprite.material ? sprite.material.opacity : 1;
   sprite.onBeforeRender = (renderer, scene, camera) => {
     sprite.center.x = baseX;
+    if (sprite.material) {
+      sprite.material.opacity = baseOpacity;
+    }
     if (!camera.isPerspectiveCamera) {
       return;
     }
@@ -80,6 +91,18 @@ export function keepOnScreen(sprite, margin = 0.03) {
     }
     if (shift !== 0) {
       sprite.center.x = Math.min(1, Math.max(0, baseX + shift / (2 * half)));
+    }
+    if (hudZones.length && sprite.material) {
+      const tagLeft = x - half * 2 * sprite.center.x;
+      const tagRight = tagLeft + half * 2;
+      const y = (p[5] * _tagView.y + p[9] * _tagView.z) / depth;
+      const fullHeight = (_tagScale.y * p[5]) / depth;
+      const tagBottom = y - fullHeight * sprite.center.y;
+      const tagTop = tagBottom + fullHeight;
+      const covered = hudZones.some((zone) => tagRight > zone.left && tagLeft < zone.right && tagTop > zone.bottom && tagBottom < zone.top);
+      if (covered) {
+        sprite.material.opacity = baseOpacity * HUD_FADE;
+      }
     }
   };
   return sprite;

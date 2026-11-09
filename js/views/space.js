@@ -1687,6 +1687,58 @@ export function space(main, [faithId, areaParam, wonderParam], query, { content,
     setTimeout(fadeHint, 6000);
     main.querySelector('.stage')?.addEventListener('pointerdown', fadeHint, { once: true });
     window.addEventListener('keydown', fadeHint, { once: true });
+    // v1.7.8: name tags fade where a HUD control covers them, and the chip row shows a › cue when it scrolls.
+    const { setHudZones } = await import('../world/avatar.js');
+    const hudSelectors = ['[data-joystick]', '.stage-side', '.stage-bottom', '.stage-top', 'body.in-space .topbar'];
+    const refreshHudZones = () => {
+      const box = worldBox.getBoundingClientRect();
+      if (!box.width || !box.height) {
+        return;
+      }
+      const zones = [];
+      hudSelectors.forEach((selector) => {
+        const node = selector.startsWith('body') ? document.querySelector(selector) : main.querySelector(selector);
+        if (!node) {
+          return;
+        }
+        const rect = node.getBoundingClientRect();
+        if (rect.width < 2 || rect.height < 2 || getComputedStyle(node).visibility === 'hidden') {
+          return;
+        }
+        zones.push({
+          left: ((rect.left - box.left) / box.width) * 2 - 1,
+          right: ((rect.right - box.left) / box.width) * 2 - 1,
+          top: 1 - ((rect.top - box.top) / box.height) * 2,
+          bottom: 1 - ((rect.bottom - box.top) / box.height) * 2,
+        });
+      });
+      setHudZones(zones);
+    };
+    refreshHudZones();
+    const hudTimer = setInterval(() => {
+      if (!main.isConnected) {
+        clearInterval(hudTimer);
+        setHudZones([]);
+        return;
+      }
+      refreshHudZones();
+    }, 700);
+    const chipsMore = document.createElement('button');
+    chipsMore.type = 'button';
+    chipsMore.className = 'chips-more';
+    chipsMore.hidden = true;
+    chipsMore.setAttribute('aria-label', 'Geser untuk melihat tempat lain');
+    chipsMore.innerHTML = '<span aria-hidden="true">›</span>';
+    chips.after(chipsMore);
+    const updateChipsMore = () => {
+      const more = chips.scrollWidth - chips.clientWidth - chips.scrollLeft > 8;
+      chipsMore.hidden = !more;
+      chips.classList.toggle('at-end', !more);
+    };
+    chipsMore.addEventListener('click', () => chips.scrollBy({ left: chips.clientWidth * 0.7, behavior: 'smooth' }));
+    chips.addEventListener('scroll', updateChipsMore, { passive: true });
+    window.addEventListener('resize', updateChipsMore);
+    requestAnimationFrame(updateChipsMore);
     if (live || (prefs.get().presence === 'together' && prefs.get().presenceAcknowledged)) {
       startPresence();
     }
