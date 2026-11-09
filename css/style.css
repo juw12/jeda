@@ -1499,3 +1499,11 @@ body.in-space .topbar .top-link {
 @media (min-width: 900px) {
   .stage-title h1 {font-size: 1.3rem;}
 }
+
+/* ---------- v1.7.10: the place switch joins the same dark glass tier ---------- */
+.area-switch {background: var(--glass, rgba(20, 18, 16, 0.32)); border: 1px solid rgba(255, 255, 255, 0.3);}
+.area-switch button.on {
+  background: rgba(255, 255, 255, 0.26); color: #fff; font-weight: 700;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45); text-shadow: var(--glass-text-shadow, 0 1px 2px rgba(0, 0, 0, 0.6));
+}
+.side-btn .rail-icon {display: block; width: 20px; height: 20px; margin: 0 auto 1px; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.45));}

@@ -137,9 +137,9 @@ export function space(main, [faithId, areaParam, wonderParam], query, { content,
       <button class="pill immersive-exit" type="button" data-immersive-exit aria-label="Tampilkan tombol lagi">⤡ Tombol</button>
       <div class="joystick" data-joystick role="application" aria-label="Joystick: geser untuk berjalan"><span class="joystick-knob" data-joystick-knob></span></div>
       <div class="stage-side" role="group" aria-label="Tampilan ruang">
-        <button class="side-btn" type="button" data-view-toggle aria-pressed="false" aria-label="Lihat dari mata sendiri (orang pertama)"><span aria-hidden="true">👁</span><small>1P</small></button>
-        <button class="side-btn" type="button" data-time-toggle aria-label="Ganti waktu: waktu nyata"><span aria-hidden="true">🕰</span><small>Nyata</small></button>
-        <button class="side-btn" type="button" data-guides aria-label="Panduan: pustaka, kalender, upacara…"><span aria-hidden="true">📚</span><small>Panduan</small></button>
+        <button class="side-btn" type="button" data-view-toggle aria-pressed="false" aria-label="Lihat dari mata sendiri (orang pertama)"><svg class="rail-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><small>1P</small></button>
+        <button class="side-btn" type="button" data-time-toggle aria-label="Ganti waktu: waktu nyata"><svg class="rail-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><small>Nyata</small></button>
+        <button class="side-btn" type="button" data-guides aria-label="Panduan: pustaka, kalender, upacara…"><svg class="rail-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20v3H6.5A2.5 2.5 0 0 1 4 20.5z"/></svg><small>Panduan</small></button>
         <button class="side-btn" type="button" data-hold hidden><span aria-hidden="true" data-hold-icon>📿</span><small data-hold-short></small></button>
       </div>
       <div class="hold-hud" data-hold-hud hidden aria-live="polite">
@@ -1045,8 +1045,8 @@ export function space(main, [faithId, areaParam, wonderParam], query, { content,
     const first = world && world.view() === 'first';
     viewToggle.setAttribute('aria-pressed', String(first));
     viewToggle.innerHTML = first
-      ? '<span aria-hidden="true">🧍</span><small>3P</small>'
-      : '<span aria-hidden="true">👁</span><small>1P</small>';
+      ? '<svg class="rail-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="3"/><path d="M7 21v-6a5 5 0 0 1 10 0v6"/></svg><small>3P</small>'
+      : '<svg class="rail-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><small>1P</small>';
     viewToggle.setAttribute('aria-label', first ? 'Kembali ke orang ketiga' : 'Lihat dari mata sendiri (orang pertama)');
   };
   viewToggle.addEventListener('click', () => {
@@ -1065,7 +1065,7 @@ export function space(main, [faithId, areaParam, wonderParam], query, { content,
     timeIndex = (timeIndex + 1) % TIMES.length;
     const choice = TIMES[timeIndex];
     world.setTime(choice.id === 'auto' ? timeOfDay() : choice.id);
-    timeToggle.innerHTML = `<span aria-hidden="true">${choice.icon}</span><small>${choice.short}</small>`;
+    timeToggle.innerHTML = `<svg class="rail-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><small>${choice.short}</small>`;
     timeToggle.setAttribute('aria-label', `Ganti waktu: ${choice.name}`);
     toast(choice.id === 'auto' ? 'Waktu mengikuti jam perangkatmu' : `Suasana ${choice.name.toLowerCase()}`);
   });
