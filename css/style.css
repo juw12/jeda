@@ -1508,10 +1508,7 @@ body.in-space .topbar .top-link {
 }
 .side-btn .rail-icon {display: block; width: 20px; height: 20px; margin: 0 auto 1px; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.45));}
 
-/* ---------- v1.7.12: one-row phone top, selected chips on the same glass, more air above the tab bar ----------
-   On phones the place switch shares the top bar's row: the wordmark steps aside (Beranda is in the tab bar),
-   "Ambil jeda" becomes its pause mark, and search joins the ⋯ menu. Desktop is unchanged. */
-.pause-glyph {display: none;}
+/* ---------- v1.7.12: selected chips and the open ⋯ on the shared glass, more air above the tab bar ---------- */
 .stage-pills .pill .rail-icon {display: block; width: 17px; height: 17px;}
 .spot-chips .chip.on {
   background: rgba(255, 255, 255, 0.26); color: #fff; font-weight: 700;
@@ -1522,26 +1519,8 @@ body.in-space .topbar .top-link {
     background: rgba(255, 255, 255, 0.26); color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45);
   }
-  .stage-pills .pill-group a.pill {color: #fff; text-decoration: none;}
-  body.in-space:has(.stage-pills .more-pill) .topbar {pointer-events: none; padding-right: calc(12px + 40px + 8px);}
-  body.in-space:has(.stage-pills .more-pill) .topbar > * {pointer-events: auto;}
-  body.in-space:has(.stage-pills .more-pill) .topbar .top-link {display: none;}
-  body.in-space:has(.stage-title .area-switch) .topbar .brand {display: none;}
-  body.in-space:has(.stage-title .area-switch) .topbar .top-actions {margin-left: auto;}
-  body.in-space:has(.stage-title .area-switch) .topbar .top-karma {min-height: 34px; padding: 0 11px;}
-  body.in-space:has(.stage-title .area-switch) .topbar .pause-button {
-    display: inline-grid; place-items: center; width: 34px; min-width: 34px; min-height: 34px; padding: 0;
-    border-radius: 999px; font-size: 0.95rem; font-weight: 700; letter-spacing: -0.04em;
-  }
-  body.in-space:has(.stage-title .area-switch) .topbar .pause-glyph {display: inline;}
-  body.in-space:has(.stage-title .area-switch) .topbar .pause-label {display: none;}
-  body.in-space .stage-top:has(.area-switch) {top: calc(5px + env(safe-area-inset-top));}
-  body.in-space .stage-top:has(.area-switch) .stage-pills .more-pill {min-height: 34px;}
   body:not(.immersive) .stage-bottom {bottom: calc(56px + 32px + env(safe-area-inset-bottom));}
 }
-@media (max-width: 360px) {
-  .area-switch {gap: 0;}
-  .area-switch button {padding: 3px 7px; font-size: 0.7rem;}
-  body.in-space .topbar .top-actions {gap: 5px;}
-  body.in-space:has(.stage-title .area-switch) .topbar .top-karma {padding: 0 8px;}
-}
+
+/* v1.7.13: the one-row phone top from v1.7.12 is rolled back - the council had already rejected it (2-0-3, crammed).
+   Kept: selected chips / open ⋯ on the shared glass, held-object line icon, 28px air above the tab bar. */
