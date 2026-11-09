@@ -1377,3 +1377,42 @@ body.in-space .topbar .brand {
   .stage-title h1 {flex: 0 1 auto; margin-right: auto; border-radius: 10px; line-height: 1.35; padding: 2px 10px;}
   .stage-title .area-switch {flex: 0 0 auto; flex-basis: auto; width: auto;}
 }
+
+/* ---------- v1.7.5: the phone HUD fits in two rows and nothing is clipped ----------
+   Row 1 is the top bar; row 2 holds the place switch (left) and presence pills (right). The place name stays for
+   screen readers; the selected tab and the 3D signboard already say where you are. Side-rail captions fit their
+   buttons, the hint fits on one line, and every glass control keeps a visible edge on night scenes. */
+@media (max-width: 640px) {
+  .stage-top {flex-wrap: wrap; align-items: center; row-gap: 4px;}
+  .stage-top::after {display: none;}
+  .stage-title:has(.area-switch) h1 {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
+    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
+  }
+  .stage-title .area-switch {order: 0; flex: 0 1 auto; min-width: 0; margin: 0;}
+  .stage-top > .stage-pills {order: 1; margin-left: auto;}
+  .stage-hint {white-space: nowrap; max-width: calc(100% - 24px); overflow: hidden; text-overflow: ellipsis;}
+  .side-btn {width: 50px; min-height: 44px; padding: 4px 2px;}
+  .side-btn small {font-size: 0.6rem; max-width: 100%; overflow: hidden; text-overflow: clip; white-space: nowrap;}
+}
+@media (max-width: 430px) {
+  .area-switch button > span[aria-hidden="true"] {display: none;}
+  .area-switch button {padding: 3px 10px;}
+}
+@media (max-width: 340px) {
+  .stage-hint {white-space: normal;}
+  body.in-space .toast {top: calc(env(safe-area-inset-top, 0px) + 124px);}
+}
+.stage-pills .pill:not(.live-pill),
+.side-btn,
+.spot-chips .chip:not(.on),
+.greet-toggle,
+.area-switch,
+.joystick,
+body.in-space .topbar .top-karma,
+body.in-space .topbar .pause-button,
+body.in-space .topbar .brand,
+.stage-title h1 {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.22);
+}

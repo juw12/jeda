@@ -169,7 +169,7 @@ export function space(main, [faithId, areaParam, wonderParam], query, { content,
           <div class="panel-body" data-panel-body></div>
         </div>
       </div>
-      <div class="stage-hint" data-hint>Ketuk tanah untuk berjalan · seret untuk melihat sekeliling</div>
+      <div class="stage-hint" data-hint>Ketuk tanah untuk berjalan · seret untuk menoleh</div>
       <div class="stage-bottom">
         <div class="spot-chips" data-chips role="group" aria-label="Pergi ke"></div>
         <div class="action-card" data-action hidden>
