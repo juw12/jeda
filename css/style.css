@@ -59,7 +59,7 @@ body[data-faith="protestan"] { --accent: #6c8fe0; }
 body[data-faith="katolik"] { --accent: #9b7fd1; }
 body[data-faith="alam"] { --accent: #6aa36f; }
 
-a { color: var(--accent); }
+a { color: var(--accent-ink); }
 a:hover { text-decoration-thickness: 2px; }
 
 .skip-link { position: absolute; left: -999px; top: 0; background: var(--accent); color: #000; padding: 8px 12px; z-index: 100; }
@@ -90,7 +90,7 @@ a:hover { text-decoration-thickness: 2px; }
   flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
   color: var(--muted); text-decoration: none; font-size: 0.75rem; gap: 2px;
 }
-.tabbar a.active { color: var(--accent); }
+.tabbar a.active { color: var(--accent-ink); }
 .tab-icon { font-size: 1.25rem; line-height: 1; }
 
 .boot { display: grid; place-items: center; min-height: 70vh; color: var(--muted); }
@@ -133,7 +133,7 @@ p { margin: 0; }
 .btn-ghost.danger, .danger { color: var(--danger); }
 .btn-ghost.small, .chip { min-height: 36px; padding: 4px 14px; font-size: 0.875rem; }
 .chip { background: var(--surface-2); color: var(--text); border: 1px solid var(--line); }
-.chip.active { border-color: var(--accent); color: var(--accent); }
+.chip.active { border-color: var(--accent); color: var(--accent-ink); }
 .file-label { position: relative; }
 
 .badge { display: inline-block; font-size: 0.72rem; padding: 1px 8px; border-radius: 999px; background: #5a4520; color: #ffd98a; vertical-align: middle; }
@@ -177,7 +177,7 @@ textarea { resize: vertical; }
 .holy-list li { display: flex; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
 
 /* Choose */
-.step-label { color: var(--accent); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; }
+.step-label { color: var(--accent-ink); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; }
 .faith-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
 .faith-card {
   font: inherit; color: var(--text); text-decoration: none; cursor: pointer; text-align: left;
@@ -204,7 +204,7 @@ textarea { resize: vertical; }
 .ritual-body { display: flex; flex-direction: column; gap: 10px; }
 .ritual-svg { width: 100%; max-height: 200px; }
 .ritual-status { min-height: 1.4em; font-size: 0.92rem; color: var(--muted); }
-.about summary, .mine summary { cursor: pointer; color: var(--accent); font-size: 0.9rem; }
+.about summary, .mine summary { cursor: pointer; color: var(--accent-ink); font-size: 0.9rem; }
 .observe-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 10px; border-radius: 10px; background: var(--surface-2); }
 .visit-tips ul { margin: 0; padding-left: 1.2em; }
 
@@ -346,7 +346,7 @@ textarea { resize: vertical; }
   font: inherit; font-size: 0.85rem; cursor: pointer; color: var(--text);
   background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; min-height: 36px;
 }
-.pause-button:hover { border-color: var(--accent); color: var(--accent); }
+.pause-button:hover { border-color: var(--accent); color: var(--accent-ink); }
 .row.center { justify-content: center; }
 .pause-card {
   font: inherit; color: var(--text); cursor: pointer; text-align: left;
@@ -382,7 +382,7 @@ textarea { resize: vertical; }
 .glossary-item { padding: 10px 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
 .glossary-item dt { font-weight: 600; }
 .glossary-item dd { margin: 4px 0 0; color: var(--muted); }
-.glossary-letter { margin-top: 8px; color: var(--accent); }
+.glossary-letter { margin-top: 8px; color: var(--accent-ink); }
 .friend-card { border-left: 4px solid var(--accent); }
 
 /* Keyframes */
@@ -937,7 +937,7 @@ body.holding .tabbar { display: none; }
 .chat-line.npc p { background: var(--surface-2); border-bottom-left-radius: 4px; }
 .chat-line.me { align-self: flex-end; }
 .chat-line.me p { background: var(--accent); color: #fff; border-bottom-right-radius: 4px; }
-.chat-link { align-self: flex-start; font: inherit; font-size: 0.85rem; border: 1px solid var(--line); background: transparent; color: var(--accent);
+.chat-link { align-self: flex-start; font: inherit; font-size: 0.85rem; border: 1px solid var(--line); background: transparent; color: var(--accent-ink);
   border-radius: 999px; padding: 4px 10px; cursor: pointer; }
 .chat-chips { display: flex; gap: 6px; overflow-x: auto; padding: 0 12px 8px; scrollbar-width: none; }
 .chat-chips .chip { min-height: 34px; padding: 4px 12px; font-size: 0.85rem; white-space: nowrap; }
@@ -1531,3 +1531,16 @@ body.in-space .topbar .top-link {
 @media (min-width: 900px) {
   .stage { height: 100vh; height: 100dvh; }
 }
+
+/* v1.7.16: faith accents are bright (hindu #e3b341 is 1.6:1 on cream), so text uses a readable ink of the
+   same hue: 50% accent + 50% near-black on light (>= 4.7:1 for all eight faiths), 80% accent + white on dark
+   (>= 4.6:1). Defined on body so it follows body[data-faith]. Borders, fills and glyph marks keep --accent. */
+body { --accent-ink: color-mix(in srgb, var(--accent) 50%, #1a1410); }
+:root[data-theme="dark"] body { --accent-ink: color-mix(in srgb, var(--accent) 80%, #ffffff); }
+/* The 3D stage sits on dark glass in every theme, so links there keep the light ink. */
+.stage { --accent-ink: color-mix(in srgb, var(--accent) 80%, #ffffff); }
+/* Kamus "Baca" link: 24px tall tap target (was 19px). */
+.glossary dd a.small, dd > a.small { display: inline-block; padding: 3px 6px; margin-left: 2px; }
+/* Destructive text ("Hapus semua data"): #c4513f was 3.85:1 on light and 3.42:1 on dark surfaces. */
+body { --danger: #aa4838; }
+:root[data-theme="dark"] body { --danger: #d07465; }
