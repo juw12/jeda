@@ -1297,6 +1297,10 @@ export function buildRumah(faithId) {
   [-6.95, 6.95].forEach((x) => g.add(at(box(0.2, 2.9, 9.2, s.wall), x, 1.45, -6)));
   [-6.8, 6.8, -2.6, 2.6].forEach((x) => g.add(at(box(0.25, 2.9, 0.25, s.trim), x, 1.45, -1.5)));
   g.add(at(box(14.6, 0.2, 9.8, s.trim), 0, 2.98, -6));
+  // Light ceiling just under the eave beam (woven bamboo for the village styles), so the
+  // eye-level opening view looks up at a warm ceiling rather than a dark underside.
+  const bambooCeiling = def.style === 'bali' || def.style === 'pondok';
+  g.add(noCollide(at(box(13.7, 0.03, 9.0, bambooCeiling ? '#cdb68c' : '#efe5d2'), 0, 2.865, -6)));
   if (def.style === 'bali' || def.style === 'pondok') {
     g.add(noCollide(at(hipRoof(15, 10, 1.6, s.roof, null), 0, 3.08, -6)));
   } else {
@@ -1411,6 +1415,9 @@ export function buildRumah(faithId) {
     path: '#c8bb98',
     spawn: { x: 0, z: 7.6 },
     focus: new THREE.Vector3(0, 1.4, -8),
+    // Open at eye level under the eaves (camera about 2.65 m, below the 2.88 m beam), like the
+    // kedai, not over the roof, which at night read as a black slab covering the top of the view.
+    view: { pitch: 0.11 },
     spots,
     stalls: [kitchen],
     npcs,
