@@ -118,19 +118,22 @@ export function space(main, [faithId, areaParam, wonderParam], query, { content,
           <h1>${esc(areaTitle)}</h1>
           ${live ? '' : wonder ? `<nav class="area-switch" aria-label="Pindah tempat"><button type="button" data-area="wisata"><span aria-hidden="true">🧭</span>Semua wisata</button><button type="button" data-area="ibadah"><span aria-hidden="true">${esc(faith.icon || '⛩')}</span>${esc(faith.spaceName)}</button></nav>` : `<nav class="area-switch" aria-label="Pindah tempat">${AREAS.map((a) => `<button type="button" data-area="${a.id}" class="${a.id === area ? 'on' : ''}" ${a.id === area ? 'aria-current="page"' : ''}><span aria-hidden="true">${a.icon}</span>${a.label}</button>`).join('')}</nav>`}
         </div>
-        <div class="stage-pills">
+<div class="stage-pills">
           ${live ? `
             <button class="pill live-pill" type="button" data-live-share><span class="rec"></span>LIVE · <span data-live-code>${esc(live.code)}</span></button>
             <span class="pill count-pill" data-presence-label aria-live="polite">Menghubungkan…</span>` : `
-            <button class="pill" type="button" data-presence aria-pressed="false">
-              <span class="dot"></span><span data-presence-label>Sendiri</span>
-            </button>
-            <button class="pill" type="button" data-golive>Siarkan</button>`}
+            <div class="pill-group" id="stage-more" data-pill-group>
+              <button class="pill" type="button" data-presence aria-pressed="false">
+                <span class="dot"></span><span data-presence-label>Sendiri</span>
+              </button>
+              <button class="pill" type="button" data-golive>Siarkan</button>
+              <button class="pill more-only" type="button" data-more-time aria-label="Ganti waktu: waktu nyata"><span aria-hidden="true" data-more-time-icon>🕰</span><span data-more-time-label>Waktu: Nyata</span></button>
+              <button class="pill icon-pill" type="button" data-immersive aria-pressed="false" aria-label="Sembunyikan tombol agar ruang terlihat penuh" title="Lihat ruang penuh"><span aria-hidden="true">⤢</span><span class="more-only-label">Lihat ruang penuh</span></button>
+            </div>`}
           <button class="pill karma-pill" type="button" data-karma aria-label="Bank Kebaikan: saldo poin kebaikan"><span aria-hidden="true">✦</span><span data-karma-balance>${balance()}</span></button>
-          <button class="pill icon-pill" type="button" data-immersive aria-pressed="false" aria-label="Sembunyikan tombol agar ruang terlihat penuh" title="Lihat ruang penuh">⤢</button>
+          ${live ? `<button class="pill icon-pill" type="button" data-immersive aria-pressed="false" aria-label="Sembunyikan tombol agar ruang terlihat penuh" title="Lihat ruang penuh"><span aria-hidden="true">⤢</span><span class="more-only-label">Lihat ruang penuh</span></button>` : `<button class="pill more-pill" type="button" data-more aria-expanded="false" aria-controls="stage-more" aria-label="Pilihan lain: kehadiran, siaran, waktu, layar penuh"><span aria-hidden="true">⋯</span></button>`}
         </div>
-      </div>
-      ${festiveInfo ? `<div class="stage-banner">${esc(festiveInfo.text)}</div>` : ''}
+      </div>      ${festiveInfo ? `<div class="stage-banner">${esc(festiveInfo.text)}</div>` : ''}
       <button class="pill immersive-exit" type="button" data-immersive-exit aria-label="Tampilkan tombol lagi">⤡ Tombol</button>
       <div class="joystick" data-joystick role="application" aria-label="Joystick: geser untuk berjalan"><span class="joystick-knob" data-joystick-knob></span></div>
       <div class="stage-side" role="group" aria-label="Tampilan ruang">
@@ -1066,6 +1069,49 @@ export function space(main, [faithId, areaParam, wonderParam], query, { content,
     timeToggle.setAttribute('aria-label', `Ganti waktu: ${choice.name}`);
     toast(choice.id === 'auto' ? 'Waktu mengikuti jam perangkatmu' : `Suasana ${choice.name.toLowerCase()}`);
   });
+
+  // v1.7.7: on phones, presence, broadcast, time of day and full view live behind one ⋯ pill.
+  const moreButton = main.querySelector('[data-more]');
+  const pillBox = main.querySelector('.stage-pills');
+  const moreTime = main.querySelector('[data-more-time]');
+  const setMoreOpen = (open) => {
+    if (!moreButton) {
+      return;
+    }
+    pillBox.classList.toggle('more-open', open);
+    moreButton.setAttribute('aria-expanded', String(open));
+  };
+  if (moreButton) {
+    moreButton.addEventListener('click', (event) => {
+      event.stopPropagation();
+      setMoreOpen(!pillBox.classList.contains('more-open'));
+    });
+    main.querySelector('[data-pill-group]').addEventListener('click', (event) => {
+      if (event.target.closest('button') && moreButton.offsetParent !== null) {
+        setTimeout(() => setMoreOpen(false), 0);
+      }
+    });
+    main.addEventListener('pointerdown', (event) => {
+      if (!pillBox.contains(event.target)) {
+        setMoreOpen(false);
+      }
+    });
+    main.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && pillBox.classList.contains('more-open')) {
+        setMoreOpen(false);
+        moreButton.focus();
+      }
+    });
+  }
+  if (moreTime) {
+    moreTime.addEventListener('click', () => {
+      timeToggle.click();
+      const choice = TIMES[timeIndex];
+      moreTime.querySelector('[data-more-time-icon]').textContent = choice.icon;
+      moreTime.querySelector('[data-more-time-label]').textContent = `Waktu: ${choice.short}`;
+      moreTime.setAttribute('aria-label', `Ganti waktu: ${choice.name}`);
+    });
+  }
 
   const stepLabels = { beads: 'Geser butir', book: 'Balik halaman', incense: 'Soja / pai' };
   let holdShownIntro = false;

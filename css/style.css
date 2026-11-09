@@ -1435,3 +1435,37 @@ body.in-space .tabbar {
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.22);
   backdrop-filter: blur(10px) brightness(0.6) saturate(1.1); -webkit-backdrop-filter: blur(10px) brightness(0.6) saturate(1.1);
 }
+
+/* ---------- v1.7.7: one ⋯ pill on phones for presence, broadcast, time of day and full view ----------
+   Desktop keeps every pill in the row (the group is display: contents). On phones the row is just the place switch
+   and ⋯; the side rail keeps 1P and Panduan (plus the held object), and the time toggle moves into the menu. */
+.pill-group {display: contents;}
+.more-pill, .stage-pills .more-only, .more-only-label {display: none;}
+@media (min-width: 641px) {
+  .stage-pills .karma-pill {order: 1;}
+  .stage-pills [data-immersive] {order: 2;}
+}
+@media (max-width: 640px) {
+  .stage-pills {position: relative;}
+  .stage-pills .more-pill {
+    display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+    min-width: 40px; min-height: 30px; padding: 2px 12px; font-size: 1.05rem; letter-spacing: 0.08em;
+  }
+  .stage-pills .more-pill[aria-expanded="true"] {background: rgba(255, 248, 232, 0.9); color: #1d1a16; text-shadow: none;}
+  .stage-pills:has([data-presence][aria-pressed="true"]) .more-pill::after {
+    content: ''; width: 7px; height: 7px; border-radius: 50%; background: #7ee08a; box-shadow: 0 0 0 2px rgba(20, 18, 16, 0.4);
+  }
+  .pill-group {
+    display: none; position: absolute; top: calc(100% + 6px); right: 0; z-index: 30;
+    flex-direction: column; align-items: stretch; gap: 4px; padding: 6px; min-width: 188px; border-radius: 16px;
+    background: rgba(20, 18, 16, 0.66); border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.32);
+    backdrop-filter: blur(14px) brightness(0.6); -webkit-backdrop-filter: blur(14px) brightness(0.6);
+  }
+  .stage-pills.more-open .pill-group {display: flex;}
+  .stage-pills .pill-group .pill {
+    display: inline-flex; justify-content: flex-start; align-items: center; gap: 8px; width: 100%;
+    min-height: 38px; padding: 6px 12px; font-size: 0.82rem; border-radius: 11px; box-shadow: none;
+  }
+  .stage-pills .pill-group .more-only-label {display: inline;}
+  .stage-side [data-time-toggle] {display: none;}
+}
