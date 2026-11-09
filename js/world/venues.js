@@ -383,6 +383,38 @@ function shade(color, factor) {
   return `#${new THREE.Color(color).multiplyScalar(factor).getHexString()}`;
 }
 
+// Ribbed roof sheeting (zinc / clay tile rows) seen from above: each rib is a lit crest fading into a
+// shaded trough, tinted from the venue's roof colour but lifted so even near-black roofs show form.
+function roofSheetTexture(color) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 64;
+  canvas.height = 256;
+  const c = canvas.getContext('2d');
+  const base = new THREE.Color(color);
+  const lift = Math.max(1.15, 0.42 / Math.max(0.05, base.getHSL({}).l));
+  const crest = shade(color, Math.min(lift * 1.3, 3.6));
+  const mid = shade(color, Math.min(lift, 2.8));
+  const trough = shade(color, Math.min(lift * 0.62, 1.8));
+  const ribs = 8;
+  const pitch = canvas.height / ribs;
+  for (let i = 0; i < ribs; i++) {
+    const y = i * pitch;
+    const gradient = c.createLinearGradient(0, y, 0, y + pitch);
+    gradient.addColorStop(0, trough);
+    gradient.addColorStop(0.35, crest);
+    gradient.addColorStop(0.6, mid);
+    gradient.addColorStop(1, trough);
+    c.fillStyle = gradient;
+    c.fillRect(0, y, canvas.width, pitch);
+  }
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(6, 3.2);
+  return texture;
+}
+
 const FLOOR_PATTERN = {
   pecinan: { kind: 'checker', a: '#eadfc8', b: '#b5523b', n: 4 },
   kopitiam: { kind: 'checker', a: '#f1ece0', b: '#3d3d42', n: 8 },
@@ -817,9 +849,26 @@ export function buildKedai(faithId) {
   const g = new THREE.Group();
   // Floor slab and a roof on columns (roofs are above head height, so they never block walking).
   g.add(floorSlab(def.style, s));
-  const roof = box(21.5, 0.18, 13, s.roof);
+  // Flat roof: plain sides, ribbed sheet on top. From the third-person camera the top fills a wide
+  // band of the view, so it needs visible form (a flat dark top read as a black hole at night).
+  const roofSide = mat(s.roof);
+  const roofTop = new THREE.MeshStandardMaterial({ map: roofSheetTexture(s.roof), roughness: 0.75, flatShading: true });
+  const roof = new THREE.Mesh(new THREE.BoxGeometry(21.5, 0.18, 13), [roofSide, roofSide, roofTop, roofSide, roofSide, roofSide]);
+  roof.castShadow = true;
+  roof.receiveShadow = true;
   roof.position.set(0, 3.7, -4);
   g.add(roof);
+  // String of warm bulbs along the front eave (lampu hias): marks the roof edge and glows at night.
+  for (let i = 0; i < 18; i++) {
+    const bulb = sphere(0.06, '#fff1c9', 6, { emissive: '#ffcf7a', emissiveIntensity: 1.8 });
+    bulb.castShadow = false;
+    bulb.position.set(-10.2 + i * 1.2, 3.5 - (i % 2) * 0.06, 2.55);
+    g.add(noCollide(bulb));
+  }
+  // Light ceiling under the roof (plywood, or woven bamboo in the village styles), so the
+  // overhead reads as a lit room at night instead of a black slab across the view.
+  const bamboo = ['bali', 'flores', 'angkringan'].includes(def.style);
+  g.add(noCollide(at(box(21.3, 0.03, 12.8, bamboo ? '#cdb68c' : '#efe5d2'), 0, 3.585, -4)));
   [-10, 10].forEach((x) => [-10, -4.5, 1.8].forEach((z) => g.add(at(cyl(0.16, 0.18, 3.6, s.column, 10), x, 1.8, z))));
   if (def.style === 'bali' || def.style === 'flores') {
     // Thatched hip roof.
@@ -930,6 +979,9 @@ export function buildKedai(faithId) {
     path: s.floor,
     spawn: { x: 0, z: 8.6 },
     focus: new THREE.Vector3(0, 1.6, -7.5),
+    // Open at eye level under the eaves (camera about 3.3 m, below the 3.6 m ceiling) so the first view
+    // looks into the lit warung instead of across the top of its roof.
+    view: { pitch: 0.17 },
     spots,
     stalls,
     npcs,
