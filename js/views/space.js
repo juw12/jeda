@@ -80,6 +80,9 @@ function sitPanel(spot, faith) {
   }
 }
 
+// v1.7.12: the held-object rail button uses the same line-icon family as 1P/time/Panduan.
+const HOLD_ICON = '<svg class="rail-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V11M11 10.5V4a1.5 1.5 0 0 1 3 0v6.5M14 10.5V5.5a1.5 1.5 0 0 1 3 0V14a7 7 0 0 1-7 7h-.5a6 6 0 0 1-5-2.7L3 15.5a1.5 1.5 0 0 1 2.5-1.6L8 16"/></svg>';
+
 export function space(main, [faithId, areaParam, wonderParam], query, { content, navigate }, extra = {}) {
   const faith = faithById(content, faithId);
   if (!faith) {
@@ -127,8 +130,9 @@ export function space(main, [faithId, areaParam, wonderParam], query, { content,
                 <span class="dot"></span><span data-presence-label>Sendiri</span>
               </button>
               <button class="pill" type="button" data-golive>Siarkan</button>
-              <button class="pill more-only" type="button" data-more-time aria-label="Ganti waktu: waktu nyata"><span aria-hidden="true" data-more-time-icon>🕰</span><span data-more-time-label>Waktu: Nyata</span></button>
+              <button class="pill more-only" type="button" data-more-time aria-label="Ganti waktu: waktu nyata"><span aria-hidden="true" data-more-time-icon><svg class="rail-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span data-more-time-label>Waktu: Nyata</span></button>
               <button class="pill icon-pill" type="button" data-immersive aria-pressed="false" aria-label="Sembunyikan tombol agar ruang terlihat penuh" title="Lihat ruang penuh"><span aria-hidden="true">⤢</span><span class="more-only-label">Lihat ruang penuh</span></button>
+              <a class="pill more-only" href="#/cari" data-more-search><span aria-hidden="true"><svg class="rail-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></span><span>Cari</span></a>
             </div>`}
           <button class="pill karma-pill" type="button" data-karma aria-label="Bank Kebaikan: saldo poin kebaikan"><span aria-hidden="true">✦</span><span data-karma-balance>${balance()}</span></button>
           ${live ? `<button class="pill icon-pill" type="button" data-immersive aria-pressed="false" aria-label="Sembunyikan tombol agar ruang terlihat penuh" title="Lihat ruang penuh"><span aria-hidden="true">⤢</span><span class="more-only-label">Lihat ruang penuh</span></button>` : `<button class="pill more-pill" type="button" data-more aria-expanded="false" aria-controls="stage-more" aria-label="Pilihan lain: kehadiran, siaran, waktu, layar penuh"><span aria-hidden="true">⋯</span></button>`}
@@ -140,7 +144,7 @@ export function space(main, [faithId, areaParam, wonderParam], query, { content,
         <button class="side-btn" type="button" data-view-toggle aria-pressed="false" aria-label="Lihat dari mata sendiri (orang pertama)"><svg class="rail-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><small>1P</small></button>
         <button class="side-btn" type="button" data-time-toggle aria-label="Ganti waktu: waktu nyata"><svg class="rail-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><small>Nyata</small></button>
         <button class="side-btn" type="button" data-guides aria-label="Panduan: pustaka, kalender, upacara…"><svg class="rail-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20v3H6.5A2.5 2.5 0 0 1 4 20.5z"/></svg><small>Panduan</small></button>
-        <button class="side-btn" type="button" data-hold hidden><span aria-hidden="true" data-hold-icon>📿</span><small data-hold-short></small></button>
+        <button class="side-btn" type="button" data-hold hidden><span aria-hidden="true" data-hold-icon><svg class="rail-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V11M11 10.5V4a1.5 1.5 0 0 1 3 0v6.5M14 10.5V5.5a1.5 1.5 0 0 1 3 0V14a7 7 0 0 1-7 7h-.5a6 6 0 0 1-5-2.7L3 15.5a1.5 1.5 0 0 1 2.5-1.6L8 16"/></svg></span><small data-hold-short></small></button>
       </div>
       <div class="hold-hud" data-hold-hud hidden aria-live="polite">
         <div class="hold-card">
@@ -1107,8 +1111,7 @@ export function space(main, [faithId, areaParam, wonderParam], query, { content,
     moreTime.addEventListener('click', () => {
       timeToggle.click();
       const choice = TIMES[timeIndex];
-      moreTime.querySelector('[data-more-time-icon]').textContent = choice.icon;
-      moreTime.querySelector('[data-more-time-label]').textContent = `Waktu: ${choice.short}`;
+            moreTime.querySelector('[data-more-time-label]').textContent = `Waktu: ${choice.short}`;
       moreTime.setAttribute('aria-label', `Ganti waktu: ${choice.name}`);
     });
   }
@@ -1657,7 +1660,7 @@ export function space(main, [faithId, areaParam, wonderParam], query, { content,
     const heldItem = world.heldItem();
     if (heldItem) {
       holdButton.hidden = false;
-      main.querySelector('[data-hold-icon]').textContent = heldItem.icon;
+      main.querySelector('[data-hold-icon]').innerHTML = HOLD_ICON;
       main.querySelector('[data-hold-short]').textContent = heldItem.name.replace(' 108', '');
       holdButton.setAttribute('aria-label', `${mode === 'visit' ? 'Amati' : 'Pegang'} ${heldItem.name} (orang pertama)`);
     }

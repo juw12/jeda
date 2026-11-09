@@ -68,7 +68,7 @@ function renderChrome(routeName) {
     <a class="brand" href="#/"><span class="brand-mark" aria-hidden="true">‖</span>${esc(CONFIG.appName)}</a>
     <span class="top-actions">
       <a class="karma-chip top-karma" href="#/karma" aria-label="Bank Kebaikan, saldo ${balance()}"><span aria-hidden="true">✦</span><span data-top-balance>${balance()}</span></a>
-      <button class="pause-button" type="button" data-pause>${t('pause.button')}</button>
+      <button class="pause-button" type="button" data-pause aria-label="${t('pause.button')}"><span class="pause-glyph" aria-hidden="true">‖</span><span class="pause-label">${t('pause.button')}</span></button>
       <a class="top-link" href="#/cari" aria-label="Cari">⌕</a>
     </span>`;
   document.querySelector('[data-pause]').addEventListener('click', openPause);
