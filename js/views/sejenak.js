@@ -1,4 +1,4 @@
-// "Sejenak": five small rituals that need no onboarding, no faith choice and no 3D world.
+// "Sejenak": seven small rituals that need no onboarding, no faith choice and no 3D world.
 // A shared link lands here and the first ritual is one tap away.
 // Typed words stay on the page: they are never stored and nothing is requested while typing or releasing.
 // The only thing saved is a count of the visitor's own pauses, on this device (jeda:v1:sejenak).
@@ -9,17 +9,22 @@ import { lang } from '../i18n.js';
 import * as audio from '../audio.js';
 import { openPause } from '../pause.js';
 
-const TABS = ['nyala', 'harapan', 'lepas', 'ketuk', 'hangat'];
+const TABS = ['nyala', 'harapan', 'lepas', 'petik', 'ketuk', 'gerak', 'hangat'];
 const STATS_KEY = 'sejenak';
 const BEADS = 12;
 
 // Lives as long as the page: the flame stays lit and the tap count continues while the visitor looks around.
-const session = { lit: false, taps: 0, counted: new Set() };
+// The ambience choice also lives only as long as the page, so a returning visitor is never met by sudden sound.
+const session = { lit: false, taps: 0, counted: new Set(), ambience: 'off', lastReflection: -1 };
+const AMBIENCES = ['off', 'rain', 'river', 'gamelan', 'chimes', 'night'];
+// Well-known bead counts: 33 for a tasbih round, 10 for a rosary decade, 108 for a japa mala.
+const CYCLE_BY_KIND = { tasbih: 33, rosario: 10, japa: 108, manik: 12 };
+const STEP_SECONDS = 20;
 
 const STRINGS = {
   id: {
-    title: { nyala: 'Sejenak', harapan: 'Titip harapan', lepas: 'Lepas beban', ketuk: 'Ketuk pelan', hangat: 'Yang hangat' },
-    tab: { nyala: 'Nyala', harapan: 'Harapan', lepas: 'Lepas', ketuk: 'Ketuk', hangat: 'Hangat' },
+    title: { nyala: 'Sejenak', harapan: 'Titip harapan', lepas: 'Lepas beban', petik: 'Petik renungan', ketuk: 'Ketuk pelan', gerak: 'Gerak pelan', hangat: 'Yang hangat' },
+    tab: { nyala: 'Nyala', harapan: 'Harapan', lepas: 'Lepas', petik: 'Petik', ketuk: 'Ketuk', gerak: 'Gerak', hangat: 'Hangat' },
     light: { lilin: 'Nyalakan lilin', dupa: 'Nyalakan dupa', pelita: 'Nyalakan pelita' },
     lit: { lilin: 'Lilinmu menyala', dupa: 'Dupamu menyala', pelita: 'Pelitamu menyala' },
     statsToday: (n) => `${n} jeda hari ini`,
@@ -39,6 +44,34 @@ const STRINGS = {
     tapLabel: { muyu: 'Ketuk muyu', tasbih: 'Geser satu butir tasbih', rosario: 'Geser satu butir rosario', japa: 'Geser satu butir japa mala', manik: 'Geser satu butir' },
     tapUnit: { muyu: 'ketukan', tasbih: 'butir', rosario: 'butir', japa: 'butir', manik: 'butir' },
     tapHint: 'Satu ketukan, satu napas.',
+    cycle: (done, size, round) => `${done} dari ${size} · putaran ${round}`,
+    cycleDone: 'Satu putaran selesai.',
+    petikShake: 'Kocok tabung',
+    petikAgain: 'Petik lagi',
+    petikNumber: (n) => `Batang ${n}`,
+    petikNote: 'Bukan ramalan. Satu renungan kecil untuk hari ini.',
+    petikAskLead: 'Ingin bertanya lebih dalam?',
+    petikAsk: 'Tanya Jeda',
+    gerakIntro: 'Enam gerakan pelan, sekitar dua menit. Bisa sambil duduk.',
+    gerakSafety: 'Pelan saja. Berhenti kalau terasa sakit.',
+    gerakStart: 'Mulai',
+    gerakPause: 'Jeda',
+    gerakResume: 'Lanjut',
+    gerakNext: 'Berikutnya',
+    gerakAgain: 'Ulangi',
+    gerakStep: (index, total) => `Gerakan ${index} dari ${total}`,
+    gerakDone: 'Selesai. Badanmu ikut beristirahat.',
+    gerakSeconds: (n) => `${n} detik`,
+    ambience: 'Suasana',
+    ambienceName: { off: 'Hening', rain: 'Hujan', river: 'Sungai', gamelan: 'Gamelan pelan', chimes: 'Lonceng angin', night: 'Malam' },
+    ambienceNow: (name) => `Suasana: ${name}`,
+    returnCue: (days) => (days <= 1 ? 'Selamat datang lagi. Kemarin kamu juga mampir.' : `Selamat datang lagi. Terakhir mampir ${days} hari lalu.`),
+    remind: 'Ingatkan aku besok',
+    remindSub: 'Berkas kalender untuk jam yang sama. Tanpa akun, tanpa notifikasi dari kami.',
+    remindDone: 'Berkas kalender diunduh. Buka untuk menyimpannya.',
+    remindTitle: 'Jeda sejenak',
+    live: 'Punya kode Ruang Live?',
+    liveSub: 'Masuk ke ruang yang sedang disiarkan.',
     drinkAsk: 'Seberapa lelah hari ini?',
     drinkLevel: ['Sedikit', 'Lumayan', 'Sangat'],
     drinkAgain: 'Ketuk lagi untuk pilihan lain.',
@@ -46,7 +79,7 @@ const STRINGS = {
     soundOn: 'Suara menyala',
     soundOff: 'Suara dimatikan',
     share: 'Bagikan',
-    shareText: 'Ambil jeda sejenak: nyalakan lilin, titip harapan, lepas beban. Tanpa daftar.',
+    shareText: 'Ambil jeda sejenak: nyalakan lilin, titip harapan, lepas beban, petik renungan, gerak pelan. Tanpa daftar.',
     copied: 'Tautan disalin. Bagikan ke siapa pun yang butuh jeda.',
     moreTitle: 'Kalau ingin lebih lama',
     breathe: 'Napas satu menit',
@@ -62,8 +95,8 @@ const STRINGS = {
     docTitle: 'Sejenak · Jeda',
   },
   en: {
-    title: { nyala: 'A moment', harapan: 'Leave a wish', lepas: 'Let it go', ketuk: 'Tap gently', hangat: 'Something warm' },
-    tab: { nyala: 'Light', harapan: 'Wish', lepas: 'Release', ketuk: 'Tap', hangat: 'Warm' },
+    title: { nyala: 'A moment', harapan: 'Leave a wish', lepas: 'Let it go', petik: 'Draw a reflection', ketuk: 'Tap gently', gerak: 'Move gently', hangat: 'Something warm' },
+    tab: { nyala: 'Light', harapan: 'Wish', lepas: 'Release', petik: 'Draw', ketuk: 'Tap', gerak: 'Move', hangat: 'Warm' },
     light: { lilin: 'Light the candle', dupa: 'Light the incense', pelita: 'Light the lamp' },
     lit: { lilin: 'Your candle is lit', dupa: 'Your incense is lit', pelita: 'Your lamp is lit' },
     statsToday: (n) => `${n} ${n === 1 ? 'pause' : 'pauses'} today`,
@@ -83,6 +116,34 @@ const STRINGS = {
     tapLabel: { muyu: 'Tap the wooden fish', tasbih: 'Move one tasbih bead', rosario: 'Move one rosary bead', japa: 'Move one japa mala bead', manik: 'Move one bead' },
     tapUnit: { muyu: 'taps', tasbih: 'beads', rosario: 'beads', japa: 'beads', manik: 'beads' },
     tapHint: 'One tap, one breath.',
+    cycle: (done, size, round) => `${done} of ${size} · round ${round}`,
+    cycleDone: 'One round complete.',
+    petikShake: 'Shake the cup',
+    petikAgain: 'Draw again',
+    petikNumber: (n) => `Stick ${n}`,
+    petikNote: 'Not a prediction. One small reflection for today.',
+    petikAskLead: 'Want to ask something deeper?',
+    petikAsk: 'Ask Jeda',
+    gerakIntro: 'Six gentle movements, about two minutes. You can stay seated.',
+    gerakSafety: 'Go slowly. Stop if anything hurts.',
+    gerakStart: 'Start',
+    gerakPause: 'Pause',
+    gerakResume: 'Resume',
+    gerakNext: 'Next',
+    gerakAgain: 'Again',
+    gerakStep: (index, total) => `Movement ${index} of ${total}`,
+    gerakDone: 'Done. Your body got a rest too.',
+    gerakSeconds: (n) => `${n} seconds`,
+    ambience: 'Ambience',
+    ambienceName: { off: 'Silence', rain: 'Rain', river: 'River', gamelan: 'Soft gamelan', chimes: 'Wind chimes', night: 'Night' },
+    ambienceNow: (name) => `Ambience: ${name}`,
+    returnCue: (days) => (days <= 1 ? 'Welcome back. You stopped by yesterday too.' : `Welcome back. Your last visit was ${days} days ago.`),
+    remind: 'Remind me tomorrow',
+    remindSub: 'A calendar file for the same time. No account, no notifications from us.',
+    remindDone: 'Calendar file downloaded. Open it to save the reminder.',
+    remindTitle: 'A short pause with Jeda',
+    live: 'Have a Live Room code?',
+    liveSub: 'Join a room that is being broadcast.',
     drinkAsk: 'How tired are you today?',
     drinkLevel: ['A little', 'Quite', 'Very'],
     drinkAgain: 'Tap again for another pick.',
@@ -90,7 +151,7 @@ const STRINGS = {
     soundOn: 'Sound on',
     soundOff: 'Sound off',
     share: 'Share',
-    shareText: 'Take a short pause: light a candle, leave a wish, let a worry go. No sign-up.',
+    shareText: 'Take a short pause: light a candle, leave a wish, let a worry go, draw a reflection, move gently. No sign-up.',
     copied: 'Link copied. Share it with anyone who needs a pause.',
     moreTitle: 'If you want to stay longer',
     breathe: 'One-minute breath',
@@ -178,6 +239,82 @@ const DRINKS = {
   ],
 };
 
+// Reflections for "Petik": written for Jeda, not quoted from any scripture, and never a prediction.
+const REFLECTIONS = {
+  id: [
+    ['Air yang tenang memantulkan langit.', 'Apa yang perlu kamu diamkan dulu hari ini?'],
+    ['Benih tidak tumbuh karena ditarik.', 'Apa yang sedang kamu paksa untuk cepat?'],
+    ['Pintu yang tertutup juga menunjukkan arah.', 'Penolakan apa yang ternyata melindungimu?'],
+    ['Langkah kecil yang diulang menjadi jalan.', 'Satu langkah kecil apa yang bisa kamu ulang besok?'],
+    ['Hujan tidak meminta izin, tapi selalu reda.', 'Perasaan apa yang cukup kamu biarkan lewat?'],
+    ['Tangan yang terbuka bisa menerima.', 'Apa yang ingin kamu lepaskan dari genggaman?'],
+    ['Bambu melentur, lalu tegak lagi.', 'Di mana kamu boleh sedikit melentur?'],
+    ['Lampu kecil cukup untuk satu langkah.', 'Langkah berikutnya apa yang sudah terlihat?'],
+    ['Sungai tidak melawan batu; ia mengalir di sampingnya.', 'Hambatan apa yang bisa kamu kitari, bukan kamu tabrak?'],
+    ['Sumur yang dalam butuh waktu untuk penuh.', 'Apa yang sedang mengisi ulang dirimu?'],
+    ['Kata yang lembut membuka lebih banyak pintu.', 'Kepada siapa kamu ingin berkata lebih lembut?'],
+    ['Bulan tidak selalu penuh, tapi tetap bulan.', 'Bagian dirimu mana yang perlu kamu terima apa adanya?'],
+    ['Rumah yang hangat dibangun dari hal-hal kecil.', 'Kebiasaan kecil apa yang membuatmu merasa pulang?'],
+    ['Yang sudah lewat menjadi tanah tempat berpijak.', 'Pelajaran apa dari kemarin yang ingin kamu bawa?'],
+    ['Burung pulang ke sarang saat senja.', 'Ke mana hatimu ingin pulang malam ini?'],
+    ['Diam juga sebuah jawaban.', 'Pertanyaan apa yang tidak perlu kamu jawab hari ini?'],
+    ['Akar bekerja di tempat yang tidak terlihat.', 'Usaha diam-diam apa yang patut kamu hargai?'],
+    ['Angin tidak terlihat, tapi daun tahu.', 'Siapa yang diam-diam menguatkanmu?'],
+    ['Gelas yang penuh tidak bisa diisi lagi.', 'Apa yang bisa kamu kosongkan sedikit?'],
+    ['Matahari terbit tanpa tergesa.', 'Bagaimana rasanya memulai besok dengan pelan?'],
+    ['Jembatan dibangun dari dua sisi.', 'Hubungan mana yang ingin kamu sambung kembali?'],
+    ['Lilin tidak berkurang saat menyalakan lilin lain.', 'Kebaikan kecil apa yang bisa kamu bagi hari ini?'],
+    ['Ombak datang dan pergi; pantai tetap di sana.', 'Apa yang tetap teguh di dalam dirimu?'],
+    ['Syukur membuat yang cukup terasa cukup.', 'Tiga hal kecil apa yang kamu syukuri hari ini?'],
+  ],
+  en: [
+    ['Still water reflects the sky.', 'What do you need to let settle today?'],
+    ['A seed does not grow faster for being pulled.', 'What are you trying to rush?'],
+    ['A closed door also points a way.', 'Which "no" turned out to protect you?'],
+    ['Small steps, repeated, become a path.', 'What small step could you repeat tomorrow?'],
+    ['Rain does not ask permission, but it always passes.', 'Which feeling can you simply let pass?'],
+    ['An open hand can receive.', 'What would you like to stop gripping?'],
+    ['Bamboo bends, then stands again.', 'Where could you bend a little?'],
+    ['A small lamp is enough for one step.', 'Which next step can you already see?'],
+    ['A river does not fight the stone; it flows beside it.', 'Which obstacle could you go around instead of through?'],
+    ['A deep well takes time to fill.', 'What is filling you up again?'],
+    ['Gentle words open more doors.', 'Who would you like to speak to more gently?'],
+    ['The moon is not always full, and it is still the moon.', 'Which part of you needs accepting as it is?'],
+    ['A warm home is built from small things.', 'Which small habit makes you feel at home?'],
+    ['What has passed becomes ground to stand on.', 'What lesson from yesterday do you want to keep?'],
+    ['Birds fly home at dusk.', 'Where does your heart want to go home tonight?'],
+    ['Silence is also an answer.', 'Which question do you not need to answer today?'],
+    ['Roots work where no one sees.', 'Which quiet effort deserves your respect?'],
+    ['Wind is unseen, but the leaves know.', 'Who quietly strengthens you?'],
+    ['A full glass cannot be filled.', 'What could you empty a little?'],
+    ['The sun rises without hurry.', 'How would it feel to start tomorrow slowly?'],
+    ['A bridge is built from both sides.', 'Which connection would you like to mend?'],
+    ['A candle loses nothing by lighting another.', 'What small kindness could you share today?'],
+    ['Waves come and go; the shore stays.', 'What stays steady inside you?'],
+    ['Gratitude makes enough feel like enough.', 'Which three small things are you grateful for today?'],
+  ],
+};
+
+// "Gerak": six gentle movements, the length of a short break. Not a lesson in any tradition, no health claims.
+const MOVES = {
+  id: [
+    ['Raih langit', 'Jalin jari, dorong telapak ke atas. Tarik napas, tahan sebentar, turunkan pelan.'],
+    ['Putar bahu', 'Putar kedua bahu ke belakang, pelan, lima kali.'],
+    ['Lepas leher', 'Miringkan kepala ke kanan selama tiga napas, lalu ke kiri.'],
+    ['Condong ke samping', 'Satu tangan ke atas, condongkan badan ke sisi lain. Lalu ganti sisi.'],
+    ['Putar badan', 'Tangan di dada, putar badan ke kanan dan ke kiri, pelan.'],
+    ['Tenang', 'Tangan di perut. Tarik napas empat hitungan, hembuskan enam.'],
+  ],
+  en: [
+    ['Reach for the sky', 'Interlace your fingers, push your palms up. Breathe in, hold briefly, lower slowly.'],
+    ['Roll the shoulders', 'Roll both shoulders backwards, slowly, five times.'],
+    ['Ease the neck', 'Tilt your head to the right for three breaths, then to the left.'],
+    ['Lean to the side', 'Raise one arm and lean gently the other way. Then switch sides.'],
+    ['Gentle twist', 'Hands on your chest, turn slowly to the right and to the left.'],
+    ['Settle', 'Hands on your belly. Breathe in for four counts, out for six.'],
+  ],
+};
+
 const FLAME_BY_FAITH = { khonghucu: 'dupa', buddha: 'dupa', hindu: 'dupa', islam: 'pelita' };
 const TAP_BY_FAITH = { khonghucu: 'muyu', buddha: 'muyu', islam: 'tasbih', katolik: 'rosario', hindu: 'japa' };
 
@@ -187,6 +324,10 @@ const ICONS = {
   lepas: '<path d="M3 9h10a3 3 0 1 0-3-3"/><path d="M3 14h15a3 3 0 1 1-3 3"/><path d="M3 19h6"/>',
   ketuk: '<circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="12" r="8"/>',
   hangat: '<path d="M5 10h12v4a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5z"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M9 3.5v3"/><path d="M13 3.5v3"/>',
+  petik: '<path d="M7 11h10l-1.4 9.5h-7.2z"/><path d="M10 11V3.5"/><path d="M12.6 11V5.5"/><path d="M15 11l1.6-6"/>',
+  gerak: '<circle cx="12" cy="4.5" r="2"/><path d="M12 7.5v6.5"/><path d="M12 14l-3.5 6"/><path d="M12 14l3.5 6"/><path d="M5.5 4.5L12 9.5l6.5-5"/>',
+  ambienceOn: '<path d="M9 17.5V6l10-2v11.5"/><circle cx="6.5" cy="17.5" r="2.5"/><circle cx="16.5" cy="15.5" r="2.5"/>',
+  ambienceOff: '<path d="M9 17.5V6l10-2v11.5"/><circle cx="6.5" cy="17.5" r="2.5"/><circle cx="16.5" cy="15.5" r="2.5"/><path d="M3.5 3.5l17 17"/>',
   soundOn: '<path d="M4 10v4h3l5 4V6l-5 4z"/><path d="M16 9a4 4 0 0 1 0 6"/>',
   soundOff: '<path d="M4 10v4h3l5 4V6l-5 4z"/><path d="M16 9.5l5 5"/><path d="M21 9.5l-5 5"/>',
   share: '<path d="M12 15V4"/><path d="M8 8l4-4 4 4"/><path d="M5 13v6h14v-6"/>',
@@ -286,6 +427,47 @@ function tapArt(kind) {
   </svg>`;
 }
 
+function sticksArt() {
+  return `<svg class="sj-art sj-sticks" viewBox="0 0 160 200" aria-hidden="true">
+    <g class="sj-sticks-set">
+      <path class="sj-stick" d="M62 96L52 24"/>
+      <path class="sj-stick" d="M74 96L70 14"/>
+      <path class="sj-stick sj-stick-drawn" d="M86 96L90 10"/>
+      <path class="sj-stick" d="M98 96L108 22"/>
+      <path class="sj-stick" d="M80 96V30"/>
+    </g>
+    <path class="sj-wax" d="M38 92h84l-9 86a8 8 0 0 1-8 7H55a8 8 0 0 1-8-7z"/>
+    <ellipse class="sj-wax-top" cx="80" cy="92" rx="42" ry="8"/>
+    <path class="sj-wax-line" d="M44 120c24 8 48 8 72 0"/>
+  </svg>`;
+}
+
+// Simple line figures, one per movement. Same proportions so the figure seems to move between steps.
+const FIGURE_ARMS = [
+  '<path d="M60 50L40 38L44 8"/><path d="M60 50L80 38L76 8"/>',
+  '<path d="M60 54L44 92"/><path d="M60 54L76 92"/><path class="sj-fig-hint" d="M40 46a10 10 0 0 1 10-12"/><path class="sj-fig-hint" d="M80 46a10 10 0 0 0-10-12"/>',
+  '<path d="M60 54L44 92"/><path d="M60 54L76 92"/>',
+  '<path d="M64 54L48 16"/><path d="M64 54L82 88"/>',
+  '<path d="M60 56l14 8"/><path d="M60 56l-14 8"/><path class="sj-fig-hint" d="M38 82a24 8 0 0 0 44 0"/>',
+  '<path d="M60 54L48 76L60 80"/><path d="M60 54L72 76L60 80"/>',
+];
+const FIGURE_HEAD = ['60 30', '60 30', '67 32', '70 31', '60 30', '60 30'];
+const FIGURE_BODY = ['M60 42V98', 'M60 42V98', 'M60 42V98', 'M60 98Q58 72 66 44', 'M60 42V98', 'M60 42V98'];
+
+function figureArt(index) {
+  const [x, y] = FIGURE_HEAD[index].split(' ');
+  return `<svg class="sj-art sj-figure" viewBox="0 0 120 160" aria-hidden="true">
+    <ellipse class="sj-dish" cx="60" cy="150" rx="40" ry="6"/>
+    <g class="sj-fig">
+      <circle class="sj-fig-head" cx="${x}" cy="${y}" r="11"/>
+      <path d="${FIGURE_BODY[index]}"/>
+      ${FIGURE_ARMS[index]}
+      <path d="M60 98L48 146"/>
+      <path d="M60 98L72 146"/>
+    </g>
+  </svg>`;
+}
+
 function todayKey() {
   const now = new Date();
   const pad = (value) => String(value).padStart(2, '0');
@@ -344,6 +526,25 @@ export function sejenak(main, params, query, ctx) {
   let wishDone = false;
   let worryDone = false;
   let worryBusy = false;
+  let drawn = null;
+  let shaking = false;
+  let stopAmbience = null;
+  const move = { index: 0, left: STEP_SECONDS, running: false, started: false, done: false, timer: null };
+  const cycleSize = CYCLE_BY_KIND[tapKind] || 0;
+  // A gentle return cue, from this device's own dates only: shown before today's first pause.
+  const returnDays = (() => {
+    const stats = readStats();
+    if (stats.today > 0 || session.lit) {
+      return 0;
+    }
+    const earlier = stats.days.filter((day) => day < stats.day).sort();
+    if (!earlier.length) {
+      return 0;
+    }
+    const last = new Date(`${earlier[earlier.length - 1]}T00:00:00`);
+    const today = new Date(`${stats.day}T00:00:00`);
+    return Math.max(1, Math.round((today - last) / 86400000));
+  })();
 
   const later = (callback, ms) => {
     const id = setTimeout(() => {
@@ -367,13 +568,14 @@ export function sejenak(main, params, query, ctx) {
         <header class="sj-head">
           <a class="sj-brand" href="#/"><span class="brand-mark" aria-hidden="true">‖</span>Jeda</a>
           <span class="sj-tools">
+            <button class="sj-tool" type="button" data-sj-ambience></button>
             <button class="sj-tool" type="button" data-sj-sound></button>
             <button class="sj-tool" type="button" data-sj-share aria-label="${esc(text.share)}">${icon('share')}</button>
           </span>
         </header>
         <div class="sj-stage" data-sj-stage></div>
         <nav class="sj-dock" aria-label="${esc(text.title.nyala)}">
-          ${TABS.map((id) => `<button class="sj-tab" type="button" data-sj-tab="${id}">${icon(id)}<span>${esc(text.tab[id])}</span></button>`).join('')}
+          ${TABS.map((id) => `<button class="sj-tab" type="button" data-sj-tab="${id}" aria-label="${esc(text.title[id])}" title="${esc(text.title[id])}">${icon(id)}<span class="sj-tab-label">${esc(text.tab[id])}</span></button>`).join('')}
         </nav>
       </div>
       <section class="sj-more" data-sj-more>
@@ -381,6 +583,8 @@ export function sejenak(main, params, query, ctx) {
         <button class="sj-row" type="button" data-sj-breathe><span><strong>${esc(text.breathe)}</strong><small>${esc(text.breatheSub)}</small></span><span aria-hidden="true">→</span></button>
         <a class="sj-row" href="#/tanya"><span><strong>${esc(text.ask)}</strong><small>${esc(text.askSub)}</small></span><span aria-hidden="true">→</span></a>
         ${onward}
+        <button class="sj-row" type="button" data-sj-remind><span><strong>${esc(text.remind)}</strong><small>${esc(text.remindSub)}</small></span><span aria-hidden="true">→</span></button>
+        <a class="sj-row" href="#/gabung"><span><strong>${esc(text.live)}</strong><small>${esc(text.liveSub)}</small></span><span aria-hidden="true">→</span></a>
         <p class="sj-privacy">${esc(text.privacy)}</p>
         <button class="sj-lang" type="button" data-sj-lang>${esc(text.langSwitch)}</button>
       </section>
@@ -405,6 +609,48 @@ export function sejenak(main, params, query, ctx) {
       <button class="sj-link" type="button" data-sj-scroll>${esc(text.more)} <span aria-hidden="true">↓</span></button>`;
   }
 
+  function returnHtml() {
+    return returnDays ? `<p class="sj-return">${esc(text.returnCue(returnDays))}</p>` : '';
+  }
+
+  function cycleLine() {
+    const done = session.taps % cycleSize;
+    const round = Math.floor(session.taps / cycleSize) + 1;
+    return text.cycle(done, cycleSize, round);
+  }
+
+  function reflectionHtml(index) {
+    const [line, question] = REFLECTIONS[language][index];
+    return `<p class="sj-card-no">${esc(text.petikNumber(index + 1))}</p>
+      <p class="sj-card-line">${esc(line)}</p>
+      <p class="sj-card-ask">${esc(question)}</p>`;
+  }
+
+  function moveHtml() {
+    const steps = MOVES[language];
+    if (move.done) {
+      return `${figureArt(steps.length - 1)}
+        <p class="sj-move-name">${esc(text.gerakDone)}</p>
+        <div class="sj-move-controls"><button class="sj-pill" type="button" data-sj-move-start>${esc(text.gerakAgain)}</button></div>`;
+    }
+    const [name, how] = steps[move.index];
+    const share = Math.round(((STEP_SECONDS - move.left) / STEP_SECONDS) * 100);
+    const main = move.running ? text.gerakPause : move.started ? text.gerakResume : text.gerakStart;
+    const status = move.started
+      ? `${text.gerakStep(move.index + 1, steps.length)} · <span data-sj-left>${esc(text.gerakSeconds(move.left))}</span>`
+      : esc(text.gerakIntro);
+    return `${figureArt(move.index)}
+      <p class="sj-move-step">${status}</p>
+      <p class="sj-move-name">${esc(name)}</p>
+      <p class="sj-move-how">${esc(how)}</p>
+      <span class="sj-progress" aria-hidden="true"><span data-sj-bar style="width:${share}%"></span></span>
+      <div class="sj-move-controls">
+        <button class="sj-pill" type="button" data-sj-move-start>${esc(main)}</button>
+        <button class="sj-level" type="button" data-sj-move-next>${esc(text.gerakNext)}</button>
+      </div>
+      <p class="sj-line sj-safety">${esc(text.gerakSafety)}</p>`;
+  }
+
   function panelHtml() {
     const title = `<h1 class="sj-title">${esc(text.title[active])}</h1>`;
     if (active === 'harapan') {
@@ -420,11 +666,24 @@ export function sejenak(main, params, query, ctx) {
         <button class="sj-pill" type="button" data-sj-worry-release>${esc(text.worrySend)}</button>
         <p class="sj-line" data-sj-line aria-live="polite">${esc(worryDone ? text.worryDone : text.worryHint)}</p>`;
     }
+    if (active === 'petik') {
+      return `${title}
+        <button class="sj-focal sj-focal-small" type="button" data-sj-draw>
+          <span class="sj-object" data-sj-sticks>${sticksArt()}</span>
+          <span class="sj-pill" data-sj-draw-label>${esc(drawn === null ? text.petikShake : text.petikAgain)}</span>
+        </button>
+        <div class="sj-card" data-sj-card aria-live="polite">${drawn === null ? '' : reflectionHtml(drawn)}</div>
+        <p class="sj-line">${esc(text.petikNote)}</p>
+        <p class="sj-line">${esc(text.petikAskLead)} <a class="sj-link sj-inline" href="#/tanya">${esc(text.petikAsk)} <span aria-hidden="true">→</span></a></p>`;
+    }
+    if (active === 'gerak') {
+      return `${title}<div class="sj-move" data-sj-move>${moveHtml()}</div>`;
+    }
     if (active === 'ketuk') {
       return `${title}
         <button class="sj-knock" type="button" data-sj-tap aria-label="${esc(text.tapLabel[tapKind])}">${tapArt(tapKind)}</button>
         <p class="sj-tally"><span class="sj-count" data-sj-count>${session.taps}</span><span class="sj-unit">${esc(text.tapUnit[tapKind])}</span></p>
-        <p class="sj-line">${esc(text.tapHint)}</p>`;
+        <p class="sj-line" data-sj-cycle>${esc(cycleSize ? cycleLine() : text.tapHint)}</p>`;
     }
     if (active === 'hangat') {
       return `${title}
@@ -440,7 +699,7 @@ export function sejenak(main, params, query, ctx) {
         ${flameArt(flameKind)}
         <span class="sj-pill" data-sj-light-label>${esc(session.lit ? text.lit[flameKind] : text.light[flameKind])}</span>
       </button>
-      <div class="sj-after" data-sj-after aria-live="polite">${session.lit ? afterHtml() : ''}</div>`;
+      <div class="sj-after" data-sj-after aria-live="polite">${session.lit ? afterHtml() : returnHtml()}</div>`;
   }
 
   function renderPanel() {
@@ -456,6 +715,45 @@ export function sejenak(main, params, query, ctx) {
     if (active === 'ketuk') {
       paintBeads();
     }
+    if (active === 'gerak') {
+      renderMove();
+    }
+  }
+
+  function renderAmbience() {
+    const button = root.querySelector('[data-sj-ambience]');
+    const on = session.ambience !== 'off';
+    button.innerHTML = icon(on ? 'ambienceOn' : 'ambienceOff');
+    button.setAttribute('aria-label', `${text.ambience}: ${text.ambienceName[session.ambience]}`);
+    button.setAttribute('title', `${text.ambience}: ${text.ambienceName[session.ambience]}`);
+    button.setAttribute('aria-pressed', on ? 'true' : 'false');
+  }
+
+  // Background sound is opt-in: it starts only from a tap here and stops when the visitor leaves this route.
+  function applyAmbience() {
+    if (stopAmbience) {
+      stopAmbience();
+      stopAmbience = null;
+    }
+    const kind = session.ambience;
+    root.dataset.amb = kind;
+    document.documentElement.dataset.jedaAmbience = kind;
+    if (kind !== 'off' && prefs.get().sound) {
+      audio.unlockAudio();
+      stopAmbience = audio.ambience(kind);
+    }
+    renderAmbience();
+  }
+
+  function cycleAmbience() {
+    const next = AMBIENCES[(AMBIENCES.indexOf(session.ambience) + 1) % AMBIENCES.length];
+    session.ambience = next;
+    if (next !== 'off' && !prefs.get().sound) {
+      prefs.set({ sound: true });
+      renderSound();
+    }
+    applyAmbience();
+    toast(text.ambienceNow(text.ambienceName[next]), 1600);
   }
 
   function renderSound() {
@@ -556,6 +854,18 @@ export function sejenak(main, params, query, ctx) {
     session.taps += 1;
     count('ketuk');
     stage.querySelector('[data-sj-count]').textContent = String(session.taps);
+    if (cycleSize) {
+      const line = stage.querySelector('[data-sj-cycle]');
+      line.textContent = cycleLine();
+      if (session.taps % cycleSize === 0) {
+        // A round is complete: a softer bell instead of the bead click, and the line glows once.
+        line.textContent = `${text.cycleDone} ${cycleLine()}`;
+        line.classList.remove('sj-glow-once');
+        void line.getBoundingClientRect();
+        line.classList.add('sj-glow-once');
+        audio.bell();
+      }
+    }
     const button = stage.querySelector('[data-sj-tap]');
     button.classList.remove('sj-hit');
     void button.getBoundingClientRect();
@@ -584,9 +894,172 @@ export function sejenak(main, params, query, ctx) {
     audio.chime();
   }
 
+  function drawReflection() {
+    if (shaking) {
+      return;
+    }
+    audio.unlockAudio();
+    shaking = true;
+    const sticks = stage.querySelector('[data-sj-sticks]');
+    sticks.classList.add('sj-shake');
+    audio.bead();
+    later(() => audio.bead(), 180);
+    later(() => audio.bead(), 380);
+    later(() => {
+      shaking = false;
+      const current = stage.querySelector('[data-sj-sticks]');
+      if (!current) {
+        return;
+      }
+      current.classList.remove('sj-shake');
+      const list = REFLECTIONS[language];
+      let index = Math.floor(Math.random() * list.length);
+      if (index === session.lastReflection) {
+        index = (index + 1) % list.length;
+      }
+      session.lastReflection = index;
+      drawn = index;
+      count('petik');
+      root.dataset.petik = 'drawn';
+      stage.querySelector('[data-sj-card]').innerHTML = reflectionHtml(index);
+      stage.querySelector('[data-sj-draw-label]').textContent = text.petikAgain;
+      audio.chime();
+    }, reducedMotion ? 120 : 1100);
+  }
+
+  function renderMove() {
+    const box = stage.querySelector('[data-sj-move]');
+    if (box) {
+      box.innerHTML = moveHtml();
+    }
+    root.dataset.gerak = move.done ? 'done' : move.running ? 'running' : move.started ? 'paused' : 'idle';
+  }
+
+  function stopMoveTimer() {
+    if (move.timer) {
+      clearInterval(move.timer);
+      move.timer = null;
+    }
+  }
+
+  function finishMove() {
+    stopMoveTimer();
+    move.running = false;
+    move.done = true;
+    count('gerak');
+    audio.bell();
+    renderMove();
+  }
+
+  function advanceMove() {
+    if (move.index >= MOVES[language].length - 1) {
+      finishMove();
+      return;
+    }
+    move.index += 1;
+    move.left = STEP_SECONDS;
+    audio.chime();
+    renderMove();
+  }
+
+  function tickMove() {
+    move.left -= 1;
+    if (move.left <= 0) {
+      advanceMove();
+      return;
+    }
+    const left = stage.querySelector('[data-sj-left]');
+    const bar = stage.querySelector('[data-sj-bar]');
+    if (left) {
+      left.textContent = text.gerakSeconds(move.left);
+    }
+    if (bar) {
+      bar.style.width = `${Math.round(((STEP_SECONDS - move.left) / STEP_SECONDS) * 100)}%`;
+    }
+  }
+
+  function toggleMove() {
+    audio.unlockAudio();
+    if (move.done) {
+      move.index = 0;
+      move.left = STEP_SECONDS;
+      move.done = false;
+      move.started = false;
+    }
+    if (move.running) {
+      move.running = false;
+      stopMoveTimer();
+    } else {
+      if (!move.started) {
+        audio.chime();
+      }
+      move.started = true;
+      move.running = true;
+      stopMoveTimer();
+      move.timer = setInterval(tickMove, 1000);
+    }
+    renderMove();
+  }
+
+  function nextMove() {
+    audio.unlockAudio();
+    move.started = true;
+    advanceMove();
+  }
+
+  // A calendar file built on the device: no account, no server, no push permission.
+  function remindTomorrow() {
+    const pad = (value) => String(value).padStart(2, '0');
+    const stamp = (date) =>
+      `${date.getUTCFullYear()}${pad(date.getUTCMonth() + 1)}${pad(date.getUTCDate())}T${pad(date.getUTCHours())}${pad(date.getUTCMinutes())}00Z`;
+    const now = new Date();
+    const start = new Date(now.getTime() + 86400000);
+    const url = `${location.origin}${location.pathname}#/sejenak`;
+    const lines = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Jeda//Sejenak//ID',
+      'BEGIN:VEVENT',
+      `UID:${now.getTime()}-${Math.random().toString(36).slice(2)}@jeda`,
+      `DTSTAMP:${stamp(now)}`,
+      `DTSTART:${stamp(start)}`,
+      'DURATION:PT5M',
+      `SUMMARY:${text.remindTitle}`,
+      `DESCRIPTION:${url}`,
+      `URL:${url}`,
+      'BEGIN:VALARM',
+      'TRIGGER:PT0M',
+      'ACTION:DISPLAY',
+      `DESCRIPTION:${text.remindTitle}`,
+      'END:VALARM',
+      'END:VEVENT',
+      'END:VCALENDAR',
+    ];
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(new Blob([lines.join('\r\n')], { type: 'text/calendar' }));
+    link.download = 'jeda-besok.ics';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    later(() => URL.revokeObjectURL(link.href), 4000);
+    root.dataset.remind = 'saved';
+    toast(text.remindDone, 3200);
+  }
+
+  // On Petik with a card showing, share the card itself (the reflection, never the visitor's own words).
+  function shareMessage() {
+    const card = stage.querySelector('[data-sj-card]');
+    if (active === 'petik' && session.lastReflection >= 0 && card && card.textContent.trim()) {
+      const [line, question] = REFLECTIONS[language][session.lastReflection];
+      return `${line}\n${question}`;
+    }
+    return text.shareText;
+  }
+
   async function share() {
     const url = `${location.origin}${location.pathname}#/sejenak`;
-    const payload = { title: text.docTitle, text: text.shareText, url };
+    const message = shareMessage();
+    const payload = { title: text.docTitle, text: message, url };
     if (navigator.share) {
       try {
         await navigator.share(payload);
@@ -598,7 +1071,7 @@ export function sejenak(main, params, query, ctx) {
       }
     }
     try {
-      await navigator.clipboard.writeText(url);
+      await navigator.clipboard.writeText(message === text.shareText ? url : `${message}\n${url}`);
       toast(text.copied);
     } catch {
       toast(url, 6000);
@@ -611,7 +1084,11 @@ export function sejenak(main, params, query, ctx) {
       return;
     }
     if (target.dataset.sjTab) {
-      if (target.dataset.sjTab !== active && !worryBusy) {
+      if (target.dataset.sjTab !== active && !worryBusy && !shaking) {
+        if (move.running) {
+          move.running = false;
+          stopMoveTimer();
+        }
         active = target.dataset.sjTab;
         renderPanel();
       }
@@ -625,10 +1102,24 @@ export function sejenak(main, params, query, ctx) {
       tap();
     } else if (target.dataset.sjDrink) {
       pickDrink(Number(target.dataset.sjDrink));
+    } else if ('sjDraw' in target.dataset) {
+      drawReflection();
+    } else if ('sjMoveStart' in target.dataset) {
+      toggleMove();
+    } else if ('sjMoveNext' in target.dataset) {
+      nextMove();
+    } else if ('sjAmbience' in target.dataset) {
+      cycleAmbience();
+    } else if ('sjRemind' in target.dataset) {
+      remindTomorrow();
     } else if ('sjSound' in target.dataset) {
       const on = !prefs.get().sound;
       prefs.set({ sound: on });
       renderSound();
+      if (!on && session.ambience !== 'off') {
+        session.ambience = 'off';
+        applyAmbience();
+      }
       toast(on ? text.soundOn : text.soundOff, 1600);
       if (on) {
         audio.unlockAudio();
@@ -654,11 +1145,18 @@ export function sejenak(main, params, query, ctx) {
   });
 
   renderSound();
+  applyAmbience();
   renderPanel();
 
   return () => {
     timers.forEach((id) => clearTimeout(id));
     timers.clear();
+    stopMoveTimer();
+    if (stopAmbience) {
+      stopAmbience();
+      stopAmbience = null;
+    }
+    delete document.documentElement.dataset.jedaAmbience;
     document.body.classList.remove('sejenak-mode');
     document.title = previousTitle;
   };
