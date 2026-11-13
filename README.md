@@ -58,6 +58,7 @@ Terinspirasi oleh "Sansa" (산사), kuil virtual dari Korea. Dibuat oleh [juw12]
 
 | Fitur | Isi |
 |---|---|
+| **Sejenak** (v1.8.0) | Mode cepat di `#/sejenak`, tanpa pertanyaan awal dan tanpa memuat ruang 3D: nyalakan lilin/dupa/pelita (menyesuaikan iman bila sudah dipilih), titip harapan, lepas beban (tulisan larut, tidak disimpan), ketuk hitungan (muyu, tasbih, rosario, japa), dan minuman penghibur. Hitungan hanya milikmu di perangkat ini, tanpa angka pengunjung. Bisa dibagikan lewat tautan; dari kartu sambutan pilih "Langsung hening" |
 | **Mulai** | Pertanyaan awal satu kartu per layar: suasana hati, jalan iman, aliran, dialek keluarga, nama tamu & warna jubah, sendiri atau bersama |
 | **Ruang 3D** | 7 tempat 3D yang bisa dijelajahi (WebGL, three.js): jalan dengan ketuk/WASD atau chip "Pergi ke", lalu lakukan kegiatan di tempatnya — tancapkan hio, gantung lampion, bakar kim cua, nyalakan lilin/dupa, letakkan teratai, haturkan canang (warna Nawa Sanga), berwudu, bunyikan lonceng/genta, duduk berzikir 33×3, rosario, meditasi, napas. Jatuh kembali ke gambar 2D bila WebGL tidak ada |
 | **Hitungan setiap aksi** (v1.7) | Setiap kegiatan dihitung: butir tasbih/mala/rosario tampil sebagai "📿 12 / 33" di atas kepala dan di HUD, begitu juga berwudu, menyalakan lilin, salam, pesan makanan, bersedekah — "🪙 Beri uang receh ×3" |

@@ -141,6 +141,12 @@ export function home(main, params, query, ctx) {
         <a class="journey-tile" href="#/wisata"><span class="journey-icon" aria-hidden="true">🧭</span><strong>Wisata iman</strong><small>Borobudur, Istiqlal, Katedral…</small></a>
       </div>
 
+      <a class="live-join-row" href="#/sejenak">
+        <span class="sejenak-dot" aria-hidden="true"></span>
+        <span><strong>Sejenak</strong><small>Nyalakan lilin, titip harapan, lepas beban. Tanpa ruang 3D.</small></span>
+        <span aria-hidden="true">→</span>
+      </a>
+
       <a class="live-join-row" href="#/gabung">
         <span class="live-dot" aria-hidden="true"></span>
         <span><strong>Gabung Ruang Live</strong><small>Punya kode dari siaran TikTok/IG? Masuk di sini</small></span>
