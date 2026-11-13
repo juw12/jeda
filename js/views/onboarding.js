@@ -55,9 +55,8 @@ export function onboarding(main, params, query, { content, navigate }) {
           <h1 class="ob-title">Jeda</h1>
           <p class="ob-lead">${lang() === 'en' ? 'A quiet room for every faith.' : 'Ruang hening untuk setiap iman.'}</p>
           <a class="btn btn-big ob-quick" href="#/sejenak" data-quick>${lang() === 'en' ? 'Straight to stillness' : 'Langsung hening'}<small>${lang() === 'en' ? 'no questions' : 'tanpa pertanyaan'}</small></a>
-          <button class="btn-ghost ob-setup" type="button" data-next>${lang() === 'en' ? 'Get acquainted first' : 'Kenalan dulu'}<small>${lang() === 'en' ? 'choose your mood & faith' : 'pilih suasana hati & iman'}</small></button>
           <div class="ob-footrow">
-            <a class="ob-link" href="#/gabung">${lang() === 'en' ? 'Have a Live Room code?' : 'Punya kode Ruang Live?'}</a>
+            <button class="ob-link ob-setup-link" type="button" data-next>${lang() === 'en' ? 'Set up my space first' : 'Atur ruangku dulu'}</button>
             <span aria-hidden="true">·</span>
             <button class="ob-link" type="button" data-lang>${lang() === 'en' ? 'Bahasa Indonesia' : 'English'}</button>
           </div>`;
