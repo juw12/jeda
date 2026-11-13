@@ -7,24 +7,30 @@ import { t, lang } from './i18n.js';
 import { openPause } from './pause.js';
 import { loadContent, faithById } from './content.js';
 import * as core from './views/core.js';
-import { space } from './views/space.js';
 import { pustaka, entry, searchView, scripture, kamus } from './views/pustaka.js';
 import { tanya } from './views/tanya.js';
 import { planner, places, calendarView, archive } from './views/tools.js';
 import { review } from './views/review.js';
 import { journal, greetingCard, memorialView } from './views/extras.js';
 import { onboarding } from './views/onboarding.js';
-import { liveView, joinView } from './views/live.js';
+import { sejenak } from './views/sejenak.js';
 import { sekolah, karmaView, wisata } from './views/journey.js';
 import { balance, onKarma } from './karma.js';
+
+// The 3D world (three.js and the world modules) loads only when a 3D route is opened,
+// so a shared link to a quiet page such as #/sejenak stays light.
+const lazy = (load, name) => async (...args) => (await load())[name](...args);
+const loadSpace = () => import('./views/space.js');
+const loadLive = () => import('./views/live.js');
 
 const ROUTES = {
   '': core.home,
   pilih: (main, params, query, ctx) => onboarding(main, params, new URLSearchParams('dari=pengaturan'), ctx),
   mulai: onboarding,
-  live: liveView,
-  gabung: joinView,
-  ruang: space,
+  sejenak,
+  live: lazy(loadLive, 'liveView'),
+  gabung: lazy(loadLive, 'joinView'),
+  ruang: lazy(loadSpace, 'space'),
   kunjungi: core.visitList,
   pustaka,
   entri: entry,
