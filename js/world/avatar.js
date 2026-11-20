@@ -11,27 +11,37 @@ import { mat, box, cyl, sphere, cone } from './places.js';
 const SKIN = '#f1d9bf';
 const HAIR = '#2b211b';
 
+// Floating text is drawn at TEXT_SUPERSAMPLE x its layout size: at 1x a name tag near the camera
+// was stretched over 2-3 screen pixels per texel on retina phones and read as blurry.
+const TEXT_SUPERSAMPLE = 2;
+function textTexture(canvas) {
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.anisotropy = 4;
+  return texture;
+}
+
 export function textSprite(text, { color = '#ffffff', background = 'rgba(20,18,16,0.55)', size = 44 } = {}) {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d');
   context.font = `600 ${size}px system-ui, "Segoe UI", sans-serif`;
   const width = Math.ceil(context.measureText(text).width) + 40;
-  canvas.width = width;
-  canvas.height = size + 28;
+  const height = size + 28;
+  canvas.width = width * TEXT_SUPERSAMPLE;
+  canvas.height = height * TEXT_SUPERSAMPLE;
+  context.scale(TEXT_SUPERSAMPLE, TEXT_SUPERSAMPLE);
   context.font = `600 ${size}px system-ui, "Segoe UI", sans-serif`;
   context.fillStyle = background;
-  const radius = canvas.height / 2;
+  const radius = height / 2;
   context.beginPath();
-  context.roundRect(0, 0, width, canvas.height, radius);
+  context.roundRect(0, 0, width, height, radius);
   context.fill();
   context.fillStyle = color;
   context.textBaseline = 'middle';
-  context.fillText(text, 20, canvas.height / 2 + 2);
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.colorSpace = THREE.SRGBColorSpace;
-  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, depthWrite: false, transparent: true }));
+  context.fillText(text, 20, height / 2 + 2);
+  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: textTexture(canvas), depthWrite: false, transparent: true }));
   const scale = 0.0042;
-  sprite.scale.set(width * scale, canvas.height * scale, 1);
+  sprite.scale.set(width * scale, height * scale, 1);
   return sprite;
 }
 
@@ -136,26 +146,26 @@ export function speechBubble(text, { background = 'rgba(255,252,244,0.96)', colo
   const lineHeight = Math.round(size * 1.25);
   const width = Math.ceil(Math.max(...lines.map((l) => context.measureText(l).width), 40)) + 40;
   const tail = 16;
-  canvas.width = width;
-  canvas.height = lines.length * lineHeight + 26 + tail;
+  const height = lines.length * lineHeight + 26 + tail;
+  canvas.width = width * TEXT_SUPERSAMPLE;
+  canvas.height = height * TEXT_SUPERSAMPLE;
+  context.scale(TEXT_SUPERSAMPLE, TEXT_SUPERSAMPLE);
   context.font = font;
   context.fillStyle = background;
   context.beginPath();
-  context.roundRect(0, 0, width, canvas.height - tail, 22);
+  context.roundRect(0, 0, width, height - tail, 22);
   context.fill();
   context.beginPath();
-  context.moveTo(width / 2 - 12, canvas.height - tail - 1);
-  context.lineTo(width / 2, canvas.height);
-  context.lineTo(width / 2 + 12, canvas.height - tail - 1);
+  context.moveTo(width / 2 - 12, height - tail - 1);
+  context.lineTo(width / 2, height);
+  context.lineTo(width / 2 + 12, height - tail - 1);
   context.fill();
   context.fillStyle = color;
   context.textBaseline = 'top';
   lines.forEach((l, i) => context.fillText(l, 20, 14 + i * lineHeight));
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.colorSpace = THREE.SRGBColorSpace;
-  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, depthWrite: false, transparent: true }));
+  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: textTexture(canvas), depthWrite: false, transparent: true }));
   const scale = 0.0042;
-  sprite.scale.set(width * scale, canvas.height * scale, 1);
+  sprite.scale.set(width * scale, height * scale, 1);
   sprite.center.set(0.5, 0);
   sprite.renderOrder = 5;
   return keepOnScreen(sprite);

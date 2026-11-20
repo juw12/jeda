@@ -33,13 +33,18 @@ export function webglAvailable() {
 }
 
 // Pick a starting quality from the device; the loop then adapts to the real frame rate.
-// low: no shadows, 1x pixels, fewer particles and lights (older/budget phones)
-// medium: soft shadows, up to 1.5x pixels (most phones)  ·  high: laptops/desktops with a good GPU
+// low: no shadows, up to 1.5x pixels, fewer particles and lights (older/budget phones)
+// medium: soft shadows, up to 2x pixels (most phones)  ·  high: laptops/desktops with a good GPU
+// Every tier is antialiased and none starts below the sharpness of the screen's CSS pixels:
+// 1x without antialiasing on a 3x phone screen looked blocky and blurred.
 export function detectQuality() {
   const memory = navigator.deviceMemory || 4;
   const cores = navigator.hardwareConcurrency || 4;
   const mobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && window.innerWidth < 900);
-  if (memory <= 3 || cores <= 4 && mobile) {
+  // Safari reports a clamped core count (4 on every iPhone) and no memory at all, so the core test
+  // below says nothing about an iPhone or iPad; their GPUs are comfortably "medium".
+  const apple = /iPhone|iPad|iPod/i.test(navigator.userAgent) || (/Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
+  if (memory <= 3 || cores <= 4 && mobile && !apple) {
     return 'low';
   }
   if (mobile) {
@@ -49,10 +54,15 @@ export function detectQuality() {
 }
 
 const QUALITY = {
-  low: { pixelRatio: 1, shadows: false, shadowMap: 512, lights: 2, particles: 0.5, motes: 25, antialias: false },
-  medium: { pixelRatio: 1.5, shadows: true, shadowMap: 1024, lights: 3, particles: 0.8, motes: 45, antialias: true },
-  high: { pixelRatio: 2, shadows: true, shadowMap: 1024, lights: 4, particles: 1, motes: 60, antialias: true },
+  low: { pixelRatio: 1.5, shadows: false, shadowMap: 512, lights: 2, particles: 0.5, motes: 25, antialias: true },
+  medium: { pixelRatio: 2, shadows: true, shadowMap: 1024, lights: 3, particles: 0.8, motes: 45, antialias: true },
+  high: { pixelRatio: 2, shadows: true, shadowMap: 2048, lights: 4, particles: 1, motes: 60, antialias: true },
 };
+// The adaptive loop trades resolution for frame rate, but never renders below the screen's own
+// CSS pixels (it used to go down to 0.75x, which is a visibly upscaled, smeared picture).
+const MIN_PIXEL_RATIO = 1;
+// Above this the picture is still crisp, so resolution goes first; below it shadows go first.
+const CRISP_PIXEL_RATIO = 1.5;
 
 const MAX_RENDERED_PEERS = 40;
 
@@ -143,7 +153,8 @@ export function createWorld(container, options) {
   if (!renderer) {
     throw new Error('webgl-unavailable');
   }
-  let pixelRatio = Math.min(window.devicePixelRatio || 1, quality.pixelRatio);
+  const maxPixelRatio = Math.min(window.devicePixelRatio || 1, quality.pixelRatio);
+  let pixelRatio = maxPixelRatio;
   renderer.setPixelRatio(pixelRatio);
   renderer.shadowMap.enabled = quality.shadows;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -1593,31 +1604,61 @@ export function createWorld(container, options) {
     avatar.group.position.y += (targetY - avatar.group.position.y) * Math.min(1, delta * 6);
   }
 
-  // Adaptive quality: if the device can't hold ~28 fps, lower resolution, then drop shadows.
+  // Adaptive quality: if the device can't hold ~28 fps, give up detail in the order that hurts the
+  // picture least: resolution down to CRISP_PIXEL_RATIO, then shadows, then resolution down to
+  // MIN_PIXEL_RATIO. Resolution comes back when the device shows headroom again, so one slow spell
+  // (loading, a busy phone) does not leave the world soft for the rest of the visit.
+  const ADAPT_WARMUP_MS = 4000;
+  const MAX_RESTORES = 2;
   let frameCount = 0;
-  let windowStart = performance.now();
+  let windowStart = performance.now() + ADAPT_WARMUP_MS;
   let slowWindows = 0;
+  let fastWindows = 0;
+  let restores = 0;
+  function setPixelRatio(next) {
+    pixelRatio = next;
+    renderer.setPixelRatio(pixelRatio);
+    resize();
+  }
   function adaptQuality(now) {
-    frameCount += 1;
-    if (now - windowStart < 2000) {
+    // Shaders compile and textures upload in the first seconds; that is not the device's real speed.
+    if (now < windowStart) {
       return;
     }
-    const fps = (frameCount * 1000) / (now - windowStart);
+    frameCount += 1;
+    const span = now - windowStart;
+    if (span < 2000) {
+      return;
+    }
+    const fps = (frameCount * 1000) / span;
     frameCount = 0;
     windowStart = now;
-    if (document.hidden || fps >= 28) {
+    // A window much longer than 2 s means the loop was paused (tab in the background, phone locked).
+    if (document.hidden || span > 3000) {
       slowWindows = 0;
+      fastWindows = 0;
       return;
     }
+    if (fps >= 28) {
+      slowWindows = 0;
+      fastWindows = fps >= 50 ? fastWindows + 1 : 0;
+      if (fastWindows >= 5 && pixelRatio < maxPixelRatio && restores < MAX_RESTORES) {
+        fastWindows = 0;
+        restores += 1;
+        setPixelRatio(Math.min(maxPixelRatio, pixelRatio + 0.25));
+        onQuality({ quality: qualityName, pixelRatio, shadows: renderer.shadowMap.enabled, fps: Math.round(fps) });
+      }
+      return;
+    }
+    fastWindows = 0;
     slowWindows += 1;
     if (slowWindows < 2) {
       return;
     }
     slowWindows = 0;
-    if (pixelRatio > 0.75) {
-      pixelRatio = Math.max(0.75, pixelRatio - 0.25);
-      renderer.setPixelRatio(pixelRatio);
-      resize();
+    const floor = renderer.shadowMap.enabled ? Math.min(maxPixelRatio, CRISP_PIXEL_RATIO) : Math.min(maxPixelRatio, MIN_PIXEL_RATIO);
+    if (pixelRatio > floor) {
+      setPixelRatio(Math.max(floor, pixelRatio - 0.25));
     } else if (renderer.shadowMap.enabled) {
       renderer.shadowMap.enabled = false;
       sun.castShadow = false;
@@ -1627,6 +1668,8 @@ export function createWorld(container, options) {
         }
       });
       qualityName = 'low';
+    } else {
+      return;
     }
     onQuality({ quality: qualityName, pixelRatio, shadows: renderer.shadowMap.enabled, fps: Math.round(fps) });
   }
