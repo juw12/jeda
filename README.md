@@ -48,6 +48,21 @@
 </p>
 <!-- HERO:END -->
 
+## Pasang Jeda
+
+Jeda sama di semua perangkat: aplikasi di bawah ini membuka situs yang sama di jendelanya sendiri, jadi versi baru langsung sampai tanpa pasang ulang.
+
+| Perangkat | Unduh | Cara pasang |
+|---|---|---|
+| **Windows 10/11** | [Jeda-Windows-Setup.exe](https://github.com/juw12/jeda/releases/download/apps/Jeda-Windows-Setup.exe) | Buka lalu tekan Install (tanpa hak admin). Jika Windows menahan, pilih **More info → Run anyway** (aplikasi belum ditandatangani). Tanpa pasang: [Jeda-Windows-Portable.zip](https://github.com/juw12/jeda/releases/download/apps/Jeda-Windows-Portable.zip). |
+| **Mac berchip Apple (M1 ke atas)** | [Jeda-macOS-AppleSilicon.dmg](https://github.com/juw12/jeda/releases/download/apps/Jeda-macOS-AppleSilicon.dmg) | Buka lalu seret Jeda ke Applications. Pertama kali macOS menahannya: **System Settings → Privacy & Security → Open Anyway**. |
+| **Mac berchip Intel** | [Jeda-macOS-Intel.dmg](https://github.com/juw12/jeda/releases/download/apps/Jeda-macOS-Intel.dmg) | Sama seperti di atas. |
+| **iPhone / iPad** | [Buka di Safari](https://juw12.github.io/jeda/) | Bagikan → **Tambah ke Layar Utama**. |
+| **Android** | [Buka di Chrome](https://juw12.github.io/jeda/) | Menu → **Tambahkan ke layar utama** / **Instal aplikasi**. Berkas .apk belum ada. |
+
+Sumber aplikasi desktop ada di [`desktop/`](desktop/README.md); semua berkas dan checksum ada di [rilis apps](https://github.com/juw12/jeda/releases/tag/apps).
+
+
 ## About
 
 Ruang hening virtual dan pustaka untuk setiap iman di Indonesia: Islam, Kristen Protestan, Katolik, Hindu, Buddha, dan Khonghucu & tradisi Tionghoa (flagship), plus Ruang Alam tanpa agama.
