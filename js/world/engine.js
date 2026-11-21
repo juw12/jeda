@@ -75,7 +75,7 @@ const SKIES = {
   dusk: { top: '#5b5d9c', bottom: '#f3b07c', fog: '#d9a283', sun: '#ffb27a', sunIntensity: 1.4, hemi: 0.9, sunPos: [24, 10, -6] },
   // Night is moonlit: cool light strong enough that walls, clothes and paths keep their shape and
   // colour, so the warm doorways and lamps have something to glow against.
-  night: { top: '#0a1130', bottom: '#33416f', fog: '#232d55', sun: '#b9c8ff', sunIntensity: 0.95, hemi: 0.8, ambient: '#5a6cb4', sunPos: [-10, 26, 8] },
+  night: { top: '#0a1130', bottom: '#33416f', fog: '#232d55', sun: '#c2cfff', sunIntensity: 1.0, hemi: 0.95, ambient: '#6878c0', sunPos: [-10, 26, 8] },
 };
 
 function gradientTexture(top, bottom) {
@@ -110,6 +110,93 @@ function softDotTexture() {
   context.fillRect(0, 0, 64, 64);
   softDot = new THREE.CanvasTexture(canvas);
   return softDot;
+}
+
+// Ground is never one flat colour: a light mottled texture that the place's own ground colour tints.
+let groundMap = null;
+function groundTexture() {
+  if (groundMap) {
+    return groundMap;
+  }
+  const size = 512;
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const context = canvas.getContext('2d');
+  context.fillStyle = '#f4f4f4';
+  context.fillRect(0, 0, size, size);
+  let random = 11;
+  const next = () => { random = (Math.imul(random, 1664525) + 1013904223) >>> 0; return random / 4294967296; };
+  // Soft patches (drawn nine times around the edges so the tile repeats without a seam), then grit.
+  for (let i = 0; i < 46; i++) {
+    const x = next() * size;
+    const y = next() * size;
+    const radius = 30 + next() * 70;
+    const dark = next() < 0.6;
+    for (let ox = -size; ox <= size; ox += size) {
+      for (let oy = -size; oy <= size; oy += size) {
+        const patch = context.createRadialGradient(x + ox, y + oy, 0, x + ox, y + oy, radius);
+        patch.addColorStop(0, dark ? 'rgba(150,150,150,0.1)' : 'rgba(255,255,255,0.18)');
+        patch.addColorStop(1, dark ? 'rgba(120,120,120,0)' : 'rgba(255,255,255,0)');
+        context.fillStyle = patch;
+        context.fillRect(x + ox - radius, y + oy - radius, radius * 2, radius * 2);
+      }
+    }
+  }
+  for (let i = 0; i < 4200; i++) {
+    const shade = 170 + Math.floor(next() * 70);
+    context.fillStyle = `rgba(${shade},${shade},${shade},${0.08 + next() * 0.14})`;
+    context.fillRect(next() * size, next() * size, 1 + next() * 2.2, 1 + next() * 2.2);
+  }
+  groundMap = new THREE.CanvasTexture(canvas);
+  groundMap.colorSpace = THREE.SRGBColorSpace;
+  groundMap.wrapS = THREE.RepeatWrapping;
+  groundMap.wrapT = THREE.RepeatWrapping;
+  groundMap.repeat.set(16, 16);
+  return groundMap;
+}
+
+// Paving slabs for the walkway, with joints and a little wear.
+let pavingMap = null;
+function pavingTexture() {
+  if (pavingMap) {
+    return pavingMap;
+  }
+  const canvas = document.createElement('canvas');
+  canvas.width = 256;
+  canvas.height = 256;
+  const context = canvas.getContext('2d');
+  context.fillStyle = '#ffffff';
+  context.fillRect(0, 0, 256, 256);
+  let random = 5;
+  const next = () => { random = (Math.imul(random, 1664525) + 1013904223) >>> 0; return random / 4294967296; };
+  for (let row = 0; row < 2; row++) {
+    for (let column = 0; column < 2; column++) {
+      const shade = 226 + Math.floor(next() * 26);
+      context.fillStyle = `rgb(${shade},${shade},${shade})`;
+      const shift = row % 2 ? 64 : 0;
+      context.fillRect(column * 128 + shift + 3, row * 128 + 3, 122, 122);
+      context.fillRect(column * 128 + shift - 256 + 3, row * 128 + 3, 122, 122);
+    }
+  }
+  for (let i = 0; i < 900; i++) {
+    context.fillStyle = `rgba(110,110,110,${0.05 + next() * 0.12})`;
+    context.fillRect(next() * 256, next() * 256, 1 + next() * 2, 1 + next() * 2);
+  }
+  context.strokeStyle = 'rgba(95,95,95,0.55)';
+  context.lineWidth = 3;
+  for (let row = 0; row < 2; row++) {
+    const shift = row % 2 ? 64 : 0;
+    context.strokeRect(shift + 1.5, row * 128 + 1.5, 125, 125);
+    context.strokeRect(shift + 129.5, row * 128 + 1.5, 125, 125);
+    context.strokeRect(shift - 126.5, row * 128 + 1.5, 125, 125);
+  }
+  pavingMap = new THREE.CanvasTexture(canvas);
+  pavingMap.colorSpace = THREE.SRGBColorSpace;
+  pavingMap.wrapS = THREE.RepeatWrapping;
+  pavingMap.wrapT = THREE.RepeatWrapping;
+  pavingMap.repeat.set(2, 10.77);
+  return pavingMap;
 }
 
 // The look of a lit room through a doorway: brightest low and in the middle, deeper amber towards
@@ -217,11 +304,23 @@ export function createWorld(container, options) {
   if (!renderer) {
     throw new Error('webgl-unavailable');
   }
-  const maxPixelRatio = Math.min(window.devicePixelRatio || 1, quality.pixelRatio);
+  // Built-in laptop graphics (Intel) cannot fill a 2x retina window with this scene at a smooth
+  // frame rate, however simple the scene: start them at 1.5x with a lighter shadow filter.
+  const gpuName = (() => {
+    try {
+      const gl = renderer.getContext();
+      const info = gl.getExtension('WEBGL_debug_renderer_info');
+      return info ? String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL)) : '';
+    } catch (error) {
+      return '';
+    }
+  })();
+  const builtInGraphics = qualityName === 'high' && /Intel|UHD|Iris|SwiftShader|llvmpipe/i.test(gpuName) && !/Arc/i.test(gpuName);
+  const maxPixelRatio = Math.min(window.devicePixelRatio || 1, builtInGraphics ? Math.min(quality.pixelRatio, CRISP_PIXEL_RATIO) : quality.pixelRatio);
   let pixelRatio = maxPixelRatio;
   renderer.setPixelRatio(pixelRatio);
   renderer.shadowMap.enabled = quality.shadows;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.type = builtInGraphics ? THREE.PCFShadowMap : THREE.PCFSoftShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
   // Drawn manually: the world first, then (when holding a sacred object) the hands on top.
@@ -291,11 +390,12 @@ export function createWorld(container, options) {
     }
   }
   const ritualScene = place.heldScene || sceneId;
-  const ground = new THREE.Mesh(new THREE.CircleGeometry(45, 64), mat(place.ground, { roughness: 1 }));
+  const groundMaterial = new THREE.MeshStandardMaterial({ color: place.ground, roughness: 1, metalness: 0, map: groundTexture() });
+  const ground = new THREE.Mesh(new THREE.CircleGeometry(45, 64), groundMaterial);
   ground.rotation.x = -Math.PI / 2;
   ground.receiveShadow = true;
   scene.add(ground);
-  const walkway = new THREE.Mesh(new THREE.PlaneGeometry(2.6, 14), mat(place.path, { roughness: 1 }));
+  const walkway = new THREE.Mesh(new THREE.PlaneGeometry(2.6, 14), new THREE.MeshStandardMaterial({ color: place.path, roughness: 1, metalness: 0, map: pavingTexture() }));
   walkway.rotation.x = -Math.PI / 2;
   walkway.position.set(0, 0.01, 1.5);
   walkway.receiveShadow = true;
@@ -321,6 +421,84 @@ export function createWorld(container, options) {
   moon.position.set(...sky.sunPos).normalize().multiplyScalar(110);
   moon.visible = currentTime === 'night';
   scene.add(moon);
+
+  // ---------- Things that make the place less bare ----------
+  const outdoors = !sceneId.startsWith('kedai-') && !sceneId.startsWith('rumah-');
+  // Clouds: a few soft puffs high up by day, gone by night.
+  const clouds = new THREE.Group();
+  [[-60, 34, -70, 1.2], [20, 42, -85, 1], [75, 30, -40, 0.9], [-85, 38, 10, 1.1], [50, 46, 60, 1], [-30, 40, 80, 0.8]].forEach(([x, y, z, s]) => {
+    [[0, 0, 1], [-11, -1.5, 0.75], [10, -2, 0.8]].forEach(([dx, dy, puff]) => {
+      const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: softDotTexture(), color: '#ffffff', fog: false, transparent: true, depthWrite: false, opacity: 0.5 }));
+      sprite.scale.set(30 * s * puff, 11 * s * puff, 1);
+      sprite.position.set(x + dx * s, y + dy * s, z);
+      clouds.add(sprite);
+    });
+  });
+  scene.add(clouds);
+  const cloudWhite = new THREE.Color('#ffffff');
+  function styleClouds(nightAmount, horizon) {
+    clouds.visible = nightAmount < 0.97;
+    clouds.children.forEach((sprite) => {
+      sprite.material.opacity = 0.5 * (1 - nightAmount);
+      sprite.material.color.copy(horizon).lerp(cloudWhite, 0.75);
+    });
+  }
+  // Pebbles and tufts scattered over the open ground, away from the buildings and the path.
+  const groundTone = new THREE.Color(place.ground);
+  const grassy = groundTone.g > groundTone.r * 1.04 && groundTone.g > groundTone.b * 1.04;
+  // (On stone and sand, loose bits read as litter, so only grass gets them.)
+  if (outdoors && grassy) {
+    const tint = new THREE.Color(place.ground).multiplyScalar(0.72);
+    const count = 220 * quality.particles;
+    const bits = new THREE.InstancedMesh(
+      new THREE.ConeGeometry(0.09, 0.3, 5),
+      new THREE.MeshStandardMaterial({ color: tint, roughness: 1, metalness: 0, flatShading: true }),
+      count,
+    );
+    const placing = new THREE.Object3D();
+    let made = 0;
+    let random = 7;
+    const next = () => { random = (Math.imul(random, 1664525) + 1013904223) >>> 0; return random / 4294967296; };
+    for (let tries = 0; made < count && tries < count * 12; tries++) {
+      const angle = next() * Math.PI * 2;
+      const radius = 5 + next() * 36;
+      const x = Math.cos(angle) * radius;
+      const z = Math.sin(angle) * radius;
+      if ((Math.abs(x) < 13 && z > -20 && z < 10) || !nav.walkable(x, z)) {
+        continue;
+      }
+      const size = 0.6 + next() * 1.1;
+      placing.position.set(x, 0.14 * size, z);
+      placing.rotation.set(0, next() * 6.28, 0);
+      placing.scale.set(size, size, size);
+      placing.updateMatrix();
+      bits.setMatrixAt(made, placing.matrix);
+      made += 1;
+    }
+    bits.count = made;
+    bits.receiveShadow = true;
+    scene.add(bits);
+  }
+  // Lamp posts along the walkway: something upright by day, warm light by night.
+  const lampBulbs = [];
+  if (outdoors && !isWonder) {
+    [[-1.9, 6.4], [1.9, 6.4], [-1.9, 2.2], [1.9, 2.2]].forEach(([x, z]) => {
+      if (!nav.walkable(x, z)) {
+        return;
+      }
+      const post = new THREE.Group();
+      post.add(at(cyl(0.11, 0.14, 0.18, '#3a3531', 8), 0, 0.09, 0));
+      post.add(at(cyl(0.04, 0.055, 2.2, '#3a3531', 8), 0, 1.2, 0));
+      post.add(at(cyl(0.17, 0.05, 0.1, '#3a3531', 8), 0, 2.28, 0));
+      const bulb = sphere(0.15, '#fff3d6', 12, { emissive: '#ffc86e', emissiveIntensity: 0.15, roughness: 0.4 });
+      post.add(at(bulb, 0, 2.46, 0));
+      post.add(at(cone(0.2, 0.14, '#3a3531', 8), 0, 2.66, 0));
+      post.position.set(x, 0, z);
+      post.traverse((object) => { object.userData.noGlow = true; });
+      scene.add(post);
+      lampBulbs.push(bulb);
+    });
+  }
 
   // ---------- Lit from inside after dark ----------
   // A doorway, arch or window is a dark upright panel set in a wall. By day that reads as shade;
@@ -389,6 +567,19 @@ export function createWorld(container, options) {
       pools.push(pool);
     });
     caps.forEach((object) => openings.push(object));
+    lampBulbs.forEach((bulb) => {
+      const pool = new THREE.Mesh(
+        new THREE.CircleGeometry(3.1, 24),
+        new THREE.MeshBasicMaterial({ map: softDotTexture(), color: WARM, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending, fog: false }),
+      );
+      pool.rotation.x = -Math.PI / 2;
+      bulb.getWorldPosition(pool.position);
+      pool.position.y = 0.04;
+      pool.renderOrder = 2;
+      pool.visible = false;
+      scene.add(pool);
+      pools.push(pool);
+    });
   })();
   function glowTwin(material) {
     if (!glowTwins.has(material)) {
@@ -402,7 +593,7 @@ export function createWorld(container, options) {
     }
     return glowTwins.get(material);
   }
-  function applyGlow(level) {
+  function applyGlow(level, nightAmount = currentTime === 'night' ? 1 : 0, horizon = new THREE.Color(SKIES[currentTime].bottom)) {
     openings.forEach((object) => {
       const base = object.userData.dayMaterial || object.material;
       if (level <= 0.01) {
@@ -417,6 +608,10 @@ export function createWorld(container, options) {
       pool.visible = level > 0.01;
       pool.material.opacity = 0.5 * level;
     });
+    if (lampBulbs.length) {
+      lampBulbs[0].material.emissiveIntensity = 0.15 + 2.4 * level;
+    }
+    styleClouds(nightAmount, horizon);
   }
   applyGlow(GLOW_LEVELS[currentTime] || 0);
 
@@ -1386,7 +1581,7 @@ export function createWorld(container, options) {
     skyNow.glow = THREE.MathUtils.lerp(from.glow, to.glow, k);
     scene.fog.color.copy(skyNow.fog);
     hemi.color.copy(skyNow.ambient);
-    applyGlow(skyNow.glow);
+    applyGlow(skyNow.glow, skyNow.stars, skyNow.bottom);
     moon.position.copy(skyNow.sunPos).normalize().multiplyScalar(110);
     moon.material.opacity = skyNow.stars;
     moon.visible = skyNow.stars > 0.02;
@@ -2051,6 +2246,7 @@ export function createWorld(container, options) {
       }
     }
     life.update(delta, elapsed, [self, ...peers.values(), ...npcAvatars]);
+    clouds.rotation.y += delta * 0.003;
     adaptQuality(now);
     polishTimer -= delta;
     if (polishTimer <= 0) {
