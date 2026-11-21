@@ -1,0 +1,9 @@
+{
+  "name": "Jeda",
+  "id": "io.github.juw12.jeda",
+  "url": "https://juw12.github.io/jeda/",
+  "versionName": "1.0.0",
+  "versionCode": 1,
+  "minSdk": 24,
+  "targetSdk": 34
+}
