@@ -66,11 +66,16 @@ const CRISP_PIXEL_RATIO = 1.5;
 
 const MAX_RENDERED_PEERS = 40;
 
+// How much the doorways, windows and the ground before them glow (0 = daylight, 1 = night).
+const GLOW_LEVELS = { dawn: 0.3, day: 0, dusk: 0.65, night: 1 };
+
 const SKIES = {
   dawn: { top: '#f0a987', bottom: '#fde5c8', fog: '#f4d8be', sun: '#ffd2a1', sunIntensity: 1.6, hemi: 1.0, sunPos: [-20, 12, 10] },
   day: { top: '#8fc3ea', bottom: '#e9f3f6', fog: '#dceaf0', sun: '#fff4df', sunIntensity: 2.2, hemi: 1.2, sunPos: [12, 30, 14] },
   dusk: { top: '#5b5d9c', bottom: '#f3b07c', fog: '#d9a283', sun: '#ffb27a', sunIntensity: 1.4, hemi: 0.9, sunPos: [24, 10, -6] },
-  night: { top: '#0b1230', bottom: '#2c3762', fog: '#1d2546', sun: '#9fb4ff', sunIntensity: 0.55, hemi: 0.55, sunPos: [-10, 26, 8] },
+  // Night is moonlit: cool light strong enough that walls, clothes and paths keep their shape and
+  // colour, so the warm doorways and lamps have something to glow against.
+  night: { top: '#0a1130', bottom: '#33416f', fog: '#232d55', sun: '#b9c8ff', sunIntensity: 0.95, hemi: 0.8, ambient: '#5a6cb4', sunPos: [-10, 26, 8] },
 };
 
 function gradientTexture(top, bottom) {
@@ -105,6 +110,65 @@ function softDotTexture() {
   context.fillRect(0, 0, 64, 64);
   softDot = new THREE.CanvasTexture(canvas);
   return softDot;
+}
+
+// The look of a lit room through a doorway: brightest low and in the middle, deeper amber towards
+// the top and the frame.
+let lamplightMap = null;
+function lamplightTexture() {
+  if (lamplightMap) {
+    return lamplightMap;
+  }
+  const canvas = document.createElement('canvas');
+  canvas.width = 64;
+  canvas.height = 128;
+  const context = canvas.getContext('2d');
+  const fall = context.createLinearGradient(0, 0, 0, 128);
+  fall.addColorStop(0, '#c9772c');
+  fall.addColorStop(0.55, '#f0a548');
+  fall.addColorStop(1, '#ffd591');
+  context.fillStyle = fall;
+  context.fillRect(0, 0, 64, 128);
+  const frame = context.createLinearGradient(0, 0, 64, 0);
+  frame.addColorStop(0, 'rgba(90,40,10,0.35)');
+  frame.addColorStop(0.25, 'rgba(90,40,10,0)');
+  frame.addColorStop(0.75, 'rgba(90,40,10,0)');
+  frame.addColorStop(1, 'rgba(90,40,10,0.35)');
+  context.fillStyle = frame;
+  context.fillRect(0, 0, 64, 128);
+  lamplightMap = new THREE.CanvasTexture(canvas);
+  lamplightMap.colorSpace = THREE.SRGBColorSpace;
+  return lamplightMap;
+}
+
+let moonMap = null;
+function moonTexture() {
+  if (moonMap) {
+    return moonMap;
+  }
+  const canvas = document.createElement('canvas');
+  canvas.width = 256;
+  canvas.height = 256;
+  const context = canvas.getContext('2d');
+  const halo = context.createRadialGradient(128, 128, 20, 128, 128, 128);
+  halo.addColorStop(0, 'rgba(214,226,255,0.55)');
+  halo.addColorStop(0.3, 'rgba(170,190,255,0.16)');
+  halo.addColorStop(1, 'rgba(150,170,255,0)');
+  context.fillStyle = halo;
+  context.fillRect(0, 0, 256, 256);
+  context.fillStyle = '#f6f3e6';
+  context.beginPath();
+  context.arc(128, 128, 27, 0, Math.PI * 2);
+  context.fill();
+  context.fillStyle = 'rgba(190,196,214,0.55)';
+  [[118, 120, 7], [138, 134, 5], [126, 142, 4], [140, 116, 3]].forEach(([x, y, r]) => {
+    context.beginPath();
+    context.arc(x, y, r, 0, Math.PI * 2);
+    context.fill();
+  });
+  moonMap = new THREE.CanvasTexture(canvas);
+  moonMap.colorSpace = THREE.SRGBColorSpace;
+  return moonMap;
 }
 
 export function createWorld(container, options) {
@@ -173,7 +237,7 @@ export function createWorld(container, options) {
 
   const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 200);
 
-  const hemi = new THREE.HemisphereLight(sky.top, '#8a7b66', sky.hemi);
+  const hemi = new THREE.HemisphereLight(sky.ambient || sky.top, '#8a7b66', sky.hemi);
   scene.add(hemi);
   const sun = new THREE.DirectionalLight(sky.sun, sky.sunIntensity);
   sun.position.set(...sky.sunPos);
@@ -252,6 +316,109 @@ export function createWorld(container, options) {
   const stars = new THREE.Points(starGeometry, new THREE.PointsMaterial({ color: '#ffffff', size: 0.9, sizeAttenuation: true, fog: false, transparent: true, opacity: currentTime === 'night' ? 1 : 0 }));
   stars.visible = currentTime === 'night';
   scene.add(stars);
+  const moon = new THREE.Sprite(new THREE.SpriteMaterial({ map: moonTexture(), fog: false, transparent: true, depthWrite: false, opacity: currentTime === 'night' ? 1 : 0 }));
+  moon.scale.set(26, 26, 1);
+  moon.position.set(...sky.sunPos).normalize().multiplyScalar(110);
+  moon.visible = currentTime === 'night';
+  scene.add(moon);
+
+  // ---------- Lit from inside after dark ----------
+  // A doorway, arch or window is a dark upright panel set in a wall. By day that reads as shade;
+  // at night it was a black hole in a dark wall. After dusk these panels glow warm, as a room with
+  // its lamps on does, and spill a pool of light onto the ground in front of them.
+  const WARM = new THREE.Color('#ffb45e');
+  const glowTwins = new Map();
+  const openings = [];
+  const pools = [];
+  (function findOpenings() {
+    place.group.updateMatrixWorld(true);
+    const bounds = new THREE.Box3();
+    const size = new THREE.Vector3();
+    const centre = new THREE.Vector3();
+    const found = [];
+    place.group.traverse((object) => {
+      const material = object.material;
+      if (!object.isMesh || object.isInstancedMesh || !material || !material.color || material.map || material.transparent || object.userData.noGlow) {
+        return;
+      }
+      if (material.emissive && material.emissiveIntensity > 0 && material.emissive.getHex() !== 0) {
+        return;
+      }
+      const hex = material.color.getHex(THREE.SRGBColorSpace);
+      const brightness = ((hex >> 16) + ((hex >> 8) & 255) + (hex & 255)) / 765;
+      bounds.setFromObject(object);
+      bounds.getSize(size);
+      const thin = Math.min(size.x, size.z);
+      const wide = Math.max(size.x, size.z);
+      if (brightness < 0.4 && thin <= 0.16 && wide >= 0.5 && wide <= 3.2 && size.y >= 0.9 && size.y <= 4.2 && bounds.min.y < 1.7) {
+        found.push({ object, bounds: bounds.clone(), alongX: size.x >= size.z, wide, door: bounds.min.y < 0.7 });
+      }
+    });
+    // The rounded top of an arch is a second piece in the same paint, sitting on its panel.
+    const caps = [];
+    place.group.traverse((object) => {
+      if (!object.isMesh || found.some((entry) => entry.object === object)) {
+        return;
+      }
+      const paint = object.material && object.material.color && !object.material.map ? object.material.color.getHex() : -1;
+      bounds.setFromObject(object);
+      const host = found.find((entry) => entry.object.material.color.getHex() === paint && bounds.intersectsBox(entry.bounds.clone().expandByScalar(0.15)));
+      if (host && bounds.setFromObject(object).intersectsBox(host.bounds.clone().expandByScalar(0.15)) && bounds.getSize(size).y <= 2.5) {
+        caps.push(object);
+      }
+    });
+    found.forEach((entry) => {
+      openings.push(entry.object);
+      if (!entry.door) {
+        return;
+      }
+      // Which side is outside: the one facing where visitors arrive.
+      entry.bounds.getCenter(centre);
+      const out = entry.alongX ? new THREE.Vector3(0, 0, Math.sign(place.spawn.z - centre.z) || 1) : new THREE.Vector3(Math.sign(place.spawn.x - centre.x) || 1, 0, 0);
+      const pool = new THREE.Mesh(
+        new THREE.PlaneGeometry(entry.wide * 2.2 + 1.0, 5.2),
+        new THREE.MeshBasicMaterial({ map: softDotTexture(), color: WARM, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending, fog: false }),
+      );
+      pool.rotation.x = -Math.PI / 2;
+      pool.rotation.z = entry.alongX ? 0 : Math.PI / 2;
+      pool.position.copy(centre).addScaledVector(out, 1.7);
+      pool.position.y = entry.bounds.min.y + 0.035;
+      pool.renderOrder = 2;
+      pool.visible = false;
+      scene.add(pool);
+      pools.push(pool);
+    });
+    caps.forEach((object) => openings.push(object));
+  })();
+  function glowTwin(material) {
+    if (!glowTwins.has(material)) {
+      const twin = material.clone();
+      twin.color.set('#3a2a1c');
+      twin.emissive = new THREE.Color('#ffffff');
+      twin.emissiveMap = lamplightTexture();
+      twin.emissiveIntensity = 0;
+      twin.flatShading = false;
+      glowTwins.set(material, twin);
+    }
+    return glowTwins.get(material);
+  }
+  function applyGlow(level) {
+    openings.forEach((object) => {
+      const base = object.userData.dayMaterial || object.material;
+      if (level <= 0.01) {
+        object.material = base;
+        return;
+      }
+      object.userData.dayMaterial = base;
+      object.material = glowTwin(base);
+      object.material.emissiveIntensity = 0.95 * level;
+    });
+    pools.forEach((pool) => {
+      pool.visible = level > 0.01;
+      pool.material.opacity = 0.5 * level;
+    });
+  }
+  applyGlow(GLOW_LEVELS[currentTime] || 0);
 
   // Ambient floating motes (petals by day, fireflies at night)
   const motes = createParticles(quality.motes, currentTime === 'night' ? '#fff3a8' : '#ffffff', currentTime === 'night' ? 0.22 : 0.12);
@@ -1170,6 +1337,8 @@ export function createWorld(container, options) {
     hemi: sky.hemi,
     sunPos: new THREE.Vector3(...sky.sunPos),
     stars: currentTime === 'night' ? 1 : 0,
+    ambient: new THREE.Color(sky.ambient || sky.top),
+    glow: GLOW_LEVELS[currentTime] || 0,
   };
   let skyFade = null;
   let skyTextureTimer = 0;
@@ -1184,10 +1353,12 @@ export function createWorld(container, options) {
       from: {
         top: skyNow.top.clone(), bottom: skyNow.bottom.clone(), fog: skyNow.fog.clone(), sun: skyNow.sun.clone(),
         sunIntensity: skyNow.sunIntensity, hemi: skyNow.hemi, sunPos: skyNow.sunPos.clone(), stars: skyNow.stars,
+        ambient: skyNow.ambient.clone(), glow: skyNow.glow,
       },
       to: {
         top: new THREE.Color(target.top), bottom: new THREE.Color(target.bottom), fog: new THREE.Color(target.fog), sun: new THREE.Color(target.sun),
         sunIntensity: target.sunIntensity, hemi: target.hemi, sunPos: new THREE.Vector3(...target.sunPos), stars: name === 'night' ? 1 : 0,
+        ambient: new THREE.Color(target.ambient || target.top), glow: GLOW_LEVELS[name] || 0,
       },
     };
     styleMotes();
@@ -1211,8 +1382,14 @@ export function createWorld(container, options) {
     skyNow.hemi = THREE.MathUtils.lerp(from.hemi, to.hemi, k);
     skyNow.sunPos.copy(from.sunPos).lerp(to.sunPos, k);
     skyNow.stars = THREE.MathUtils.lerp(from.stars, to.stars, k);
+    skyNow.ambient.copy(from.ambient).lerp(to.ambient, k);
+    skyNow.glow = THREE.MathUtils.lerp(from.glow, to.glow, k);
     scene.fog.color.copy(skyNow.fog);
-    hemi.color.copy(skyNow.top);
+    hemi.color.copy(skyNow.ambient);
+    applyGlow(skyNow.glow);
+    moon.position.copy(skyNow.sunPos).normalize().multiplyScalar(110);
+    moon.material.opacity = skyNow.stars;
+    moon.visible = skyNow.stars > 0.02;
     hemi.intensity = skyNow.hemi;
     sun.color.copy(skyNow.sun);
     sun.intensity = skyNow.sunIntensity;
@@ -1649,14 +1826,19 @@ export function createWorld(container, options) {
     if (trial) {
       if (fps < trial.fps * 1.12) {
         setPixelRatio(trial.from);
-        resolutionRetryAt = now + 60000;
+        resolutionRetryAt = now + (trial.fps >= 28 ? 300000 : 60000);
         onQuality({ quality: qualityName, pixelRatio, shadows: renderer.shadowMap.enabled, fps: Math.round(fps) });
       }
       trial = null;
     }
-    if (fps >= 28) {
+    // Walking around at 30 frames a second feels heavy even when the picture is sharp. Above the
+    // crisp ratio a smooth world is worth more than the last bit of resolution, so "choppy" (under
+    // 50) is enough to try a step down there; below it only "slow" (under 28) is.
+    const crisp = Math.min(maxPixelRatio, CRISP_PIXEL_RATIO);
+    const choppy = fps >= 28 && fps < 50 && pixelRatio > crisp && now >= resolutionRetryAt;
+    if (fps >= 28 && !choppy) {
       slowWindows = 0;
-      fastWindows = fps >= 50 ? fastWindows + 1 : 0;
+      fastWindows = fps >= 55 ? fastWindows + 1 : 0;
       if (fastWindows >= 3 && pixelRatio < maxPixelRatio && now >= restoreAfter) {
         fastWindows = 0;
         lastRestoreAt = now;
@@ -1671,12 +1853,15 @@ export function createWorld(container, options) {
       return;
     }
     slowWindows = 0;
-    // Slow again right after resolution was given back: this is the device's limit, so stop
-    // climbing for a while instead of bouncing between two sizes.
+    // Not smooth again right after resolution was given back: this is the device's limit, so stop
+    // climbing for a good while instead of bouncing between two sizes.
     if (now - lastRestoreAt < 12000) {
-      restoreAfter = now + 120000;
+      restoreAfter = now + 600000;
     }
-    const floor = renderer.shadowMap.enabled ? Math.min(maxPixelRatio, CRISP_PIXEL_RATIO) : Math.min(maxPixelRatio, MIN_PIXEL_RATIO);
+    const floor = choppy || renderer.shadowMap.enabled ? crisp : Math.min(maxPixelRatio, MIN_PIXEL_RATIO);
+    if (choppy && pixelRatio <= floor) {
+      return;
+    }
     if (pixelRatio > floor && now >= resolutionRetryAt) {
       trial = { from: pixelRatio, fps };
       setPixelRatio(Math.max(floor, pixelRatio - 0.25));
@@ -1964,6 +2149,10 @@ export function createWorld(container, options) {
       maxAnisotropy,
       facetedCurves,
       softTextures,
+      drawCalls: renderer.info.render.calls,
+      triangles: renderer.info.render.triangles,
+      meshes: (() => { let n = 0; scene.traverse((object) => { if (object.isMesh && object.visible) { n += 1; } }); return n; })(),
+      lights: (() => { let n = 0; scene.traverse((object) => { if (object.isLight && object.visible && object.intensity > 0) { n += 1; } }); return n; })(),
     };
   };
 
