@@ -1,5 +1,15 @@
 [
   {
+    "version": "1.9.2",
+    "date": "2026-11-22",
+    "title": "Malam yang terang bulan",
+    "changes": [
+      "Ruang 3D di malam hari tidak lagi gelap dan keruh: cahaya bulan cukup terang sehingga dinding, pakaian, dan jalan tetap berbentuk dan berwarna, dan ada bulan di langit.",
+      "Pintu, lengkung, dan jendela bangunan menyala hangat setelah senja dan memantulkan cahaya ke tanah di depannya. Dulu tampak sebagai lubang hitam.",
+      "Gerak lebih halus di laptop: bila di bawah 50 fps, ketajaman turun bertahap (paling rendah 1,5x) selama itu benar-benar menambah kelancaran, dan naik lagi bila perangkat sanggup."
+    ]
+  },
+  {
     "version": "1.9.1",
     "date": "2026-11-21",
     "title": "Ruang 3D yang tajam",
