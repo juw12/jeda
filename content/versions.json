@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.9.3",
+    "date": "2026-11-22",
+    "title": "Tempat yang lebih hidup",
+    "changes": [
+      "Tanah tidak lagi satu warna polos: ada tekstur halus, jalan setapak berubin, dan rumput kecil di tempat berumput.",
+      "Tiang lampu di sepanjang jalan setapak: menyala hangat dan menerangi tanah di malam hari. Awan di langit siang.",
+      "Orang-orang kini berwajah sederhana: dua mata dan senyum kecil.",
+      "Malam sedikit lebih terang lagi.",
+      "Laptop dengan grafis bawaan (Intel) mulai di 1,5x dengan bayangan yang lebih ringan supaya gerak lebih lancar."
+    ]
+  },
+  {
     "version": "1.9.2",
     "date": "2026-11-22",
     "title": "Malam yang terang bulan",

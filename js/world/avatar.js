@@ -324,7 +324,20 @@ export function createAvatar(name, color, { visitor = false, host = false, attir
   const head = new THREE.Mesh(new THREE.SphereGeometry(0.22, 20, 14), mat(SKIN, { roughness: 0.6 }));
   head.position.y = 1.52;
   head.castShadow = true;
-  body.add(torso, lower, head, ...buildHead(spec, headColor));
+  // A plain, calm face: two eyes and a small mouth, enough to see which way someone is looking.
+  const face = new THREE.Group();
+  [-0.078, 0.078].forEach((x) => {
+    const eye = new THREE.Mesh(new THREE.SphereGeometry(0.026, 10, 8), mat('#2b2420', { roughness: 0.35 }));
+    eye.scale.set(1, 1.15, 0.5);
+    eye.position.set(x, 1.535, 0.203);
+    face.add(eye);
+  });
+  const mouth = new THREE.Mesh(new THREE.TorusGeometry(0.045, 0.009, 6, 12, Math.PI), mat('#8a4f3d', { roughness: 0.6 }));
+  mouth.rotation.z = Math.PI;
+  mouth.scale.set(1, 0.7, 0.6);
+  mouth.position.set(0, 1.478, 0.208);
+  face.add(mouth);
+  body.add(torso, lower, head, face, ...buildHead(spec, headColor));
   // Everyone is a little different: a stable height / build per name so a crowd isn't clones.
   let seed = 0;
   for (const ch of String(name || '')) {
