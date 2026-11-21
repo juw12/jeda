@@ -58,7 +58,7 @@ Jeda sama di semua perangkat: aplikasi di bawah ini membuka situs yang sama di j
 | **Mac berchip Apple (M1 ke atas)** | [Jeda-macOS-AppleSilicon.dmg](https://github.com/juw12/jeda/releases/download/apps/Jeda-macOS-AppleSilicon.dmg) | Buka lalu seret Jeda ke Applications. Pertama kali macOS menahannya: **System Settings → Privacy & Security → Open Anyway**. |
 | **Mac berchip Intel** | [Jeda-macOS-Intel.dmg](https://github.com/juw12/jeda/releases/download/apps/Jeda-macOS-Intel.dmg) | Sama seperti di atas. |
 | **iPhone / iPad** | [Buka di Safari](https://juw12.github.io/jeda/) | Bagikan → **Tambah ke Layar Utama**. |
-| **Android** | [Buka di Chrome](https://juw12.github.io/jeda/) | Menu → **Tambahkan ke layar utama** / **Instal aplikasi**. Berkas .apk belum ada. |
+| **Android** | [Jeda-android.apk](https://github.com/juw12/jeda/releases/download/apps/Jeda-android.apk) | Unduh, buka berkasnya, izinkan pemasangan dari peramban. Jendela penuh di sekitar situs langsung: data tersimpan di HP, bisa dibuka luring setelah kunjungan pertama, Bagikan dan Simpan berkas lewat Android. Rekam suara belum ada di .apk. Dibangun dan ditandatangani (v1.0.0), belum dijalankan di perangkat. Atau [buka di Chrome](https://juw12.github.io/jeda/) → **Instal aplikasi**. |
 
 Sumber aplikasi desktop ada di [`desktop/`](desktop/README.md); semua berkas dan checksum ada di [rilis apps](https://github.com/juw12/jeda/releases/tag/apps).
 
