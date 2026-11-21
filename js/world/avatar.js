@@ -315,13 +315,13 @@ export function createAvatar(name, color, { visitor = false, host = false, attir
   const group = new THREE.Group();
   const body = new THREE.Group();
 
-  const torso = new THREE.Mesh(new THREE.CapsuleGeometry(0.3, 0.5, 4, 12), mat(topColor, { roughness: 0.75 }));
+  const torso = new THREE.Mesh(new THREE.CapsuleGeometry(0.3, 0.5, 6, 20), mat(topColor, { roughness: 0.75 }));
   torso.position.y = 0.95;
   torso.castShadow = true;
-  const lower = new THREE.Mesh(new THREE.CylinderGeometry(0.31, 0.37, 0.64, 14), mat(bottomColor, { roughness: 0.8 }));
+  const lower = new THREE.Mesh(new THREE.CylinderGeometry(0.31, 0.37, 0.64, 20), mat(bottomColor, { roughness: 0.8 }));
   lower.position.y = 0.34;
   lower.castShadow = true;
-  const head = new THREE.Mesh(new THREE.SphereGeometry(0.22, 16, 12), mat(SKIN, { roughness: 0.6 }));
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.22, 20, 14), mat(SKIN, { roughness: 0.6 }));
   head.position.y = 1.52;
   head.castShadow = true;
   body.add(torso, lower, head, ...buildHead(spec, headColor));
@@ -387,7 +387,7 @@ export function createAvatar(name, color, { visitor = false, host = false, attir
   const arms = [0.36, -0.36].map((x, index) => {
     const pivot = new THREE.Group();
     pivot.position.set(x, 1.22, 0);
-    const sleeve = new THREE.Mesh(new THREE.CapsuleGeometry(sleeveRadius, 0.42, 3, 8), mat(sleeveColors[index], { roughness: 0.7 }));
+    const sleeve = new THREE.Mesh(new THREE.CapsuleGeometry(sleeveRadius, 0.42, 4, 12), mat(sleeveColors[index], { roughness: 0.7 }));
     sleeve.position.y = -0.28;
     pivot.add(sleeve);
     if (spec.wideSleeves) {

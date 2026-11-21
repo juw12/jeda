@@ -13,10 +13,57 @@ export function mat(color, options = {}) {
   return materialCache.get(key);
 }
 
+// The world is low-poly on purpose: walls, roofs, rocks and trees keep their flat facets. Curved
+// things (domes, pillars, bowls, people) are a different matter: faceted, a dome reads as a grid of
+// big pixels, so their faces are blended into one smooth surface instead.
+function isCurved(geometry) {
+  const p = geometry.parameters || {};
+  switch (geometry.type) {
+    case 'SphereGeometry': return p.widthSegments >= 8;
+    case 'CylinderGeometry':
+    case 'ConeGeometry': return p.radialSegments >= 10;
+    case 'CapsuleGeometry':
+    case 'TubeGeometry': return true;
+    case 'TorusGeometry': return p.tubularSegments >= 12;
+    case 'LatheGeometry': return p.segments >= 10;
+    default: return false;
+  }
+}
+
+const smoothTwins = new WeakMap();
+function smoothTwin(material) {
+  if (!smoothTwins.has(material)) {
+    const twin = material.clone();
+    twin.flatShading = false;
+    smoothTwins.set(material, twin);
+  }
+  return smoothTwins.get(material);
+}
+
+// Give every curved mesh under `root` the smooth twin of its material. Safe to call again and again:
+// a mesh that is already smooth, or flat on purpose, is skipped. Returns how many it changed.
+export function smoothCurves(root) {
+  let changed = 0;
+  root.traverse((object) => {
+    const material = object.material;
+    if (object.isMesh && material && material.flatShading && !object.userData.keepFacets && isCurved(object.geometry)) {
+      object.material = smoothTwin(material);
+      changed += 1;
+    }
+  });
+  return changed;
+}
+
+// Large round things need more sides, or the smooth surface still ends in a visibly cornered outline.
+const sides = (segments, radius) => (segments >= 10 && radius >= 1 ? Math.max(segments, 32) : segments);
+
 export function mesh(geometry, color, options) {
   const m = new THREE.Mesh(geometry, mat(color, options));
   m.castShadow = true;
   m.receiveShadow = true;
+  if (isCurved(geometry) && m.material.flatShading) {
+    m.material = smoothTwin(m.material);
+  }
   return m;
 }
 
@@ -27,9 +74,9 @@ export function at(object, x, y, z, rotationY = 0) {
 }
 
 export const box = (w, h, d, color, options) => mesh(new THREE.BoxGeometry(w, h, d), color, options);
-export const cyl = (rt, rb, h, color, seg = 16, options) => mesh(new THREE.CylinderGeometry(rt, rb, h, seg), color, options);
-export const sphere = (r, color, seg = 16, options) => mesh(new THREE.SphereGeometry(r, seg, Math.max(8, seg / 2)), color, options);
-export const cone = (r, h, color, seg = 16, options) => mesh(new THREE.ConeGeometry(r, h, seg), color, options);
+export const cyl = (rt, rb, h, color, seg = 16, options) => mesh(new THREE.CylinderGeometry(rt, rb, h, sides(seg, Math.max(rt, rb))), color, options);
+export const sphere = (r, color, seg = 16, options) => mesh(new THREE.SphereGeometry(r, sides(seg, r), Math.max(8, sides(seg, r) / 2)), color, options);
+export const cone = (r, h, color, seg = 16, options) => mesh(new THREE.ConeGeometry(r, h, sides(seg, r)), color, options);
 
 export function lathe(points, color, seg = 20, options) {
   return mesh(new THREE.LatheGeometry(points.map(([x, y]) => new THREE.Vector2(x, y)), seg), color, options);

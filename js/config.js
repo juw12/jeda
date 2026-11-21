@@ -3,7 +3,7 @@
 export const CONFIG = {
   appName: 'Jeda',
   tagline: 'Ambil jeda. Ruang hening untuk setiap iman di Nusantara.',
-  version: '1.5.0',
+  version: '1.9.1',
 
   developer: {
     name: 'juw12',

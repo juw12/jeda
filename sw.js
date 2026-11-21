@@ -73,6 +73,7 @@ const SHELL = [
   'content/permissions.json',
   'content/reviewers.json',
   'content/scriptures.json',
+  'content/versions.json',
   'content/school.json',
 ];
 

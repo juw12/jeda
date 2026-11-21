@@ -1,0 +1,59 @@
+[
+  {
+    "version": "1.9.1",
+    "date": "2026-11-21",
+    "title": "Ruang 3D yang tajam",
+    "changes": [
+      "Ruang 3D tidak lagi kotak-kotak dan buram di HP: digambar sampai 2x piksel layar (HP lama 1,5x) dan tepinya selalu dihaluskan. Sebelumnya setiap iPhone mendapat 1x tanpa penghalusan.",
+      "Saat perangkat melambat, ketajaman tidak pernah turun di bawah 1x (dulu sampai 0,75x), bayangan dimatikan lebih dulu, dan ketajaman kembali naik ketika perangkat sudah lancar.",
+      "Kubah, tiang, dan orang berpermukaan halus, bukan lagi petak-petak; bangunan tetap bergaya low-poly.",
+      "Bayangan lebih tegas, papan nama dan balon percakapan digambar dua kali lebih rapat, tekstur lantai dan papan tetap terbaca dari sudut miring.",
+      "Riwayat versi kini ada di halaman Tentang."
+    ]
+  },
+  {
+    "version": "1.9.0",
+    "date": "2026-11-13",
+    "title": "Sejenak: tujuh kegiatan",
+    "changes": [
+      "Mode cepat Sejenak punya tujuh kegiatan: nyalakan lilin/dupa/pelita, titip harapan, lepas beban, petik kartu renungan, ketuk hitungan dengan putaran, gerak pelan 2 menit, dan minuman penghibur.",
+      "Suasana latar opsional (hujan, sungai, gamelan, lonceng, malam) hanya menyala bila dipilih."
+    ]
+  },
+  {
+    "version": "1.8.0",
+    "date": "2026-11-13",
+    "title": "Sejenak: hening dalam 2 ketukan",
+    "changes": [
+      "Mode cepat di #/sejenak: momen hening pertama dalam 2 ketukan, tanpa pertanyaan awal dan tanpa memuat ruang 3D.",
+      "Kartu sambutan menaruh jalur cepat 'Langsung hening' di depan."
+    ]
+  },
+  {
+    "version": "1.7.17",
+    "date": "2026-11-10",
+    "title": "Kontrol kaca dan HUD HP yang terbaca",
+    "changes": [
+      "v1.7.1 sampai v1.7.17: kontrol kaca tembus pandang di atas ruang 3D, joystick sentuh, HUD HP dua baris dengan menu ⋯, ikon garis di rel samping.",
+      "Kedai dan Rumah dibuka setinggi mata di bawah atap; panggung 3D desktop memenuhi jendela.",
+      "Warna aksen yang terbaca (kontras AA) untuk delapan pilihan iman, terang dan gelap."
+    ]
+  },
+  {
+    "version": "1.7.0",
+    "date": "2026-11-08",
+    "title": "Bank Kebaikan, Sekolah Iman, Wisata Iman",
+    "changes": [
+      "Suara di iOS, jumlah pengunjung, Bank Kebaikan, Sekolah Iman, dan Wisata Iman dengan 7 tempat."
+    ]
+  },
+  {
+    "version": "1.6.0",
+    "date": "2026-11-07",
+    "title": "Kedai dan Rumah per iman",
+    "changes": [
+      "Kedai dan rumah per iman, makan dari sudut pandang orang pertama, warga dan obrolan, panduan di dalam ruang 3D.",
+      "v1.6.1 sampai v1.6.3: perbaikan tampilan makan, interior kedai/rumah, dan kamera memasak."
+    ]
+  }
+]

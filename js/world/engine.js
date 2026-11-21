@@ -3,7 +3,7 @@
 // pinch or scroll to zoom, WASD/arrow keys on desktop.
 
 import * as THREE from '../../vendor/three.module.min.js';
-import { buildPlace, mat, box, cyl, sphere, cone } from './places.js';
+import { buildPlace, mat, box, cyl, sphere, cone, smoothCurves } from './places.js';
 import { bell, gong, chime, woodblock, crackle, bead, murmur, pageTurn, chant, asmr, loopSound, wakeAudio } from '../audio.js';
 import { greetingById } from './greetings.js';
 import { createAvatar, attireFor, animateAvatar, playClip, stopClip, setSitting, textSprite, setCarry, speechBubble, keepOnScreen } from './avatar.js';
@@ -55,7 +55,7 @@ export function detectQuality() {
 
 const QUALITY = {
   low: { pixelRatio: 1.5, shadows: false, shadowMap: 512, lights: 2, particles: 0.5, motes: 25, antialias: true },
-  medium: { pixelRatio: 2, shadows: true, shadowMap: 1024, lights: 3, particles: 0.8, motes: 45, antialias: true },
+  medium: { pixelRatio: 2, shadows: true, shadowMap: 2048, lights: 3, particles: 0.8, motes: 45, antialias: true },
   high: { pixelRatio: 2, shadows: true, shadowMap: 2048, lights: 4, particles: 1, motes: 60, antialias: true },
 };
 // The adaptive loop trades resolution for frame rate, but never renders below the screen's own
@@ -184,6 +184,8 @@ export function createWorld(container, options) {
   sun.shadow.camera.top = 22;
   sun.shadow.camera.bottom = -22;
   sun.shadow.bias = -0.0005;
+  // Keeps the fine striping ("shadow acne") off lit walls and curved surfaces.
+  sun.shadow.normalBias = 0.03;
   scene.add(sun);
 
   // Wonder scenes are large monuments: keep them readable at dusk and night with a warm
@@ -1609,12 +1611,16 @@ export function createWorld(container, options) {
   // MIN_PIXEL_RATIO. Resolution comes back when the device shows headroom again, so one slow spell
   // (loading, a busy phone) does not leave the world soft for the rest of the visit.
   const ADAPT_WARMUP_MS = 4000;
-  const MAX_RESTORES = 2;
   let frameCount = 0;
   let windowStart = performance.now() + ADAPT_WARMUP_MS;
   let slowWindows = 0;
   let fastWindows = 0;
-  let restores = 0;
+  let lastRestoreAt = -Infinity;
+  let restoreAfter = 0;
+  // A step down in resolution is a trial: if the next 2 s are not clearly faster, the device is held
+  // back by something else (a busy processor, a full scene) and the sharpness is given back.
+  let trial = null;
+  let resolutionRetryAt = 0;
   function setPixelRatio(next) {
     pixelRatio = next;
     renderer.setPixelRatio(pixelRatio);
@@ -1637,14 +1643,23 @@ export function createWorld(container, options) {
     if (document.hidden || span > 3000) {
       slowWindows = 0;
       fastWindows = 0;
+      trial = null;
       return;
+    }
+    if (trial) {
+      if (fps < trial.fps * 1.12) {
+        setPixelRatio(trial.from);
+        resolutionRetryAt = now + 60000;
+        onQuality({ quality: qualityName, pixelRatio, shadows: renderer.shadowMap.enabled, fps: Math.round(fps) });
+      }
+      trial = null;
     }
     if (fps >= 28) {
       slowWindows = 0;
       fastWindows = fps >= 50 ? fastWindows + 1 : 0;
-      if (fastWindows >= 5 && pixelRatio < maxPixelRatio && restores < MAX_RESTORES) {
+      if (fastWindows >= 3 && pixelRatio < maxPixelRatio && now >= restoreAfter) {
         fastWindows = 0;
-        restores += 1;
+        lastRestoreAt = now;
         setPixelRatio(Math.min(maxPixelRatio, pixelRatio + 0.25));
         onQuality({ quality: qualityName, pixelRatio, shadows: renderer.shadowMap.enabled, fps: Math.round(fps) });
       }
@@ -1656,8 +1671,14 @@ export function createWorld(container, options) {
       return;
     }
     slowWindows = 0;
+    // Slow again right after resolution was given back: this is the device's limit, so stop
+    // climbing for a while instead of bouncing between two sizes.
+    if (now - lastRestoreAt < 12000) {
+      restoreAfter = now + 120000;
+    }
     const floor = renderer.shadowMap.enabled ? Math.min(maxPixelRatio, CRISP_PIXEL_RATIO) : Math.min(maxPixelRatio, MIN_PIXEL_RATIO);
-    if (pixelRatio > floor) {
+    if (pixelRatio > floor && now >= resolutionRetryAt) {
+      trial = { from: pixelRatio, fps };
       setPixelRatio(Math.max(floor, pixelRatio - 0.25));
     } else if (renderer.shadowMap.enabled) {
       renderer.shadowMap.enabled = false;
@@ -1846,6 +1867,11 @@ export function createWorld(container, options) {
     }
     life.update(delta, elapsed, [self, ...peers.values(), ...npcAvatars]);
     adaptQuality(now);
+    polishTimer -= delta;
+    if (polishTimer <= 0) {
+      polishTimer = 0.25;
+      polish();
+    }
 
     spotMarkers.forEach(({ ring, beacon, spot }, index) => {
       // Once you are at a spot (ordering, watching the cook, seated) its floating marker is just clutter.
@@ -1891,6 +1917,55 @@ export function createWorld(container, options) {
     updateCamera(delta);
     renderFrame();
   }
+
+  // Sharpness that depends on what is in the scene right now (visitors arrive, a dish is served, an
+  // object is picked up): curved surfaces shaded smooth, and textures filtered so signs, floor
+  // patterns and name tags stay readable at a slant instead of smearing.
+  const maxAnisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  let polishTimer = 0;
+  function sharpenTextures(root) {
+    root.traverse((object) => {
+      const map = object.material && object.material.map;
+      if (map && map.anisotropy < maxAnisotropy) {
+        map.anisotropy = maxAnisotropy;
+        map.needsUpdate = true;
+      }
+    });
+  }
+  function polish() {
+    smoothCurves(scene);
+    sharpenTextures(scene);
+    if (held) {
+      smoothCurves(held.scene);
+      sharpenTextures(held.scene);
+    }
+  }
+  // For the checks in the browser (and for a curious visitor in the console): what is being drawn.
+  renderer.domElement.jedaStats = () => {
+    polish();
+    let facetedCurves = 0;
+    let softTextures = 0;
+    [scene, held && held.scene].filter(Boolean).forEach((root) => {
+      facetedCurves += smoothCurves(root);
+      root.traverse((object) => {
+        const map = object.material && object.material.map;
+        if (map && map.anisotropy < maxAnisotropy) {
+          softTextures += 1;
+        }
+      });
+    });
+    return {
+      quality: qualityName,
+      pixelRatio,
+      maxPixelRatio,
+      antialias: renderer.getContextAttributes().antialias,
+      shadows: renderer.shadowMap.enabled,
+      shadowMap: sun.shadow.mapSize.x,
+      maxAnisotropy,
+      facetedCurves,
+      softTextures,
+    };
+  };
 
   function renderFrame() {
     renderer.clear();
