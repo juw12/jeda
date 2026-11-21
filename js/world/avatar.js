@@ -11,27 +11,37 @@ import { mat, box, cyl, sphere, cone } from './places.js';
 const SKIN = '#f1d9bf';
 const HAIR = '#2b211b';
 
+// Floating text is drawn at TEXT_SUPERSAMPLE x its layout size: at 1x a name tag near the camera
+// was stretched over 2-3 screen pixels per texel on retina phones and read as blurry.
+const TEXT_SUPERSAMPLE = 2;
+function textTexture(canvas) {
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.anisotropy = 4;
+  return texture;
+}
+
 export function textSprite(text, { color = '#ffffff', background = 'rgba(20,18,16,0.55)', size = 44 } = {}) {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d');
   context.font = `600 ${size}px system-ui, "Segoe UI", sans-serif`;
   const width = Math.ceil(context.measureText(text).width) + 40;
-  canvas.width = width;
-  canvas.height = size + 28;
+  const height = size + 28;
+  canvas.width = width * TEXT_SUPERSAMPLE;
+  canvas.height = height * TEXT_SUPERSAMPLE;
+  context.scale(TEXT_SUPERSAMPLE, TEXT_SUPERSAMPLE);
   context.font = `600 ${size}px system-ui, "Segoe UI", sans-serif`;
   context.fillStyle = background;
-  const radius = canvas.height / 2;
+  const radius = height / 2;
   context.beginPath();
-  context.roundRect(0, 0, width, canvas.height, radius);
+  context.roundRect(0, 0, width, height, radius);
   context.fill();
   context.fillStyle = color;
   context.textBaseline = 'middle';
-  context.fillText(text, 20, canvas.height / 2 + 2);
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.colorSpace = THREE.SRGBColorSpace;
-  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, depthWrite: false, transparent: true }));
+  context.fillText(text, 20, height / 2 + 2);
+  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: textTexture(canvas), depthWrite: false, transparent: true }));
   const scale = 0.0042;
-  sprite.scale.set(width * scale, canvas.height * scale, 1);
+  sprite.scale.set(width * scale, height * scale, 1);
   return sprite;
 }
 
@@ -136,26 +146,26 @@ export function speechBubble(text, { background = 'rgba(255,252,244,0.96)', colo
   const lineHeight = Math.round(size * 1.25);
   const width = Math.ceil(Math.max(...lines.map((l) => context.measureText(l).width), 40)) + 40;
   const tail = 16;
-  canvas.width = width;
-  canvas.height = lines.length * lineHeight + 26 + tail;
+  const height = lines.length * lineHeight + 26 + tail;
+  canvas.width = width * TEXT_SUPERSAMPLE;
+  canvas.height = height * TEXT_SUPERSAMPLE;
+  context.scale(TEXT_SUPERSAMPLE, TEXT_SUPERSAMPLE);
   context.font = font;
   context.fillStyle = background;
   context.beginPath();
-  context.roundRect(0, 0, width, canvas.height - tail, 22);
+  context.roundRect(0, 0, width, height - tail, 22);
   context.fill();
   context.beginPath();
-  context.moveTo(width / 2 - 12, canvas.height - tail - 1);
-  context.lineTo(width / 2, canvas.height);
-  context.lineTo(width / 2 + 12, canvas.height - tail - 1);
+  context.moveTo(width / 2 - 12, height - tail - 1);
+  context.lineTo(width / 2, height);
+  context.lineTo(width / 2 + 12, height - tail - 1);
   context.fill();
   context.fillStyle = color;
   context.textBaseline = 'top';
   lines.forEach((l, i) => context.fillText(l, 20, 14 + i * lineHeight));
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.colorSpace = THREE.SRGBColorSpace;
-  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, depthWrite: false, transparent: true }));
+  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: textTexture(canvas), depthWrite: false, transparent: true }));
   const scale = 0.0042;
-  sprite.scale.set(width * scale, canvas.height * scale, 1);
+  sprite.scale.set(width * scale, height * scale, 1);
   sprite.center.set(0.5, 0);
   sprite.renderOrder = 5;
   return keepOnScreen(sprite);
@@ -305,13 +315,13 @@ export function createAvatar(name, color, { visitor = false, host = false, attir
   const group = new THREE.Group();
   const body = new THREE.Group();
 
-  const torso = new THREE.Mesh(new THREE.CapsuleGeometry(0.3, 0.5, 4, 12), mat(topColor, { roughness: 0.75 }));
+  const torso = new THREE.Mesh(new THREE.CapsuleGeometry(0.3, 0.5, 6, 20), mat(topColor, { roughness: 0.75 }));
   torso.position.y = 0.95;
   torso.castShadow = true;
-  const lower = new THREE.Mesh(new THREE.CylinderGeometry(0.31, 0.37, 0.64, 14), mat(bottomColor, { roughness: 0.8 }));
+  const lower = new THREE.Mesh(new THREE.CylinderGeometry(0.31, 0.37, 0.64, 20), mat(bottomColor, { roughness: 0.8 }));
   lower.position.y = 0.34;
   lower.castShadow = true;
-  const head = new THREE.Mesh(new THREE.SphereGeometry(0.22, 16, 12), mat(SKIN, { roughness: 0.6 }));
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.22, 20, 14), mat(SKIN, { roughness: 0.6 }));
   head.position.y = 1.52;
   head.castShadow = true;
   body.add(torso, lower, head, ...buildHead(spec, headColor));
@@ -377,7 +387,7 @@ export function createAvatar(name, color, { visitor = false, host = false, attir
   const arms = [0.36, -0.36].map((x, index) => {
     const pivot = new THREE.Group();
     pivot.position.set(x, 1.22, 0);
-    const sleeve = new THREE.Mesh(new THREE.CapsuleGeometry(sleeveRadius, 0.42, 3, 8), mat(sleeveColors[index], { roughness: 0.7 }));
+    const sleeve = new THREE.Mesh(new THREE.CapsuleGeometry(sleeveRadius, 0.42, 4, 12), mat(sleeveColors[index], { roughness: 0.7 }));
     sleeve.position.y = -0.28;
     pivot.add(sleeve);
     if (spec.wideSleeves) {

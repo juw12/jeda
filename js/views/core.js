@@ -485,9 +485,10 @@ const PERMISSION_STATUS_TEXT = {
 };
 
 export async function about(main, params, query, { content }) {
-  const [reviewers, permissions] = await Promise.all([
+  const [reviewers, permissions, versions] = await Promise.all([
     fetchJsonSafe('content/reviewers.json'),
     fetchJsonSafe('content/permissions.json'),
+    fetchJsonSafe('content/versions.json'),
   ]);
   const total = content.allEntriesCount;
   const approved = content.entries.filter((e) => e.status === 'approved').length;
@@ -523,6 +524,14 @@ export async function about(main, params, query, { content }) {
         <tbody>${permissions.map((p) => `<tr><td>${esc(p.name)}</td><td>${esc(p.holder)}</td><td>${esc(PERMISSION_STATUS_TEXT[p.status] || p.status)}${p.evidence ? ` · <a href="${esc(p.evidence)}" target="_blank" rel="noopener">bukti</a>` : ''}</td></tr>`).join('')}</tbody>
       </table></div>
       <p class="small">Mewakili pemegang hak? <a href="${CONFIG.repo}/issues/new?template=izin.yml" target="_blank" rel="noopener">Beri izin lewat formulir terbuka</a>.</p>
+
+      <h2 class="h3" id="riwayat-versi">Riwayat versi</h2>
+      <div class="about versions">
+        ${versions.map((v, index) => `<details ${index === 0 ? 'open' : ''}>
+          <summary><strong>v${esc(v.version)}</strong> · ${esc(v.title)} · <span class="muted">${esc(formatShortDate(new Date(`${v.date}T12:00:00+07:00`)))}</span>${v.version === CONFIG.version ? ' · <em>Versi ini</em>' : ''}</summary>
+          <ul>${v.changes.map((change) => `<li>${esc(change)}</li>`).join('')}</ul>
+        </details>`).join('')}
+      </div>
 
       <h2 class="h3">Pembuat</h2>
       <p>Dibuat oleh <a href="${CONFIG.developer.github}" target="_blank" rel="noopener">${esc(CONFIG.developer.name)}</a>. Kode: <a href="${CONFIG.repo}" target="_blank" rel="noopener">${esc(CONFIG.repo.replace('https://', ''))}</a>. Versi ${esc(CONFIG.version)}.</p>
