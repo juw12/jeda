@@ -1795,3 +1795,16 @@ body.sejenak-mode { padding-bottom: 0; }
 .ob-footrow { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0 6px; margin-top: 10px; color: var(--muted); }
 .ob-footrow .ob-link { font-size: 0.85rem; min-height: 44px; }
 .sejenak-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 20%, transparent); }
+
+/* ---------- v1.9.4: no blur behind the controls while the 3D world is on screen ---------- */
+/* Blurring a moving 3D picture behind some thirty controls, every frame, costs Safari and iPhones about half
+   their frame rate. The glass keeps its darkness without the blur: 0.32 tint over a backdrop dimmed to 0.6
+   lets 41% of the picture through, and so does a 0.59 tint alone, so the labels keep their contrast. */
+body:has(.stage-world), body:has(.stage-world) * {
+  --glass: rgba(20, 18, 16, 0.59) !important;
+  --glass-strong: rgba(20, 18, 16, 0.72) !important;
+  --glass-filter: none !important;
+}
+body:has(.stage-world) *, body:has(.stage-world) *::before, body:has(.stage-world) *::after {
+  backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+}

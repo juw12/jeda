@@ -401,6 +401,38 @@ export function createWorld(container, options) {
   walkway.receiveShadow = true;
   scene.add(walkway);
   scene.add(place.group);
+  // Lamp posts along the walkway: something upright by day, warm light by night. They join the
+  // place before its walking map is made, so people walk around them, not through them.
+  const outdoors = !sceneId.startsWith('kedai-') && !sceneId.startsWith('rumah-');
+  const lampBulbs = [];
+  if (outdoors && !isWonder) {
+    place.group.updateMatrixWorld(true);
+    const solid = [];
+    const reach = new THREE.Box3();
+    place.group.traverse((object) => {
+      if (object.isMesh && reach.setFromObject(object).max.y - Math.max(0, reach.min.y) >= 0.25) {
+        solid.push(reach.clone().expandByScalar(0.45));
+      }
+    });
+    const spot = new THREE.Vector3();
+    [[-1.9, 6.4], [1.9, 6.4], [-1.9, 2.2], [1.9, 2.2]].forEach(([x, z]) => {
+      spot.set(x, 0.5, z);
+      if (solid.some((box) => box.containsPoint(spot)) || (place.spots || []).some((s) => Math.hypot(s.stand.x - x, s.stand.z - z) < 1.1)) {
+        return;
+      }
+      const post = new THREE.Group();
+      post.add(at(cyl(0.11, 0.14, 0.18, '#3a3531', 8), 0, 0.09, 0));
+      post.add(at(cyl(0.04, 0.055, 2.2, '#3a3531', 8), 0, 1.2, 0));
+      post.add(at(cyl(0.17, 0.05, 0.1, '#3a3531', 8), 0, 2.28, 0));
+      const bulb = sphere(0.15, '#fff3d6', 12, { emissive: '#ffc86e', emissiveIntensity: 0.15, roughness: 0.4 });
+      post.add(at(bulb, 0, 2.46, 0));
+      post.add(at(cone(0.2, 0.14, '#3a3531', 8), 0, 2.66, 0));
+      post.position.set(x, 0, z);
+      post.traverse((object) => { object.userData.noGlow = true; });
+      place.group.add(post);
+      lampBulbs.push(bulb);
+    });
+  }
   const nav = buildNav(place);
   scene.add(createBarriers(place));
 
@@ -423,7 +455,6 @@ export function createWorld(container, options) {
   scene.add(moon);
 
   // ---------- Things that make the place less bare ----------
-  const outdoors = !sceneId.startsWith('kedai-') && !sceneId.startsWith('rumah-');
   // Clouds: a few soft puffs high up by day, gone by night.
   const clouds = new THREE.Group();
   [[-60, 34, -70, 1.2], [20, 42, -85, 1], [75, 30, -40, 0.9], [-85, 38, 10, 1.1], [50, 46, 60, 1], [-30, 40, 80, 0.8]].forEach(([x, y, z, s]) => {
@@ -479,27 +510,6 @@ export function createWorld(container, options) {
     bits.receiveShadow = true;
     scene.add(bits);
   }
-  // Lamp posts along the walkway: something upright by day, warm light by night.
-  const lampBulbs = [];
-  if (outdoors && !isWonder) {
-    [[-1.9, 6.4], [1.9, 6.4], [-1.9, 2.2], [1.9, 2.2]].forEach(([x, z]) => {
-      if (!nav.walkable(x, z)) {
-        return;
-      }
-      const post = new THREE.Group();
-      post.add(at(cyl(0.11, 0.14, 0.18, '#3a3531', 8), 0, 0.09, 0));
-      post.add(at(cyl(0.04, 0.055, 2.2, '#3a3531', 8), 0, 1.2, 0));
-      post.add(at(cyl(0.17, 0.05, 0.1, '#3a3531', 8), 0, 2.28, 0));
-      const bulb = sphere(0.15, '#fff3d6', 12, { emissive: '#ffc86e', emissiveIntensity: 0.15, roughness: 0.4 });
-      post.add(at(bulb, 0, 2.46, 0));
-      post.add(at(cone(0.2, 0.14, '#3a3531', 8), 0, 2.66, 0));
-      post.position.set(x, 0, z);
-      post.traverse((object) => { object.userData.noGlow = true; });
-      scene.add(post);
-      lampBulbs.push(bulb);
-    });
-  }
-
   // ---------- Lit from inside after dark ----------
   // A doorway, arch or window is a dark upright panel set in a wall. By day that reads as shade;
   // at night it was a black hole in a dark wall. After dusk these panels glow warm, as a room with
