@@ -1,5 +1,14 @@
 [
   {
+    "version": "1.9.4",
+    "date": "2026-11-22",
+    "title": "Lebih lancar di iPhone dan Safari",
+    "changes": [
+      "Tombol-tombol kaca di atas ruang 3D tidak lagi memburamkan gambar di belakangnya. Di Safari dan iPhone pemburaman itu memakan kira-kira separuh kelancaran; warna gelap kacanya tetap sama sehingga tulisan tetap terbaca.",
+      "Orang berjalan memutari tiang lampu, tidak lagi menembusnya."
+    ]
+  },
+  {
     "version": "1.9.3",
     "date": "2026-11-22",
     "title": "Tempat yang lebih hidup",
